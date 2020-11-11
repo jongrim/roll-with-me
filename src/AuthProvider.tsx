@@ -10,6 +10,12 @@ export const AuthContext = React.createContext<{ user: user | undefined }>({
   user: undefined,
 });
 
+function getUser() {
+  return Auth.currentAuthenticatedUser()
+    .then((userData) => userData)
+    .catch(() => console.log('Not signed in'));
+}
+
 const AuthProvider: React.FC = ({ children }) => {
   const [authState, setAuthState] = React.useState<AuthState>(
     AuthState.Loading
@@ -20,28 +26,27 @@ const AuthProvider: React.FC = ({ children }) => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
       switch (event) {
         case 'signIn':
-          setUser(data);
-          setAuthState(AuthState.SignedIn);
+        case 'cognitoHostedUI':
+          getUser().then((userData) => {
+            setUser(userData);
+            setAuthState(AuthState.SignedIn);
+          });
           break;
         case 'signOut':
           setUser(undefined);
-          setAuthState(AuthState.SignedOut);
+          setAuthState(AuthState.SignOut);
           break;
-        case 'customOAuthState':
-          setUser(data);
-          setAuthState(AuthState.SignedIn);
+        case 'signIn_failure':
+        case 'cognitoHostedUI_failure':
+          console.log('Sign in failure', data);
+          break;
       }
     });
 
-    Auth.currentAuthenticatedUser()
-      .then((user) => {
-        setUser(user);
-        setAuthState(AuthState.SignedIn);
-      })
-      .catch(() => {
-        console.log('Not signed in');
-        setAuthState(AuthState.SignedOut);
-      });
+    getUser().then((userData) => {
+      setUser(userData);
+      setAuthState(AuthState.SignedIn);
+    });
   }, []);
 
   console.log({ user });
