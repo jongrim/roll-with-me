@@ -56,11 +56,9 @@ const updatedAwsConfig = {
   },
 };
 
-function App() {
-  React.useEffect(() => {
-    Amplify.configure(updatedAwsConfig);
-  }, []);
+Amplify.configure(updatedAwsConfig);
 
+function App() {
   return (
     <AuthProvider>
       <div className="App">
