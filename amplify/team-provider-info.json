@@ -23,6 +23,13 @@
             "StackName": "amplify-rollwithme-dev-192622",
             "StackId": "arn:aws:cloudformation:us-east-1:298644330995:stack/amplify-rollwithme-dev-192622/5d325250-22eb-11eb-8561-12704013453b",
             "AmplifyAppId": "d1y92bo115vf7n"
+        },
+        "categories": {
+            "auth": {
+                "rollwithmea4fdec43": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"659861203559-5bglgveqpt8fcavfio5o72s8advoi9ui.apps.googleusercontent.com\",\"client_secret\":\"RP17yWVCKuUUdB5sxyGnSF35\"}]"
+                }
+            }
         }
     }
 }

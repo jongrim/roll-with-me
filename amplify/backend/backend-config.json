@@ -1,1 +1,10 @@
-{}
+{
+    "auth": {
+        "rollwithmea4fdec43": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    }
+}
