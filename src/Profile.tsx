@@ -1,22 +1,18 @@
 import * as React from 'react';
-import { AmplifySignOut } from '@aws-amplify/ui-react';
+import { Auth } from 'aws-amplify';
 
 import { AuthContext } from './AuthProvider';
-import { useHistory } from 'react-router-dom';
 
 const Profile: React.FC = () => {
   const { user } = React.useContext(AuthContext);
-  const history = useHistory();
 
-  React.useEffect(() => {
-    if (!user) history.push('/sign-in');
-  }, [history, user]);
-
-  return (
+  return user ? (
     <div>
-      <AmplifySignOut />
+      <button onClick={() => Auth.signOut()}>Sign Out</button>
       {JSON.stringify(user)}
     </div>
+  ) : (
+    <a href="/sign-in">Sign In</a>
   );
 };
 
