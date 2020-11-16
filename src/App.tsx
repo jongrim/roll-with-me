@@ -1,10 +1,44 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ChakraProvider, extendTheme } from '@chakra-ui/core';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import AuthProvider from './AuthProvider';
 import SignIn from './SignIn';
 import Profile from './Profile';
+import Home from './Home';
+import RoomProvider from './RoomProvider';
+
+const rollWithMeTheme = extendTheme({
+  colors: {
+    brand: {
+      primary: '#609',
+      secondary: '#306',
+      muted: '#f6f6f6',
+      danger: '#C20114',
+      dangerText: '#C20114',
+      special: '#3075AB',
+    },
+  },
+  fonts: {
+    body: 'Poppins, sans-serif',
+    title: 'QuiteMagicalRegular, Poppins, sans-serif',
+    heading: 'Poppins, sans-serif',
+    monospace: 'Menlo, monospace',
+  },
+  space: {
+    0: '0px',
+    1: '4px',
+    2: '8px',
+    3: '16px',
+    4: '32px',
+    5: '64px',
+    6: '128px',
+    7: '256px',
+    8: '512px',
+    9: '640px',
+  },
+});
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -60,28 +94,29 @@ Amplify.configure(updatedAwsConfig);
 
 function App() {
   return (
-    <AuthProvider>
-      <div className="App">
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/sign-in">
-              <SignIn />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
-    </AuthProvider>
+    <ChakraProvider theme={rollWithMeTheme} resetCSS>
+      <AuthProvider>
+        <div className="App">
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/profile">
+                <Profile />
+              </Route>
+              <Route path="/sign-in">
+                <SignIn />
+              </Route>
+              <Route path="/:type/:name">
+                <RoomProvider />
+              </Route>
+            </Switch>
+          </Router>
+        </div>
+      </AuthProvider>
+    </ChakraProvider>
   );
-}
-
-function Home() {
-  return <div>home</div>;
 }
 
 export default App;
