@@ -4,23 +4,25 @@ import {
   GridItem,
   Container,
   Text,
-  useTheme,
   Stack,
   Link,
-  Box,
   Heading,
   Img,
-  Center,
   Flex,
   Button,
   IconButton,
 } from '@chakra-ui/core';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
+import { API } from 'aws-amplify';
 import logo from './images/personWithCoffee.svg';
 
 function Home() {
-  const theme = useTheme();
-  console.log(theme);
+  const [roomName, setRoomName] = React.useState('');
+  React.useEffect(() => {
+    API.get('randomNameAPI', '/random-room-name', {}).then(({ result }) => {
+      setRoomName(result);
+    });
+  }, []);
   return (
     <Grid templateColumns="repeat(6, 1fr)">
       <GridItem colSpan={6} bg="gray.800">
@@ -72,12 +74,12 @@ function Home() {
               Make a room and share the URL with friends to roll dice together
             </Text>
             <Stack spacing={3} mt={3}>
-              <Link href="/r/coars-ground-pepper">
+              <Link href={`/r/${roomName}`}>
                 <Button variant="outline" colorScheme="purple" w="full">
                   New Text Room
                 </Button>
               </Link>
-              <Link href="/i/coars-ground-pepper">
+              <Link href={`/i/${roomName}`}>
                 <Button variant="outline" colorScheme="blue" w="full">
                   New Interactive Room
                 </Button>
@@ -93,7 +95,7 @@ function Home() {
               dice, and safety tools
             </Text>
             <Stack spacing={3} mt={3}>
-              <Link href="/trophy-dark/coars-ground-pepper">
+              <Link href={`/trophy-dark/${roomName}`}>
                 <Button variant="outline" colorScheme="black" w="full">
                   Trophy Dark
                 </Button>

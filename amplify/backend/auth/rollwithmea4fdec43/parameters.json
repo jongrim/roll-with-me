@@ -1,6 +1,6 @@
 {
     "identityPoolName": "rollwithmea4fdec43_identitypool_a4fdec43",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "rollwia4fdec43",
     "userPoolName": "rollwithmea4fdec43_userpool_a4fdec43",
     "autoVerifiedAttributes": [
