@@ -11,20 +11,37 @@ import {
   Flex,
   Button,
   IconButton,
-} from '@chakra-ui/core';
+  LightMode,
+  DarkMode,
+} from '@chakra-ui/react';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
 import { API } from 'aws-amplify';
+import * as mutations from './graphql/mutations';
 import logo from './images/personWithCoffee.svg';
+import { useHistory } from 'react-router-dom';
+import { CreateTextRoomMutation } from './API';
+import gql from './gql';
+
+async function getNewRoomName() {
+  const { result } = await API.get('randomNameAPI', '/random-room-name', {});
+  return result;
+}
 
 function Home() {
-  const [roomName, setRoomName] = React.useState('');
-  React.useEffect(() => {
-    API.get('randomNameAPI', '/random-room-name', {}).then(({ result }) => {
-      setRoomName(result);
-    });
-  }, []);
+  const history = useHistory();
+  const handleNewRoomRequest = async (type: 'r' | 'i' | 'trophy-dark') => {
+    const name = await getNewRoomName();
+    // check if room exists?
+    const newRoomData = await gql<CreateTextRoomMutation>(
+      mutations.createTextRoom,
+      {
+        name,
+      }
+    );
+    history.push(`/${type}/${name}`);
+  };
   return (
-    <Grid templateColumns="repeat(6, 1fr)">
+    <Grid templateColumns="repeat(6, 1fr)" backgroundColor="white">
       <GridItem colSpan={6} bg="gray.800">
         <Container centerContent py={2}>
           <Stack spacing={2}>
@@ -56,10 +73,11 @@ function Home() {
               as="h1"
               fontFamily="title"
               fontSize={['5xl', '6xl', '7xl']}
+              color="black"
             >
               Roll With Me
             </Heading>
-            <Text fontSize="lg" w="80">
+            <Text fontSize="lg" w="80" color="black">
               Digital tools for playing great roleplaying games online
             </Text>
           </Stack>
@@ -67,39 +85,52 @@ function Home() {
         </Flex>
         <Grid mt={5} templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={4}>
           <GridItem>
-            <Heading as="h3" fontSize="xl">
+            <Heading as="h3" fontSize="xl" color="black">
               Dice Rooms
             </Heading>
-            <Text>
+            <Text color="black">
               Make a room and share the URL with friends to roll dice together
             </Text>
             <Stack spacing={3} mt={3}>
-              <Link href={`/r/${roomName}`}>
-                <Button variant="outline" colorScheme="purple" w="full">
+              <LightMode>
+                <Button
+                  variant="outline"
+                  colorScheme="purple"
+                  w="full"
+                  onClick={() => handleNewRoomRequest('r')}
+                >
                   New Text Room
                 </Button>
-              </Link>
-              <Link href={`/i/${roomName}`}>
-                <Button variant="outline" colorScheme="blue" w="full">
+                <Button
+                  variant="outline"
+                  colorScheme="blue"
+                  w="full"
+                  onClick={() => handleNewRoomRequest('i')}
+                >
                   New Interactive Room
                 </Button>
-              </Link>
+              </LightMode>
             </Stack>
           </GridItem>
           <GridItem>
-            <Heading as="h3" fontSize="xl">
+            <Heading as="h3" fontSize="xl" color="black">
               Game Rooms
             </Heading>
-            <Text>
+            <Text color="black">
               Everything you need to play a game including character sheets,
               dice, and safety tools
             </Text>
             <Stack spacing={3} mt={3}>
-              <Link href={`/trophy-dark/${roomName}`}>
-                <Button variant="outline" colorScheme="black" w="full">
+              <LightMode>
+                <Button
+                  variant="outline"
+                  colorScheme="green"
+                  w="full"
+                  onClick={() => handleNewRoomRequest('trophy-dark')}
+                >
                   Trophy Dark
                 </Button>
-              </Link>
+              </LightMode>
             </Stack>
           </GridItem>
         </Grid>

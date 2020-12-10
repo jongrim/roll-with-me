@@ -48,11 +48,7 @@ const AuthProvider: React.FC = ({ children }) => {
       setAuthState(AuthState.SignedIn);
     });
   }, []);
-
-  console.log({ user });
-  return authState === AuthState.Loading ? (
-    <div>loading</div>
-  ) : (
+  return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 };

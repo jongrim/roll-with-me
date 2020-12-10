@@ -1,0 +1,43 @@
+type TextRoom
+  @model
+  @key(name: "textRoomByName", fields: ["name"], queryField: "textRoomByName")
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  rolls: [AWSJSON!]
+  customDice: [AWSJSON!]
+}
+
+type InteractiveRoom
+  @model
+  @key(
+    name: "interactiveRoomByName"
+    fields: ["name"]
+    queryField: "interactiveRoomByName"
+  )
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  dice: [AWSJSON!]
+}
+
+type TrophyDarkRoom
+  @model
+  @key(
+    name: "trophyDarkRoomByName"
+    fields: ["name"]
+    queryField: "trophyDarkRoomByName"
+  )
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+}
+
+type Subscription {
+  onUpdateTextRoomByName(name: String!): TextRoom
+    @aws_subscribe(mutations: ["updateTextRoom"])
+  onUpdateInteractiveRoomByName(name: String!): InteractiveRoom
+    @aws_subscribe(mutations: ["updateInteractiveRoom"])
+  onUpdateTrophyDarkRoomByName(name: String!): TrophyDarkRoom
+    @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
+}

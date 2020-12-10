@@ -6,6 +6,7 @@ import TrophyDarkRoom from './TrophyDarkRoom/TrophyDarkRoom';
 
 function RoomProvider() {
   const { name, type } = useParams<{ name: string; type: string }>();
+
   switch (type) {
     case 'r':
       return <TextRoom name={name} />;

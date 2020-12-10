@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ChakraProvider, extendTheme } from '@chakra-ui/core';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import AuthProvider from './AuthProvider';
@@ -12,12 +12,12 @@ import RoomProvider from './RoomProvider';
 const rollWithMeTheme = extendTheme({
   colors: {
     brand: {
-      primary: '#609',
-      secondary: '#306',
-      muted: '#f6f6f6',
-      danger: '#C20114',
-      dangerText: '#C20114',
-      special: '#3075AB',
+      // primary: '#609',
+      // secondary: '#306',
+      // muted: '#f6f6f6',
+      // danger: '#C20114',
+      // dangerText: '#C20114',
+      // special: '#3075AB',
     },
   },
   fonts: {
@@ -37,6 +37,10 @@ const rollWithMeTheme = extendTheme({
     7: '256px',
     8: '512px',
     9: '640px',
+  },
+  config: {
+    useSystemColorMode: true,
+    initialColorMode: 'light',
   },
 });
 
