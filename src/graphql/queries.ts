@@ -8,6 +8,7 @@ export const getTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       createdAt
       updatedAt
     }
@@ -24,6 +25,7 @@ export const listTextRooms = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         createdAt
         updatedAt
       }
@@ -110,6 +112,7 @@ export const textRoomByName = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         createdAt
         updatedAt
       }

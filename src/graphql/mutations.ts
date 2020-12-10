@@ -11,6 +11,7 @@ export const createTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       createdAt
       updatedAt
     }
@@ -25,6 +26,7 @@ export const updateTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       createdAt
       updatedAt
     }
@@ -39,6 +41,7 @@ export const deleteTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       createdAt
       updatedAt
     }
