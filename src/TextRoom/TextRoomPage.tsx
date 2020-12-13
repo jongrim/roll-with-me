@@ -14,6 +14,7 @@ import { Grid, GridItem, Input } from '@chakra-ui/react';
 import BuildRollForm from './BuildRollForm';
 import CustomDieForm from './CustomDieForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
+import RollsHistory from './RollsHistory';
 
 const TextRoomPage: React.FC = () => {
   const quickRollRef = React.useRef();
@@ -32,12 +33,8 @@ const TextRoomPage: React.FC = () => {
     <>
       <SettingsBar />
       <Container maxW="6xl" centerContent p={3}>
-        <Grid
-          templateColumns={['1fr', '1fr', 'repeat(3, 1fr)']}
-          w="full"
-          gap={3}
-        >
-          <GridItem colSpan={[1, 1, 3]}>
+        <Grid templateColumns={['1fr', '1fr', '1fr 1fr']} w="full" gap={4}>
+          <GridItem colSpan={[1, 1, 2]}>
             <InputGroup mb={3}>
               <InputLeftElement>
                 <Kbd>/</Kbd>
@@ -72,7 +69,9 @@ const TextRoomPage: React.FC = () => {
             </Tabs>
           </GridItem>
           <GridItem order={[1, 1, 2]}>Rolls results</GridItem>
-          <GridItem order={3}>Rolls history</GridItem>
+          <GridItem order={3} colSpan={[1, 1, 2]}>
+            <RollsHistory />
+          </GridItem>
         </Grid>
       </Container>
     </>
