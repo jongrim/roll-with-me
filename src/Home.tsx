@@ -12,9 +12,11 @@ import {
   Button,
   IconButton,
   LightMode,
-  DarkMode,
+  Input,
+  InputGroup,
 } from '@chakra-ui/react';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
+import { RiArrowRightLine } from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import * as mutations from './graphql/mutations';
 import logo from './images/personWithCoffee.svg';
@@ -28,9 +30,16 @@ async function getNewRoomName() {
 }
 
 function Home() {
+  const [name, setName] = React.useState<string>();
+  React.useEffect(() => {
+    async function starterName() {
+      const name = await getNewRoomName();
+      setName(name);
+    }
+    starterName();
+  }, []);
   const history = useHistory();
   const handleNewRoomRequest = async (type: 'r' | 'i' | 'trophy-dark') => {
-    const name = await getNewRoomName();
     // check if room exists?
     const newRoomData = await gql<CreateTextRoomMutation>(
       mutations.createTextRoom,
@@ -62,7 +71,32 @@ function Home() {
           </Stack>
         </Container>
       </GridItem>
-      <GridItem py={6} colStart={2} colEnd={6}>
+      <GridItem py={5} colStart={2} colEnd={6}>
+        <Heading as="h2" fontSize="xl" color="black">
+          Make a new text room now
+        </Heading>
+        <Flex mb={5}>
+          <InputGroup>
+            <Input
+              borderColor="gray.400"
+              color="gray.600"
+              variant="flushed"
+              value={name}
+              mr={4}
+              pr={10}
+            />
+          </InputGroup>
+          <LightMode>
+            <Button
+              rightIcon={<RiArrowRightLine />}
+              colorScheme="brand"
+              variant="outline"
+              onClick={() => handleNewRoomRequest('r')}
+            >
+              Go
+            </Button>
+          </LightMode>
+        </Flex>
         <Flex
           flexDirection={['column-reverse', 'column-reverse', 'row', 'row']}
           justifyContent="center"
@@ -78,7 +112,7 @@ function Home() {
               Roll With Me
             </Heading>
             <Text fontSize="lg" w="80" color="black">
-              Digital tools for playing great roleplaying games online
+              Digital tools for playing great games online
             </Text>
           </Stack>
           <Img w="40" src={logo} alt="Person holding cup of coffee" />
@@ -135,12 +169,12 @@ function Home() {
           </GridItem>
         </Grid>
       </GridItem>
-      <GridItem h="xl" colSpan={6} bg="teal.50">
+      {/* <GridItem h="xl" colSpan={6} bg="teal.50">
         First call out
       </GridItem>
       <GridItem h="xl" colSpan={6} bg="black.200">
         Trophy Dark
-      </GridItem>
+      </GridItem> */}
       <GridItem
         colSpan={6}
         border="1px"

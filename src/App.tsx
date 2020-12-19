@@ -12,12 +12,16 @@ import RoomProvider from './RoomProvider';
 const rollWithMeTheme = extendTheme({
   colors: {
     brand: {
-      // primary: '#609',
-      // secondary: '#306',
-      // muted: '#f6f6f6',
-      // danger: '#C20114',
-      // dangerText: '#C20114',
-      // special: '#3075AB',
+      50: '#ffe6ff',
+      100: '#f8bbf2',
+      200: '#f18ee6',
+      300: '#ea62db',
+      400: '#e337d0',
+      500: '#c91db6',
+      600: '#9d158e',
+      700: '#710d67',
+      800: '#45063e',
+      900: '#1a0018',
     },
   },
   fonts: {
