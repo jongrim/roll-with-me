@@ -9,3 +9,10 @@
   font-family: 'Faith Collapsing';
   src: url('./fonts/FaithCollapsing.ttf') format('truetype');
 }
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}

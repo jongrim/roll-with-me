@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Button,
   FormControl,
@@ -12,9 +13,54 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import * as React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { Roll } from '../types';
+import { makeNDice } from '../utils/rolls';
 
-const BuildRollForm: React.FC = () => {
+type formValues = {
+  d2: number | undefined;
+  d4: number | undefined;
+  d6: number | undefined;
+  d8: number | undefined;
+  d10: number | undefined;
+  d12: number | undefined;
+  d20: number | undefined;
+  d100: number | undefined;
+};
+
+const createRollWithoutResults = ({
+  name,
+  modifier,
+  formValues,
+}: {
+  name: string;
+  modifier: number | undefined;
+  formValues: formValues;
+}): Roll => {
+  const rollWithoutResults: Roll = {
+    id: uuidv4(),
+    createdAt: new Date().toISOString(),
+    modifier: modifier || 0,
+    rollName: name,
+    dice: [],
+    rolledBy: '',
+    sum: 0,
+  };
+  return Object.entries(formValues).reduce((acc, [dieType, count]) => {
+    if (count) {
+      const sides = Number(dieType.substr(1));
+      const newDice = makeNDice({ count, sides });
+      acc.dice = acc.dice.concat(newDice);
+    }
+    return acc;
+  }, rollWithoutResults);
+};
+
+interface BuildRollFormProps {
+  onSubmit: (roll: Roll) => void;
+}
+
+const BuildRollForm: React.FC<BuildRollFormProps> = ({ onSubmit }) => {
   const [d2, setD2] = React.useState<number>();
   const [d4, setD4] = React.useState<number>();
   const [d6, setD6] = React.useState<number>();
@@ -32,18 +78,21 @@ const BuildRollForm: React.FC = () => {
       <form
         onSubmit={(e: React.BaseSyntheticEvent) => {
           e.preventDefault();
-          console.table({
-            d2,
-            d4,
-            d6,
-            d8,
-            d10,
-            d12,
-            d20,
-            d100,
-            modifier,
+          const rollWithoutResults = createRollWithoutResults({
             name,
+            modifier,
+            formValues: {
+              d2,
+              d4,
+              d6,
+              d8,
+              d10,
+              d12,
+              d20,
+              d100,
+            },
           });
+          onSubmit(rollWithoutResults);
         }}
       >
         <Heading as="h3" size="md" mb={2}>
