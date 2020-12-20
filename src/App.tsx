@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme, Box } from '@chakra-ui/react';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import AuthProvider from './AuthProvider';
@@ -29,18 +29,6 @@ const rollWithMeTheme = extendTheme({
     title: 'QuiteMagicalRegular, Poppins, sans-serif',
     heading: 'Poppins, sans-serif',
     monospace: 'Menlo, monospace',
-  },
-  space: {
-    0: '0px',
-    1: '4px',
-    2: '8px',
-    3: '16px',
-    4: '32px',
-    5: '64px',
-    6: '128px',
-    7: '256px',
-    8: '512px',
-    9: '640px',
   },
   config: {
     useSystemColorMode: true,
@@ -104,7 +92,7 @@ function App() {
   return (
     <ChakraProvider theme={rollWithMeTheme} resetCSS>
       <AuthProvider>
-        <div className="App">
+        <Box className="App">
           <Router>
             <Switch>
               <Route exact path="/">
@@ -121,7 +109,7 @@ function App() {
               </Route>
             </Switch>
           </Router>
-        </div>
+        </Box>
       </AuthProvider>
     </ChakraProvider>
   );

@@ -14,6 +14,7 @@ import {
   LightMode,
   Input,
   InputGroup,
+  Box,
 } from '@chakra-ui/react';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
 import { RiArrowRightLine } from 'react-icons/ri';
@@ -30,7 +31,7 @@ async function getNewRoomName() {
 }
 
 function Home() {
-  const [name, setName] = React.useState<string>();
+  const [name, setName] = React.useState<string>('');
   React.useEffect(() => {
     async function starterName() {
       const name = await getNewRoomName();
@@ -50,7 +51,12 @@ function Home() {
     history.push(`/${type}/${name}`);
   };
   return (
-    <Grid templateColumns="repeat(6, 1fr)" backgroundColor="white">
+    <Grid
+      templateColumns="repeat(6, 1fr)"
+      templateRows="auto 1fr 1fr auto"
+      bg="white"
+      h="full"
+    >
       <GridItem colSpan={6} bg="gray.800">
         <Container centerContent py={2}>
           <Stack spacing={2}>
@@ -71,32 +77,40 @@ function Home() {
           </Stack>
         </Container>
       </GridItem>
-      <GridItem py={5} colStart={2} colEnd={6}>
-        <Heading as="h2" fontSize="xl" color="black">
-          Make a new text room now
-        </Heading>
-        <Flex mb={5}>
-          <InputGroup>
-            <Input
-              borderColor="gray.400"
-              color="gray.600"
-              variant="flushed"
-              value={name}
-              mr={4}
-              pr={10}
-            />
-          </InputGroup>
-          <LightMode>
-            <Button
-              rightIcon={<RiArrowRightLine />}
-              colorScheme="brand"
-              variant="outline"
-              onClick={() => handleNewRoomRequest('r')}
-            >
-              Go
-            </Button>
-          </LightMode>
-        </Flex>
+      <GridItem
+        py={5}
+        px={[2, 2, 0]}
+        colStart={[1, 1, 2]}
+        colEnd={[7, 7, 6]}
+        bg="white"
+      >
+        <Box mt={10} mb={16}>
+          <Heading as="h2" fontSize="xl" color="black">
+            Make a new text room now
+          </Heading>
+          <Flex>
+            <InputGroup>
+              <Input
+                borderColor="gray.400"
+                color="gray.600"
+                variant="flushed"
+                value={name}
+                onChange={({ target }) => setName(target.value)}
+                mr={4}
+              />
+            </InputGroup>
+            <LightMode>
+              <Button
+                rightIcon={<RiArrowRightLine />}
+                colorScheme="brand"
+                variant="outline"
+                onClick={() => handleNewRoomRequest('r')}
+              >
+                Go
+              </Button>
+            </LightMode>
+          </Flex>
+        </Box>
         <Flex
           flexDirection={['column-reverse', 'column-reverse', 'row', 'row']}
           justifyContent="center"
@@ -108,16 +122,28 @@ function Home() {
               fontFamily="title"
               fontSize={['5xl', '6xl', '7xl']}
               color="black"
+              textAlign={['center', 'center', 'left']}
             >
               Roll With Me
             </Heading>
-            <Text fontSize="lg" w="80" color="black">
+            <Text
+              fontSize="lg"
+              w="80"
+              color="black"
+              textAlign={['center', 'center', 'left']}
+            >
               Digital tools for playing great games online
             </Text>
           </Stack>
           <Img w="40" src={logo} alt="Person holding cup of coffee" />
         </Flex>
-        <Grid mt={5} templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={4}>
+      </GridItem>
+      <GridItem pt={14} pb={8} colSpan={6} px={[2, 2, 5]} bg="white">
+        <Grid
+          templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']}
+          gap={4}
+          bg="white"
+        >
           <GridItem>
             <Heading as="h3" fontSize="xl" color="black">
               Dice Rooms
@@ -179,44 +205,46 @@ function Home() {
         colSpan={6}
         border="1px"
         borderColor="gray.100"
-        pt={3}
-        px={3}
-        pb={1}
+        bg="white"
+        p={3}
       >
         <Flex justifyContent="center">
-          <Text>Designed and Developed by Jon Grim</Text>
+          <Text color="gray.600">Designed and Developed by Jon Grim</Text>
         </Flex>
         <Flex justifyContent="center" mt={2}>
           <Link href="https://github.com/jongrim/roll-with-me" isExternal>
-            <IconButton
-              icon={<FaGithub />}
-              aria-label="Github icon"
-              variant="link"
-              colorScheme="black"
-              mr={2}
-            />
+            <LightMode>
+              <IconButton
+                icon={<FaGithub />}
+                aria-label="Github icon"
+                variant="link"
+                color="brand.600"
+                mr={2}
+              />
+            </LightMode>
           </Link>
           <Link href="https://twitter.com/jonjongrim" isExternal>
-            <IconButton
-              icon={<FaTwitter />}
-              aria-label="Twitter icon"
-              variant="link"
-              colorScheme="black"
-              mr={2}
-            />
+            <LightMode>
+              <IconButton
+                icon={<FaTwitter />}
+                aria-label="Twitter icon"
+                variant="link"
+                color="brand.600"
+                mr={2}
+              />
+            </LightMode>
           </Link>
           <Link href="mailto:jonjongrim@gmail.com" isExternal>
-            <IconButton
-              icon={<FaEnvelope />}
-              aria-label="mail envelope"
-              variant="link"
-              colorScheme="black"
-            />
+            <LightMode>
+              <IconButton
+                icon={<FaEnvelope />}
+                aria-label="mail envelope"
+                variant="link"
+                color="brand.600"
+              />
+            </LightMode>
           </Link>
         </Flex>
-        <Heading as="h4" fontFamily="title" fontSize="lg">
-          Roll With Me
-        </Heading>
       </GridItem>
     </Grid>
   );

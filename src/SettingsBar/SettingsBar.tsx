@@ -18,7 +18,6 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 
 const SettingsBar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  console.log(colorMode);
   return (
     <Flex p={2}>
       <Box>

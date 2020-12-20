@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { format, parseISO } from 'date-fns';
 import {
+  Container,
   Heading,
   Table,
   Tbody,
@@ -10,6 +12,7 @@ import {
   Popover,
   PopoverTrigger,
   IconButton,
+  Icon,
   PopoverContent,
   PopoverHeader,
   PopoverCloseButton,
@@ -20,122 +23,122 @@ import {
   VStack,
   Flex,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import { RiInformationLine } from 'react-icons/ri';
+import { Roll } from '../types';
 
-const fakeRolls = [
-  {
-    id: 'some long string',
-    rolledBy: 'George',
-    modifier: 1,
-    sum: 9,
-    dice: [
-      { id: 'a unique ID', sides: 6, result: 4 },
-      { id: 'a unique ID2', sides: 6, result: 4 },
-    ],
-    rollName: 'Fight',
-  },
-  {
-    id: 'some other long string',
-    rolledBy: 'Georgette',
-    modifier: 0,
-    sum: 12,
-    dice: [
-      { id: 'a unique ID3', sides: 10, result: 4 },
-      { id: 'a unique ID4', sides: 10, result: 5 },
-      { id: 'a unique ID5', sides: 6, result: 3 },
-    ],
-    rollName: 'Challenge',
-  },
-];
+interface RollsHistoryProps {
+  rolls: Roll[];
+}
 
-const RollsHistory: React.FC = () => {
+const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
+  console.log('rendering history');
   return (
     <>
       <Heading
         as="h3"
         size="md"
         textAlign="center"
-        borderBottom="1px"
-        borderColor="gray.200"
-        borderStyle="solid"
+        borderBottom="2px solid"
+        borderColor="inherit"
+        pb={1}
+        mb={2}
       >
         Rolls History
       </Heading>
-      <Table variant="striped" size="sm">
+      <Table size="sm">
         <Thead>
           <Tr>
             <Th>Rolled By</Th>
             <Th>Result</Th>
             <Th>Name</Th>
+            <Th>
+              <Tooltip
+                label="Time info displayed in local time"
+                placement="top-start"
+              >
+                <HStack>
+                  <Text>Time</Text>
+                  <Icon
+                    aria-label="time info in local timezone"
+                    as={RiInformationLine}
+                  />
+                </HStack>
+              </Tooltip>
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
-          {fakeRolls.map((roll) => (
+          {rolls.map((roll) => (
             <Tr key={roll.id}>
               <Td>{roll.rolledBy}</Td>
               <Td>
                 <HStack>
                   <Box>{roll.sum}</Box>
-                  <Popover>
-                    <PopoverTrigger>
-                      <IconButton
-                        aria-label="click to expand"
-                        icon={<RiInformationLine />}
-                        variant="ghost"
-                      ></IconButton>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      <PopoverHeader>Roll Details</PopoverHeader>
-                      <PopoverBody>
-                        <VStack>
-                          <Flex justify="center" w="full" my={2}>
-                            <HStack>
-                              <Heading as="h5" size="sm">
-                                Total
-                              </Heading>
-                              <Text fontWeight="600">{roll.sum}</Text>
-                              <Text fontSize="xs" color="gray.400">
-                                (
-                                {roll.dice
-                                  .map(({ result }) => result)
-                                  .join(' + ')}{' '}
-                                + {roll.modifier})
-                              </Text>
-                            </HStack>
-                          </Flex>
-                          <Table size="sm">
-                            <Thead>
-                              <Tr>
-                                <Th>Die</Th>
-                                <Th>Sides</Th>
-                                <Th>Result</Th>
-                              </Tr>
-                            </Thead>
-                            <Tbody>
-                              {roll.dice.map((die, i) => (
-                                <Tr key={die.id}>
-                                  <Td px={3}>Die {i + 1}</Td>
-                                  <Td>{die.sides}</Td>
-                                  <Td>{die.result}</Td>
-                                </Tr>
-                              ))}
-                            </Tbody>
-                          </Table>
-                        </VStack>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
+                  <RollInfo roll={roll} />
                 </HStack>
               </Td>
               <Td>{roll.rollName}</Td>
+              <Td>{format(parseISO(roll.createdAt), 'EEE, h:mm aaa')}</Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
     </>
+  );
+};
+
+const RollInfo = ({ roll }: { roll: Roll }) => {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <IconButton
+          aria-label="click to expand"
+          icon={<RiInformationLine />}
+          variant="ghost"
+        ></IconButton>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverHeader>Roll Details</PopoverHeader>
+        <PopoverBody>
+          <VStack>
+            <Flex justify="center" w="full">
+              <HStack>
+                <Heading as="h5" size="sm">
+                  Total
+                </Heading>
+                <Text fontWeight="600">{roll.sum}</Text>
+                <Text fontSize="xs" color="gray.400">
+                  ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
+                  {roll.modifier})
+                </Text>
+              </HStack>
+            </Flex>
+            <Table size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Die</Th>
+                  <Th>Sides</Th>
+                  <Th>Result</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {roll.dice.map((die, i) => (
+                  <Tr key={die.id}>
+                    <Td px={3}>Die {i + 1}</Td>
+                    <Td>{die.sides}</Td>
+                    <Td>{die.result}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </VStack>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 
