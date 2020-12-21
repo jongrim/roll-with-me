@@ -41,3 +41,10 @@ type Subscription {
   onUpdateTrophyDarkRoomByName(name: String!): TrophyDarkRoom
     @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
 }
+
+type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
+  id: ID!
+  rollName: String!
+  dice: [AWSJSON!]!
+  modifier: Int!
+}

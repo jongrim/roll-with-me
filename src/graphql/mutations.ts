@@ -128,3 +128,48 @@ export const deleteTrophyDarkRoom = /* GraphQL */ `
     }
   }
 `;
+export const createSavedRoll = /* GraphQL */ `
+  mutation CreateSavedRoll(
+    $input: CreateSavedRollInput!
+    $condition: ModelSavedRollConditionInput
+  ) {
+    createSavedRoll(input: $input, condition: $condition) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSavedRoll = /* GraphQL */ `
+  mutation UpdateSavedRoll(
+    $input: UpdateSavedRollInput!
+    $condition: ModelSavedRollConditionInput
+  ) {
+    updateSavedRoll(input: $input, condition: $condition) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSavedRoll = /* GraphQL */ `
+  mutation DeleteSavedRoll(
+    $input: DeleteSavedRollInput!
+    $condition: ModelSavedRollConditionInput
+  ) {
+    deleteSavedRoll(input: $input, condition: $condition) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;

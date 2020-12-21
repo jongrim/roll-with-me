@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Die, Roll } from '../types';
+import { Die, Roll, SavedRoll } from '../types';
 
 export function createDieOfNSides({
   n,
@@ -72,3 +72,31 @@ export function getRollFromQuickString(s: string): Roll {
     }),
   };
 }
+
+export function describeRoll(roll: SavedRoll): string {
+  const diceString = getCountOfDiceTypesFromRoll(roll);
+  return `(${diceString} + ${roll.modifier})`;
+}
+
+export function getCountOfDiceTypesFromRoll(roll: SavedRoll): string {
+  let diceCountMap: Record<string, number> = {};
+  roll?.dice.forEach((d) => {
+    if (diceCountMap[d.name]) {
+      diceCountMap[d.name] += 1;
+    } else {
+      diceCountMap[d.name] = 1;
+    }
+  });
+  return Object.entries(diceCountMap)
+    .map(([key, val]) => `${val} ${key}`)
+    .join(' + ');
+}
+
+export const savedRollToRoll = (name: string) => (roll: SavedRoll): Roll => {
+  return {
+    ...roll,
+    createdAt: new Date().toISOString(),
+    sum: 0,
+    rolledBy: name,
+  };
+};

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AuthContext } from '../AuthProvider';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
@@ -12,6 +13,11 @@ function TextRoom({ name }) {
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
 
+  /**
+   * All the amplify API calls because they're a pain in the butt with Typescript
+   */
+
+  // Text Room Data including Rolls
   React.useEffect(() => {
     const subscription = API.graphql({
       query: subscriptions.onUpdateTextRoomByName,
@@ -43,6 +49,77 @@ function TextRoom({ name }) {
     }
     getRoomData();
   }, [name]);
+
+  // Saving User Rolls
+  const { user } = React.useContext(AuthContext);
+  const [savedRolls, setSavedRolls] = React.useState([]);
+  React.useEffect(() => {
+    async function loadSavedRolls() {
+      try {
+        // @ts-ignore
+        const { data } = await API.graphql({
+          query: queries.listSavedRolls,
+          // @ts-ignore
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        });
+        const rolls = data?.listSavedRolls?.items ?? [];
+        setSavedRolls(
+          rolls.map((roll) => {
+            return {
+              id: roll?.id || '',
+              rollName: roll?.rollName || '',
+              modifier: roll?.modifier || 0,
+              dice: roll?.dice.map((r) => JSON.parse(r)) || [],
+            };
+          })
+        );
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    if (user) {
+      loadSavedRolls();
+    } else {
+      console.log('no user, check local');
+    }
+  }, [user]);
+
+  async function saveToAmplify(roll) {
+    const rollToSave = {
+      rollName: roll.rollName,
+      dice: roll.dice.map((d) => JSON.stringify(d)),
+      modifier: roll.modifier,
+    };
+    try {
+      const { data } = await API.graphql({
+        query: mutations.createSavedRoll,
+        variables: {
+          input: rollToSave,
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      const createdRoll = data?.createSavedRoll;
+      setSavedRolls((cur) =>
+        cur.concat({
+          id: createdRoll.id,
+          rollName: createdRoll.rollName,
+          modifier: createdRoll.modifier,
+          dice: createdRoll.dice.map((d) => JSON.parse(d)),
+        })
+      );
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  async function saveRoll(roll) {
+    if (user) {
+      saveToAmplify(roll);
+    } else {
+      // save locally, maybe after prompt
+    }
+  }
 
   async function sendRoll(roll) {
     try {
@@ -76,7 +153,14 @@ function TextRoom({ name }) {
     }
   }
 
-  return <TextRoomPage onSubmit={onSubmit} rolls={rolls} />;
+  return (
+    <TextRoomPage
+      onSubmit={onSubmit}
+      rolls={rolls}
+      savedRolls={savedRolls}
+      saveRoll={saveRoll}
+    />
+  );
 }
 
 export default TextRoom;

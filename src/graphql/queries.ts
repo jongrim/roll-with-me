@@ -171,3 +171,34 @@ export const trophyDarkRoomByName = /* GraphQL */ `
     }
   }
 `;
+export const getSavedRoll = /* GraphQL */ `
+  query GetSavedRoll($id: ID!) {
+    getSavedRoll(id: $id) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSavedRolls = /* GraphQL */ `
+  query ListSavedRolls(
+    $filter: ModelSavedRollFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSavedRolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        rollName
+        dice
+        modifier
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
