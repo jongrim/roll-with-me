@@ -114,6 +114,45 @@ export type DeleteTrophyDarkRoomInput = {
   id?: string | null,
 };
 
+export type CreateSavedRollInput = {
+  id?: string | null,
+  rollName: string,
+  dice: Array< string >,
+  modifier: number,
+};
+
+export type ModelSavedRollConditionInput = {
+  rollName?: ModelStringInput | null,
+  dice?: ModelStringInput | null,
+  modifier?: ModelIntInput | null,
+  and?: Array< ModelSavedRollConditionInput | null > | null,
+  or?: Array< ModelSavedRollConditionInput | null > | null,
+  not?: ModelSavedRollConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateSavedRollInput = {
+  id: string,
+  rollName?: string | null,
+  dice?: Array< string > | null,
+  modifier?: number | null,
+};
+
+export type DeleteSavedRollInput = {
+  id?: string | null,
+};
+
 export type ModelTextRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -162,6 +201,16 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type ModelSavedRollFilterInput = {
+  id?: ModelIDInput | null,
+  rollName?: ModelStringInput | null,
+  dice?: ModelStringInput | null,
+  modifier?: ModelIntInput | null,
+  and?: Array< ModelSavedRollFilterInput | null > | null,
+  or?: Array< ModelSavedRollFilterInput | null > | null,
+  not?: ModelSavedRollFilterInput | null,
+};
 
 export type CreateTextRoomMutationVariables = {
   input: CreateTextRoomInput,
@@ -302,6 +351,57 @@ export type DeleteTrophyDarkRoomMutation = {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSavedRollMutationVariables = {
+  input: CreateSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type CreateSavedRollMutation = {
+  createSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSavedRollMutationVariables = {
+  input: UpdateSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type UpdateSavedRollMutation = {
+  updateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSavedRollMutationVariables = {
+  input: DeleteSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type DeleteSavedRollMutation = {
+  deleteSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -484,6 +584,44 @@ export type TrophyDarkRoomByNameQuery = {
   } | null,
 };
 
+export type GetSavedRollQueryVariables = {
+  id: string,
+};
+
+export type GetSavedRollQuery = {
+  getSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSavedRollsQueryVariables = {
+  filter?: ModelSavedRollFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSavedRollsQuery = {
+  listSavedRolls:  {
+    __typename: "ModelSavedRollConnection",
+    items:  Array< {
+      __typename: "SavedRoll",
+      id: string,
+      rollName: string,
+      dice: Array< string >,
+      modifier: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type OnUpdateTextRoomByNameSubscriptionVariables = {
   name: string,
 };
@@ -623,6 +761,42 @@ export type OnDeleteTrophyDarkRoomSubscription = {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSavedRollSubscription = {
+  onCreateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSavedRollSubscription = {
+  onUpdateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSavedRollSubscription = {
+  onDeleteSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
     createdAt: string,
     updatedAt: string,
   } | null,

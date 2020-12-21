@@ -14,3 +14,10 @@ export interface Roll {
   dice: Die[];
   rollName: string;
 }
+
+export interface SavedRoll {
+  id: string;
+  dice: Die[];
+  rollName: string;
+  modifier: number;
+}

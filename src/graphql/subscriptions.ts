@@ -134,3 +134,39 @@ export const onDeleteTrophyDarkRoom = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSavedRoll = /* GraphQL */ `
+  subscription OnCreateSavedRoll {
+    onCreateSavedRoll {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSavedRoll = /* GraphQL */ `
+  subscription OnUpdateSavedRoll {
+    onUpdateSavedRoll {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSavedRoll = /* GraphQL */ `
+  subscription OnDeleteSavedRoll {
+    onDeleteSavedRoll {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+    }
+  }
+`;
