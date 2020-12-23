@@ -17,9 +17,7 @@ function getUser() {
 }
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [authState, setAuthState] = React.useState<AuthState>(
-    AuthState.Loading
-  );
+  const [_, setAuthState] = React.useState<AuthState>(AuthState.Loading);
   const [user, setUser] = React.useState<user | undefined>();
 
   React.useEffect(() => {

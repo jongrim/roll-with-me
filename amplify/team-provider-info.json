@@ -26,9 +26,7 @@
     },
     "categories": {
       "auth": {
-        "rollwithmea4fdec43": {
-          "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"659861203559-5bglgveqpt8fcavfio5o72s8advoi9ui.apps.googleusercontent.com\",\"client_secret\":\"RP17yWVCKuUUdB5sxyGnSF35\"}]"
-        }
+        "rollwithmea4fdec43": {}
       },
       "function": {
         "randomRoomName": {}

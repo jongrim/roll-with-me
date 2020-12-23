@@ -33,7 +33,6 @@ interface RollsHistoryProps {
 }
 
 const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
-  console.log('rendering history');
   return (
     <>
       <Heading
@@ -80,7 +79,9 @@ const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
                 </HStack>
               </Td>
               <Td>{roll.rollName}</Td>
-              <Td>{format(parseISO(roll.createdAt), 'EEE, h:mm aaa')}</Td>
+              <Td>
+                {format(parseISO(roll.createdAt), 'EEE, LLL do, h:mm aaa')}
+              </Td>
             </Tr>
           ))}
         </Tbody>
@@ -128,9 +129,9 @@ const RollInfo = ({ roll }: { roll: Roll }) => {
               <Tbody>
                 {roll.dice.map((die, i) => (
                   <Tr key={die.id}>
-                    <Td px={3}>Die {i + 1}</Td>
-                    <Td>{die.sides}</Td>
-                    <Td>{die.result}</Td>
+                    <Td fontWeight="300">Die {die.name || i + 1}</Td>
+                    <Td fontWeight="300">{die.sides}</Td>
+                    <Td fontWeight="600">{die.result}</Td>
                   </Tr>
                 ))}
               </Tbody>
