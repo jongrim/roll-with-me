@@ -11,7 +11,6 @@ import {
   NumberDecrementStepper,
   Heading,
   Button,
-  Switch,
   FormHelperText,
   Grid,
 } from '@chakra-ui/react';
@@ -27,7 +26,6 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
   const [name, setName] = React.useState<string>('');
   const [sides, setSides] = React.useState<number>();
   const [qty, setQty] = React.useState<number>(1);
-  const [saveCustomDie, setSaveCustomDie] = React.useState(false);
   return (
     <form
       onSubmit={(e) => {
@@ -94,17 +92,6 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-          </FormControl>
-        </GridItem>
-        <GridItem colSpan={2}>
-          <FormControl display="flex" alignItems="center">
-            <FormLabel>Save this as a custom die?</FormLabel>
-            <Switch
-              isChecked={saveCustomDie}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSaveCustomDie(e.target.checked)
-              }
-            />
           </FormControl>
         </GridItem>
         <GridItem colStart={2} justifySelf="end">

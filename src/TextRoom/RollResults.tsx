@@ -39,7 +39,6 @@ const RollResults: React.FC<RollResultsProps> = ({ roll }) => {
     return map;
   }, [roll]);
   const groupResults = Object.values(diceMap).map((results) => results.sum);
-  console.log(diceMap);
   return (
     <>
       <Heading

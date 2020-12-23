@@ -1,8 +1,16 @@
 export interface Die {
   id: string;
   sides: number;
-  result: number | undefined;
+  result?: number;
   name: string;
+}
+
+export interface SavedDie {
+  id: string;
+  sides: number;
+  name: string;
+  updatedAt?: string;
+  createdAt?: string;
 }
 
 export interface Roll {
@@ -20,4 +28,7 @@ export interface SavedRoll {
   dice: Die[];
   rollName: string;
   modifier: number;
+  result?: number;
+  updatedAt?: string;
+  createdAt?: string;
 }

@@ -113,6 +113,54 @@ function TextRoom({ name }) {
     }
   }
 
+  async function updateRoll(roll) {
+    const rollToSave = {
+      id: roll.id,
+      rollName: roll.rollName,
+      dice: roll.dice.map((d) => JSON.stringify(d)),
+      modifier: roll.modifier,
+    };
+    try {
+      const { data } = await API.graphql({
+        query: mutations.updateSavedRoll,
+        variables: {
+          input: rollToSave,
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      const createdRoll = data?.updateSavedRoll;
+      setSavedRolls((cur) =>
+        cur
+          .filter((roll) => roll.id !== createdRoll.id)
+          .concat({
+            id: createdRoll.id,
+            rollName: createdRoll.rollName,
+            modifier: createdRoll.modifier,
+            dice: createdRoll.dice.map((d) => JSON.parse(d)),
+          })
+      );
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  async function deleteRoll(roll) {
+    try {
+      await API.graphql({
+        query: mutations.deleteSavedRoll,
+        variables: {
+          input: {
+            id: roll.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      setSavedRolls((cur) => cur.filter((r) => r.id !== roll.id));
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
   async function saveRoll(roll) {
     if (user) {
       saveToAmplify(roll);
@@ -158,6 +206,9 @@ function TextRoom({ name }) {
       onSubmit={onSubmit}
       rolls={rolls}
       savedRolls={savedRolls}
+      createRoll={saveToAmplify}
+      deleteRoll={deleteRoll}
+      editRoll={updateRoll}
       saveRoll={saveRoll}
     />
   );

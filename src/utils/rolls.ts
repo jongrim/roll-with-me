@@ -100,3 +100,13 @@ export const savedRollToRoll = (name: string) => (roll: SavedRoll): Roll => {
     rolledBy: name,
   };
 };
+
+export const createEmptySavedRoll = (): SavedRoll => {
+  return {
+    id: uuidv4(),
+    createdAt: new Date().toDateString(),
+    rollName: '',
+    modifier: 0,
+    dice: [],
+  };
+};

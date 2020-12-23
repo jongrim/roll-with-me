@@ -23,7 +23,6 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import BuildRollForm from './BuildRollForm';
-import CustomDieForm from './CustomDieForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
 import RollsHistory from './RollsHistory';
 import { Roll, SavedRoll } from '../types';
@@ -36,6 +35,9 @@ interface TextRoomPageProps {
   onSubmit: (roll: Roll) => void;
   rolls: Roll[];
   savedRolls: SavedRoll[];
+  createRoll: (roll: SavedRoll) => void;
+  deleteRoll: (roll: SavedRoll) => void;
+  editRoll: (roll: SavedRoll) => void;
   saveRoll: (roll: SavedRoll) => void;
 }
 
@@ -43,6 +45,9 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   onSubmit,
   rolls,
   savedRolls,
+  createRoll,
+  deleteRoll,
+  editRoll,
   saveRoll,
 }) => {
   const [name, setName] = React.useState('');
@@ -66,11 +71,10 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             <QuickRollBar name={name} onSubmit={onSubmit} ref={quickRollRef} />
           </GridItem>
           <GridItem order={[2, 2, 1]}>
-            <Tabs variant="line" size="sm" align="center">
+            <Tabs variant="line" size="sm" isFitted>
               <TabList>
                 <Tab>Build a Roll</Tab>
                 <Tab>Saved Rolls</Tab>
-                <Tab>Create a Custom Die</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
@@ -79,15 +83,15 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                     saveRoll={saveRoll}
                   />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel align="center">
                   <SavedRolls
+                    createRoll={createRoll}
+                    deleteRoll={deleteRoll}
+                    editRoll={editRoll}
                     savedRolls={savedRolls}
                     saveRoll={saveRoll}
                     rollSavedRoll={compose(onSubmit, savedRollToRoll(name))}
                   />
-                </TabPanel>
-                <TabPanel>
-                  <CustomDieForm />
                 </TabPanel>
               </TabPanels>
             </Tabs>
