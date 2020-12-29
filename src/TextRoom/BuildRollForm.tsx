@@ -24,15 +24,21 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { Die, Roll, SavedRoll } from '../types';
 import NewDie from './NewDie';
+import { createNewRollFromValues, savedRollToRoll } from '../utils/rolls';
+import { compose } from '../utils/fnTools';
 
 interface BuildRollFormProps {
   onSubmit: (roll: Roll) => void;
   saveRoll: (roll: SavedRoll) => void;
+  isRolling: boolean;
+  rolledByName: string;
 }
 
 const BuildRollForm: React.FC<BuildRollFormProps> = ({
   onSubmit,
   saveRoll,
+  isRolling,
+  rolledByName,
 }) => {
   // custom dice
   const [dice, setDice] = React.useState<Die[]>([]);
@@ -80,15 +86,16 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
       <form
         onSubmit={(e: React.BaseSyntheticEvent) => {
           e.preventDefault();
-          const newRoll = {
+          const newRoll: Roll = compose(
+            savedRollToRoll(rolledByName),
+            createNewRollFromValues
+          )({
             id: uuidv4(),
-            createdAt: new Date().toISOString(),
             dice,
             rollName: name,
             rolledBy: '',
             modifier: modifier || 0,
-            sum: 0,
-          };
+          });
           if (saveNewRoll) {
             saveRoll(newRoll);
           }
@@ -147,7 +154,13 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Button w="full" type="submit" colorScheme="teal">
+            <Button
+              isLoading={isRolling}
+              loadingText="Rolling"
+              w="full"
+              type="submit"
+              colorScheme="teal"
+            >
               Roll
             </Button>
           </GridItem>

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
   Box,
+  Center,
+  CircularProgress,
   Divider,
   Grid,
   GridItem,
@@ -16,6 +18,7 @@ import { Die, Roll } from '../types';
 
 interface RollResultsProps {
   roll?: Roll;
+  isRolling: boolean;
 }
 
 interface dieResultsMap {
@@ -25,7 +28,7 @@ interface dieResultsMap {
   };
 }
 
-const RollResults: React.FC<RollResultsProps> = ({ roll }) => {
+const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
   const diceMap: dieResultsMap = React.useMemo(() => {
     let map: dieResultsMap = {};
     roll?.dice.forEach((d) => {
@@ -51,38 +54,46 @@ const RollResults: React.FC<RollResultsProps> = ({ roll }) => {
       >
         Last Roll
       </Heading>
-      <Stat>
-        <StatLabel>{roll?.rollName}</StatLabel>
-        <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
-        <StatHelpText fontSize={14}>{`${groupResults.join(' + ')} + ${
-          roll?.modifier
-        }`}</StatHelpText>
-      </Stat>
-      {Object.entries(diceMap).map(([key, results]) => {
-        return (
-          <Box key={key} mt={4}>
-            <HStack spacing={2}>
-              <Heading as="h4" size="sm" colorScheme="brand">
-                {key}
-              </Heading>
-              <Text color="gray.400" fontSize={12}>
-                {results.sum} total
-              </Text>
-            </HStack>
-            <Divider mt={1} mb={2} />
-            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              {results.dice.map((d, i) => (
-                <GridItem key={d.id}>
-                  <Stat>
-                    <StatNumber>{d.result}</StatNumber>
-                    <StatHelpText fontSize={11}>Die {i + 1}</StatHelpText>
-                  </Stat>
-                </GridItem>
-              ))}
-            </Grid>
-          </Box>
-        );
-      })}
+      {isRolling ? (
+        <Center h="100%">
+          <CircularProgress isIndeterminate color="blue.300" />
+        </Center>
+      ) : (
+        <>
+          <Stat>
+            <StatLabel>{roll?.rollName}</StatLabel>
+            <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
+            <StatHelpText fontSize={14}>{`${groupResults.join(' + ')} + ${
+              roll?.modifier
+            }`}</StatHelpText>
+          </Stat>
+          {Object.entries(diceMap).map(([key, results]) => {
+            return (
+              <Box key={key} mt={4}>
+                <HStack spacing={2}>
+                  <Heading as="h4" size="sm" colorScheme="brand">
+                    {key}
+                  </Heading>
+                  <Text color="gray.400" fontSize={12}>
+                    {results.sum} total
+                  </Text>
+                </HStack>
+                <Divider mt={1} mb={2} />
+                <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+                  {results.dice.map((d, i) => (
+                    <GridItem key={d.id}>
+                      <Stat>
+                        <StatNumber>{d.result}</StatNumber>
+                        <StatHelpText fontSize={11}>Die {i + 1}</StatHelpText>
+                      </Stat>
+                    </GridItem>
+                  ))}
+                </Grid>
+              </Box>
+            );
+          })}
+        </>
+      )}
     </>
   );
 };
