@@ -26,9 +26,11 @@ import {
   Button,
   Input,
   ButtonGroup,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Die, SavedRoll } from '../types';
 import NewDie from './NewDie';
+import { createNewRollFromValues, describeRoll } from '../utils/rolls';
 
 interface EditRollModalProps {
   savedRoll?: SavedRoll;
@@ -77,6 +79,7 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
   onCancel,
 }) => {
   const [dice, setDice] = React.useState<Die[]>(savedRoll.dice);
+  const [diceError, setDiceError] = React.useState('');
   const [name, setName] = React.useState(savedRoll.rollName);
   const [modifier, setModifier] = React.useState(savedRoll.modifier);
   return (
@@ -84,6 +87,7 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
       <NewDie onSubmit={(die: Die) => setDice((cur) => cur.concat(die))} />
       <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={3}>
         <GridItem colSpan={2}>
+          {diceError && <Text color="red.600">{diceError}</Text>}
           <Text fontSize={14} fontWeight="600">
             Current dice
           </Text>
@@ -122,15 +126,18 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
       <form
         onSubmit={(e: React.BaseSyntheticEvent) => {
           e.preventDefault();
-          const newRoll = {
-            id: savedRoll.id,
-            dice,
-            rollName: name,
-            rolledBy: '',
-            modifier: modifier || 0,
-            sum: 0,
-          };
-          onSubmit(newRoll);
+          if (dice.length === 0) {
+            setDiceError('This roll needs some dice!');
+            return;
+          }
+          onSubmit(
+            createNewRollFromValues({
+              id: savedRoll.id,
+              dice,
+              rollName: name,
+              modifier,
+            })
+          );
         }}
       >
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>

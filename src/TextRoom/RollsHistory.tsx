@@ -70,12 +70,12 @@ const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
         </Thead>
         <Tbody>
           {rolls.map((roll) => (
-            <Tr key={roll.id}>
+            <Tr key={`${roll.id} - ${roll.createdAt}`}>
               <Td>{roll.rolledBy}</Td>
               <Td>
                 <HStack>
                   <Box>{roll.sum}</Box>
-                  <RollInfo roll={roll} />
+                  {/* <RollInfo roll={roll} /> */}
                 </HStack>
               </Td>
               <Td>{roll.rollName}</Td>

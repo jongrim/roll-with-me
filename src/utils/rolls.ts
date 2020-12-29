@@ -63,7 +63,7 @@ export function getRollFromQuickString(s: string): Roll {
     id: uuidv4(),
     createdAt: new Date().toISOString(),
     modifier: Number(modifier?.[0].replace(' ', '') ?? 0),
-    rollName: rollNameGroups?.[1] ?? `${baseDice?.[0]} ${modifier?.[0]}`,
+    rollName: rollNameGroups?.[1] ?? `${baseDice?.[0]} ${modifier?.[0] ?? ''}`,
     rolledBy: '',
     sum: 0,
     dice: makeNDice({
@@ -109,4 +109,31 @@ export const createEmptySavedRoll = (): SavedRoll => {
     modifier: 0,
     dice: [],
   };
+};
+
+export const createNewRollFromValues = ({
+  id,
+  dice,
+  rollName,
+  rolledBy,
+  modifier,
+}: {
+  id: string;
+  dice: Die[];
+  rollName?: string;
+  rolledBy?: string;
+  modifier?: number;
+}): SavedRoll => {
+  const newRoll = {
+    id,
+    dice,
+    rollName: rollName || '',
+    rolledBy: rolledBy || '',
+    modifier: modifier || 0,
+    sum: 0,
+  };
+  if (newRoll.rollName === '') {
+    newRoll.rollName = describeRoll(newRoll);
+  }
+  return newRoll;
 };

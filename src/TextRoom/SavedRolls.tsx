@@ -28,7 +28,6 @@ import EditRollModal from './EditRollModal';
 
 interface SavedRollsProps {
   savedRolls: SavedRoll[];
-  saveRoll: (roll: SavedRoll) => void;
   createRoll: (roll: SavedRoll) => void;
   deleteRoll: (roll: SavedRoll) => void;
   editRoll: (roll: SavedRoll) => void;
@@ -40,7 +39,6 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
   deleteRoll,
   editRoll,
   savedRolls,
-  saveRoll,
   rollSavedRoll,
 }) => {
   const { user } = React.useContext(AuthContext);

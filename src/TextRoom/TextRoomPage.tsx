@@ -38,7 +38,11 @@ interface TextRoomPageProps {
   createRoll: (roll: SavedRoll) => void;
   deleteRoll: (roll: SavedRoll) => void;
   editRoll: (roll: SavedRoll) => void;
-  saveRoll: (roll: SavedRoll) => void;
+  loadingStates: {
+    isRolling: boolean;
+    isSavingRoll: boolean;
+    isDeletingRoll: boolean;
+  };
 }
 
 const TextRoomPage: React.FC<TextRoomPageProps> = ({
@@ -48,7 +52,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   createRoll,
   deleteRoll,
   editRoll,
-  saveRoll,
+  loadingStates,
 }) => {
   const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
@@ -79,8 +83,10 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               <TabPanels>
                 <TabPanel>
                   <BuildRollForm
-                    onSubmit={(roll) => onSubmit({ ...roll, rolledBy: name })}
-                    saveRoll={saveRoll}
+                    onSubmit={onSubmit}
+                    saveRoll={createRoll}
+                    isRolling={loadingStates.isRolling}
+                    rolledByName={name}
                   />
                 </TabPanel>
                 <TabPanel align="center">
@@ -89,7 +95,6 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                     deleteRoll={deleteRoll}
                     editRoll={editRoll}
                     savedRolls={savedRolls}
-                    saveRoll={saveRoll}
                     rollSavedRoll={compose(onSubmit, savedRollToRoll(name))}
                   />
                 </TabPanel>
@@ -97,7 +102,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             </Tabs>
           </GridItem>
           <GridItem order={[1, 1, 2]}>
-            <RollResults roll={rolls[0]} />
+            <RollResults roll={rolls[0]} isRolling={loadingStates.isRolling} />
           </GridItem>
           <GridItem order={3} colSpan={[1, 1, 2]}>
             <RollsHistory rolls={rolls} />

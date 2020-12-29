@@ -7,11 +7,19 @@ import * as subscriptions from '../graphql/subscriptions';
 
 import TextRoomPage from './TextRoomPage';
 import { getRandomNumbers } from '../functions/randomNumbers';
-import { assignResultsToDice, sumOfDice } from '../utils/rolls';
+import { assignResultsToDice, describeRoll, sumOfDice } from '../utils/rolls';
+
+import { useToast } from '@chakra-ui/react';
 
 function TextRoom({ name }) {
+  const toast = useToast();
+
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
+
+  const [isRolling, setIsRolling] = React.useState(false);
+  const [isSavingRoll, setIsSavingRoll] = React.useState(false);
+  const [isDeletingRoll, setIsDeletingRoll] = React.useState(false);
 
   /**
    * All the amplify API calls because they're a pain in the butt with Typescript
@@ -27,11 +35,20 @@ function TextRoom({ name }) {
     }).subscribe({
       next: ({ value }) => {
         const nextRolls = value.data.onUpdateTextRoomByName?.rolls ?? [];
-        setRolls(nextRolls.map((roll) => JSON.parse(roll)));
+        const parsedRolls = nextRolls.map((roll) => JSON.parse(roll));
+        setRolls(parsedRolls);
+        const newRoll = parsedRolls[0];
+        toast({
+          title: `${newRoll.rolledBy} rolled ${newRoll.rollName}`,
+          description: describeRoll(newRoll),
+          status: 'success',
+          duration: 7000,
+          isClosable: true,
+        });
       },
     });
     return () => subscription.unsubscribe();
-  }, [name]);
+  }, [name, toast]);
 
   React.useEffect(() => {
     async function getRoomData() {
@@ -56,10 +73,8 @@ function TextRoom({ name }) {
   React.useEffect(() => {
     async function loadSavedRolls() {
       try {
-        // @ts-ignore
         const { data } = await API.graphql({
           query: queries.listSavedRolls,
-          // @ts-ignore
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         });
         const rolls = data?.listSavedRolls?.items ?? [];
@@ -81,39 +96,12 @@ function TextRoom({ name }) {
     if (user) {
       loadSavedRolls();
     } else {
-      console.log('no user, check local');
+      // load from local
     }
   }, [user]);
 
-  async function saveToAmplify(roll) {
-    const rollToSave = {
-      rollName: roll.rollName,
-      dice: roll.dice.map((d) => JSON.stringify(d)),
-      modifier: roll.modifier,
-    };
-    try {
-      const { data } = await API.graphql({
-        query: mutations.createSavedRoll,
-        variables: {
-          input: rollToSave,
-        },
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
-      });
-      const createdRoll = data?.createSavedRoll;
-      setSavedRolls((cur) =>
-        cur.concat({
-          id: createdRoll.id,
-          rollName: createdRoll.rollName,
-          modifier: createdRoll.modifier,
-          dice: createdRoll.dice.map((d) => JSON.parse(d)),
-        })
-      );
-    } catch (e) {
-      console.warn(e);
-    }
-  }
-
   async function updateRoll(roll) {
+    setIsSavingRoll(true);
     const rollToSave = {
       id: roll.id,
       rollName: roll.rollName,
@@ -139,12 +127,21 @@ function TextRoom({ name }) {
             dice: createdRoll.dice.map((d) => JSON.parse(d)),
           })
       );
+      toast({
+        title: 'Roll updated',
+        status: 'info',
+        duration: 7000,
+        isClosable: true,
+      });
     } catch (e) {
       console.warn(e);
+    } finally {
+      setIsSavingRoll(false);
     }
   }
 
   async function deleteRoll(roll) {
+    setIsDeletingRoll(true);
     try {
       await API.graphql({
         query: mutations.deleteSavedRoll,
@@ -156,19 +153,71 @@ function TextRoom({ name }) {
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       });
       setSavedRolls((cur) => cur.filter((r) => r.id !== roll.id));
+      toast({
+        title: 'Roll deleted',
+        status: 'info',
+        duration: 7000,
+        isClosable: true,
+      });
     } catch (e) {
       console.warn(e);
+    } finally {
+      setIsDeletingRoll(false);
     }
   }
 
+  /**
+   * SAVING ROLLS
+   */
   async function saveRoll(roll) {
     if (user) {
-      saveToAmplify(roll);
+      await saveToAmplify(roll);
     } else {
       // save locally, maybe after prompt
     }
+    toast({
+      title: 'Roll saved',
+      status: 'info',
+      duration: 7000,
+      isClosable: true,
+    });
   }
 
+  async function saveToAmplify(roll) {
+    setIsSavingRoll(true);
+    const rollToSave = {
+      rollName: roll.rollName,
+      dice: roll.dice.map((d) => JSON.stringify(d)),
+      modifier: roll.modifier,
+    };
+    try {
+      const { data } = await API.graphql({
+        query: mutations.createSavedRoll,
+        variables: {
+          input: rollToSave,
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      });
+      const createdRoll = data?.createSavedRoll;
+      setSavedRolls((cur) =>
+        cur.concat({
+          id: createdRoll.id,
+          rollName: createdRoll.rollName,
+          modifier: createdRoll.modifier,
+          dice: createdRoll.dice.map((d) => JSON.parse(d)),
+        })
+      );
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setIsSavingRoll(false);
+    }
+    return;
+  }
+
+  /**
+   * ROLLING
+   */
   async function sendRoll(roll) {
     try {
       await API.graphql({
@@ -186,6 +235,7 @@ function TextRoom({ name }) {
   }
 
   async function onSubmit(rollWithoutResults) {
+    setIsRolling(true);
     try {
       const results = await getRandomNumbers(rollWithoutResults.dice.length);
       const diceWithResults = assignResultsToDice({
@@ -198,6 +248,8 @@ function TextRoom({ name }) {
       sendRoll(rollWithResults);
     } catch (e) {
       console.error('error sending', e);
+    } finally {
+      setIsRolling(false);
     }
   }
 
@@ -206,10 +258,14 @@ function TextRoom({ name }) {
       onSubmit={onSubmit}
       rolls={rolls}
       savedRolls={savedRolls}
-      createRoll={saveToAmplify}
+      createRoll={saveRoll}
       deleteRoll={deleteRoll}
       editRoll={updateRoll}
-      saveRoll={saveRoll}
+      loadingStates={{
+        isRolling,
+        isSavingRoll,
+        isDeletingRoll,
+      }}
     />
   );
 }
