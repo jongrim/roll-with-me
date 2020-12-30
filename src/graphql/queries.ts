@@ -8,7 +8,7 @@ export const getTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -25,7 +25,7 @@ export const listTextRooms = /* GraphQL */ `
         id
         name
         rolls
-        customDice
+        counters
         createdAt
         updatedAt
       }
@@ -112,7 +112,7 @@ export const textRoomByName = /* GraphQL */ `
         id
         name
         rolls
-        customDice
+        counters
         createdAt
         updatedAt
       }
@@ -180,6 +180,7 @@ export const getSavedRoll = /* GraphQL */ `
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -197,6 +198,7 @@ export const listSavedRolls = /* GraphQL */ `
         modifier
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }

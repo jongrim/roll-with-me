@@ -11,7 +11,7 @@ export const createTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -26,7 +26,7 @@ export const updateTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -41,7 +41,7 @@ export const deleteTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -140,6 +140,7 @@ export const createSavedRoll = /* GraphQL */ `
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -155,6 +156,7 @@ export const updateSavedRoll = /* GraphQL */ `
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -170,6 +172,7 @@ export const deleteSavedRoll = /* GraphQL */ `
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;

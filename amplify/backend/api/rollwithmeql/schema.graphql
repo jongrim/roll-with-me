@@ -5,7 +5,7 @@ type TextRoom
   id: ID!
   name: String!
   rolls: [AWSJSON!]
-  customDice: [AWSJSON!]
+  counters: [AWSJSON!]
 }
 
 type InteractiveRoom
