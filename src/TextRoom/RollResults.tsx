@@ -17,7 +17,7 @@ import {
 import { Die, Roll } from '../types';
 
 interface RollResultsProps {
-  roll?: Roll;
+  roll: Roll;
   isRolling: boolean;
 }
 

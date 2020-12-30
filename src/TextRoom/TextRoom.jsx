@@ -38,13 +38,13 @@ function TextRoom({ name }) {
         const parsedRolls = nextRolls.map((roll) => JSON.parse(roll));
         setRolls(parsedRolls);
         const newRoll = parsedRolls[0];
-        toast({
-          title: `${newRoll.rolledBy} rolled ${newRoll.rollName}`,
-          description: describeRoll(newRoll),
-          status: 'success',
-          duration: 7000,
-          isClosable: true,
-        });
+        // toast({
+        //   title: `${newRoll.rolledBy} rolled ${newRoll.rollName}`,
+        //   description: describeRoll(newRoll),
+        //   status: 'success',
+        //   duration: 7000,
+        //   isClosable: true,
+        // });
       },
     });
     return () => subscription.unsubscribe();
@@ -255,6 +255,8 @@ function TextRoom({ name }) {
 
   return (
     <TextRoomPage
+      roomId={roomId}
+      roomName={name}
       onSubmit={onSubmit}
       rolls={rolls}
       savedRolls={savedRolls}

@@ -8,7 +8,7 @@ export const onUpdateTextRoomByName = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -41,7 +41,7 @@ export const onCreateTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -53,7 +53,7 @@ export const onUpdateTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -65,7 +65,7 @@ export const onDeleteTextRoom = /* GraphQL */ `
       id
       name
       rolls
-      customDice
+      counters
       createdAt
       updatedAt
     }
@@ -135,38 +135,41 @@ export const onDeleteTrophyDarkRoom = /* GraphQL */ `
   }
 `;
 export const onCreateSavedRoll = /* GraphQL */ `
-  subscription OnCreateSavedRoll {
-    onCreateSavedRoll {
+  subscription OnCreateSavedRoll($owner: String!) {
+    onCreateSavedRoll(owner: $owner) {
       id
       rollName
       dice
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateSavedRoll = /* GraphQL */ `
-  subscription OnUpdateSavedRoll {
-    onUpdateSavedRoll {
+  subscription OnUpdateSavedRoll($owner: String!) {
+    onUpdateSavedRoll(owner: $owner) {
       id
       rollName
       dice
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteSavedRoll = /* GraphQL */ `
-  subscription OnDeleteSavedRoll {
-    onDeleteSavedRoll {
+  subscription OnDeleteSavedRoll($owner: String!) {
+    onDeleteSavedRoll(owner: $owner) {
       id
       rollName
       dice
       modifier
       createdAt
       updatedAt
+      owner
     }
   }
 `;

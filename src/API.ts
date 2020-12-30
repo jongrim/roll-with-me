@@ -6,13 +6,13 @@ export type CreateTextRoomInput = {
   id?: string | null,
   name: string,
   rolls?: Array< string > | null,
-  customDice?: Array< string > | null,
+  counters?: Array< string > | null,
 };
 
 export type ModelTextRoomConditionInput = {
   name?: ModelStringInput | null,
   rolls?: ModelStringInput | null,
-  customDice?: ModelStringInput | null,
+  counters?: ModelStringInput | null,
   and?: Array< ModelTextRoomConditionInput | null > | null,
   or?: Array< ModelTextRoomConditionInput | null > | null,
   not?: ModelTextRoomConditionInput | null,
@@ -62,7 +62,7 @@ export type UpdateTextRoomInput = {
   id: string,
   name?: string | null,
   rolls?: Array< string > | null,
-  customDice?: Array< string > | null,
+  counters?: Array< string > | null,
 };
 
 export type DeleteTextRoomInput = {
@@ -157,7 +157,7 @@ export type ModelTextRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   rolls?: ModelStringInput | null,
-  customDice?: ModelStringInput | null,
+  counters?: ModelStringInput | null,
   and?: Array< ModelTextRoomFilterInput | null > | null,
   or?: Array< ModelTextRoomFilterInput | null > | null,
   not?: ModelTextRoomFilterInput | null,
@@ -223,7 +223,7 @@ export type CreateTextRoomMutation = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -240,7 +240,7 @@ export type UpdateTextRoomMutation = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -257,7 +257,7 @@ export type DeleteTextRoomMutation = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -370,6 +370,7 @@ export type CreateSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -387,6 +388,7 @@ export type UpdateSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -404,6 +406,7 @@ export type DeleteSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -417,7 +420,7 @@ export type GetTextRoomQuery = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -437,7 +440,7 @@ export type ListTextRoomsQuery = {
       id: string,
       name: string,
       rolls: Array< string > | null,
-      customDice: Array< string > | null,
+      counters: Array< string > | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -531,7 +534,7 @@ export type TextRoomByNameQuery = {
       id: string,
       name: string,
       rolls: Array< string > | null,
-      customDice: Array< string > | null,
+      counters: Array< string > | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -597,6 +600,7 @@ export type GetSavedRollQuery = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -617,6 +621,7 @@ export type ListSavedRollsQuery = {
       modifier: number,
       createdAt: string,
       updatedAt: string,
+      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -632,7 +637,7 @@ export type OnUpdateTextRoomByNameSubscription = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -673,7 +678,7 @@ export type OnCreateTextRoomSubscription = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -685,7 +690,7 @@ export type OnUpdateTextRoomSubscription = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -697,7 +702,7 @@ export type OnDeleteTextRoomSubscription = {
     id: string,
     name: string,
     rolls: Array< string > | null,
-    customDice: Array< string > | null,
+    counters: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -766,6 +771,10 @@ export type OnDeleteTrophyDarkRoomSubscription = {
   } | null,
 };
 
+export type OnCreateSavedRollSubscriptionVariables = {
+  owner: string,
+};
+
 export type OnCreateSavedRollSubscription = {
   onCreateSavedRoll:  {
     __typename: "SavedRoll",
@@ -775,7 +784,12 @@ export type OnCreateSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
+};
+
+export type OnUpdateSavedRollSubscriptionVariables = {
+  owner: string,
 };
 
 export type OnUpdateSavedRollSubscription = {
@@ -787,7 +801,12 @@ export type OnUpdateSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
+};
+
+export type OnDeleteSavedRollSubscriptionVariables = {
+  owner: string,
 };
 
 export type OnDeleteSavedRollSubscription = {
@@ -799,5 +818,6 @@ export type OnDeleteSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
   } | null,
 };

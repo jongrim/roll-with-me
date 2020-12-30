@@ -21,6 +21,8 @@ import {
   Grid,
   GridItem,
   useToast,
+  Center,
+  Heading,
 } from '@chakra-ui/react';
 import BuildRollForm from './BuildRollForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
@@ -30,8 +32,11 @@ import { getRollFromQuickString, savedRollToRoll } from '../utils/rolls';
 import RollResults from './RollResults';
 import SavedRolls from './SavedRolls';
 import { compose } from '../utils/fnTools';
+import RoomCounters from './RoomCounters';
 
 interface TextRoomPageProps {
+  roomId: string;
+  roomName: string;
   onSubmit: (roll: Roll) => void;
   rolls: Roll[];
   savedRolls: SavedRoll[];
@@ -46,6 +51,8 @@ interface TextRoomPageProps {
 }
 
 const TextRoomPage: React.FC<TextRoomPageProps> = ({
+  roomId,
+  roomName,
   onSubmit,
   rolls,
   savedRolls,
@@ -79,6 +86,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               <TabList>
                 <Tab>Build a Roll</Tab>
                 <Tab>Saved Rolls</Tab>
+                <Tab>Counters</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
@@ -98,11 +106,35 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                     rollSavedRoll={compose(onSubmit, savedRollToRoll(name))}
                   />
                 </TabPanel>
+                <TabPanel>
+                  <RoomCounters roomName={roomName} roomId={roomId} />
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </GridItem>
           <GridItem order={[1, 1, 2]}>
-            <RollResults roll={rolls[0]} isRolling={loadingStates.isRolling} />
+            {rolls[0] ? (
+              <RollResults
+                roll={rolls[0]}
+                isRolling={loadingStates.isRolling}
+              />
+            ) : (
+              <>
+                <Heading
+                  as="h3"
+                  size="md"
+                  borderBottom="2px solid"
+                  borderBottomColor="inherit"
+                  pb={1}
+                  mb={2}
+                >
+                  Last Roll
+                </Heading>
+                <Center>
+                  <Text>No rolls yet - try one now!</Text>
+                </Center>
+              </>
+            )}
           </GridItem>
           <GridItem order={3} colSpan={[1, 1, 2]}>
             <RollsHistory rolls={rolls} />
