@@ -8,6 +8,7 @@ import {
   IconButton,
   Link,
   HStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import {
   RiHomeHeartLine,
@@ -15,9 +16,12 @@ import {
   RiFileCopyLine,
 } from 'react-icons/ri';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import ProfileDrawer from '../Profile/ProfileDrawer';
 
 const SettingsBar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef<HTMLButtonElement>(null);
   return (
     <Flex p={2}>
       <Box>
@@ -50,8 +54,11 @@ const SettingsBar: React.FC = () => {
           icon={<RiUserSmileLine />}
           fontSize="28px"
           variant="clear"
+          ref={btnRef}
+          onClick={onOpen}
         />
       </HStack>
+      <ProfileDrawer isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 };

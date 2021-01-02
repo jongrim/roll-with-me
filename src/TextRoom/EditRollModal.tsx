@@ -136,6 +136,7 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
               dice,
               rollName: name,
               modifier,
+              offline: savedRoll?.offline,
             })
           );
         }}

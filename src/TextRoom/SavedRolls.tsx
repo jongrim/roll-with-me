@@ -20,7 +20,11 @@ import {
   AlertDialogHeader,
   AlertDialogFooter,
 } from '@chakra-ui/react';
-import { RiArrowDropDownLine } from 'react-icons/ri';
+import {
+  RiArrowDropDownLine,
+  RiCloudOffLine,
+  RiCloudy2Line,
+} from 'react-icons/ri';
 import { AuthContext } from '../AuthProvider';
 import { SavedRoll } from '../types';
 import { createEmptySavedRoll, describeRoll } from '../utils/rolls';
@@ -75,7 +79,13 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
               return (
                 <Flex key={roll.id} mb={3}>
                   <Stat>
-                    <Button variant="ghost" onClick={() => rollSavedRoll(roll)}>
+                    <Button
+                      variant="ghost"
+                      onClick={() => rollSavedRoll(roll)}
+                      rightIcon={
+                        roll.offline ? <RiCloudOffLine /> : <RiCloudy2Line />
+                      }
+                    >
                       <StatNumber>{roll.rollName}</StatNumber>
                     </Button>
                     <StatHelpText>{describeRoll(roll)}</StatHelpText>

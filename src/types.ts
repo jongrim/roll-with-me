@@ -21,6 +21,7 @@ export interface Roll {
   sum: number; // modifier plus result of each dice
   dice: Die[];
   rollName: string;
+  offline?: boolean; // indicates if roll is saved locally
 }
 
 export interface SavedRoll {
@@ -31,6 +32,7 @@ export interface SavedRoll {
   result?: number;
   updatedAt?: string;
   createdAt?: string;
+  offline?: boolean;
 }
 
 export interface Counter {

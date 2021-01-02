@@ -117,12 +117,14 @@ export const createNewRollFromValues = ({
   rollName,
   rolledBy,
   modifier,
+  offline,
 }: {
   id: string;
   dice: Die[];
   rollName?: string;
   rolledBy?: string;
   modifier?: number;
+  offline?: boolean;
 }): SavedRoll => {
   const newRoll = {
     id,
@@ -131,6 +133,7 @@ export const createNewRollFromValues = ({
     rolledBy: rolledBy || '',
     modifier: modifier || 0,
     sum: 0,
+    offline,
   };
   if (newRoll.rollName === '') {
     newRoll.rollName = describeRoll(newRoll);

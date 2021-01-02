@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Auth, Hub } from 'aws-amplify';
 import { AuthState } from '@aws-amplify/ui-components';
+import qs from 'qs';
 
 interface user {
   username: string;
@@ -22,6 +23,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
+      console.log({ event, data });
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
@@ -38,6 +40,13 @@ const AuthProvider: React.FC = ({ children }) => {
         case 'cognitoHostedUI_failure':
           console.log('Sign in failure', data);
           break;
+        case 'customOAuthState':
+          if (data) {
+            const query = qs.parse(data);
+            if (query?.return) {
+              window.location.replace(query.return as string);
+            }
+          }
       }
     });
 
