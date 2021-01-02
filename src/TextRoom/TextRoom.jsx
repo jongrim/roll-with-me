@@ -7,9 +7,11 @@ import * as subscriptions from '../graphql/subscriptions';
 
 import TextRoomPage from './TextRoomPage';
 import { getRandomNumbers } from '../functions/randomNumbers';
-import { assignResultsToDice, describeRoll, sumOfDice } from '../utils/rolls';
+import { assignResultsToDice, sumOfDice } from '../utils/rolls';
 
 import { useToast } from '@chakra-ui/react';
+
+const LOCAL_STORAGE_ROLL_KEY = 'local-saved-rolls';
 
 function TextRoom({ name }) {
   const toast = useToast();
@@ -37,14 +39,6 @@ function TextRoom({ name }) {
         const nextRolls = value.data.onUpdateTextRoomByName?.rolls ?? [];
         const parsedRolls = nextRolls.map((roll) => JSON.parse(roll));
         setRolls(parsedRolls);
-        const newRoll = parsedRolls[0];
-        // toast({
-        //   title: `${newRoll.rolledBy} rolled ${newRoll.rollName}`,
-        //   description: describeRoll(newRoll),
-        //   status: 'success',
-        //   duration: 7000,
-        //   isClosable: true,
-        // });
       },
     });
     return () => subscription.unsubscribe();
@@ -67,7 +61,7 @@ function TextRoom({ name }) {
     getRoomData();
   }, [name]);
 
-  // Saving User Rolls
+  // Loading User Rolls
   const { user } = React.useContext(AuthContext);
   const [savedRolls, setSavedRolls] = React.useState([]);
   React.useEffect(() => {
@@ -95,12 +89,33 @@ function TextRoom({ name }) {
 
     if (user) {
       loadSavedRolls();
-    } else {
-      // load from local
     }
   }, [user]);
 
+  React.useEffect(() => {
+    const localRolls = window.localStorage.getItem(LOCAL_STORAGE_ROLL_KEY);
+    const parsedRolls = JSON.parse(localRolls);
+    if (parsedRolls) {
+      setSavedRolls((cur) => cur.concat(parsedRolls));
+    }
+  }, []);
+
+  // Updating Rolls
   async function updateRoll(roll) {
+    if (roll.offline) {
+      updateLocalRoll(roll);
+    } else {
+      await updateRollInAmplify(roll);
+    }
+    toast({
+      title: 'Roll updated',
+      status: 'info',
+      duration: 7000,
+      isClosable: true,
+    });
+  }
+
+  async function updateRollInAmplify(roll) {
     setIsSavingRoll(true);
     const rollToSave = {
       id: roll.id,
@@ -127,12 +142,6 @@ function TextRoom({ name }) {
             dice: createdRoll.dice.map((d) => JSON.parse(d)),
           })
       );
-      toast({
-        title: 'Roll updated',
-        status: 'info',
-        duration: 7000,
-        isClosable: true,
-      });
     } catch (e) {
       console.warn(e);
     } finally {
@@ -140,7 +149,49 @@ function TextRoom({ name }) {
     }
   }
 
+  function updateLocalRoll(roll) {
+    setSavedRolls((cur) => {
+      const nextSavedRolls = cur.map((r) => {
+        if (r.id === roll.id) {
+          return { ...roll, offline: true };
+        }
+        return r;
+      });
+      window.localStorage.setItem(
+        LOCAL_STORAGE_ROLL_KEY,
+        JSON.stringify(nextSavedRolls)
+      );
+      return nextSavedRolls;
+    });
+  }
+
+  // Deleting Rolls
   async function deleteRoll(roll) {
+    if (roll.offline) {
+      deleteLocalRoll(roll);
+    } else {
+      await deleteRollInAmplify(roll);
+    }
+    toast({
+      title: 'Roll deleted',
+      status: 'info',
+      duration: 7000,
+      isClosable: true,
+    });
+  }
+
+  function deleteLocalRoll(roll) {
+    setSavedRolls((cur) => {
+      const nextSavedRolls = cur.filter((r) => r.id !== roll.id);
+      window.localStorage.setItem(
+        LOCAL_STORAGE_ROLL_KEY,
+        JSON.stringify(nextSavedRolls)
+      );
+      return nextSavedRolls;
+    });
+  }
+
+  async function deleteRollInAmplify(roll) {
     setIsDeletingRoll(true);
     try {
       await API.graphql({
@@ -153,12 +204,6 @@ function TextRoom({ name }) {
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       });
       setSavedRolls((cur) => cur.filter((r) => r.id !== roll.id));
-      toast({
-        title: 'Roll deleted',
-        status: 'info',
-        duration: 7000,
-        isClosable: true,
-      });
     } catch (e) {
       console.warn(e);
     } finally {
@@ -173,13 +218,24 @@ function TextRoom({ name }) {
     if (user) {
       await saveToAmplify(roll);
     } else {
-      // save locally, maybe after prompt
+      saveToLocal(roll);
     }
     toast({
       title: 'Roll saved',
       status: 'info',
       duration: 7000,
       isClosable: true,
+    });
+  }
+
+  function saveToLocal(roll) {
+    setSavedRolls((cur) => {
+      const nextSavedRolls = cur.concat({ ...roll, offline: true });
+      window.localStorage.setItem(
+        LOCAL_STORAGE_ROLL_KEY,
+        JSON.stringify(nextSavedRolls)
+      );
+      return nextSavedRolls;
     });
   }
 
