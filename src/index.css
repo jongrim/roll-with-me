@@ -14,5 +14,6 @@ html,
 body,
 #root,
 .App {
-  height: 100%;
+  height: auto;
+  position: relative;
 }

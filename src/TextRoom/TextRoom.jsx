@@ -58,6 +58,7 @@ function TextRoom({ name }) {
         setRolls(rolls.map((roll) => JSON.parse(roll)));
         const safety =
           result.data?.textRoomByName?.items[0]?.safetyModule ?? {};
+        safety.linesAndVeils = safety.linesAndVeils.map((i) => JSON.parse(i));
         setSafetyModule(safety);
       } catch (e) {
         console.error(e);
@@ -336,6 +337,77 @@ function TextRoom({ name }) {
     return;
   }
 
+  const [safetyItemUpdating, setSafetyItemUpdating] = React.useState(false);
+  async function addItem(value) {
+    setSafetyItemUpdating(true);
+    try {
+      const { data } = await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: safetyModule.id,
+            linesAndVeils: safetyModule.linesAndVeils
+              .concat(value)
+              .map((i) => JSON.stringify(i)),
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    return;
+  }
+
+  async function updateItem(value) {
+    setSafetyItemUpdating(true);
+    try {
+      const newItems = safetyModule.linesAndVeils.map((i) => {
+        if (i.id === value.id) {
+          return JSON.stringify(value);
+        }
+        return JSON.stringify(i);
+      });
+      const { data } = await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: safetyModule.id,
+            linesAndVeils: newItems,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    return;
+  }
+
+  async function removeItem(value) {
+    setSafetyItemUpdating(true);
+    try {
+      const newItems = safetyModule.linesAndVeils
+        .filter((i) => i.id !== value.id)
+        .map((i) => {
+          if (i.id === value.id) {
+            return JSON.stringify(value);
+          }
+          return JSON.stringify(i);
+        });
+      await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: safetyModule.id,
+            linesAndVeils: newItems,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    return;
+  }
+
   React.useEffect(() => {
     if (!safetyModule.id) return;
     const subscription = API.graphql({
@@ -345,8 +417,17 @@ function TextRoom({ name }) {
       },
     }).subscribe({
       next: ({ value }) => {
-        setSafetyModule(value?.data?.onUpdateSafetyModule ?? {});
+        const nextSafetyModule = value?.data?.onUpdateSafetyModule ?? {
+          id: '',
+          xCardActive: false,
+          linesAndVeils: [],
+        };
+        nextSafetyModule.linesAndVeils = nextSafetyModule.linesAndVeils.map(
+          (i) => JSON.parse(i)
+        );
+        setSafetyModule(nextSafetyModule);
         setXCardChanging(false);
+        setSafetyItemUpdating(false);
       },
     });
     return () => subscription.unsubscribe();
@@ -370,6 +451,10 @@ function TextRoom({ name }) {
       safetyModule={safetyModule}
       updateXCard={setXCard}
       xCardChanging={xCardChanging}
+      addSafetyItem={addItem}
+      updateSafetyItem={updateItem}
+      removeSafetyItem={removeItem}
+      safetyItemChanging={safetyItemUpdating}
     />
   );
 }

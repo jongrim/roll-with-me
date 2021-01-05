@@ -31,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import BuildRollForm from './BuildRollForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
 import RollsHistory from './RollsHistory';
-import { Roll, SafetyModule, SavedRoll } from '../types';
+import { ClassifiedItem, Roll, SafetyModule, SavedRoll } from '../types';
 import {
   createNewRollFromValues,
   getRollFromQuickString,
@@ -43,6 +43,7 @@ import SavedRolls from './SavedRolls';
 import { compose } from '../utils/fnTools';
 import RoomCounters from './RoomCounters';
 import XCardModal from '../XCardModal/XCardModal';
+import SafetyForm from '../SafetyForm/SafetyForm';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -61,6 +62,10 @@ interface TextRoomPageProps {
   safetyModule: SafetyModule;
   updateXCard: (value: boolean) => void;
   xCardChanging: boolean;
+  safetyItemChanging: boolean;
+  addSafetyItem: (value: ClassifiedItem) => void;
+  updateSafetyItem: (value: ClassifiedItem) => void;
+  removeSafetyItem: (value: ClassifiedItem) => void;
 }
 
 const TextRoomPage: React.FC<TextRoomPageProps> = ({
@@ -76,6 +81,10 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   safetyModule,
   updateXCard,
   xCardChanging,
+  safetyItemChanging,
+  addSafetyItem,
+  updateSafetyItem,
+  removeSafetyItem,
 }) => {
   const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
@@ -190,7 +199,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           </Flex>
         </VStack>
       </Container>
-      <Container maxW="6xl" mt={6}>
+      <Container maxW="6xl" mt={6} h="100%">
         <Tabs
           variant="unstyled"
           display="flex"
@@ -305,7 +314,15 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                 </GridItem>
               </Grid>
             </TabPanel>
-            <TabPanel px={0}>Safety stuff</TabPanel>
+            <TabPanel px={0}>
+              <SafetyForm
+                addItem={addSafetyItem}
+                updateItem={updateSafetyItem}
+                removeItem={removeSafetyItem}
+                safetyItemChanging={safetyItemChanging}
+                safetyModule={safetyModule}
+              />
+            </TabPanel>
             <TabPanel px={0}>
               <RollsHistory rolls={rolls} />
             </TabPanel>
