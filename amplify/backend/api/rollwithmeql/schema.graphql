@@ -6,6 +6,7 @@ type TextRoom
   name: String!
   rolls: [AWSJSON!]
   counters: [AWSJSON!]
+  safetyModule: SafetyModule! @connection
 }
 
 type InteractiveRoom
@@ -47,4 +48,10 @@ type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
   rollName: String!
   dice: [AWSJSON!]!
   modifier: Int!
+}
+
+type SafetyModule @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  xCardActive: Boolean!
+  linesAndVeils: [AWSJSON!]!
 }

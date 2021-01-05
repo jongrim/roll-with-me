@@ -40,3 +40,16 @@ export interface Counter {
   title: string;
   value: number;
 }
+
+export interface SafetyModule {
+  id: string;
+  xCardActive: boolean;
+  linesAndVeils: ClassifiedItem[];
+}
+
+export interface ClassifiedItem {
+  id: string;
+  label: string;
+  classification: 'line' | 'veil' | 'ask' | 'consent';
+  note: string;
+}

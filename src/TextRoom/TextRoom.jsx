@@ -19,6 +19,8 @@ function TextRoom({ name }) {
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
 
+  const [safetyModule, setSafetyModule] = React.useState({});
+
   const [isRolling, setIsRolling] = React.useState(false);
   const [isSavingRoll, setIsSavingRoll] = React.useState(false);
   const [isDeletingRoll, setIsDeletingRoll] = React.useState(false);
@@ -54,6 +56,9 @@ function TextRoom({ name }) {
         setRoomId(result.data?.textRoomByName?.items[0]?.id);
         const rolls = result.data?.textRoomByName?.items[0]?.rolls ?? [];
         setRolls(rolls.map((roll) => JSON.parse(roll)));
+        const safety =
+          result.data?.textRoomByName?.items[0]?.safetyModule ?? {};
+        setSafetyModule(safety);
       } catch (e) {
         console.error(e);
       }
@@ -309,6 +314,44 @@ function TextRoom({ name }) {
     }
   }
 
+  /**
+   * SAFETY TOOLS
+   */
+  const [xCardChanging, setXCardChanging] = React.useState(false);
+  async function setXCard(value) {
+    setXCardChanging(true);
+    try {
+      const { data } = await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: safetyModule.id,
+            xCardActive: value,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    return;
+  }
+
+  React.useEffect(() => {
+    if (!safetyModule.id) return;
+    const subscription = API.graphql({
+      query: subscriptions.onUpdateSafetyModule,
+      variables: {
+        id: safetyModule.id,
+      },
+    }).subscribe({
+      next: ({ value }) => {
+        setSafetyModule(value?.data?.onUpdateSafetyModule ?? {});
+        setXCardChanging(false);
+      },
+    });
+    return () => subscription.unsubscribe();
+  }, [name, safetyModule]);
+
   return (
     <TextRoomPage
       roomId={roomId}
@@ -324,6 +367,9 @@ function TextRoom({ name }) {
         isSavingRoll,
         isDeletingRoll,
       }}
+      safetyModule={safetyModule}
+      updateXCard={setXCard}
+      xCardChanging={xCardChanging}
     />
   );
 }

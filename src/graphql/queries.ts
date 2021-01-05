@@ -9,6 +9,13 @@ export const getTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -93,6 +100,35 @@ export const listTrophyDarkRooms = /* GraphQL */ `
     }
   }
 `;
+export const getSafetyModule = /* GraphQL */ `
+  query GetSafetyModule($id: ID!) {
+    getSafetyModule(id: $id) {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSafetyModules = /* GraphQL */ `
+  query ListSafetyModules(
+    $filter: ModelSafetyModuleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSafetyModules(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const textRoomByName = /* GraphQL */ `
   query TextRoomByName(
     $name: String
@@ -115,6 +151,11 @@ export const textRoomByName = /* GraphQL */ `
         counters
         createdAt
         updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+        }
       }
       nextToken
     }

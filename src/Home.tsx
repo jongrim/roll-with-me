@@ -22,7 +22,7 @@ import { API } from 'aws-amplify';
 import * as mutations from './graphql/mutations';
 import logo from './images/personWithCoffee.svg';
 import { useHistory } from 'react-router-dom';
-import { CreateTextRoomMutation } from './API';
+import { CreateTextRoomMutation, CreateSafetyModuleMutation } from './API';
 import gql from './gql';
 
 async function getNewRoomName() {
@@ -41,14 +41,24 @@ function Home() {
   }, []);
   const history = useHistory();
   const handleNewRoomRequest = async (type: 'r' | 'i' | 'trophy-dark') => {
-    // check if room exists?
-    const newRoomData = await gql<CreateTextRoomMutation>(
-      mutations.createTextRoom,
-      {
+    try {
+      // check if room exists?
+      const newSafetyModule = await gql<CreateSafetyModuleMutation>(
+        mutations.createSafetyModule,
+        {
+          xCardActive: false,
+          linesAndVeils: [],
+        }
+      );
+      await gql<CreateTextRoomMutation>(mutations.createTextRoom, {
         name,
-      }
-    );
-    history.push(`/${type}/${name}`);
+        rolls: [],
+        textRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
+      });
+      history.push(`/${type}/${name}`);
+    } catch (e) {
+      console.warn('could not create room', e);
+    }
   };
   return (
     <Grid
@@ -128,7 +138,7 @@ function Home() {
             </Heading>
             <Text
               fontSize="lg"
-              w="80"
+              w={['auto', 'sm', 'lg']}
               color="black"
               textAlign={['center', 'center', 'left']}
             >

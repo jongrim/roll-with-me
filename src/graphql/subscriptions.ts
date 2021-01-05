@@ -9,6 +9,13 @@ export const onUpdateTextRoomByName = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -42,6 +49,13 @@ export const onCreateTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -54,6 +68,13 @@ export const onUpdateTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -66,6 +87,13 @@ export const onDeleteTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -129,6 +157,39 @@ export const onDeleteTrophyDarkRoom = /* GraphQL */ `
     onDeleteTrophyDarkRoom {
       id
       name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateSafetyModule = /* GraphQL */ `
+  subscription OnCreateSafetyModule {
+    onCreateSafetyModule {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSafetyModule = /* GraphQL */ `
+  subscription OnUpdateSafetyModule {
+    onUpdateSafetyModule {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSafetyModule = /* GraphQL */ `
+  subscription OnDeleteSafetyModule {
+    onDeleteSafetyModule {
+      id
+      xCardActive
+      linesAndVeils
       createdAt
       updatedAt
     }
