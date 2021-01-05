@@ -50,6 +50,7 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
             <FormLabel>Die Name</FormLabel>
             <Input
               size="sm"
+              variant="flushed"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }

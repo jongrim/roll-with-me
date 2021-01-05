@@ -7,6 +7,7 @@ export type CreateTextRoomInput = {
   name: string,
   rolls?: Array< string > | null,
   counters?: Array< string > | null,
+  textRoomSafetyModuleId: string,
 };
 
 export type ModelTextRoomConditionInput = {
@@ -63,6 +64,7 @@ export type UpdateTextRoomInput = {
   name?: string | null,
   rolls?: Array< string > | null,
   counters?: Array< string > | null,
+  textRoomSafetyModuleId?: string | null,
 };
 
 export type DeleteTextRoomInput = {
@@ -111,6 +113,37 @@ export type UpdateTrophyDarkRoomInput = {
 };
 
 export type DeleteTrophyDarkRoomInput = {
+  id?: string | null,
+};
+
+export type CreateSafetyModuleInput = {
+  id?: string | null,
+  xCardActive: boolean,
+  linesAndVeils: Array< string >,
+};
+
+export type ModelSafetyModuleConditionInput = {
+  xCardActive?: ModelBooleanInput | null,
+  linesAndVeils?: ModelStringInput | null,
+  and?: Array< ModelSafetyModuleConditionInput | null > | null,
+  or?: Array< ModelSafetyModuleConditionInput | null > | null,
+  not?: ModelSafetyModuleConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateSafetyModuleInput = {
+  id: string,
+  xCardActive?: boolean | null,
+  linesAndVeils?: Array< string > | null,
+};
+
+export type DeleteSafetyModuleInput = {
   id?: string | null,
 };
 
@@ -196,6 +229,15 @@ export type ModelTrophyDarkRoomFilterInput = {
   not?: ModelTrophyDarkRoomFilterInput | null,
 };
 
+export type ModelSafetyModuleFilterInput = {
+  id?: ModelIDInput | null,
+  xCardActive?: ModelBooleanInput | null,
+  linesAndVeils?: ModelStringInput | null,
+  and?: Array< ModelSafetyModuleFilterInput | null > | null,
+  or?: Array< ModelSafetyModuleFilterInput | null > | null,
+  not?: ModelSafetyModuleFilterInput | null,
+};
+
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -224,6 +266,14 @@ export type CreateTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -241,6 +291,14 @@ export type UpdateTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -258,6 +316,14 @@ export type DeleteTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -356,6 +422,54 @@ export type DeleteTrophyDarkRoomMutation = {
   } | null,
 };
 
+export type CreateSafetyModuleMutationVariables = {
+  input: CreateSafetyModuleInput,
+  condition?: ModelSafetyModuleConditionInput | null,
+};
+
+export type CreateSafetyModuleMutation = {
+  createSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSafetyModuleMutationVariables = {
+  input: UpdateSafetyModuleInput,
+  condition?: ModelSafetyModuleConditionInput | null,
+};
+
+export type UpdateSafetyModuleMutation = {
+  updateSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSafetyModuleMutationVariables = {
+  input: DeleteSafetyModuleInput,
+  condition?: ModelSafetyModuleConditionInput | null,
+};
+
+export type DeleteSafetyModuleMutation = {
+  deleteSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateSavedRollMutationVariables = {
   input: CreateSavedRollInput,
   condition?: ModelSavedRollConditionInput | null,
@@ -421,6 +535,14 @@ export type GetTextRoomQuery = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -511,6 +633,42 @@ export type ListTrophyDarkRoomsQuery = {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetSafetyModuleQueryVariables = {
+  id: string,
+};
+
+export type GetSafetyModuleQuery = {
+  getSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSafetyModulesQueryVariables = {
+  filter?: ModelSafetyModuleFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSafetyModulesQuery = {
+  listSafetyModules:  {
+    __typename: "ModelSafetyModuleConnection",
+    items:  Array< {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -638,6 +796,14 @@ export type OnUpdateTextRoomByNameSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -679,6 +845,14 @@ export type OnCreateTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -691,6 +865,14 @@ export type OnUpdateTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -703,6 +885,14 @@ export type OnDeleteTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -766,6 +956,39 @@ export type OnDeleteTrophyDarkRoomSubscription = {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSafetyModuleSubscription = {
+  onCreateSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSafetyModuleSubscription = {
+  onUpdateSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSafetyModuleSubscription = {
+  onDeleteSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
     createdAt: string,
     updatedAt: string,
   } | null,

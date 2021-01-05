@@ -12,6 +12,13 @@ export const createTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -27,6 +34,13 @@ export const updateTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -42,6 +56,13 @@ export const deleteTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -123,6 +144,48 @@ export const deleteTrophyDarkRoom = /* GraphQL */ `
     deleteTrophyDarkRoom(input: $input, condition: $condition) {
       id
       name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createSafetyModule = /* GraphQL */ `
+  mutation CreateSafetyModule(
+    $input: CreateSafetyModuleInput!
+    $condition: ModelSafetyModuleConditionInput
+  ) {
+    createSafetyModule(input: $input, condition: $condition) {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSafetyModule = /* GraphQL */ `
+  mutation UpdateSafetyModule(
+    $input: UpdateSafetyModuleInput!
+    $condition: ModelSafetyModuleConditionInput
+  ) {
+    updateSafetyModule(input: $input, condition: $condition) {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSafetyModule = /* GraphQL */ `
+  mutation DeleteSafetyModule(
+    $input: DeleteSafetyModuleInput!
+    $condition: ModelSafetyModuleConditionInput
+  ) {
+    deleteSafetyModule(input: $input, condition: $condition) {
+      id
+      xCardActive
+      linesAndVeils
       createdAt
       updatedAt
     }

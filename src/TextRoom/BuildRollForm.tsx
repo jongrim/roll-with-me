@@ -51,17 +51,11 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
   return (
     <>
       <NewDie onSubmit={(die: Die) => setDice((cur) => cur.concat(die))} />
-      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={4}>
         {dice.length > 0 ? (
           dice.map((die) => {
             return (
-              <GridItem
-                key={die.id}
-                border="1px solid"
-                borderColor="inherit"
-                borderRadius={3}
-                p={2}
-              >
+              <GridItem key={die.id} boxShadow="lg" rounded="md" p={2}>
                 <Flex>
                   <Stat>
                     <StatLabel>{die.sides} sided</StatLabel>
@@ -78,7 +72,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             );
           })
         ) : (
-          <GridItem colSpan={2} mt={6}>
+          <GridItem colSpan={2}>
             <Text>No dice in this roll yet</Text>
           </GridItem>
         )}

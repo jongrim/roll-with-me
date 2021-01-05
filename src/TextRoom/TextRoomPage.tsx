@@ -23,16 +23,27 @@ import {
   useToast,
   Center,
   Heading,
+  VStack,
+  Box,
+  Flex,
 } from '@chakra-ui/react';
+import { v4 as uuidv4 } from 'uuid';
 import BuildRollForm from './BuildRollForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
 import RollsHistory from './RollsHistory';
-import { Roll, SavedRoll } from '../types';
-import { getRollFromQuickString, savedRollToRoll } from '../utils/rolls';
+import { ClassifiedItem, Roll, SafetyModule, SavedRoll } from '../types';
+import {
+  createNewRollFromValues,
+  getRollFromQuickString,
+  makeNDice,
+  savedRollToRoll,
+} from '../utils/rolls';
 import RollResults from './RollResults';
 import SavedRolls from './SavedRolls';
 import { compose } from '../utils/fnTools';
 import RoomCounters from './RoomCounters';
+import XCardModal from '../XCardModal/XCardModal';
+import SafetyForm from '../SafetyForm/SafetyForm';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -48,6 +59,13 @@ interface TextRoomPageProps {
     isSavingRoll: boolean;
     isDeletingRoll: boolean;
   };
+  safetyModule: SafetyModule;
+  updateXCard: (value: boolean) => void;
+  xCardChanging: boolean;
+  safetyItemChanging: boolean;
+  addSafetyItem: (value: ClassifiedItem) => void;
+  updateSafetyItem: (value: ClassifiedItem) => void;
+  removeSafetyItem: (value: ClassifiedItem) => void;
 }
 
 const TextRoomPage: React.FC<TextRoomPageProps> = ({
@@ -60,6 +78,13 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   deleteRoll,
   editRoll,
   loadingStates,
+  safetyModule,
+  updateXCard,
+  xCardChanging,
+  safetyItemChanging,
+  addSafetyItem,
+  updateSafetyItem,
+  removeSafetyItem,
 }) => {
   const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
@@ -73,75 +98,244 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
     return () => document.removeEventListener('keyup', checkForSlash);
   }, [quickRollRef]);
 
+  const submitQuickRoll = compose(
+    onSubmit,
+    savedRollToRoll(name),
+    createNewRollFromValues
+  );
+
   return (
     <>
       <SettingsBar />
-      <Container maxW="6xl" centerContent>
-        <Grid templateColumns={['1fr', '1fr', '1fr 1fr']} w="full" gap={8}>
-          <GridItem colSpan={[1, 1, 2]}>
+      <Container maxW="6xl">
+        <VStack spacing={4} w="full" align="flex-start">
+          <Box w="full">
             <QuickRollBar name={name} onSubmit={onSubmit} ref={quickRollRef} />
-          </GridItem>
-          <GridItem order={[2, 2, 1]}>
-            <Tabs variant="line" size="sm" isFitted>
-              <TabList>
-                <Tab>Build a Roll</Tab>
-                <Tab>Saved Rolls</Tab>
-                <Tab>Counters</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <BuildRollForm
-                    onSubmit={onSubmit}
-                    saveRoll={createRoll}
-                    isRolling={loadingStates.isRolling}
-                    rolledByName={name}
-                  />
-                </TabPanel>
-                <TabPanel align="center">
-                  <SavedRolls
-                    createRoll={createRoll}
-                    deleteRoll={deleteRoll}
-                    editRoll={editRoll}
-                    savedRolls={savedRolls}
-                    rollSavedRoll={compose(onSubmit, savedRollToRoll(name))}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <RoomCounters roomName={roomName} roomId={roomId} />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </GridItem>
-          <GridItem order={[1, 1, 2]}>
-            {rolls[0] ? (
-              <RollResults
-                roll={rolls[0]}
-                isRolling={loadingStates.isRolling}
+          </Box>
+          <Flex w="full">
+            <Box mr={2}>
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="red"
+                onClick={() =>
+                  submitQuickRoll({
+                    id: uuidv4(),
+                    dice: makeNDice({ count: 2, sides: 6 }),
+                    rollName: '2d6',
+                    rolledBy: '',
+                    modifier: 0,
+                  })
+                }
+              >
+                2d6
+              </Button>
+            </Box>
+            <Box mr={2}>
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                onClick={() =>
+                  submitQuickRoll({
+                    id: uuidv4(),
+                    dice: makeNDice({ count: 1, sides: 20 }),
+                    rollName: '1d20',
+                    rolledBy: '',
+                    modifier: 0,
+                  })
+                }
+              >
+                1d20
+              </Button>
+            </Box>
+            <Box mr={2}>
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="yellow"
+                onClick={() =>
+                  submitQuickRoll({
+                    id: uuidv4(),
+                    dice: makeNDice({ count: 2, sides: 20 }),
+                    rollName: '2d20',
+                    rolledBy: '',
+                    modifier: 0,
+                  })
+                }
+              >
+                2d20
+              </Button>
+            </Box>
+            <Box mr={2}>
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="green"
+                onClick={() =>
+                  submitQuickRoll({
+                    id: uuidv4(),
+                    dice: makeNDice({ count: 1, sides: 100 }),
+                    rollName: '1d100',
+                    rolledBy: '',
+                    modifier: 0,
+                  })
+                }
+              >
+                1d100
+              </Button>
+            </Box>
+            <Box ml="auto">
+              <Button
+                isLoading={xCardChanging}
+                size="sm"
+                variant="outline"
+                colorScheme="brand"
+                onClick={() => updateXCard(!safetyModule.xCardActive)}
+              >
+                x-card
+              </Button>
+            </Box>
+          </Flex>
+        </VStack>
+      </Container>
+      <Container maxW="6xl" mt={6} h="100%">
+        <Tabs
+          variant="unstyled"
+          display="flex"
+          flexDirection={['column', 'column', 'column', 'row']}
+        >
+          <TabList
+            flexDirection={['row', 'row', 'row', 'column']}
+            justifyContent={['stretch', 'stretch', 'flex-start']}
+            mr={[0, 0, 0, 8]}
+            my={[4, 4, 4, 0]}
+            pt={[0, 0, 0, '0.4rem']}
+          >
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+              flex={[1, 1, 1, 0]}
+            >
+              Table
+            </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+              flex={[1, 1, 1, 0]}
+            >
+              Safety
+            </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+              flex={[1, 1, 1, 0]}
+            >
+              Roll History
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel px={0}>
+              <Grid
+                templateColumns={['1fr', '1fr', '1fr 1fr']}
+                templateRows="1fr"
+                w="full"
+                gap={8}
+              >
+                <GridItem order={[2, 2, 1]}>
+                  <Tabs variant="line" size="sm" isFitted>
+                    <TabList>
+                      <Tab>Build a Roll</Tab>
+                      <Tab>Saved Rolls</Tab>
+                      <Tab>Counters</Tab>
+                    </TabList>
+                    <TabPanels>
+                      <TabPanel>
+                        <BuildRollForm
+                          onSubmit={onSubmit}
+                          saveRoll={createRoll}
+                          isRolling={loadingStates.isRolling}
+                          rolledByName={name}
+                        />
+                      </TabPanel>
+                      <TabPanel align="center">
+                        <SavedRolls
+                          createRoll={createRoll}
+                          deleteRoll={deleteRoll}
+                          editRoll={editRoll}
+                          savedRolls={savedRolls}
+                          rollSavedRoll={compose(
+                            onSubmit,
+                            savedRollToRoll(name)
+                          )}
+                        />
+                      </TabPanel>
+                      <TabPanel>
+                        <RoomCounters roomName={roomName} roomId={roomId} />
+                      </TabPanel>
+                    </TabPanels>
+                  </Tabs>
+                </GridItem>
+                <GridItem order={[1, 1, 2]}>
+                  {rolls[0] ? (
+                    <RollResults
+                      roll={rolls[0]}
+                      isRolling={loadingStates.isRolling}
+                    />
+                  ) : (
+                    <>
+                      <Heading
+                        as="h3"
+                        size="md"
+                        borderBottom="2px solid"
+                        borderBottomColor="inherit"
+                        pb={1}
+                        mb={2}
+                      >
+                        Last Roll
+                      </Heading>
+                      <Center>
+                        <Text>No rolls yet - try one now!</Text>
+                      </Center>
+                    </>
+                  )}
+                </GridItem>
+              </Grid>
+            </TabPanel>
+            <TabPanel px={0}>
+              <SafetyForm
+                addItem={addSafetyItem}
+                updateItem={updateSafetyItem}
+                removeItem={removeSafetyItem}
+                safetyItemChanging={safetyItemChanging}
+                safetyModule={safetyModule}
               />
-            ) : (
-              <>
-                <Heading
-                  as="h3"
-                  size="md"
-                  borderBottom="2px solid"
-                  borderBottomColor="inherit"
-                  pb={1}
-                  mb={2}
-                >
-                  Last Roll
-                </Heading>
-                <Center>
-                  <Text>No rolls yet - try one now!</Text>
-                </Center>
-              </>
-            )}
-          </GridItem>
-          <GridItem order={3} colSpan={[1, 1, 2]}>
-            <RollsHistory rolls={rolls} />
-          </GridItem>
-        </Grid>
+            </TabPanel>
+            <TabPanel px={0}>
+              <RollsHistory rolls={rolls} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Container>
       <UsernameModal setNameInRoom={setName} ref={quickRollRef} />
+      <XCardModal
+        clearXCard={updateXCard}
+        xCardActive={safetyModule.xCardActive}
+        xCardChanging={xCardChanging}
+        ref={quickRollRef}
+      />
     </>
   );
 };

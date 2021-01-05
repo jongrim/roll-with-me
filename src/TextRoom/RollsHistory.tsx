@@ -34,7 +34,7 @@ interface RollsHistoryProps {
 
 const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
   return (
-    <>
+    <Container maxW="full" px={0}>
       <Heading
         as="h3"
         size="md"
@@ -86,7 +86,7 @@ const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
           ))}
         </Tbody>
       </Table>
-    </>
+    </Container>
   );
 };
 
