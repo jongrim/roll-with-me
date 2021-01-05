@@ -10,7 +10,6 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { Auth } from 'aws-amplify';
-import { AmplifySignOut } from '@aws-amplify/ui-react';
 import { AuthContext } from '../AuthProvider';
 
 interface ProfileDrawerProps {
@@ -53,9 +52,14 @@ const ProfileDrawer = React.forwardRef<HTMLButtonElement, ProfileDrawerProps>(
               </DrawerBody>
               <DrawerFooter>
                 {user && (
-                  <AmplifySignOut button-text="Custom Text">
+                  <Button
+                    variant="ghost"
+                    w="full"
+                    colorScheme="gray"
+                    onClick={() => Auth.signOut()}
+                  >
                     Sign Out
-                  </AmplifySignOut>
+                  </Button>
                 )}
               </DrawerFooter>
             </DrawerContent>

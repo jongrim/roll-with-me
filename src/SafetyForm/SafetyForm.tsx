@@ -154,7 +154,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
                     <option value="line">Line</option>
                     <option value="veil">Veil</option>
                     <option value="ask">Ask First</option>
-                    <option value="consent">Enthusiatic</option>
+                    <option value="consent">Enthusiatic Consent</option>
                   </Select>
                 </Box>
                 <CloseButton
@@ -198,15 +198,15 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
             w={['full', 'full', 'lg']}
             isRequired
           >
-            <FormLabel>Classification</FormLabel>
+            <FormLabel>Rating</FormLabel>
             <Select
-              placeholder="Select classification"
+              placeholder="Select rating"
               onChange={({ target }) => setNewClass(target.value)}
             >
               <option value="line">Line</option>
               <option value="veil">Veil</option>
               <option value="ask">Ask First</option>
-              <option value="consent">Enthusiatic</option>
+              <option value="consent">Enthusiatic Consent</option>
             </Select>
           </FormControl>
         </Flex>
