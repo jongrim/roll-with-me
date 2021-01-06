@@ -115,7 +115,7 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
           setRollToEdit(createEmptySavedRoll());
         }}
       >
-        Or create a new roll
+        {user ? 'Create a new roll' : 'Create a new offline roll'}
       </Button>
       <EditRollModal
         savedRoll={rollToEdit}

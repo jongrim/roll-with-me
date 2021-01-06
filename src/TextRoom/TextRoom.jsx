@@ -41,6 +41,7 @@ function TextRoom({ name }) {
         const nextRolls = value.data.onUpdateTextRoomByName?.rolls ?? [];
         const parsedRolls = nextRolls.map((roll) => JSON.parse(roll));
         setRolls(parsedRolls);
+        setIsRolling(false);
       },
     });
     return () => subscription.unsubscribe();
@@ -311,7 +312,12 @@ function TextRoom({ name }) {
     } catch (e) {
       console.error('error sending', e);
     } finally {
-      setIsRolling(false);
+      // cleanup if something went wrong
+      setTimeout(() => {
+        if (isRolling) {
+          setIsRolling(false);
+        }
+      }, 1000 * 30);
     }
   }
 
@@ -322,7 +328,7 @@ function TextRoom({ name }) {
   async function setXCard(value) {
     setXCardChanging(true);
     try {
-      const { data } = await API.graphql({
+      await API.graphql({
         query: mutations.updateSafetyModule,
         variables: {
           input: {
@@ -341,7 +347,7 @@ function TextRoom({ name }) {
   async function addItem(value) {
     setSafetyItemUpdating(true);
     try {
-      const { data } = await API.graphql({
+      await API.graphql({
         query: mutations.updateSafetyModule,
         variables: {
           input: {
