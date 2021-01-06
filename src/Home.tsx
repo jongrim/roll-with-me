@@ -172,12 +172,13 @@ function Home() {
                   New Text Room
                 </Button>
                 <Button
+                  disabled
                   variant="outline"
                   colorScheme="blue"
                   w="full"
                   onClick={() => handleNewRoomRequest('i')}
                 >
-                  New Interactive Room
+                  New Interactive Room - Coming Soon
                 </Button>
               </LightMode>
             </Stack>
@@ -193,12 +194,13 @@ function Home() {
             <Stack spacing={3} mt={3}>
               <LightMode>
                 <Button
+                  disabled
                   variant="outline"
                   colorScheme="green"
                   w="full"
                   onClick={() => handleNewRoomRequest('trophy-dark')}
                 >
-                  Trophy Dark
+                  Trophy Dark - Coming Soon
                 </Button>
               </LightMode>
             </Stack>
@@ -223,36 +225,33 @@ function Home() {
         </Flex>
         <Flex justifyContent="center" mt={2}>
           <Link href="https://github.com/jongrim/roll-with-me" isExternal>
-            <LightMode>
-              <IconButton
-                icon={<FaGithub />}
-                aria-label="Github icon"
-                variant="link"
-                color="brand.600"
-                mr={2}
-              />
-            </LightMode>
+            <IconButton
+              icon={<FaGithub />}
+              aria-label="Github icon"
+              variant="link"
+              color="brand.600"
+              size="lg"
+              mr={2}
+            />
           </Link>
           <Link href="https://twitter.com/jonjongrim" isExternal>
-            <LightMode>
-              <IconButton
-                icon={<FaTwitter />}
-                aria-label="Twitter icon"
-                variant="link"
-                color="brand.600"
-                mr={2}
-              />
-            </LightMode>
+            <IconButton
+              icon={<FaTwitter />}
+              aria-label="Twitter icon"
+              variant="link"
+              color="brand.600"
+              size="lg"
+              mr={2}
+            />
           </Link>
           <Link href="mailto:jonjongrim@gmail.com" isExternal>
-            <LightMode>
-              <IconButton
-                icon={<FaEnvelope />}
-                aria-label="mail envelope"
-                variant="link"
-                color="brand.600"
-              />
-            </LightMode>
+            <IconButton
+              icon={<FaEnvelope />}
+              aria-label="mail envelope"
+              variant="link"
+              color="brand.600"
+              size="lg"
+            />
           </Link>
         </Flex>
       </GridItem>

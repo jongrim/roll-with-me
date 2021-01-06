@@ -19,13 +19,11 @@ import {
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { ClassifiedItem, SafetyModule } from '../types';
-import SpinningCube from './SpinningCube';
 
 interface SafetyFormProps {
   addItem: (item: ClassifiedItem) => void;
   updateItem: (item: ClassifiedItem) => void;
   removeItem: (item: ClassifiedItem) => void;
-  safetyItemChanging: boolean;
   safetyModule?: SafetyModule;
 }
 
@@ -54,6 +52,8 @@ const getItemBackground = (item: ClassifiedItem): string => {
       return 'cyan.100';
     case 'consent':
       return 'green.100';
+    default:
+      return 'white';
   }
 };
 
@@ -61,7 +61,6 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
   addItem,
   updateItem,
   removeItem,
-  safetyItemChanging,
   safetyModule,
 }) => {
   const [newLabel, setNewLabel] = React.useState('');
@@ -135,7 +134,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
             >
               <Flex position="relative">
                 <Box flex="1">
-                  <Text size="lg" fontWeight="600" color="gray.800">
+                  <Text size="lg" fontWeight="600" color="gray.800" pr={10}>
                     {item.label}
                   </Text>
                   <Text color="gray.600">{item.note}</Text>
@@ -179,7 +178,6 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
           });
           addItem(newItem);
           setNewLabel('');
-          setNewClass('');
           setNewNote('');
         }}
       >
@@ -230,7 +228,6 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
           </FormControl>
         </Flex>
       </form>
-      {safetyItemChanging && <SpinningCube />}
     </>
   );
 };

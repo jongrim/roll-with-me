@@ -9,6 +9,8 @@ import {
   Link,
   HStack,
   useDisclosure,
+  useClipboard,
+  useToast,
 } from '@chakra-ui/react';
 import {
   RiHomeHeartLine,
@@ -21,7 +23,20 @@ import ProfileDrawer from '../Profile/ProfileDrawer';
 const SettingsBar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { hasCopied, onCopy } = useClipboard(window.location.href);
+  const toast = useToast();
   const btnRef = React.useRef<HTMLButtonElement>(null);
+
+  React.useEffect(() => {
+    if (hasCopied) {
+      toast({
+        title: 'Copied!',
+        status: 'success',
+        duration: 5000,
+      });
+    }
+  }, [hasCopied, toast]);
+
   return (
     <Flex p={2}>
       <Box>
@@ -47,6 +62,7 @@ const SettingsBar: React.FC = () => {
           icon={<RiFileCopyLine />}
           fontSize="28px"
           variant="clear"
+          onClick={onCopy}
           mr={3}
         />
         <IconButton

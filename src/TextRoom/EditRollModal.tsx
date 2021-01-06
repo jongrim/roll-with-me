@@ -26,11 +26,10 @@ import {
   Button,
   Input,
   ButtonGroup,
-  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Die, SavedRoll } from '../types';
 import NewDie from './NewDie';
-import { createNewRollFromValues, describeRoll } from '../utils/rolls';
+import { createNewRollFromValues } from '../utils/rolls';
 
 interface EditRollModalProps {
   savedRoll?: SavedRoll;
@@ -95,13 +94,7 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
         {dice.length > 0 ? (
           dice.map((die) => {
             return (
-              <GridItem
-                key={die.id}
-                border="1px solid"
-                borderColor="brand.300"
-                borderRadius={3}
-                p={2}
-              >
+              <GridItem key={die.id} boxShadow="lg" rounded="md" p={2}>
                 <Flex>
                   <Stat>
                     <StatLabel>{die.sides} sided</StatLabel>

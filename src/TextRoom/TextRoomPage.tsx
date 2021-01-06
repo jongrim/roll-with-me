@@ -44,6 +44,7 @@ import { compose } from '../utils/fnTools';
 import RoomCounters from './RoomCounters';
 import XCardModal from '../XCardModal/XCardModal';
 import SafetyForm from '../SafetyForm/SafetyForm';
+import SpinningCube from '../SpinningCube/SpinningCube';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -319,7 +320,6 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                 addItem={addSafetyItem}
                 updateItem={updateSafetyItem}
                 removeItem={removeSafetyItem}
-                safetyItemChanging={safetyItemChanging}
                 safetyModule={safetyModule}
               />
             </TabPanel>
@@ -336,6 +336,13 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
         xCardChanging={xCardChanging}
         ref={quickRollRef}
       />
+      {Boolean(
+        safetyItemChanging ||
+          xCardChanging ||
+          loadingStates.isDeletingRoll ||
+          loadingStates.isRolling ||
+          loadingStates.isSavingRoll
+      ) && <SpinningCube />}
     </>
   );
 };
