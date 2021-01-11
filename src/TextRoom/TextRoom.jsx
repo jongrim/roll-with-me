@@ -54,11 +54,15 @@ function TextRoom({ name }) {
           query: queries.textRoomByName,
           variables: { name },
         });
-        setRoomId(result.data?.textRoomByName?.items[0]?.id);
-        const rolls = result.data?.textRoomByName?.items[0]?.rolls ?? [];
+        const currentRoomId = result.data?.textRoomByName?.items[0]?.id;
+        setRoomId(currentRoomId);
+        const { data } = await API.graphql({
+          query: queries.getTextRoom,
+          variables: { id: currentRoomId },
+        });
+        const rolls = data?.getTextRoom?.rolls ?? [];
         setRolls(rolls.map((roll) => JSON.parse(roll)));
-        const safety =
-          result.data?.textRoomByName?.items[0]?.safetyModule ?? {};
+        const safety = data?.getTextRoom?.safetyModule ?? {};
         safety.linesAndVeils = safety.linesAndVeils.map((i) => JSON.parse(i));
         setSafetyModule(safety);
       } catch (e) {

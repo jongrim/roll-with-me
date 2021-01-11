@@ -5,6 +5,11 @@ export interface Die {
   name: string;
 }
 
+export interface VisualDie extends Die {
+  x: number;
+  y: number;
+}
+
 export interface SavedDie {
   id: string;
   sides: number;
