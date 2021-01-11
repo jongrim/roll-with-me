@@ -13,7 +13,18 @@ import {
   Button,
   FormHelperText,
   Grid,
+  compose,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
+import {
+  GiD4,
+  GiPerspectiveDiceSixFacesSix,
+  GiDiceEightFacesEight,
+  GiD10,
+  GiD12,
+  GiDiceTwentyFacesTwenty,
+} from 'react-icons/gi';
 import { RiAddCircleLine } from 'react-icons/ri';
 import { Die } from '../types';
 import { createDieOfNSides } from '../utils/rolls';
@@ -43,6 +54,108 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
         <GridItem colSpan={2}>
           <Heading textAlign="left" as="h3" size="md">
             1 — Add dice to your roll
+          </Heading>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <Grid
+            templateColumns="1fr 1fr 1fr"
+            gap={4}
+            justifyItems="center"
+            my={2}
+          >
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={<Icon h={12} w={12} color="blue.500" as={GiD4} />}
+              onClick={() => {
+                console.log('running');
+                onSubmit(createDieOfNSides({ n: 4 }));
+              }}
+              aria-label="d4"
+            />
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={
+                <Icon
+                  h={12}
+                  w={12}
+                  color="blue.500"
+                  as={GiPerspectiveDiceSixFacesSix}
+                />
+              }
+              onClick={() => {
+                onSubmit(createDieOfNSides({ n: 6 }));
+              }}
+              aria-label="d6"
+            />
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={
+                <Icon
+                  h={12}
+                  w={12}
+                  color="blue.500"
+                  as={GiDiceEightFacesEight}
+                />
+              }
+              onClick={() => {
+                onSubmit(createDieOfNSides({ n: 8 }));
+              }}
+              aria-label="d8"
+            />
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={<Icon h={12} w={12} color="blue.500" as={GiD10} />}
+              onClick={() => {
+                onSubmit(createDieOfNSides({ n: 10 }));
+              }}
+              aria-label="d10"
+            />
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={<Icon h={12} w={12} color="blue.500" as={GiD12} />}
+              onClick={() => {
+                onSubmit(createDieOfNSides({ n: 12 }));
+              }}
+              aria-label="d12"
+            />
+            <IconButton
+              type="button"
+              variant="ghost"
+              h={20}
+              w={20}
+              icon={
+                <Icon
+                  h={12}
+                  w={12}
+                  color="blue.500"
+                  as={GiDiceTwentyFacesTwenty}
+                />
+              }
+              onClick={() => {
+                onSubmit(createDieOfNSides({ n: 20 }));
+              }}
+              aria-label="d20"
+            />
+          </Grid>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <Heading textAlign="left" as="h3" size="sm">
+            Or custom dice
           </Heading>
         </GridItem>
         <GridItem colSpan={2}>

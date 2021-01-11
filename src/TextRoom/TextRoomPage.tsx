@@ -6,21 +6,10 @@ import {
   Tab,
   TabPanel,
   Container,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Kbd,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
   Text,
   Button,
   Grid,
   GridItem,
-  useToast,
   Center,
   Heading,
   VStack,
@@ -34,7 +23,6 @@ import RollsHistory from './RollsHistory';
 import { ClassifiedItem, Roll, SafetyModule, SavedRoll } from '../types';
 import {
   createNewRollFromValues,
-  getRollFromQuickString,
   makeNDice,
   savedRollToRoll,
 } from '../utils/rolls';
@@ -45,6 +33,8 @@ import RoomCounters from './RoomCounters';
 import XCardModal from '../XCardModal/XCardModal';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import SpinningCube from '../SpinningCube/SpinningCube';
+import UsernameModal from '../UsernameModal/UsernameModal';
+import QuickRollBar from '../QuickRollBar/QuickRollBar';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -111,7 +101,12 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
       <Container maxW="6xl">
         <VStack spacing={4} w="full" align="flex-start">
           <Box w="full">
-            <QuickRollBar name={name} onSubmit={onSubmit} ref={quickRollRef} />
+            <QuickRollBar
+              name={name}
+              onSubmit={onSubmit}
+              ref={quickRollRef}
+              placeholder="Quick roll (ex. 2d6+1 as Resist)"
+            />
           </Box>
           <Flex w="full">
             <Box mr={2}>
@@ -346,114 +341,5 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
     </>
   );
 };
-
-interface QuickRollBarProps {
-  name: string;
-  onSubmit: (roll: Roll) => void;
-}
-
-const QuickRollBar = React.forwardRef<HTMLElement, QuickRollBarProps>(
-  ({ name, onSubmit }, ref) => {
-    const [quickRollValue, setQuickRollValue] = React.useState('');
-    return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const quickRoll = getRollFromQuickString(quickRollValue);
-          quickRoll.rolledBy = name;
-          onSubmit(quickRoll);
-        }}
-      >
-        <InputGroup mb={3}>
-          <InputLeftElement>
-            <Kbd>/</Kbd>
-          </InputLeftElement>
-          <Input
-            variant="flushed"
-            placeholder="Quick roll (ex. 2d6+1 as Resist)"
-            value={quickRollValue}
-            onChange={({ target }) => setQuickRollValue(target.value)}
-            //@ts-ignore
-            ref={ref}
-          />
-        </InputGroup>
-      </form>
-    );
-  }
-);
-
-interface UsernameModalProps {
-  setNameInRoom: (name: string) => void;
-}
-
-const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
-  ({ setNameInRoom }, quickRollRef) => {
-    const toast = useToast();
-    const [nameModalIsOpen, setNameModalIsOpen] = React.useState(true);
-    const [name, setName] = React.useState('');
-    const [nameError, setNameError] = React.useState(false);
-    return (
-      <Modal
-        isOpen={nameModalIsOpen}
-        onClose={() => {
-          if (!name) {
-            setNameError(true);
-            toast({
-              title: 'Please set a name',
-              description: 'The name identifies who rolled the dice',
-              status: 'error',
-              duration: 9000,
-              isClosable: true,
-            });
-            return;
-          }
-          setNameModalIsOpen(false);
-          setNameInRoom(name);
-        }}
-        size="xl"
-        // @ts-ignore
-        finalFocusRef={quickRollRef}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!name) {
-                setNameError(true);
-                toast({
-                  title: 'Please set a name',
-                  description: 'The name identifies who rolled the dice',
-                  status: 'error',
-                  duration: 9000,
-                  isClosable: true,
-                });
-                return;
-              }
-              setNameModalIsOpen(false);
-              setNameInRoom(name);
-            }}
-          >
-            <ModalHeader>Set your name</ModalHeader>
-            <ModalBody>
-              <Text pb={2}>Choose a username for your rolls</Text>
-              <Input
-                isInvalid={nameError}
-                value={name}
-                onChange={({ target }) => setName(target.value)}
-                placeholder="Name"
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="brand" type="submit">
-                Close
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
-    );
-  }
-);
 
 export default TextRoomPage;

@@ -76,7 +76,19 @@ export const createInteractiveRoom = /* GraphQL */ `
     createInteractiveRoom(input: $input, condition: $condition) {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -90,7 +102,19 @@ export const updateInteractiveRoom = /* GraphQL */ `
     updateInteractiveRoom(input: $input, condition: $condition) {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -104,7 +128,19 @@ export const deleteInteractiveRoom = /* GraphQL */ `
     deleteInteractiveRoom(input: $input, condition: $condition) {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -186,6 +222,132 @@ export const deleteSafetyModule = /* GraphQL */ `
       id
       xCardActive
       linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createCounter = /* GraphQL */ `
+  mutation CreateCounter(
+    $input: CreateCounterInput!
+    $condition: ModelCounterConditionInput
+  ) {
+    createCounter(input: $input, condition: $condition) {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateCounter = /* GraphQL */ `
+  mutation UpdateCounter(
+    $input: UpdateCounterInput!
+    $condition: ModelCounterConditionInput
+  ) {
+    updateCounter(input: $input, condition: $condition) {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCounter = /* GraphQL */ `
+  mutation DeleteCounter(
+    $input: DeleteCounterInput!
+    $condition: ModelCounterConditionInput
+  ) {
+    deleteCounter(input: $input, condition: $condition) {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createVisualDie = /* GraphQL */ `
+  mutation CreateVisualDie(
+    $input: CreateVisualDieInput!
+    $condition: ModelVisualDieConditionInput
+  ) {
+    createVisualDie(input: $input, condition: $condition) {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateVisualDie = /* GraphQL */ `
+  mutation UpdateVisualDie(
+    $input: UpdateVisualDieInput!
+    $condition: ModelVisualDieConditionInput
+  ) {
+    updateVisualDie(input: $input, condition: $condition) {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteVisualDie = /* GraphQL */ `
+  mutation DeleteVisualDie(
+    $input: DeleteVisualDieInput!
+    $condition: ModelVisualDieConditionInput
+  ) {
+    deleteVisualDie(input: $input, condition: $condition) {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
       createdAt
       updatedAt
     }

@@ -45,7 +45,19 @@ export const getInteractiveRoom = /* GraphQL */ `
     getInteractiveRoom(id: $id) {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -65,7 +77,6 @@ export const listInteractiveRooms = /* GraphQL */ `
       items {
         id
         name
-        dice
         createdAt
         updatedAt
       }
@@ -129,6 +140,86 @@ export const listSafetyModules = /* GraphQL */ `
     }
   }
 `;
+export const getCounter = /* GraphQL */ `
+  query GetCounter($id: ID!) {
+    getCounter(id: $id) {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCounters = /* GraphQL */ `
+  query ListCounters(
+    $filter: ModelCounterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCounters(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        roomId
+        title
+        value
+        max
+        type
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getVisualDie = /* GraphQL */ `
+  query GetVisualDie($id: ID!) {
+    getVisualDie(id: $id) {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listVisualDies = /* GraphQL */ `
+  query ListVisualDies(
+    $filter: ModelVisualDieFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listVisualDies(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        roomId
+        x
+        y
+        createdBy
+        result
+        sides
+        color
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const textRoomByName = /* GraphQL */ `
   query TextRoomByName(
     $name: String
@@ -151,11 +242,6 @@ export const textRoomByName = /* GraphQL */ `
         counters
         createdAt
         updatedAt
-        safetyModule {
-          id
-          xCardActive
-          linesAndVeils
-        }
       }
       nextToken
     }
@@ -179,7 +265,6 @@ export const interactiveRoomByName = /* GraphQL */ `
       items {
         id
         name
-        dice
         createdAt
         updatedAt
       }

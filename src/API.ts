@@ -74,12 +74,11 @@ export type DeleteTextRoomInput = {
 export type CreateInteractiveRoomInput = {
   id?: string | null,
   name: string,
-  dice?: Array< string > | null,
+  interactiveRoomSafetyModuleId: string,
 };
 
 export type ModelInteractiveRoomConditionInput = {
   name?: ModelStringInput | null,
-  dice?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomConditionInput | null > | null,
   or?: Array< ModelInteractiveRoomConditionInput | null > | null,
   not?: ModelInteractiveRoomConditionInput | null,
@@ -88,7 +87,7 @@ export type ModelInteractiveRoomConditionInput = {
 export type UpdateInteractiveRoomInput = {
   id: string,
   name?: string | null,
-  dice?: Array< string > | null,
+  interactiveRoomSafetyModuleId?: string | null,
 };
 
 export type DeleteInteractiveRoomInput = {
@@ -147,6 +146,117 @@ export type DeleteSafetyModuleInput = {
   id?: string | null,
 };
 
+export type CreateCounterInput = {
+  id?: string | null,
+  roomId: string,
+  title: string,
+  value: number,
+  max?: number | null,
+  type: CounterType,
+};
+
+export enum CounterType {
+  CLOCK = "CLOCK",
+  OTHER = "OTHER",
+}
+
+
+export type ModelCounterConditionInput = {
+  roomId?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  value?: ModelIntInput | null,
+  max?: ModelIntInput | null,
+  type?: ModelCounterTypeInput | null,
+  and?: Array< ModelCounterConditionInput | null > | null,
+  or?: Array< ModelCounterConditionInput | null > | null,
+  not?: ModelCounterConditionInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type ModelCounterTypeInput = {
+  eq?: CounterType | null,
+  ne?: CounterType | null,
+};
+
+export type UpdateCounterInput = {
+  id: string,
+  roomId?: string | null,
+  title?: string | null,
+  value?: number | null,
+  max?: number | null,
+  type?: CounterType | null,
+};
+
+export type DeleteCounterInput = {
+  id?: string | null,
+};
+
+export type CreateVisualDieInput = {
+  id?: string | null,
+  roomId: string,
+  x: number,
+  y: number,
+  createdBy: string,
+  result: number,
+  sides: number,
+  color: string,
+};
+
+export type ModelVisualDieConditionInput = {
+  roomId?: ModelIDInput | null,
+  x?: ModelIntInput | null,
+  y?: ModelIntInput | null,
+  createdBy?: ModelStringInput | null,
+  result?: ModelIntInput | null,
+  sides?: ModelIntInput | null,
+  color?: ModelStringInput | null,
+  and?: Array< ModelVisualDieConditionInput | null > | null,
+  or?: Array< ModelVisualDieConditionInput | null > | null,
+  not?: ModelVisualDieConditionInput | null,
+};
+
+export type UpdateVisualDieInput = {
+  id: string,
+  roomId?: string | null,
+  x?: number | null,
+  y?: number | null,
+  createdBy?: string | null,
+  result?: number | null,
+  sides?: number | null,
+  color?: string | null,
+};
+
+export type DeleteVisualDieInput = {
+  id?: string | null,
+};
+
 export type CreateSavedRollInput = {
   id?: string | null,
   rollName: string,
@@ -161,18 +271,6 @@ export type ModelSavedRollConditionInput = {
   and?: Array< ModelSavedRollConditionInput | null > | null,
   or?: Array< ModelSavedRollConditionInput | null > | null,
   not?: ModelSavedRollConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateSavedRollInput = {
@@ -196,26 +294,9 @@ export type ModelTextRoomFilterInput = {
   not?: ModelTextRoomFilterInput | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  dice?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomFilterInput | null > | null,
   or?: Array< ModelInteractiveRoomFilterInput | null > | null,
   not?: ModelInteractiveRoomFilterInput | null,
@@ -236,6 +317,32 @@ export type ModelSafetyModuleFilterInput = {
   and?: Array< ModelSafetyModuleFilterInput | null > | null,
   or?: Array< ModelSafetyModuleFilterInput | null > | null,
   not?: ModelSafetyModuleFilterInput | null,
+};
+
+export type ModelCounterFilterInput = {
+  id?: ModelIDInput | null,
+  roomId?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  value?: ModelIntInput | null,
+  max?: ModelIntInput | null,
+  type?: ModelCounterTypeInput | null,
+  and?: Array< ModelCounterFilterInput | null > | null,
+  or?: Array< ModelCounterFilterInput | null > | null,
+  not?: ModelCounterFilterInput | null,
+};
+
+export type ModelVisualDieFilterInput = {
+  id?: ModelIDInput | null,
+  roomId?: ModelIDInput | null,
+  x?: ModelIntInput | null,
+  y?: ModelIntInput | null,
+  createdBy?: ModelStringInput | null,
+  result?: ModelIntInput | null,
+  sides?: ModelIntInput | null,
+  color?: ModelStringInput | null,
+  and?: Array< ModelVisualDieFilterInput | null > | null,
+  or?: Array< ModelVisualDieFilterInput | null > | null,
+  not?: ModelVisualDieFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -339,7 +446,22 @@ export type CreateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -355,7 +477,22 @@ export type UpdateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -371,7 +508,22 @@ export type DeleteInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -465,6 +617,126 @@ export type DeleteSafetyModuleMutation = {
     id: string,
     xCardActive: boolean,
     linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateCounterMutationVariables = {
+  input: CreateCounterInput,
+  condition?: ModelCounterConditionInput | null,
+};
+
+export type CreateCounterMutation = {
+  createCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateCounterMutationVariables = {
+  input: UpdateCounterInput,
+  condition?: ModelCounterConditionInput | null,
+};
+
+export type UpdateCounterMutation = {
+  updateCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteCounterMutationVariables = {
+  input: DeleteCounterInput,
+  condition?: ModelCounterConditionInput | null,
+};
+
+export type DeleteCounterMutation = {
+  deleteCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateVisualDieMutationVariables = {
+  input: CreateVisualDieInput,
+  condition?: ModelVisualDieConditionInput | null,
+};
+
+export type CreateVisualDieMutation = {
+  createVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateVisualDieMutationVariables = {
+  input: UpdateVisualDieInput,
+  condition?: ModelVisualDieConditionInput | null,
+};
+
+export type UpdateVisualDieMutation = {
+  updateVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteVisualDieMutationVariables = {
+  input: DeleteVisualDieInput,
+  condition?: ModelVisualDieConditionInput | null,
+};
+
+export type DeleteVisualDieMutation = {
+  deleteVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -579,7 +851,22 @@ export type GetInteractiveRoomQuery = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -598,7 +885,6 @@ export type ListInteractiveRoomsQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      dice: Array< string > | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -676,6 +962,94 @@ export type ListSafetyModulesQuery = {
   } | null,
 };
 
+export type GetCounterQueryVariables = {
+  id: string,
+};
+
+export type GetCounterQuery = {
+  getCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListCountersQueryVariables = {
+  filter?: ModelCounterFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCountersQuery = {
+  listCounters:  {
+    __typename: "ModelCounterConnection",
+    items:  Array< {
+      __typename: "Counter",
+      id: string,
+      roomId: string,
+      title: string,
+      value: number,
+      max: number | null,
+      type: CounterType,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetVisualDieQueryVariables = {
+  id: string,
+};
+
+export type GetVisualDieQuery = {
+  getVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListVisualDiesQueryVariables = {
+  filter?: ModelVisualDieFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListVisualDiesQuery = {
+  listVisualDies:  {
+    __typename: "ModelVisualDieConnection",
+    items:  Array< {
+      __typename: "VisualDie",
+      id: string,
+      roomId: string,
+      x: number,
+      y: number,
+      createdBy: string,
+      result: number,
+      sides: number,
+      color: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type TextRoomByNameQueryVariables = {
   name?: string | null,
   sortDirection?: ModelSortDirection | null,
@@ -715,7 +1089,6 @@ export type InteractiveRoomByNameQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      dice: Array< string > | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -818,7 +1191,22 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -903,7 +1291,22 @@ export type OnCreateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -914,7 +1317,22 @@ export type OnUpdateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -925,7 +1343,22 @@ export type OnDeleteInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    dice: Array< string > | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dice:  {
+      __typename: "ModelVisualDieConnection",
+      nextToken: string | null,
+    } | null,
+    counters:  {
+      __typename: "ModelCounterConnection",
+      nextToken: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -989,6 +1422,96 @@ export type OnDeleteSafetyModuleSubscription = {
     id: string,
     xCardActive: boolean,
     linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateCounterSubscription = {
+  onCreateCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateCounterSubscription = {
+  onUpdateCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteCounterSubscription = {
+  onDeleteCounter:  {
+    __typename: "Counter",
+    id: string,
+    roomId: string,
+    title: string,
+    value: number,
+    max: number | null,
+    type: CounterType,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateVisualDieSubscription = {
+  onCreateVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateVisualDieSubscription = {
+  onUpdateVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteVisualDieSubscription = {
+  onDeleteVisualDie:  {
+    __typename: "VisualDie",
+    id: string,
+    roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
     createdAt: string,
     updatedAt: string,
   } | null,

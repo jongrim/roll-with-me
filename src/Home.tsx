@@ -22,8 +22,13 @@ import { API } from 'aws-amplify';
 import * as mutations from './graphql/mutations';
 import logo from './images/personWithCoffee.svg';
 import { useHistory } from 'react-router-dom';
-import { CreateTextRoomMutation, CreateSafetyModuleMutation } from './API';
+import {
+  CreateTextRoomMutation,
+  CreateSafetyModuleMutation,
+  CreateInteractiveRoomMutation,
+} from './API';
 import gql from './gql';
+import isLocalhost from './utils/isLocalHost';
 
 async function getNewRoomName() {
   const { result } = await API.get('randomNameAPI', '/random-room-name', {});
@@ -50,11 +55,23 @@ function Home() {
           linesAndVeils: [],
         }
       );
-      await gql<CreateTextRoomMutation>(mutations.createTextRoom, {
-        name,
-        rolls: [],
-        textRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
-      });
+      if (type === 'r') {
+        await gql<CreateTextRoomMutation>(mutations.createTextRoom, {
+          name,
+          rolls: [],
+          textRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
+        });
+      }
+      if (type === 'i') {
+        await gql<CreateInteractiveRoomMutation>(
+          mutations.createInteractiveRoom,
+          {
+            name,
+            interactiveRoomSafetyModuleId:
+              newSafetyModule.data?.createSafetyModule?.id,
+          }
+        );
+      }
       history.push(`/${type}/${name}`);
     } catch (e) {
       console.warn('could not create room', e);
@@ -107,6 +124,10 @@ function Home() {
                 value={name}
                 onChange={({ target }) => setName(target.value)}
                 mr={4}
+                _placeholder={{
+                  color: 'gray.400',
+                }}
+                placeholder="Loading..."
               />
             </InputGroup>
             <LightMode>
@@ -172,7 +193,7 @@ function Home() {
                   New Text Room
                 </Button>
                 <Button
-                  disabled
+                  disabled={isLocalhost ? false : true}
                   variant="outline"
                   colorScheme="blue"
                   w="full"

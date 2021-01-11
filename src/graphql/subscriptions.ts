@@ -26,7 +26,19 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
     onUpdateInteractiveRoomByName(name: $name) {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -104,7 +116,19 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
     onCreateInteractiveRoom {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -115,7 +139,19 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
     onUpdateInteractiveRoom {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -126,7 +162,19 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
     onDeleteInteractiveRoom {
       id
       name
-      dice
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      dice {
+        nextToken
+      }
+      counters {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -190,6 +238,114 @@ export const onDeleteSafetyModule = /* GraphQL */ `
       id
       xCardActive
       linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCounter = /* GraphQL */ `
+  subscription OnCreateCounter {
+    onCreateCounter {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCounter = /* GraphQL */ `
+  subscription OnUpdateCounter {
+    onUpdateCounter {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCounter = /* GraphQL */ `
+  subscription OnDeleteCounter {
+    onDeleteCounter {
+      id
+      roomId
+      title
+      value
+      max
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateVisualDie = /* GraphQL */ `
+  subscription OnCreateVisualDie {
+    onCreateVisualDie {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateVisualDie = /* GraphQL */ `
+  subscription OnUpdateVisualDie {
+    onUpdateVisualDie {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteVisualDie = /* GraphQL */ `
+  subscription OnDeleteVisualDie {
+    onDeleteVisualDie {
+      id
+      roomId
+      room {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      x
+      y
+      createdBy
+      result
+      sides
+      color
       createdAt
       updatedAt
     }

@@ -9,6 +9,8 @@ import {
   Grid,
   GridItem,
   Heading,
+  Icon,
+  IconButton,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -42,6 +44,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
 }) => {
   // custom dice
   const [dice, setDice] = React.useState<Die[]>([]);
+  const addDieToDice = (die: Die) => setDice((cur) => cur.concat(die));
 
   const [modifier, setModifier] = React.useState<number>();
   const [name, setName] = React.useState<string>('');
@@ -50,7 +53,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
 
   return (
     <>
-      <NewDie onSubmit={(die: Die) => setDice((cur) => cur.concat(die))} />
+      <NewDie onSubmit={addDieToDice} />
       <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={4}>
         {dice.length > 0 ? (
           dice.map((die) => {
