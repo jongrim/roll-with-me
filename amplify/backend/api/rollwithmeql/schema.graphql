@@ -22,6 +22,7 @@ type InteractiveRoom
   safetyModule: SafetyModule! @connection
   dice: [VisualDie] @connection(keyName: "byRoom", fields: ["id"])
   counters: [Counter] @connection(keyName: "byRoom", fields: ["id"])
+  labels: [Label] @connection(keyName: "byRoom", fields: ["id"])
 }
 
 type TrophyDarkRoom
@@ -34,15 +35,6 @@ type TrophyDarkRoom
   @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
-}
-
-type Subscription {
-  onUpdateTextRoomByName(name: String!): TextRoom
-    @aws_subscribe(mutations: ["updateTextRoom"])
-  onUpdateInteractiveRoomByName(name: String!): InteractiveRoom
-    @aws_subscribe(mutations: ["updateInteractiveRoom"])
-  onUpdateTrophyDarkRoomByName(name: String!): TrophyDarkRoom
-    @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
 }
 
 type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
@@ -58,6 +50,17 @@ type SafetyModule @model @auth(rules: [{ allow: public }]) {
   linesAndVeils: [AWSJSON!]!
 }
 
+type Label
+  @model
+  @key(name: "byRoom", fields: ["roomId"])
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  roomId: ID!
+  contents: String!
+  x: Float!
+  y: Float!
+}
+
 type Counter
   @model
   @key(name: "byRoom", fields: ["roomId"])
@@ -67,6 +70,8 @@ type Counter
   title: String!
   value: Int!
   max: Int
+  x: Float!
+  y: Float!
   type: CounterType!
 }
 
@@ -82,10 +87,32 @@ type VisualDie
   id: ID!
   roomId: ID!
   room: InteractiveRoom @connection(fields: ["roomId"])
-  x: Int!
-  y: Int!
+  x: Float!
+  y: Float!
   createdBy: String!
   result: Int!
   sides: Int!
   color: String!
+  version: Int!
+}
+
+type Subscription {
+  onUpdateTextRoomByName(name: String!): TextRoom
+    @aws_subscribe(mutations: ["updateTextRoom"])
+  onUpdateInteractiveRoomByName(name: String!): InteractiveRoom
+    @aws_subscribe(mutations: ["updateInteractiveRoom"])
+  onUpdateTrophyDarkRoomByName(name: String!): TrophyDarkRoom
+    @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
+  onCreateVisualDieByRoom(roomId: String!): VisualDie
+    @aws_subscribe(mutations: ["createVisualDie"])
+  onUpdateVisualDieById(id: String!): VisualDie
+    @aws_subscribe(mutations: ["updateVisualDie"])
+  onCreateCounterByRoom(roomId: String!): Counter
+    @aws_subscribe(mutations: ["createCounter"])
+  onUpdateCounterById(id: String!): Counter
+    @aws_subscribe(mutations: ["updateCounter"])
+  onCreateLabelByRoom(roomId: String!): Label
+    @aws_subscribe(mutations: ["createLabel"])
+  onUpdateLabelById(id: String!): Label
+    @aws_subscribe(mutations: ["updateLabel"])
 }

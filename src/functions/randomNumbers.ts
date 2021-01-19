@@ -1,6 +1,6 @@
 import { API } from 'aws-amplify';
 
-export async function getRandomNumbers(count: number) {
+export async function getRandomNumbers(count: number): Promise<number[]> {
   try {
     const { result } = await API.get('randomNumbersAPI', '/random-numbers', {
       queryStringParameters: { count },
@@ -9,4 +9,5 @@ export async function getRandomNumbers(count: number) {
   } catch (e) {
     console.warn(e);
   }
+  return [];
 }

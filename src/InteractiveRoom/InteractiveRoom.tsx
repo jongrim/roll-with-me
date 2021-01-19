@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Box,
   Container,
   Flex,
   HStack,
@@ -8,9 +7,8 @@ import {
   IconButton,
   Input,
 } from '@chakra-ui/react';
-import gsap, { Elastic } from 'gsap';
+import gsap from 'gsap';
 import { Draggable } from 'gsap/all';
-import _Draggable from 'gsap/Draggable';
 import debounce from 'lodash.debounce';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
@@ -32,19 +30,31 @@ import {
 import { BsClock } from 'react-icons/bs';
 import { MdTextFields } from 'react-icons/md';
 import SpinningCube from '../SpinningCube/SpinningCube';
-import { VisualDie } from '../types';
+import { VisualCounter, VisualDie, VisualLabel } from '../types';
 import { assignResultsToDice, createDieOfNSides } from '../utils/rolls';
 import { getRandomNumbers } from '../functions/randomNumbers';
+import VDie from './VisualDie';
+import ClockModal from './ClockModal';
+import VCounter from './VisualCounter';
+import VLabel from './VisualLabel';
+import LabelModal from './LabelModal';
+import findEmptySpace, { DICEBOX_ID, getBoxes } from '../utils/findEmptySpace';
 
 gsap.registerPlugin(Draggable);
+
+const MIN_HEIGHT = 72;
+const MIN_WIDTH = 72;
 
 type Props = {
   name: string;
 };
 
 function InteractiveRoom({ name }: Props) {
+  const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
   const [username, setUsername] = React.useState('');
+  const [clockModalIsOpen, setClockModalIsOpen] = React.useState(false);
+  const [labelModalIsOpen, setLabelModalIsOpen] = React.useState(false);
   const [color, setColor] = React.useState('#c91db6');
 
   const quickRollRef = React.useRef<HTMLElement>(null!);
@@ -60,31 +70,45 @@ function InteractiveRoom({ name }: Props) {
 
   const makeNewVisualDie = async ({ sides }: { sides: number }) => {
     const die = createDieOfNSides({ n: sides, name: `d${sides}` });
+    const { top, left } = findEmptySpace({
+      MIN_HEIGHT,
+      MIN_WIDTH,
+      ...getBoxes(),
+    });
+    console.log(top, left);
     const results = await getRandomNumbers(1);
     const diceWithResults = assignResultsToDice({
       dice: [die],
       results,
     });
-    return diceWithResults[0];
+    return { ...diceWithResults[0], x: left, y: top };
   };
 
   const addDie = async ({ sides }: { sides: number }) => {
-    const die = await makeNewVisualDie({ sides });
-    await API.graphql({
-      query: mutations.createVisualDie,
-      variables: {
-        input: {
-          // @ts-ignore
-          roomId: data?.id,
-          x: 0,
-          y: 0,
-          createdBy: username,
-          result: die.result,
-          sides: die.sides,
-          color,
+    setActionInProgress(true);
+    try {
+      const die = await makeNewVisualDie({ sides });
+      await API.graphql({
+        query: mutations.createVisualDie,
+        variables: {
+          input: {
+            // @ts-ignore
+            roomId: data?.id,
+            x: die.x,
+            y: die.y,
+            createdBy: username,
+            result: die.result,
+            sides: die.sides,
+            version: 0,
+            color,
+          },
         },
-      },
-    });
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
   };
 
   const debouncedColor = debounce((color) => setColor(color), 900);
@@ -179,13 +203,27 @@ function InteractiveRoom({ name }: Props) {
           />
         </Flex>
       </Container>
-      {isLoading ? (
-        <SpinningCube />
-      ) : (
-        <Container flex="1" maxW="6xl" id="dice-box">
-          <VisualDice startingDice={data?.dice?.items} />
-        </Container>
-      )}
+      <Container flex="1" maxW="6xl" id={DICEBOX_ID}>
+        {!isLoading && (
+          <>
+            <VisualDice
+              startingDice={data?.dice?.items}
+              roomId={data?.id}
+              setActionInProgress={setActionInProgress}
+            />
+            <VisualCounters
+              startingCounters={data?.counters?.items}
+              roomId={data?.id}
+              setActionInProgress={setActionInProgress}
+            />
+            <VisualLabels
+              startingLabels={data?.labels.items}
+              roomId={data?.id}
+              setActionInProgress={setActionInProgress}
+            />
+          </>
+        )}
+      </Container>
       <Container maxW="6xl" mb={3}>
         <HStack spacing={3}>
           <IconButton
@@ -193,7 +231,7 @@ function InteractiveRoom({ name }: Props) {
             size="sm"
             colorScheme="red"
             icon={<BsClock />}
-            onClick={() => {}}
+            onClick={() => setClockModalIsOpen(true)}
             aria-label="new clock"
           />
           <IconButton
@@ -201,72 +239,197 @@ function InteractiveRoom({ name }: Props) {
             size="sm"
             colorScheme="orange"
             icon={<MdTextFields />}
-            onClick={() => {}}
+            onClick={() => setLabelModalIsOpen(true)}
             aria-label="new clock"
           />
         </HStack>
       </Container>
       <UsernameModal setNameInRoom={setUsername} ref={quickRollRef} />
+      <ClockModal
+        isOpen={clockModalIsOpen}
+        onClose={() => setClockModalIsOpen(false)}
+        ref={quickRollRef}
+        roomId={data?.id}
+      />
+      <LabelModal
+        isOpen={labelModalIsOpen}
+        onClose={() => setLabelModalIsOpen(false)}
+        ref={quickRollRef}
+        roomId={data?.id}
+      />
+      {actionInProgress && <SpinningCube />}
     </Flex>
   );
 }
 
-const VisualDice = ({ startingDice = [] }: { startingDice?: VisualDie[] }) => {
+const VisualDice = ({
+  startingDice = [],
+  roomId = '',
+  setActionInProgress,
+}: {
+  startingDice?: VisualDie[];
+  roomId?: string;
+  setActionInProgress: (val: boolean) => void;
+}) => {
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
   React.useEffect(() => {
-    API.graphql({
-      query: subscriptions.onCreateVisualDie,
+    const subscription = API.graphql({
+      query: subscriptions.onCreateVisualDieByRoom,
+      variables: {
+        roomId,
+      },
       // @ts-ignore
     }).subscribe({
       // @ts-ignore
-      next: (data) => {
+      next: ({ value }) => {
         setDice((cur) => {
-          return cur.concat(data?.onCreateVisualDie);
+          return cur.concat(value.data?.onCreateVisualDieByRoom);
         });
       },
     });
-  }, []);
+    const deleteSubscription = API.graphql({
+      query: subscriptions.onDeleteVisualDie,
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        console.log(value);
+        setDice((cur) => {
+          return cur.filter(
+            (die) => die.id !== value.data?.onDeleteVisualDie?.id
+          );
+        });
+      },
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      deleteSubscription.unsubscribe();
+    };
+  }, [roomId]);
   return (
     <>
       {dice.map((d) => (
-        <VDie die={d} key={d.id} />
+        <VDie die={d} key={d.id} setActionInProgress={setActionInProgress} />
       ))}
     </>
   );
 };
 
-const VDie = ({ die }: { die: VisualDie }) => {
+const VisualCounters = ({
+  startingCounters = [],
+  roomId = '',
+  setActionInProgress,
+}: {
+  startingCounters?: VisualCounter[];
+  roomId?: string;
+  setActionInProgress: (val: boolean) => void;
+}) => {
+  const [counters, setCounters] = React.useState<VisualCounter[]>(
+    startingCounters
+  );
   React.useEffect(() => {
-    Draggable.create(document.getElementById(`${die.id}`), {
-      allowEventDefault: true,
-      type: 'x,y',
-      bounds: document.getElementById('dice-box'),
-      onDragEnd: function () {
-        const dragEvent = {
-          id: die.id,
-          endX: this.endX,
-          endY: this.endY,
-          deltaX: this.endX - this.startX,
-          deltaY: this.endY - this.startY,
-        };
-        console.log(dragEvent);
+    const subscription = API.graphql({
+      query: subscriptions.onCreateCounterByRoom,
+      variables: {
+        roomId,
+      },
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        setCounters((cur) => {
+          return cur.concat(value.data?.onCreateCounterByRoom);
+        });
       },
     });
-  }, [die]);
-  const el = React.useRef(null);
-  React.useEffect(() => {
-    gsap.to(el.current, {
-      x: die.x,
-      y: die.y,
-      duration: 0.25,
-      ease: Elastic.easeOut.config(1, 1),
+    const deleteSubscription = API.graphql({
+      query: subscriptions.onDeleteCounter,
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        setCounters((cur) => {
+          return cur.filter(
+            (counter) => counter.id !== value.data?.onDeleteCounter?.id
+          );
+        });
+      },
     });
-  }, [die.x, die.y]);
+
+    return () => {
+      subscription.unsubscribe();
+      deleteSubscription.unsubscribe();
+    };
+  }, [roomId]);
+  return (
+    <>
+      {counters.map((c) => (
+        <VCounter
+          counter={c}
+          key={c.id}
+          setActionInProgress={setActionInProgress}
+        />
+      ))}
+    </>
+  );
+};
+
+const VisualLabels = ({
+  startingLabels = [],
+  roomId = '',
+  setActionInProgress,
+}: {
+  startingLabels?: VisualLabel[];
+  roomId?: string;
+  setActionInProgress: (val: boolean) => void;
+}) => {
+  const [labels, setLabels] = React.useState<VisualLabel[]>(startingLabels);
+  React.useEffect(() => {
+    const subscription = API.graphql({
+      query: subscriptions.onCreateLabelByRoom,
+      variables: {
+        roomId,
+      },
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        setLabels((cur) => {
+          return cur.concat(value.data?.onCreateLabelByRoom);
+        });
+      },
+    });
+    const deleteSubscription = API.graphql({
+      query: subscriptions.onDeleteLabel,
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        setLabels((cur) => {
+          return cur.filter(
+            (label) => label.id !== value.data?.onDeleteLabel?.id
+          );
+        });
+      },
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      deleteSubscription.unsubscribe();
+    };
+  }, [roomId]);
 
   return (
-    <Box h={8} w={12} id={die.id} ref={el} border="1px solid red">
-      {die.result}
-    </Box>
+    <>
+      {labels.map((l) => (
+        <VLabel
+          label={l}
+          key={l.id}
+          setActionInProgress={setActionInProgress}
+        />
+      ))}
+    </>
   );
 };
 

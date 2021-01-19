@@ -84,9 +84,52 @@ export const createInteractiveRoom = /* GraphQL */ `
         updatedAt
       }
       dice {
+        items {
+          id
+          roomId
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -110,9 +153,52 @@ export const updateInteractiveRoom = /* GraphQL */ `
         updatedAt
       }
       dice {
+        items {
+          id
+          roomId
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -136,9 +222,52 @@ export const deleteInteractiveRoom = /* GraphQL */ `
         updatedAt
       }
       dice {
+        items {
+          id
+          roomId
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -227,6 +356,54 @@ export const deleteSafetyModule = /* GraphQL */ `
     }
   }
 `;
+export const createLabel = /* GraphQL */ `
+  mutation CreateLabel(
+    $input: CreateLabelInput!
+    $condition: ModelLabelConditionInput
+  ) {
+    createLabel(input: $input, condition: $condition) {
+      id
+      roomId
+      contents
+      x
+      y
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLabel = /* GraphQL */ `
+  mutation UpdateLabel(
+    $input: UpdateLabelInput!
+    $condition: ModelLabelConditionInput
+  ) {
+    updateLabel(input: $input, condition: $condition) {
+      id
+      roomId
+      contents
+      x
+      y
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLabel = /* GraphQL */ `
+  mutation DeleteLabel(
+    $input: DeleteLabelInput!
+    $condition: ModelLabelConditionInput
+  ) {
+    deleteLabel(input: $input, condition: $condition) {
+      id
+      roomId
+      contents
+      x
+      y
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createCounter = /* GraphQL */ `
   mutation CreateCounter(
     $input: CreateCounterInput!
@@ -238,6 +415,8 @@ export const createCounter = /* GraphQL */ `
       title
       value
       max
+      x
+      y
       type
       createdAt
       updatedAt
@@ -255,6 +434,8 @@ export const updateCounter = /* GraphQL */ `
       title
       value
       max
+      x
+      y
       type
       createdAt
       updatedAt
@@ -272,6 +453,8 @@ export const deleteCounter = /* GraphQL */ `
       title
       value
       max
+      x
+      y
       type
       createdAt
       updatedAt
@@ -289,6 +472,56 @@ export const createVisualDie = /* GraphQL */ `
       room {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -298,6 +531,7 @@ export const createVisualDie = /* GraphQL */ `
       result
       sides
       color
+      version
       createdAt
       updatedAt
     }
@@ -314,6 +548,56 @@ export const updateVisualDie = /* GraphQL */ `
       room {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -323,6 +607,7 @@ export const updateVisualDie = /* GraphQL */ `
       result
       sides
       color
+      version
       createdAt
       updatedAt
     }
@@ -339,6 +624,56 @@ export const deleteVisualDie = /* GraphQL */ `
       room {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -348,6 +683,7 @@ export const deleteVisualDie = /* GraphQL */ `
       result
       sides
       color
+      version
       createdAt
       updatedAt
     }

@@ -33,6 +33,13 @@ export const listTextRooms = /* GraphQL */ `
         name
         rolls
         counters
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -53,9 +60,52 @@ export const getInteractiveRoom = /* GraphQL */ `
         updatedAt
       }
       dice {
+        items {
+          id
+          roomId
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -77,6 +127,56 @@ export const listInteractiveRooms = /* GraphQL */ `
       items {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -140,6 +240,39 @@ export const listSafetyModules = /* GraphQL */ `
     }
   }
 `;
+export const getLabel = /* GraphQL */ `
+  query GetLabel($id: ID!) {
+    getLabel(id: $id) {
+      id
+      roomId
+      contents
+      x
+      y
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLabels = /* GraphQL */ `
+  query ListLabels(
+    $filter: ModelLabelFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLabels(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        roomId
+        contents
+        x
+        y
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getCounter = /* GraphQL */ `
   query GetCounter($id: ID!) {
     getCounter(id: $id) {
@@ -148,6 +281,8 @@ export const getCounter = /* GraphQL */ `
       title
       value
       max
+      x
+      y
       type
       createdAt
       updatedAt
@@ -167,6 +302,8 @@ export const listCounters = /* GraphQL */ `
         title
         value
         max
+        x
+        y
         type
         createdAt
         updatedAt
@@ -183,6 +320,56 @@ export const getVisualDie = /* GraphQL */ `
       room {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -192,6 +379,7 @@ export const getVisualDie = /* GraphQL */ `
       result
       sides
       color
+      version
       createdAt
       updatedAt
     }
@@ -207,12 +395,35 @@ export const listVisualDies = /* GraphQL */ `
       items {
         id
         roomId
+        room {
+          id
+          name
+          safetyModule {
+            id
+            xCardActive
+            linesAndVeils
+            createdAt
+            updatedAt
+          }
+          dice {
+            nextToken
+          }
+          counters {
+            nextToken
+          }
+          labels {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
         x
         y
         createdBy
         result
         sides
         color
+        version
         createdAt
         updatedAt
       }
@@ -240,6 +451,13 @@ export const textRoomByName = /* GraphQL */ `
         name
         rolls
         counters
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -265,6 +483,56 @@ export const interactiveRoomByName = /* GraphQL */ `
       items {
         id
         name
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }

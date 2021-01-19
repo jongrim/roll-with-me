@@ -9,8 +9,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  Icon,
-  IconButton,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,

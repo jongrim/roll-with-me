@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
-import * as customQueries from '../graphql/customQueries';
 import { InteractiveRoomData } from '../APITypes';
 
 const getRoomId = async (name: string) => {
@@ -21,7 +20,7 @@ const getRoomData = async (id: string) => {
   try {
     // @ts-ignore
     const { data } = await API.graphql({
-      query: customQueries.getInteractiveRoom,
+      query: queries.getInteractiveRoom,
       variables: {
         id,
       },
