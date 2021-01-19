@@ -10,6 +10,15 @@
       "StackName": "amplify-rollwithme-main-192344",
       "StackId": "arn:aws:cloudformation:us-east-1:298644330995:stack/amplify-rollwithme-main-192344/ffa38410-22ea-11eb-82b4-1254a8a4acf7",
       "AmplifyAppId": "d1y92bo115vf7n"
+    },
+    "categories": {
+      "auth": {
+        "rollwithmea4fdec43": {}
+      },
+      "function": {
+        "randomRoomName": {},
+        "randomNumbers": {}
+      }
     }
   },
   "dev": {
