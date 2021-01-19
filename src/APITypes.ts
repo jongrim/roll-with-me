@@ -1,5 +1,5 @@
 import { GetTextRoomQuery } from './API';
-import { SafetyModule, VisualDie } from './types';
+import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export type TextRoomDetails = Omit<
   Exclude<GetTextRoomQuery['getTextRoom'], null>,
@@ -7,9 +7,14 @@ export type TextRoomDetails = Omit<
 >;
 
 export type InteractiveRoomData = {
-  counters: [];
   createdAt: string;
   updatedAt: string;
+  labels: {
+    items: VisualLabel[];
+  };
+  counters: {
+    items: VisualCounter[];
+  };
   dice: {
     items: VisualDie[];
   };

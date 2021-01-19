@@ -8,6 +8,8 @@ export interface Die {
 export interface VisualDie extends Die {
   x: number;
   y: number;
+  color: string;
+  version: number;
 }
 
 export interface SavedDie {
@@ -44,6 +46,21 @@ export interface Counter {
   id: string;
   title: string;
   value: number;
+}
+
+export interface VisualCounter extends Counter {
+  x: number;
+  y: number;
+  max?: number;
+  type: 'CLOCK' | 'OTHER';
+}
+
+export interface VisualLabel {
+  x: number;
+  y: number;
+  contents: string;
+  id: string;
+  roomId: string;
 }
 
 export interface SafetyModule {
