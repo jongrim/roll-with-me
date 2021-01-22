@@ -80,13 +80,13 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
   React.useEffect(() => {
-    const checkForSlash = (e: KeyboardEvent) => {
-      if (e.key === '/') {
+    const checkForQuickCommand = (e: KeyboardEvent) => {
+      if (e.key === '/' && e.ctrlKey) {
         quickRollRef.current?.focus();
       }
     };
-    document.addEventListener('keyup', checkForSlash);
-    return () => document.removeEventListener('keyup', checkForSlash);
+    document.addEventListener('keyup', checkForQuickCommand);
+    return () => document.removeEventListener('keyup', checkForQuickCommand);
   }, [quickRollRef]);
 
   const submitQuickRoll = compose(

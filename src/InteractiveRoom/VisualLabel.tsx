@@ -44,8 +44,10 @@ const VLabel = ({
     }
   };
 
+  const el = React.useRef(null);
+
   React.useEffect(() => {
-    Draggable.create(document.getElementById(`${trackedLabel.id}`), {
+    Draggable.create(el.current, {
       allowEventDefault: true,
       type: 'x,y',
       bounds: document.getElementById('dice-box'),
@@ -68,7 +70,6 @@ const VLabel = ({
     });
   }, [trackedLabel.id]);
 
-  const el = React.useRef(null);
   React.useEffect(() => {
     const subscription = API.graphql({
       query: subscriptions.onUpdateLabelById,

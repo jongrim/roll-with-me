@@ -193,7 +193,7 @@ function Home() {
                   New Text Room
                 </Button>
                 <Button
-                  disabled={isLocalhost ? false : true}
+                  disabled={Boolean(window.location.hostname.includes('main'))}
                   variant="outline"
                   colorScheme="blue"
                   w="full"

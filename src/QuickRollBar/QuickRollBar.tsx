@@ -22,10 +22,11 @@ const QuickRollBar = React.forwardRef<HTMLElement, QuickRollBarProps>(
         }}
       >
         <InputGroup mb={3}>
-          <InputLeftElement>
-            <Kbd>/</Kbd>
+          <InputLeftElement w={20}>
+            <Kbd>Ctrl</Kbd> + <Kbd>/</Kbd>
           </InputLeftElement>
           <Input
+            pl={24}
             variant="flushed"
             placeholder={placeholder}
             value={quickRollValue}

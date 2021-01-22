@@ -76,6 +76,7 @@ export const getInteractiveRoom = /* GraphQL */ `
           sides
           color
           version
+          type
           createdAt
           updatedAt
         }
@@ -145,6 +146,7 @@ export const listInteractiveRooms = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }
@@ -338,6 +340,7 @@ export const getVisualDie = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }
@@ -380,6 +383,7 @@ export const getVisualDie = /* GraphQL */ `
       sides
       color
       version
+      type
       createdAt
       updatedAt
     }
@@ -424,6 +428,7 @@ export const listVisualDies = /* GraphQL */ `
         sides
         color
         version
+        type
         createdAt
         updatedAt
       }
@@ -501,6 +506,7 @@ export const interactiveRoomByName = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }

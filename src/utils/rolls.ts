@@ -31,13 +31,15 @@ export function makeNDice({
   return Array.from(new Array(count)).map(dieFactory({ n: sides, name }));
 }
 
-export function assignResultsToDice({
+type dieWithResult = { result: number };
+
+export function assignResultsToDice<T extends { sides: number }>({
   dice,
   results,
 }: {
-  dice: Die[];
+  dice: T[];
   results: number[];
-}): Die[] {
+}): (T & dieWithResult)[] {
   const newDice = [];
   for (let i = 0; i < dice.length; i++) {
     const newDie = { ...dice[i], result: (results[i] % dice[i].sides) + 1 };
