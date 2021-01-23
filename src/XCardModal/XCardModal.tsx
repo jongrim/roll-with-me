@@ -9,21 +9,27 @@ import {
   Text,
 } from '@chakra-ui/react';
 import * as React from 'react';
+import useSafetyModuleLookup from '../SafetyForm/useSafetyRoomLookup';
+import setXCard from '../SafetyForm/xCard';
 
 interface XCardModalProps {
-  xCardActive: boolean;
-  clearXCard: (value: false) => void;
-  xCardChanging: boolean;
+  safetyModuleId: string;
 }
 
 const XCardModal = React.forwardRef<HTMLElement, XCardModalProps>(
-  ({ clearXCard, xCardActive, xCardChanging }, quickRollRef) => {
+  ({ safetyModuleId }, quickRollRef) => {
+    const [closing, setClosing] = React.useState(false);
+    const { data } = useSafetyModuleLookup(safetyModuleId);
+    const close = async () => {
+      setClosing(true);
+      // Should better alert there isn't a safety module loaded
+      await setXCard({ value: false, id: safetyModuleId });
+      setClosing(false);
+    };
     return (
       <Modal
-        isOpen={xCardActive}
-        onClose={() => {
-          clearXCard(false);
-        }}
+        isOpen={data?.xCardActive || false}
+        onClose={close}
         size="xl"
         // @ts-ignore
         finalFocusRef={quickRollRef}
@@ -39,10 +45,10 @@ const XCardModal = React.forwardRef<HTMLElement, XCardModalProps>(
           </ModalBody>
           <ModalFooter>
             <Button
-              isLoading={xCardChanging}
+              isLoading={closing}
               variant="ghost"
               colorScheme="gray"
-              onClick={() => clearXCard(false)}
+              onClick={close}
             >
               Acknowledge
             </Button>

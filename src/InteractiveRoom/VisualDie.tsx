@@ -665,9 +665,9 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
                 />
               </motion.div>
             </Box>
-            <Text gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
+            <Box gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
               <FudgeDieResult result={trackedDie.result || 6} />
-            </Text>
+            </Box>
           </Grid>
           <DieCreator
             sides={trackedDie.type ?? ''}
