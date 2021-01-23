@@ -9,7 +9,7 @@ import Profile from './Profile';
 import Home from './Home';
 import RoomProvider from './RoomProvider';
 
-const rollWithMeTheme = extendTheme({
+export const rollWithMeTheme = extendTheme({
   colors: {
     brand: {
       50: '#ffe6ff',

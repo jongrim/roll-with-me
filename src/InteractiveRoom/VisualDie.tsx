@@ -1,18 +1,27 @@
 import * as React from 'react';
 import {
   Box,
+  Center,
   Grid,
   HStack,
   Icon,
   IconButton,
   ScaleFade,
   Text,
+  useColorMode,
+  VStack,
 } from '@chakra-ui/react';
 import { BsTriangle, BsSquare, BsDiamond, BsOctagon } from 'react-icons/bs';
-import { RiRestartLine, RiDeleteBin4Line } from 'react-icons/ri';
+import {
+  RiRestartLine,
+  RiDeleteBin4Line,
+  RiUser3Fill,
+  RiSettings4Fill,
+  RiAddLine,
+} from 'react-icons/ri';
 import { API } from 'aws-amplify';
-import gsap, { Elastic, Linear } from 'gsap';
-import { motion, useAnimation } from 'framer-motion';
+import gsap, { Elastic } from 'gsap';
+import { AnimationControls, motion, useAnimation } from 'framer-motion';
 import { Draggable } from 'gsap/all';
 import * as subscriptions from '../graphql/subscriptions';
 import * as mutations from '../graphql/mutations';
@@ -33,22 +42,28 @@ const Heptagon = () => {
   );
 };
 
-const VDie = ({
-  die,
-  setActionInProgress,
-}: {
+const VDie: React.FC<{
   die: VisualDie;
   setActionInProgress: (val: boolean) => void;
-}) => {
+  isSelected: boolean;
+  selectDie: (die: { id: string; sides: number; version: number }) => void;
+}> = ({ die, setActionInProgress, isSelected, selectDie }) => {
   const [trackedDie, setTrackedDie] = React.useState<VisualDie>(die);
   const [actionsVisible, setActionsVisible] = React.useState(false);
+  const el = React.useRef(null);
+
   React.useEffect(() => {
-    Draggable.create(document.getElementById(`${trackedDie.id}`), {
+    Draggable.create(el.current, {
       allowEventDefault: true,
       type: 'x,y',
       bounds: document.getElementById('dice-box'),
-      onClick: () => {
+      onClick: function () {
         setActionsVisible((cur) => !cur);
+        selectDie({
+          id: trackedDie.id,
+          sides: trackedDie.sides,
+          version: trackedDie.version,
+        });
       },
       onDragEnd: async function () {
         setActionInProgress(true);
@@ -70,9 +85,14 @@ const VDie = ({
         }
       },
     });
-  }, [trackedDie.id, setActionInProgress]);
+  }, [
+    trackedDie.id,
+    trackedDie.sides,
+    trackedDie.version,
+    setActionInProgress,
+    selectDie,
+  ]);
 
-  const el = React.useRef(null);
   React.useEffect(() => {
     const subscription = API.graphql({
       query: subscriptions.onUpdateVisualDieById,
@@ -111,6 +131,7 @@ const VDie = ({
 
   const controls = useAnimation();
   React.useEffect(() => {
+    setActionsVisible(false);
     controls.start({
       rotateX: 360,
       transition: {
@@ -120,37 +141,66 @@ const VDie = ({
     });
   }, [trackedDie.version, controls]);
 
+  const { colorMode } = useColorMode();
+  const buttonHighlight =
+    colorMode === 'light'
+      ? { boxShadow: 'lg' }
+      : { border: '1px solid', borderColor: trackedDie.color };
+
+  if (trackedDie.type === 'fudge') {
+    return (
+      <FudgeDie
+        ref={el}
+        trackedDie={trackedDie}
+        controls={controls}
+        buttonHighlight={buttonHighlight}
+        actionsVisible={actionsVisible}
+        setActionInProgress={setActionInProgress}
+        isSelected={isSelected}
+      />
+    );
+  }
+
   switch (trackedDie.sides) {
     case 4:
       return (
-        <Box
-          id={trackedDie.id}
-          ref={el}
-          display="inline-block"
-          position="absolute"
-        >
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  icon={
-                    <Icon p={3} width="72px" height="72px" as={BsTriangle} />
-                  }
-                  gridArea="1 / 1"
-                />
-              </motion.div>
-            </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+        <Box ref={el} position="absolute">
+          <HStack>
+            <Grid
+              area="1 / 1"
+              width="72px"
+              height="72px"
+              placeItems="center"
+              {...(isSelected ? buttonHighlight : {})}
+              borderRadius="md"
+            >
+              <Box gridArea="1 / 1">
+                <motion.div animate={controls}>
+                  <IconButton
+                    p={3}
+                    aria-label="die"
+                    onClick={() => {}}
+                    variant="ghost"
+                    color={trackedDie.color}
+                    width="72px"
+                    height="72px"
+                    icon={
+                      <Icon p={3} width="72px" height="72px" as={BsTriangle} />
+                    }
+                    gridArea="1 / 1"
+                  />
+                </motion.div>
+              </Box>
+              <Text gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
+                {trackedDie.result}
+              </Text>
+            </Grid>
+            <DieCreator
+              sides={trackedDie.sides}
+              createdBy={trackedDie.createdBy}
+              isVisible={actionsVisible}
+            />
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -168,26 +218,42 @@ const VDie = ({
           display="inline-block"
           position="absolute"
         >
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  role="button"
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  icon={<Icon p={3} width="72px" height="72px" as={BsSquare} />}
-                />
-              </motion.div>
-            </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+          <HStack>
+            <Grid
+              area="1 / 1"
+              width="72px"
+              height="72px"
+              placeItems="center"
+              {...(isSelected ? buttonHighlight : {})}
+              borderRadius="md"
+            >
+              <Box gridArea="1 / 1">
+                <motion.div animate={controls}>
+                  <IconButton
+                    role="button"
+                    p={3}
+                    aria-label="die"
+                    onClick={() => {}}
+                    variant="ghost"
+                    color={trackedDie.color}
+                    width="72px"
+                    height="72px"
+                    icon={
+                      <Icon p={3} width="72px" height="72px" as={BsSquare} />
+                    }
+                  />
+                </motion.div>
+              </Box>
+              <Text gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
+                {trackedDie.result}
+              </Text>
+            </Grid>
+            <DieCreator
+              sides={trackedDie.sides}
+              createdBy={trackedDie.createdBy}
+              isVisible={actionsVisible}
+            />
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -205,31 +271,53 @@ const VDie = ({
           display="inline-block"
           position="absolute"
         >
-          <Text fontSize="xs" textAlign="center">
-            D8
-          </Text>
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  icon={
-                    <Icon p={3} width="72px" height="72px" as={BsDiamond} />
-                  }
+          <HStack>
+            <VStack>
+              <Text fontSize="xs" textAlign="center">
+                D8
+              </Text>
+              <Grid
+                area="1 / 1"
+                width="72px"
+                height="72px"
+                placeItems="center"
+                {...(isSelected ? buttonHighlight : {})}
+                borderRadius="md"
+              >
+                <Box gridArea="1 / 1">
+                  <motion.div animate={controls}>
+                    <IconButton
+                      p={3}
+                      aria-label="die"
+                      onClick={() => {}}
+                      variant="ghost"
+                      color={trackedDie.color}
+                      width="72px"
+                      height="72px"
+                      icon={
+                        <Icon p={3} width="72px" height="72px" as={BsDiamond} />
+                      }
+                      gridArea="1 / 1"
+                    />
+                  </motion.div>
+                </Box>
+                <Text
                   gridArea="1 / 1"
-                />
-              </motion.div>
+                  zIndex={2}
+                  _hover={{ cursor: 'pointer' }}
+                >
+                  {trackedDie.result}
+                </Text>
+              </Grid>
+            </VStack>
+            <Box pt={6}>
+              <DieCreator
+                sides={trackedDie.sides}
+                createdBy={trackedDie.createdBy}
+                isVisible={actionsVisible}
+              />
             </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -247,31 +335,53 @@ const VDie = ({
           display="inline-block"
           position="absolute"
         >
-          <Text fontSize="xs" textAlign="center">
-            D10
-          </Text>
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  icon={
-                    <Icon p={3} width="72px" height="72px" as={BsDiamond} />
-                  }
+          <HStack>
+            <VStack>
+              <Text fontSize="xs" textAlign="center">
+                D10
+              </Text>
+              <Grid
+                area="1 / 1"
+                width="72px"
+                height="72px"
+                placeItems="center"
+                {...(isSelected ? buttonHighlight : {})}
+                borderRadius="md"
+              >
+                <Box gridArea="1 / 1">
+                  <motion.div animate={controls}>
+                    <IconButton
+                      p={3}
+                      aria-label="die"
+                      onClick={() => {}}
+                      variant="ghost"
+                      color={trackedDie.color}
+                      width="72px"
+                      height="72px"
+                      icon={
+                        <Icon p={3} width="72px" height="72px" as={BsDiamond} />
+                      }
+                      gridArea="1 / 1"
+                    />
+                  </motion.div>
+                </Box>
+                <Text
                   gridArea="1 / 1"
-                />
-              </motion.div>
+                  zIndex={2}
+                  _hover={{ cursor: 'pointer' }}
+                >
+                  {trackedDie.result}
+                </Text>
+              </Grid>
+            </VStack>
+            <Box pt={6}>
+              <DieCreator
+                sides={trackedDie.sides}
+                createdBy={trackedDie.createdBy}
+                isVisible={actionsVisible}
+              />
             </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -289,35 +399,55 @@ const VDie = ({
           display="inline-block"
           position="absolute"
         >
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  gridArea="1 / 1"
-                  icon={
-                    <Icon
-                      viewBox="0 0 16 16"
-                      width="64px"
-                      height="64px"
+          <HStack>
+            <VStack>
+              <Grid
+                area="1 / 1"
+                width="72px"
+                height="72px"
+                placeItems="center"
+                {...(isSelected ? buttonHighlight : {})}
+                borderRadius="md"
+              >
+                <Box gridArea="1 / 1">
+                  <motion.div animate={controls}>
+                    <IconButton
+                      p={3}
+                      aria-label="die"
+                      onClick={() => {}}
+                      variant="ghost"
                       color={trackedDie.color}
-                    >
-                      <Heptagon />
-                    </Icon>
-                  }
-                />
-              </motion.div>
-            </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+                      width="72px"
+                      height="72px"
+                      gridArea="1 / 1"
+                      icon={
+                        <Icon
+                          viewBox="0 0 16 16"
+                          width="64px"
+                          height="64px"
+                          color={trackedDie.color}
+                        >
+                          <Heptagon />
+                        </Icon>
+                      }
+                    />
+                  </motion.div>
+                </Box>
+                <Text
+                  gridArea="1 / 1"
+                  zIndex={2}
+                  _hover={{ cursor: 'pointer' }}
+                >
+                  {trackedDie.result}
+                </Text>
+              </Grid>
+            </VStack>
+            <DieCreator
+              sides={trackedDie.sides}
+              createdBy={trackedDie.createdBy}
+              isVisible={actionsVisible}
+            />
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -335,28 +465,42 @@ const VDie = ({
           display="inline-block"
           position="absolute"
         >
-          <Grid area="1 / 1" width="72px" height="72px" placeItems="center">
-            <Box gridArea="1 / 1">
-              <motion.div animate={controls}>
-                <IconButton
-                  p={3}
-                  aria-label="die"
-                  onClick={() => {}}
-                  variant="ghost"
-                  color={trackedDie.color}
-                  width="72px"
-                  height="72px"
-                  icon={
-                    <Icon p={3} width="72px" height="72px" as={BsOctagon} />
-                  }
-                  gridArea="1 / 1"
-                />
-              </motion.div>
-            </Box>
-            <Text gridArea="1 / 1" zIndex={2}>
-              {trackedDie.result}
-            </Text>
-          </Grid>
+          <HStack>
+            <Grid
+              area="1 / 1"
+              width="72px"
+              height="72px"
+              placeItems="center"
+              {...(isSelected ? buttonHighlight : {})}
+              borderRadius="md"
+            >
+              <Box gridArea="1 / 1">
+                <motion.div animate={controls}>
+                  <IconButton
+                    p={3}
+                    aria-label="die"
+                    onClick={() => {}}
+                    variant="ghost"
+                    color={trackedDie.color}
+                    width="72px"
+                    height="72px"
+                    icon={
+                      <Icon p={3} width="72px" height="72px" as={BsOctagon} />
+                    }
+                    gridArea="1 / 1"
+                  />
+                </motion.div>
+              </Box>
+              <Text gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
+                {trackedDie.result}
+              </Text>
+            </Grid>
+            <DieCreator
+              sides={trackedDie.sides}
+              createdBy={trackedDie.createdBy}
+              isVisible={actionsVisible}
+            />
+          </HStack>
           <DieActions
             isVisible={actionsVisible}
             id={trackedDie.id}
@@ -422,17 +566,17 @@ const DieActions = ({
   };
   return (
     <>
-      <ScaleFade initialScale={0.6} in={isVisible}>
+      <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
         <HStack spacing={2} mt={2}>
           <IconButton
-            variant="outline"
+            variant="dark-lg"
             icon={<RiRestartLine />}
             size="sm"
             aria-label="roll die"
             onClick={rerollDie}
           />
           <IconButton
-            variant="outline"
+            variant="dark-lg"
             icon={<RiDeleteBin4Line />}
             size="sm"
             aria-label="delete die"
@@ -442,6 +586,126 @@ const DieActions = ({
       </ScaleFade>
     </>
   );
+};
+
+const DieCreator: React.FC<{
+  createdBy: string;
+  sides: number | string;
+  isVisible: boolean;
+}> = ({ createdBy, sides, isVisible }) => {
+  return (
+    <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
+      <VStack spacing={3} alignItems="start">
+        <HStack spacing={2}>
+          <Icon as={RiUser3Fill} w={3} h={3} opacity="0.8" />
+          <Text fontSize="sm" opacity="0.8">
+            {createdBy}
+          </Text>
+        </HStack>
+        <HStack spacing={2}>
+          <Icon as={RiSettings4Fill} w={3} h={3} opacity="0.8" />
+          <Text fontSize="sm" opacity="0.8">
+            {Number.isInteger(sides) ? `${sides} sided` : `${sides} die`}
+          </Text>
+        </HStack>
+      </VStack>
+    </ScaleFade>
+  );
+};
+
+interface FudgeDieProps {
+  trackedDie: VisualDie;
+  setActionInProgress: (val: boolean) => void;
+  isSelected: boolean;
+  buttonHighlight: Record<string, unknown>;
+  actionsVisible: boolean;
+  controls: AnimationControls;
+}
+
+const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
+  (
+    {
+      trackedDie,
+      isSelected,
+      buttonHighlight,
+      controls,
+      actionsVisible,
+      setActionInProgress,
+    },
+    el
+  ) => {
+    return (
+      <Box
+        id={trackedDie.id}
+        ref={el}
+        display="inline-block"
+        position="absolute"
+      >
+        <HStack>
+          <Grid
+            area="1 / 1"
+            width="72px"
+            height="72px"
+            placeItems="center"
+            {...(isSelected ? buttonHighlight : {})}
+            borderRadius="md"
+          >
+            <Box gridArea="1 / 1">
+              <motion.div animate={controls}>
+                <IconButton
+                  role="button"
+                  p={3}
+                  aria-label="die"
+                  onClick={() => {}}
+                  variant="ghost"
+                  color={trackedDie.color}
+                  width="72px"
+                  height="72px"
+                  icon={<Icon p={3} width="72px" height="72px" as={BsSquare} />}
+                />
+              </motion.div>
+            </Box>
+            <Box gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
+              <FudgeDieResult result={trackedDie.result || 6} />
+            </Box>
+          </Grid>
+          <DieCreator
+            sides={trackedDie.type ?? ''}
+            createdBy={trackedDie.createdBy}
+            isVisible={actionsVisible}
+          />
+        </HStack>
+        <DieActions
+          isVisible={actionsVisible}
+          id={trackedDie.id}
+          sides={trackedDie.sides}
+          setActionInProgress={setActionInProgress}
+          version={trackedDie.version}
+        />
+      </Box>
+    );
+  }
+);
+
+const FudgeDieResult: React.FC<{ result: number }> = ({ result }) => {
+  switch (result) {
+    case 1:
+    case 2:
+      return (
+        <Text fontSize="3xl" fontWeight="600">
+          +
+        </Text>
+      );
+    case 3:
+    case 4:
+      return (
+        <Text fontSize="2xl" fontWeight="600">
+          —
+        </Text>
+      );
+    default:
+      return null;
+  }
 };
 
 export default VDie;

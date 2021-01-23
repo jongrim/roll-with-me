@@ -28,7 +28,6 @@ import {
   CreateInteractiveRoomMutation,
 } from './API';
 import gql from './gql';
-import isLocalhost from './utils/isLocalHost';
 
 async function getNewRoomName() {
   const { result } = await API.get('randomNameAPI', '/random-room-name', {});
@@ -37,6 +36,7 @@ async function getNewRoomName() {
 
 function Home() {
   const [name, setName] = React.useState<string>('');
+
   React.useEffect(() => {
     async function starterName() {
       const name = await getNewRoomName();
@@ -165,6 +165,11 @@ function Home() {
             >
               Digital tools for playing great games online
             </Text>
+            <Text color="black" opacity="0.8" fontSize="sm">
+              Make a room and share the URL with friends to roll dice together
+              <br />
+              Come back to it later and pick up where you left off
+            </Text>
           </Stack>
           <Img w="40" src={logo} alt="Person holding cup of coffee" />
         </Flex>
@@ -179,10 +184,14 @@ function Home() {
             <Heading as="h3" fontSize="xl" color="black">
               Dice Rooms
             </Heading>
-            <Text color="black">
-              Make a room and share the URL with friends to roll dice together
-            </Text>
-            <Stack spacing={3} mt={3}>
+          </GridItem>
+          <GridItem>
+            <Heading as="h3" fontSize="xl" color="black">
+              Game Rooms
+            </Heading>
+          </GridItem>
+          <GridItem>
+            <Stack spacing={3}>
               <LightMode>
                 <Button
                   variant="outline"
@@ -190,29 +199,21 @@ function Home() {
                   w="full"
                   onClick={() => handleNewRoomRequest('r')}
                 >
-                  New Text Room
+                  Text Room
                 </Button>
                 <Button
-                  disabled={isLocalhost ? false : true}
                   variant="outline"
                   colorScheme="blue"
                   w="full"
                   onClick={() => handleNewRoomRequest('i')}
                 >
-                  New Interactive Room - Coming Soon
+                  Visual Dice Room
                 </Button>
               </LightMode>
             </Stack>
           </GridItem>
           <GridItem>
-            <Heading as="h3" fontSize="xl" color="black">
-              Game Rooms
-            </Heading>
-            <Text color="black">
-              Everything you need to play a game including character sheets,
-              dice, and safety tools
-            </Text>
-            <Stack spacing={3} mt={3}>
+            <Stack spacing={3}>
               <LightMode>
                 <Button
                   disabled

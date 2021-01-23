@@ -100,6 +100,7 @@ export const createInteractiveRoom = /* GraphQL */ `
           sides
           color
           version
+          type
           createdAt
           updatedAt
         }
@@ -169,6 +170,7 @@ export const updateInteractiveRoom = /* GraphQL */ `
           sides
           color
           version
+          type
           createdAt
           updatedAt
         }
@@ -238,6 +240,7 @@ export const deleteInteractiveRoom = /* GraphQL */ `
           sides
           color
           version
+          type
           createdAt
           updatedAt
         }
@@ -490,6 +493,7 @@ export const createVisualDie = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }
@@ -532,6 +536,7 @@ export const createVisualDie = /* GraphQL */ `
       sides
       color
       version
+      type
       createdAt
       updatedAt
     }
@@ -566,6 +571,7 @@ export const updateVisualDie = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }
@@ -608,6 +614,7 @@ export const updateVisualDie = /* GraphQL */ `
       sides
       color
       version
+      type
       createdAt
       updatedAt
     }
@@ -642,6 +649,7 @@ export const deleteVisualDie = /* GraphQL */ `
             sides
             color
             version
+            type
             createdAt
             updatedAt
           }
@@ -684,6 +692,7 @@ export const deleteVisualDie = /* GraphQL */ `
       sides
       color
       version
+      type
       createdAt
       updatedAt
     }

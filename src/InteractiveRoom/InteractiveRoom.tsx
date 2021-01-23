@@ -6,6 +6,16 @@ import {
   Icon,
   IconButton,
   Input,
+  Text,
+  useToast,
+  Tooltip,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Spacer,
+  Button,
 } from '@chakra-ui/react';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -18,7 +28,7 @@ import QuickRollBar from '../QuickRollBar/QuickRollBar';
 import SettingsBar from '../SettingsBar';
 import UsernameModal from '../UsernameModal/UsernameModal';
 import useRoomLookup from './useRoomLookup';
-import { RiAddBoxLine } from 'react-icons/ri';
+import { RiAddBoxLine, RiRestartLine, RiTBoxLine } from 'react-icons/ri';
 import {
   GiD4,
   GiPerspectiveDiceSixFacesSix,
@@ -28,21 +38,24 @@ import {
   GiDiceTwentyFacesTwenty,
 } from 'react-icons/gi';
 import { BsClock } from 'react-icons/bs';
-import { MdTextFields } from 'react-icons/md';
 import SpinningCube from '../SpinningCube/SpinningCube';
 import { VisualCounter, VisualDie, VisualLabel } from '../types';
-import { assignResultsToDice, createDieOfNSides } from '../utils/rolls';
+import { assignResultsToDice } from '../utils/rolls';
 import { getRandomNumbers } from '../functions/randomNumbers';
 import VDie from './VisualDie';
 import ClockModal from './ClockModal';
 import VCounter from './VisualCounter';
 import VLabel from './VisualLabel';
 import LabelModal from './LabelModal';
-import findEmptySpace, { DICEBOX_ID, getBoxes } from '../utils/findEmptySpace';
+
+import { DICEBOX_ID } from '../utils/findEmptySpace';
+import SafetyForm from '../SafetyForm/SafetyForm';
+import { makeNewVisualDie } from './utils';
+import setXCard from '../SafetyForm/xCard';
+import XCardModal from '../XCardModal/XCardModal';
 
 gsap.registerPlugin(Draggable);
 
-const MIN_HEIGHT = 72;
 const MIN_WIDTH = 72;
 
 type Props = {
@@ -50,6 +63,7 @@ type Props = {
 };
 
 function InteractiveRoom({ name }: Props) {
+  const toast = useToast();
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
   const [username, setUsername] = React.useState('');
@@ -59,40 +73,31 @@ function InteractiveRoom({ name }: Props) {
 
   const quickRollRef = React.useRef<HTMLElement>(null!);
   React.useEffect(() => {
-    const checkForSlash = (e: KeyboardEvent) => {
-      if (e.key === '/') {
+    const checkForQuickCommand = (e: KeyboardEvent) => {
+      if (e.key === '/' && e.ctrlKey) {
         quickRollRef.current?.focus();
       }
     };
-    document.addEventListener('keyup', checkForSlash);
-    return () => document.removeEventListener('keyup', checkForSlash);
+    document.addEventListener('keydown', checkForQuickCommand);
+    return () => document.removeEventListener('keydown', checkForQuickCommand);
   }, [quickRollRef]);
 
-  const makeNewVisualDie = async ({ sides }: { sides: number }) => {
-    const die = createDieOfNSides({ n: sides, name: `d${sides}` });
-    const { top, left } = findEmptySpace({
-      MIN_HEIGHT,
-      MIN_WIDTH,
-      ...getBoxes(),
-    });
-    console.log(top, left);
-    const results = await getRandomNumbers(1);
-    const diceWithResults = assignResultsToDice({
-      dice: [die],
-      results,
-    });
-    return { ...diceWithResults[0], x: left, y: top };
-  };
-
-  const addDie = async ({ sides }: { sides: number }) => {
+  const addDie = async ({
+    sides,
+    leftOffset,
+    type,
+  }: {
+    sides: number;
+    leftOffset?: number;
+    type?: 'fudge';
+  }) => {
     setActionInProgress(true);
     try {
-      const die = await makeNewVisualDie({ sides });
+      const die = await makeNewVisualDie({ sides, leftOffset });
       await API.graphql({
         query: mutations.createVisualDie,
         variables: {
           input: {
-            // @ts-ignore
             roomId: data?.id,
             x: die.x,
             y: die.y,
@@ -101,6 +106,7 @@ function InteractiveRoom({ name }: Props) {
             sides: die.sides,
             version: 0,
             color,
+            type,
           },
         },
       });
@@ -116,134 +122,267 @@ function InteractiveRoom({ name }: Props) {
   return (
     <Flex flexDirection="column" h="full" maxW="full">
       <SettingsBar />
-      <Container maxW="6xl">
+      <Container maxW="6xl" flex="1" display="flex" flexDirection="column">
         <QuickRollBar
           name={username}
-          onSubmit={(roll) => console.log(roll)}
+          onSubmit={async (roll) => {
+            const { dice } = roll;
+            Promise.allSettled(
+              dice.map((die, i) => {
+                return addDie({ sides: die.sides, leftOffset: i * MIN_WIDTH });
+              })
+            )
+              .then(() => {
+                toast({
+                  status: 'success',
+                  description: 'Dice added!',
+                  duration: 5000,
+                  isClosable: true,
+                });
+              })
+              .catch((e) => {
+                console.warn(e);
+              });
+          }}
           placeholder="Enter a die count to create multiple at once (ex. 2d6)"
           ref={quickRollRef}
         />
-        <Flex justify="space-around" align="center" wrap="wrap" my={2}>
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={<Icon h={12} w={12} color={color} as={GiD4} />}
-            onClick={() => addDie({ sides: 4 })}
-            aria-label="d4"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={
-              <Icon
-                h={12}
-                w={12}
-                color={color}
-                as={GiPerspectiveDiceSixFacesSix}
-              />
-            }
-            onClick={() => addDie({ sides: 6 })}
-            aria-label="d6"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={
-              <Icon h={12} w={12} color={color} as={GiDiceEightFacesEight} />
-            }
-            onClick={() => addDie({ sides: 8 })}
-            aria-label="d8"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={<Icon h={12} w={12} color={color} as={GiD10} />}
-            onClick={() => addDie({ sides: 10 })}
-            aria-label="d10"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={<Icon h={12} w={12} color={color} as={GiD12} />}
-            onClick={() => addDie({ sides: 12 })}
-            aria-label="d12"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={
-              <Icon h={12} w={12} color={color} as={GiDiceTwentyFacesTwenty} />
-            }
-            onClick={() => addDie({ sides: 20 })}
-            aria-label="d20"
-          />
-          <IconButton
-            variant="ghost"
-            h={20}
-            w={20}
-            icon={<Icon h={12} w={12} color={color} as={RiAddBoxLine} />}
-            onClick={() => addDie({ sides: 6 })}
-            aria-label="fudge die"
-          />
-          <Input
-            aria-label="new die color"
-            data-testid="color-picker"
-            w={20}
-            type="color"
-            value={color}
-            onChange={({ target }) => {
-              debouncedColor(target.value);
-            }}
-          />
-        </Flex>
+        <Tabs
+          display="flex"
+          flexDirection="column"
+          flex="1"
+          variant="unstyled"
+          isFitted
+        >
+          <TabList>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+            >
+              Table
+            </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+            >
+              Safety
+            </Tab>
+          </TabList>
+          <TabPanels display="flex" flexDirection="column" flex="1">
+            <TabPanel display="flex" flexDirection="column" flex="1">
+              <Flex justify="space-between" align="center" wrap="wrap" my={2}>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 4 sided die"
+                  aria-label="Add a 4 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={<Icon h={12} w={12} color={color} as={GiD4} />}
+                    onClick={() => addDie({ sides: 4 })}
+                    aria-label="4 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 6 sided die"
+                  aria-label="Add a 6 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={
+                      <Icon
+                        h={12}
+                        w={12}
+                        color={color}
+                        as={GiPerspectiveDiceSixFacesSix}
+                      />
+                    }
+                    onClick={() => addDie({ sides: 6 })}
+                    aria-label="6 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 8 sided die"
+                  aria-label="Add a 8 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={
+                      <Icon
+                        h={12}
+                        w={12}
+                        color={color}
+                        as={GiDiceEightFacesEight}
+                      />
+                    }
+                    onClick={() => addDie({ sides: 8 })}
+                    aria-label="8 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 10 sided die"
+                  aria-label="Add a 10 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={<Icon h={12} w={12} color={color} as={GiD10} />}
+                    onClick={() => addDie({ sides: 10 })}
+                    aria-label="10 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 12 sided die"
+                  aria-label="Add a 12 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={<Icon h={12} w={12} color={color} as={GiD12} />}
+                    onClick={() => addDie({ sides: 12 })}
+                    aria-label="12 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a 20 sided die"
+                  aria-label="Add a 20 sided die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={
+                      <Icon
+                        h={12}
+                        w={12}
+                        color={color}
+                        as={GiDiceTwentyFacesTwenty}
+                      />
+                    }
+                    onClick={() => addDie({ sides: 20 })}
+                    aria-label="20 sided die"
+                  />
+                </Tooltip>
+                <Tooltip
+                  openDelay={500}
+                  label="Add a fudge die"
+                  aria-label="Add a fudge die"
+                >
+                  <IconButton
+                    variant="ghost"
+                    h={20}
+                    w={20}
+                    icon={
+                      <Icon h={12} w={12} color={color} as={RiAddBoxLine} />
+                    }
+                    onClick={() => addDie({ sides: 6, type: 'fudge' })}
+                    aria-label="fudge die"
+                  />
+                </Tooltip>
+                <Input
+                  aria-label="new die color"
+                  data-testid="color-picker"
+                  w={20}
+                  type="color"
+                  value={color}
+                  onChange={({ target }) => {
+                    debouncedColor(target.value);
+                  }}
+                />
+              </Flex>
+              <Text textAlign="right" fontSize="sm">
+                For best results, choose a color with good contrast on light and
+                dark backgrounds
+              </Text>
+              <Container flex="1" maxW="6xl" id={DICEBOX_ID}>
+                {!isLoading && (
+                  <>
+                    <VisualDice
+                      startingDice={data?.dice?.items}
+                      roomId={data?.id}
+                      setActionInProgress={setActionInProgress}
+                    />
+                    <VisualCounters
+                      startingCounters={data?.counters?.items}
+                      roomId={data?.id}
+                      setActionInProgress={setActionInProgress}
+                    />
+                    <VisualLabels
+                      startingLabels={data?.labels.items}
+                      roomId={data?.id}
+                      setActionInProgress={setActionInProgress}
+                    />
+                  </>
+                )}
+              </Container>
+              <Flex>
+                <HStack spacing={3} mb={3}>
+                  <IconButton
+                    variant="outline"
+                    size="sm"
+                    colorScheme="red"
+                    icon={<BsClock />}
+                    onClick={() => setClockModalIsOpen(true)}
+                    aria-label="new clock"
+                  />
+                  <IconButton
+                    variant="outline"
+                    size="sm"
+                    colorScheme="orange"
+                    icon={<Icon as={RiTBoxLine} w={6} h={6} />}
+                    onClick={() => setLabelModalIsOpen(true)}
+                    aria-label="new label"
+                  />
+                </HStack>
+                <Spacer />
+                <Button
+                  isLoading={false}
+                  size="sm"
+                  variant="outline"
+                  colorScheme="brand"
+                  onClick={async () => {
+                    // Should better alert there isn't a safety module loaded
+                    if (!data?.safetyModule?.id) return;
+                    setActionInProgress(true);
+                    await setXCard({ value: true, id: data.safetyModule.id });
+                    setActionInProgress(false);
+                  }}
+                >
+                  x-card
+                </Button>
+              </Flex>
+            </TabPanel>
+            <TabPanel>
+              {data?.safetyModule?.id && (
+                <SafetyForm
+                  id={data.safetyModule.id}
+                  setActionInProgress={setActionInProgress}
+                />
+              )}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Container>
-      <Container flex="1" maxW="6xl" id={DICEBOX_ID}>
-        {!isLoading && (
-          <>
-            <VisualDice
-              startingDice={data?.dice?.items}
-              roomId={data?.id}
-              setActionInProgress={setActionInProgress}
-            />
-            <VisualCounters
-              startingCounters={data?.counters?.items}
-              roomId={data?.id}
-              setActionInProgress={setActionInProgress}
-            />
-            <VisualLabels
-              startingLabels={data?.labels.items}
-              roomId={data?.id}
-              setActionInProgress={setActionInProgress}
-            />
-          </>
-        )}
-      </Container>
-      <Container maxW="6xl" mb={3}>
-        <HStack spacing={3}>
-          <IconButton
-            variant="outline"
-            size="sm"
-            colorScheme="red"
-            icon={<BsClock />}
-            onClick={() => setClockModalIsOpen(true)}
-            aria-label="new clock"
-          />
-          <IconButton
-            variant="outline"
-            size="sm"
-            colorScheme="orange"
-            icon={<MdTextFields />}
-            onClick={() => setLabelModalIsOpen(true)}
-            aria-label="new clock"
-          />
-        </HStack>
-      </Container>
+
       <UsernameModal setNameInRoom={setUsername} ref={quickRollRef} />
       <ClockModal
         isOpen={clockModalIsOpen}
@@ -257,10 +396,39 @@ function InteractiveRoom({ name }: Props) {
         ref={quickRollRef}
         roomId={data?.id}
       />
+      {data?.safetyModule.id && (
+        <XCardModal safetyModuleId={data.safetyModule.id} ref={quickRollRef} />
+      )}
       {actionInProgress && <SpinningCube />}
     </Flex>
   );
 }
+
+type minDie = { id: string; version: number; sides: number };
+type selectionEvent =
+  | { type: 'default'; payload: { die: minDie } }
+  | { type: 'clear' };
+
+const selectionReducer = (
+  state: { selectedDice: minDie[] },
+  event: selectionEvent
+): { selectedDice: minDie[] } => {
+  switch (event.type) {
+    case 'default':
+      const { die } = event.payload;
+      const { selectedDice } = state;
+      const isSelected = selectedDice.findIndex((d) => die.id === d.id) >= 0;
+      if (isSelected) {
+        return { selectedDice: selectedDice.filter((d) => d.id !== die.id) };
+      } else {
+        return { selectedDice: selectedDice.concat(die) };
+      }
+    case 'clear':
+      return { selectedDice: [] };
+    default:
+      return state;
+  }
+};
 
 const VisualDice = ({
   startingDice = [],
@@ -272,6 +440,41 @@ const VisualDice = ({
   setActionInProgress: (val: boolean) => void;
 }) => {
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
+  const [state, dispatch] = React.useReducer(selectionReducer, {
+    selectedDice: [],
+  });
+  const { selectedDice } = state;
+
+  const rerollDice = async () => {
+    setActionInProgress(true);
+    const results = await getRandomNumbers(selectedDice.length);
+    const updatedDice = assignResultsToDice<minDie>({
+      dice: selectedDice,
+      results,
+    });
+    try {
+      await Promise.allSettled(
+        updatedDice.map((die) =>
+          API.graphql({
+            query: mutations.updateVisualDie,
+            variables: {
+              input: {
+                id: die.id,
+                result: die.result,
+                version: die.version + 1,
+              },
+            },
+          })
+        )
+      );
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+      dispatch({ type: 'clear' });
+    }
+  };
+
   React.useEffect(() => {
     const subscription = API.graphql({
       query: subscriptions.onCreateVisualDieByRoom,
@@ -293,7 +496,6 @@ const VisualDice = ({
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        console.log(value);
         setDice((cur) => {
           return cur.filter(
             (die) => die.id !== value.data?.onDeleteVisualDie?.id
@@ -307,11 +509,39 @@ const VisualDice = ({
       deleteSubscription.unsubscribe();
     };
   }, [roomId]);
+
+  const handleSelection = React.useCallback(
+    (die: minDie) => dispatch({ type: 'default', payload: { die } }),
+    []
+  );
+
   return (
     <>
-      {dice.map((d) => (
-        <VDie die={d} key={d.id} setActionInProgress={setActionInProgress} />
-      ))}
+      {dice.map((d) => {
+        const isSelected =
+          selectedDice.findIndex((die) => die.id === d.id) >= 0;
+        return (
+          <VDie
+            die={d}
+            key={d.id}
+            setActionInProgress={setActionInProgress}
+            isSelected={isSelected}
+            selectDie={handleSelection}
+          />
+        );
+      })}
+      {selectedDice.length > 0 && (
+        <IconButton
+          position="absolute"
+          top="48%"
+          colorScheme="brand"
+          icon={<RiRestartLine />}
+          size="lg"
+          aria-label="roll die"
+          onClick={rerollDice}
+          zIndex="2000"
+        />
+      )}
     </>
   );
 };

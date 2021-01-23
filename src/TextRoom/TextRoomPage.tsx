@@ -20,7 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 import BuildRollForm from './BuildRollForm';
 import SettingsBar from '../SettingsBar/SettingsBar';
 import RollsHistory from './RollsHistory';
-import { ClassifiedItem, Roll, SafetyModule, SavedRoll } from '../types';
+import { Roll, SafetyModule, SavedRoll } from '../types';
 import {
   createNewRollFromValues,
   makeNDice,
@@ -53,10 +53,6 @@ interface TextRoomPageProps {
   safetyModule: SafetyModule;
   updateXCard: (value: boolean) => void;
   xCardChanging: boolean;
-  safetyItemChanging: boolean;
-  addSafetyItem: (value: ClassifiedItem) => void;
-  updateSafetyItem: (value: ClassifiedItem) => void;
-  removeSafetyItem: (value: ClassifiedItem) => void;
 }
 
 const TextRoomPage: React.FC<TextRoomPageProps> = ({
@@ -72,21 +68,18 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   safetyModule,
   updateXCard,
   xCardChanging,
-  safetyItemChanging,
-  addSafetyItem,
-  updateSafetyItem,
-  removeSafetyItem,
 }) => {
+  const [actionInProgress, setActionInProgress] = React.useState(false);
   const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
   React.useEffect(() => {
-    const checkForSlash = (e: KeyboardEvent) => {
-      if (e.key === '/') {
+    const checkForQuickCommand = (e: KeyboardEvent) => {
+      if (e.key === '/' && e.ctrlKey) {
         quickRollRef.current?.focus();
       }
     };
-    document.addEventListener('keyup', checkForSlash);
-    return () => document.removeEventListener('keyup', checkForSlash);
+    document.addEventListener('keyup', checkForQuickCommand);
+    return () => document.removeEventListener('keyup', checkForQuickCommand);
   }, [quickRollRef]);
 
   const submitQuickRoll = compose(
@@ -312,10 +305,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             </TabPanel>
             <TabPanel px={0}>
               <SafetyForm
-                addItem={addSafetyItem}
-                updateItem={updateSafetyItem}
-                removeItem={removeSafetyItem}
-                safetyModule={safetyModule}
+                id={safetyModule.id}
+                setActionInProgress={setActionInProgress}
               />
             </TabPanel>
             <TabPanel px={0}>
@@ -325,18 +316,13 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
         </Tabs>
       </Container>
       <UsernameModal setNameInRoom={setName} ref={quickRollRef} />
-      <XCardModal
-        clearXCard={updateXCard}
-        xCardActive={safetyModule.xCardActive}
-        xCardChanging={xCardChanging}
-        ref={quickRollRef}
-      />
+      <XCardModal safetyModuleId={safetyModule.id} ref={quickRollRef} />
       {Boolean(
-        safetyItemChanging ||
-          xCardChanging ||
+        xCardChanging ||
           loadingStates.isDeletingRoll ||
           loadingStates.isRolling ||
-          loadingStates.isSavingRoll
+          loadingStates.isSavingRoll ||
+          actionInProgress
       ) && <SpinningCube />}
     </>
   );

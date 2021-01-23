@@ -69,7 +69,6 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
               w={20}
               icon={<Icon h={12} w={12} color="blue.500" as={GiD4} />}
               onClick={() => {
-                console.log('running');
                 onSubmit(createDieOfNSides({ n: 4 }));
               }}
               aria-label="d4"

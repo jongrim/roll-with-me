@@ -10,6 +10,8 @@ export interface VisualDie extends Die {
   y: number;
   color: string;
   version: number;
+  createdBy: string;
+  type?: 'fudge';
 }
 
 export interface SavedDie {

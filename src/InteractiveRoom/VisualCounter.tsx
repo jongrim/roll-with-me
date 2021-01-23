@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
-import { RiArrowLeftLine, RiArrowRightLine } from 'react-icons/ri';
+import {
+  RiArrowLeftLine,
+  RiArrowRightLine,
+  RiDeleteBin4Line,
+} from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import gsap, { Elastic } from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -120,6 +124,24 @@ const VCounter = ({
     }
   };
 
+  const deleteCounter = async () => {
+    setActionInProgress(true);
+    try {
+      API.graphql({
+        query: mutations.deleteCounter,
+        variables: {
+          input: {
+            id: trackedCounter.id,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
+  };
+
   if (trackedCounter.type === 'CLOCK')
     return (
       <Box
@@ -135,6 +157,7 @@ const VCounter = ({
           title={trackedCounter.title}
           increment={increment}
           decrement={decrement}
+          deleteCounter={deleteCounter}
         />
       </Box>
     );
@@ -153,6 +176,7 @@ interface ClockProps {
   title: string;
   increment: () => void;
   decrement: () => void;
+  deleteCounter: () => void;
 }
 
 const Clock: React.FC<ClockProps> = ({
@@ -162,6 +186,7 @@ const Clock: React.FC<ClockProps> = ({
   title,
   increment,
   decrement,
+  deleteCounter,
 }) => {
   const el = React.useRef(null);
   const time = (value / max) * 100;
@@ -211,6 +236,15 @@ const Clock: React.FC<ClockProps> = ({
           icon={<RiArrowLeftLine />}
           onClick={decrement}
           aria-label="decrement clock count"
+          mr={1}
+        />
+        <IconButton
+          variant="ghost"
+          colorScheme="red"
+          icon={<RiDeleteBin4Line />}
+          onClick={deleteCounter}
+          aria-label="delete clock"
+          ml={1}
           mr={1}
         />
         <IconButton

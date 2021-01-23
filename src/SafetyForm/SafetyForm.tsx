@@ -18,13 +18,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
-import { ClassifiedItem, SafetyModule } from '../types';
+import { ClassifiedItem } from '../types';
+import * as mutations from '../graphql/mutations';
+import { API } from 'aws-amplify';
+import useSafetyModuleLookup from './useSafetyRoomLookup';
 
 interface SafetyFormProps {
-  addItem: (item: ClassifiedItem) => void;
-  updateItem: (item: ClassifiedItem) => void;
-  removeItem: (item: ClassifiedItem) => void;
-  safetyModule?: SafetyModule;
+  id: string;
+  setActionInProgress: (val: boolean) => void;
 }
 
 const createItem = ({
@@ -57,15 +58,89 @@ const getItemBackground = (item: ClassifiedItem): string => {
   }
 };
 
-const SafetyForm: React.FC<SafetyFormProps> = ({
-  addItem,
-  updateItem,
-  removeItem,
-  safetyModule,
-}) => {
+const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
   const [newLabel, setNewLabel] = React.useState('');
   const [newClass, setNewClass] = React.useState('');
   const [newNote, setNewNote] = React.useState('');
+
+  const { data } = useSafetyModuleLookup(id);
+
+  async function addSafetyItem(value: ClassifiedItem) {
+    setActionInProgress(true);
+    try {
+      await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: data?.id,
+            linesAndVeils: data?.linesAndVeils
+              .concat(value)
+              .map((i) => JSON.stringify(i)),
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
+    return;
+  }
+
+  async function updateSafetyItem(value: ClassifiedItem) {
+    setActionInProgress(true);
+    try {
+      const newItems = data?.linesAndVeils.map((i) => {
+        if (i.id === value.id) {
+          return JSON.stringify(value);
+        }
+        return JSON.stringify(i);
+      });
+      await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: data?.id,
+            linesAndVeils: newItems,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
+    return;
+  }
+
+  async function removeSafetyItem(value: ClassifiedItem) {
+    setActionInProgress(true);
+    try {
+      const newItems = data?.linesAndVeils
+        .filter((i) => i.id !== value.id)
+        .map((i) => {
+          if (i.id === value.id) {
+            return JSON.stringify(value);
+          }
+          return JSON.stringify(i);
+        });
+      await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: data?.id,
+            linesAndVeils: newItems,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
+    return;
+  }
+
   return (
     <>
       <Heading>Safety Tools</Heading>
@@ -123,7 +198,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
             </Badge>
           </HStack>
         </GridItem>
-        {safetyModule?.linesAndVeils?.map((item) => {
+        {data?.linesAndVeils?.map((item) => {
           return (
             <GridItem
               key={item.id}
@@ -143,7 +218,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
                     variant="flushed"
                     borderColor="gray.500"
                     onChange={({ target }) =>
-                      updateItem({
+                      updateSafetyItem({
                         ...item,
                         classification: target.value as ClassifiedItem['classification'],
                       })
@@ -158,7 +233,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
                 </Box>
                 <CloseButton
                   color="gray.800"
-                  onClick={() => removeItem(item)}
+                  onClick={() => removeSafetyItem(item)}
                   position="absolute"
                   top="0"
                   right="0"
@@ -176,7 +251,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({
             classification: newClass as ClassifiedItem['classification'],
             note: newNote,
           });
-          addItem(newItem);
+          addSafetyItem(newItem);
           setNewLabel('');
           setNewNote('');
         }}

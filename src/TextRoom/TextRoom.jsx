@@ -343,105 +343,11 @@ function TextRoom({ name }) {
       });
     } catch (e) {
       console.warn(e);
+    } finally {
+      setXCardChanging(false);
     }
     return;
   }
-
-  const [safetyItemUpdating, setSafetyItemUpdating] = React.useState(false);
-  async function addItem(value) {
-    setSafetyItemUpdating(true);
-    try {
-      await API.graphql({
-        query: mutations.updateSafetyModule,
-        variables: {
-          input: {
-            id: safetyModule.id,
-            linesAndVeils: safetyModule.linesAndVeils
-              .concat(value)
-              .map((i) => JSON.stringify(i)),
-          },
-        },
-      });
-    } catch (e) {
-      console.warn(e);
-    }
-    return;
-  }
-
-  async function updateItem(value) {
-    setSafetyItemUpdating(true);
-    try {
-      const newItems = safetyModule.linesAndVeils.map((i) => {
-        if (i.id === value.id) {
-          return JSON.stringify(value);
-        }
-        return JSON.stringify(i);
-      });
-      const { data } = await API.graphql({
-        query: mutations.updateSafetyModule,
-        variables: {
-          input: {
-            id: safetyModule.id,
-            linesAndVeils: newItems,
-          },
-        },
-      });
-    } catch (e) {
-      console.warn(e);
-    }
-    return;
-  }
-
-  async function removeItem(value) {
-    setSafetyItemUpdating(true);
-    try {
-      const newItems = safetyModule.linesAndVeils
-        .filter((i) => i.id !== value.id)
-        .map((i) => {
-          if (i.id === value.id) {
-            return JSON.stringify(value);
-          }
-          return JSON.stringify(i);
-        });
-      await API.graphql({
-        query: mutations.updateSafetyModule,
-        variables: {
-          input: {
-            id: safetyModule.id,
-            linesAndVeils: newItems,
-          },
-        },
-      });
-    } catch (e) {
-      console.warn(e);
-    }
-    return;
-  }
-
-  React.useEffect(() => {
-    if (!safetyModule.id) return;
-    const subscription = API.graphql({
-      query: subscriptions.onUpdateSafetyModule,
-      variables: {
-        id: safetyModule.id,
-      },
-    }).subscribe({
-      next: ({ value }) => {
-        const nextSafetyModule = value?.data?.onUpdateSafetyModule ?? {
-          id: '',
-          xCardActive: false,
-          linesAndVeils: [],
-        };
-        nextSafetyModule.linesAndVeils = nextSafetyModule.linesAndVeils.map(
-          (i) => JSON.parse(i)
-        );
-        setSafetyModule(nextSafetyModule);
-        setXCardChanging(false);
-        setSafetyItemUpdating(false);
-      },
-    });
-    return () => subscription.unsubscribe();
-  }, [name, safetyModule]);
 
   return (
     <TextRoomPage
@@ -461,10 +367,6 @@ function TextRoom({ name }) {
       safetyModule={safetyModule}
       updateXCard={setXCard}
       xCardChanging={xCardChanging}
-      addSafetyItem={addItem}
-      updateSafetyItem={updateItem}
-      removeSafetyItem={removeItem}
-      safetyItemChanging={safetyItemUpdating}
     />
   );
 }
