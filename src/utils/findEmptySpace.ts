@@ -18,7 +18,7 @@ export default function findEmptySpace({
   }[];
 }): { top: number; left: number } {
   if (childrenBoxes.length === 0) {
-    return { top: 0, left: diceboxRect.left };
+    return { top: 0, left: 0 };
   }
 
   let spotFound = false;

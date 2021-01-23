@@ -58,6 +58,9 @@ export function getRollFromQuickString(s: string): Roll {
   const rollNameReg = /as (.+)/i;
 
   const baseDice = baseDiceReg.exec(s);
+  if (!baseDice) {
+    throw new Error('could not parse roll');
+  }
   const modifier = modifierReg.exec(s);
   const rollNameGroups = s.match(rollNameReg);
 

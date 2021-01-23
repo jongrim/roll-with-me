@@ -28,7 +28,6 @@ import {
   CreateInteractiveRoomMutation,
 } from './API';
 import gql from './gql';
-import isLocalhost from './utils/isLocalHost';
 
 async function getNewRoomName() {
   const { result } = await API.get('randomNameAPI', '/random-room-name', {});
@@ -37,6 +36,7 @@ async function getNewRoomName() {
 
 function Home() {
   const [name, setName] = React.useState<string>('');
+
   React.useEffect(() => {
     async function starterName() {
       const name = await getNewRoomName();
@@ -190,16 +190,15 @@ function Home() {
                   w="full"
                   onClick={() => handleNewRoomRequest('r')}
                 >
-                  New Text Room
+                  Text Room
                 </Button>
                 <Button
-                  disabled={Boolean(window.location.hostname.includes('main'))}
                   variant="outline"
                   colorScheme="blue"
                   w="full"
                   onClick={() => handleNewRoomRequest('i')}
                 >
-                  New Interactive Room - Coming Soon
+                  Visual Dice Room
                 </Button>
               </LightMode>
             </Stack>

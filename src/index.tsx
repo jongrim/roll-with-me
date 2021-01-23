@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App, { rollWithMeTheme } from './App';
 import reportWebVitals from './reportWebVitals';
 import './fonts/QuiteMagicalRegular.ttf';
 import './fonts/FaithCollapsing.ttf';
 import './index.css';
+import { ColorModeScript } from '@chakra-ui/react';
 
 ReactDOM.render(
   <React.StrictMode>
+    <ColorModeScript
+      initialColorMode={rollWithMeTheme.config.initialColorMode}
+    />
     <App />
   </React.StrictMode>,
   document.getElementById('root')

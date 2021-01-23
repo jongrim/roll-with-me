@@ -496,7 +496,6 @@ const VisualDice = ({
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        console.log(value);
         setDice((cur) => {
           return cur.filter(
             (die) => die.id !== value.data?.onDeleteVisualDie?.id
