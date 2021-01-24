@@ -31,12 +31,6 @@ const UserInfo = () => {
   const { user } = React.useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
 
-  React.useEffect(() => {
-    Auth.currentAuthenticatedUser().then((currentUser) => {
-      console.log(currentUser);
-    });
-  });
-
   return (
     <Box>
       <Heading size="md" as="h1">
