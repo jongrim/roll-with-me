@@ -8,7 +8,11 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Button,
+  Link,
+  Stack,
+  Divider,
 } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { AuthContext } from '../AuthProvider';
 
@@ -35,7 +39,18 @@ const ProfileDrawer = React.forwardRef<HTMLButtonElement, ProfileDrawerProps>(
               <DrawerHeader>Your profile</DrawerHeader>
               <DrawerBody>
                 {user ? (
-                  <div>Show rolls and stuff</div>
+                  <Stack spacing={6} divider={<Divider />}>
+                    <Link
+                      as={ReactRouterLink}
+                      to="/profile/settings"
+                      color="brand.500"
+                    >
+                      Manage profile
+                    </Link>
+                    <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+                      Provide feedback
+                    </Link>
+                  </Stack>
                 ) : (
                   <Button
                     onClick={() =>

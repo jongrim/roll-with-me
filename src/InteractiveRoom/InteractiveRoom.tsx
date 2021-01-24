@@ -161,6 +161,7 @@ function InteractiveRoom({ name }: Props) {
                 borderBottom: '1px solid',
                 borderBottomColor: 'brand.300',
               }}
+              opacity="0.6"
             >
               Table
             </Tab>
@@ -170,6 +171,7 @@ function InteractiveRoom({ name }: Props) {
                 borderBottom: '1px solid',
                 borderBottomColor: 'brand.300',
               }}
+              opacity="0.6"
             >
               Safety
             </Tab>

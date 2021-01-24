@@ -15,67 +15,35 @@ import {
   Input,
   InputGroup,
   Box,
+  Center,
+  HStack,
 } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
 import { RiArrowRightLine } from 'react-icons/ri';
-import { API } from 'aws-amplify';
-import * as mutations from './graphql/mutations';
+import { Auth } from 'aws-amplify';
 import logo from './images/personWithCoffee.svg';
 import { useHistory } from 'react-router-dom';
-import {
-  CreateTextRoomMutation,
-  CreateSafetyModuleMutation,
-  CreateInteractiveRoomMutation,
-} from './API';
-import gql from './gql';
-
-async function getNewRoomName() {
-  const { result } = await API.get('randomNameAPI', '/random-room-name', {});
-  return result;
-}
+import { AuthContext } from './AuthProvider';
+import { handleNewRoomRequest } from './NewRoom/handleNewRoomRequest';
+import getNewRoomNames from './functions/randomNames';
 
 function Home() {
   const [name, setName] = React.useState<string>('');
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
     async function starterName() {
-      const name = await getNewRoomName();
+      const [name] = await getNewRoomNames(1);
       setName(name);
     }
     starterName();
   }, []);
   const history = useHistory();
-  const handleNewRoomRequest = async (type: 'r' | 'i' | 'trophy-dark') => {
-    try {
-      // check if room exists?
-      const newSafetyModule = await gql<CreateSafetyModuleMutation>(
-        mutations.createSafetyModule,
-        {
-          xCardActive: false,
-          linesAndVeils: [],
-        }
-      );
-      if (type === 'r') {
-        await gql<CreateTextRoomMutation>(mutations.createTextRoom, {
-          name,
-          rolls: [],
-          textRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
-        });
-      }
-      if (type === 'i') {
-        await gql<CreateInteractiveRoomMutation>(
-          mutations.createInteractiveRoom,
-          {
-            name,
-            interactiveRoomSafetyModuleId:
-              newSafetyModule.data?.createSafetyModule?.id,
-          }
-        );
-      }
+  const requestRoom = (type: 'r' | 'i') => {
+    handleNewRoomRequest(type, name).then(() => {
       history.push(`/${type}/${name}`);
-    } catch (e) {
-      console.warn('could not create room', e);
-    }
+    });
   };
   return (
     <Grid
@@ -135,7 +103,7 @@ function Home() {
                 rightIcon={<RiArrowRightLine />}
                 colorScheme="brand"
                 variant="outline"
-                onClick={() => handleNewRoomRequest('r')}
+                onClick={() => requestRoom('r')}
               >
                 Go
               </Button>
@@ -159,13 +127,17 @@ function Home() {
             </Heading>
             <Text
               fontSize="lg"
-              w={['auto', 'sm', 'lg']}
+              w={['auto', 'auto', 'lg']}
               color="black"
               textAlign={['center', 'center', 'left']}
             >
               Digital tools for playing great games online
             </Text>
-            <Text color="black" opacity="0.8" fontSize="sm">
+            <Text
+              color="gray.900"
+              fontSize="sm"
+              textAlign={['center', 'center', 'left']}
+            >
               Make a room and share the URL with friends to roll dice together
               <br />
               Come back to it later and pick up where you left off
@@ -193,35 +165,49 @@ function Home() {
           <GridItem>
             <Stack spacing={3}>
               <LightMode>
-                <Button
-                  variant="outline"
-                  colorScheme="purple"
+                <Link
+                  as={ReactRouterLink}
+                  color="purple.500"
                   w="full"
-                  onClick={() => handleNewRoomRequest('r')}
+                  to="/new-room?type=Text"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid"
+                  borderColor="purple.500"
+                  borderRadius="md"
+                  py={2}
+                  _hover={{
+                    backgroundColor: 'purple.50',
+                  }}
                 >
                   Text Room
-                </Button>
-                <Button
-                  variant="outline"
-                  colorScheme="blue"
+                </Link>
+                <Link
+                  as={ReactRouterLink}
+                  color="blue.500"
                   w="full"
-                  onClick={() => handleNewRoomRequest('i')}
+                  to="/new-room?type=Visual"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid"
+                  borderColor="blue.500"
+                  borderRadius="md"
+                  py={2}
+                  _hover={{
+                    backgroundColor: 'blue.50',
+                  }}
                 >
                   Visual Dice Room
-                </Button>
+                </Link>
               </LightMode>
             </Stack>
           </GridItem>
           <GridItem>
             <Stack spacing={3}>
               <LightMode>
-                <Button
-                  disabled
-                  variant="outline"
-                  colorScheme="green"
-                  w="full"
-                  onClick={() => handleNewRoomRequest('trophy-dark')}
-                >
+                <Button disabled variant="outline" colorScheme="green" w="full">
                   Trophy Dark - Coming Soon
                 </Button>
               </LightMode>
@@ -242,6 +228,41 @@ function Home() {
         bg="white"
         p={3}
       >
+        <Center mb={6}>
+          <HStack
+            spacing={3}
+            divider={
+              <Box color="gray.700" borderLeft="none">
+                •
+              </Box>
+            }
+          >
+            {user ? (
+              <Link
+                as={ReactRouterLink}
+                to="/profile/settings"
+                color="brand.500"
+              >
+                Manage profile
+              </Link>
+            ) : (
+              <Button
+                variant="link"
+                color="brand.500"
+                onClick={() => Auth.federatedSignIn()}
+                fontWeight="400"
+              >
+                Sign up or sign in
+              </Button>
+            )}
+            <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+              Provide feedback
+            </Link>
+            <Link as={ReactRouterLink} to="/privacy" color="brand.500">
+              Privacy policy
+            </Link>
+          </HStack>
+        </Center>
         <Flex justifyContent="center">
           <Text color="gray.600">Designed and Developed by Jon Grim</Text>
         </Flex>

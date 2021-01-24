@@ -1,11 +1,68 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App, { rollWithMeTheme } from './App';
+import Amplify from 'aws-amplify';
+import awsConfig from './aws-exports';
 import reportWebVitals from './reportWebVitals';
 import './fonts/QuiteMagicalRegular.ttf';
 import './fonts/FaithCollapsing.ttf';
 import './index.css';
 import { ColorModeScript } from '@chakra-ui/react';
+
+const isLocalhost = Boolean(
+  window.location.hostname === 'localhost' ||
+    // [::1] is the IPv6 localhost address.
+    window.location.hostname === '[::1]' ||
+    // 127.0.0.1/8 is considered localhost for IPv4.
+    window.location.hostname.match(
+      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+    )
+);
+
+const isDevDeploy = Boolean(window.location.hostname.includes('dev'));
+
+const isMainDeploy = Boolean(window.location.hostname.includes('main'));
+
+// Assuming you have two redirect URIs, and the first is for localhost and second is for production
+const [
+  localRedirectSignIn,
+  productionRedirectSignIn,
+  mainDeployRedirectSignIn,
+  devDeployRedirectSignIn,
+] = awsConfig.oauth.redirectSignIn.split(',');
+
+const [
+  localRedirectSignOut,
+  productionRedirectSignOut,
+  mainDeployRedirectSignOut,
+  devDeployRedirectSignOut,
+] = awsConfig.oauth.redirectSignOut.split(',');
+
+const updatedAwsConfig = {
+  ...awsConfig,
+  oauth: {
+    ...awsConfig.oauth,
+    redirectSignIn: isLocalhost
+      ? localRedirectSignIn
+      : isDevDeploy
+      ? devDeployRedirectSignIn
+      : isMainDeploy
+      ? mainDeployRedirectSignIn
+      : productionRedirectSignIn,
+    redirectSignOut: isLocalhost
+      ? localRedirectSignOut
+      : isDevDeploy
+      ? devDeployRedirectSignOut
+      : isMainDeploy
+      ? mainDeployRedirectSignOut
+      : productionRedirectSignOut,
+  },
+};
+
+console.log(updatedAwsConfig.oauth.redirectSignIn);
+console.log(updatedAwsConfig.oauth.redirectSignOut);
+
+Amplify.configure(updatedAwsConfig);
 
 ReactDOM.render(
   <React.StrictMode>
