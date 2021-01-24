@@ -9,7 +9,7 @@ const SignIn: React.FC = () => {
 
   React.useEffect(() => {
     if (user) {
-      history.push('/profile');
+      history.push('/profile/info');
     } else {
       Auth.federatedSignIn();
     }

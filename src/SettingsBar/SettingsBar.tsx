@@ -45,7 +45,7 @@ const SettingsBar: React.FC = () => {
             aria-label="home"
             icon={<RiHomeHeartLine />}
             fontSize="28px"
-            variant="clear"
+            variant="ghost"
           />
         </Link>
       </Box>
@@ -61,7 +61,7 @@ const SettingsBar: React.FC = () => {
           aria-label="copy URL"
           icon={<RiFileCopyLine />}
           fontSize="28px"
-          variant="clear"
+          variant="ghost"
           onClick={onCopy}
           mr={3}
         />
@@ -69,7 +69,7 @@ const SettingsBar: React.FC = () => {
           aria-label="log in or sign up"
           icon={<RiUserSmileLine />}
           fontSize="28px"
-          variant="clear"
+          variant="ghost"
           ref={btnRef}
           onClick={onOpen}
         />

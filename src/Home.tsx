@@ -15,10 +15,13 @@ import {
   Input,
   InputGroup,
   Box,
+  Center,
+  HStack,
 } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
 import { RiArrowRightLine } from 'react-icons/ri';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import * as mutations from './graphql/mutations';
 import logo from './images/personWithCoffee.svg';
 import { useHistory } from 'react-router-dom';
@@ -28,6 +31,7 @@ import {
   CreateInteractiveRoomMutation,
 } from './API';
 import gql from './gql';
+import { AuthContext } from './AuthProvider';
 
 async function getNewRoomName() {
   const { result } = await API.get('randomNameAPI', '/random-room-name', {});
@@ -36,6 +40,7 @@ async function getNewRoomName() {
 
 function Home() {
   const [name, setName] = React.useState<string>('');
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
     async function starterName() {
@@ -165,7 +170,7 @@ function Home() {
             >
               Digital tools for playing great games online
             </Text>
-            <Text color="black" opacity="0.8" fontSize="sm">
+            <Text color="gray.900" fontSize="sm">
               Make a room and share the URL with friends to roll dice together
               <br />
               Come back to it later and pick up where you left off
@@ -242,6 +247,34 @@ function Home() {
         bg="white"
         p={3}
       >
+        <Center mb={6}>
+          <HStack spacing={3} divider={<Box color="gray.700">•</Box>}>
+            {user ? (
+              <Link
+                as={ReactRouterLink}
+                to="/profile/settings"
+                color="brand.500"
+              >
+                Manage profile
+              </Link>
+            ) : (
+              <Button
+                variant="link"
+                color="brand.500"
+                onClick={() => Auth.federatedSignIn()}
+                fontWeight="400"
+              >
+                Sign up or sign in
+              </Button>
+            )}
+            <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+              Provide feedback
+            </Link>
+            <Link as={ReactRouterLink} to="/privacy" color="brand.500">
+              Privacy policy
+            </Link>
+          </HStack>
+        </Center>
         <Flex justifyContent="center">
           <Text color="gray.600">Designed and Developed by Jon Grim</Text>
         </Flex>

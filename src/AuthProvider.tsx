@@ -5,10 +5,19 @@ import qs from 'qs';
 
 interface user {
   username: string;
+  attributes: {
+    email: string;
+    preferred_username?: string;
+    identities?: string;
+  };
 }
 
-export const AuthContext = React.createContext<{ user: user | undefined }>({
+export const AuthContext = React.createContext<{
+  user: user | undefined;
+  authState: AuthState;
+}>({
   user: undefined,
+  authState: AuthState.Loading,
 });
 
 function getUser() {
@@ -18,7 +27,9 @@ function getUser() {
 }
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [_, setAuthState] = React.useState<AuthState>(AuthState.Loading);
+  const [authState, setAuthState] = React.useState<AuthState>(
+    AuthState.Loading
+  );
   const [user, setUser] = React.useState<user | undefined>();
 
   React.useEffect(() => {
@@ -47,6 +58,22 @@ const AuthProvider: React.FC = ({ children }) => {
               window.location.replace(query.return as string);
             }
           }
+          break;
+      }
+    });
+
+    Hub.listen('internal-user-updates', ({ payload: { event, data } }) => {
+      switch (event) {
+        case 'update-user-display-name':
+          setUser((cur) => ({
+            username: cur?.username ?? '',
+            ...cur,
+            attributes: {
+              ...cur?.attributes,
+              email: cur?.attributes.email ?? '',
+              preferred_username: data as string,
+            },
+          }));
       }
     });
 
@@ -56,7 +83,9 @@ const AuthProvider: React.FC = ({ children }) => {
     });
   }, []);
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, authState }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
