@@ -8,6 +8,7 @@ import Home from './Home';
 import RoomProvider from './RoomProvider';
 import Feedback from './Feedback/Feedback';
 import Privacy from './Privacy/Privacy';
+import NewRoom from './NewRoom/NewRoom';
 
 export const rollWithMeTheme = extendTheme({
   colors: {
@@ -45,6 +46,9 @@ function App() {
             <Switch>
               <Route exact path="/">
                 <Home />
+              </Route>
+              <Route path="/new-room">
+                <NewRoom />
               </Route>
               <Route path="/profile">
                 <Profile />

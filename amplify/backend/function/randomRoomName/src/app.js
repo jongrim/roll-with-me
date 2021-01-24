@@ -30,11 +30,16 @@ app.use(function (req, res, next) {
  **********************/
 
 app.get('/random-room-name', function (req, res) {
+  const count = req.apiGateway.event.queryStringParameters.count;
+  let result = [];
+  for (let i = 0; i < count; i++) {
+    result.push(
+      randomWords({ exactly: 3, wordsPerString: 2, separator: '-' }).join('-')
+    );
+  }
   res.status(200);
   res.json({
-    result: randomWords({ exactly: 3, wordsPerString: 2, separator: '-' }).join(
-      '-'
-    ),
+    result,
   });
 });
 

@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-rollwithme-dev-192622-deployment",
-          "S3Key": "amplify-builds/randomRoomName-44414e6c2f6954777375-build.zip"
+          "S3Key": "amplify-builds/randomRoomName-54587641794572782f57-build.zip"
         }
       }
     },
