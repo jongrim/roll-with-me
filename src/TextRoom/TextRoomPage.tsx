@@ -15,6 +15,10 @@ import {
   VStack,
   Box,
   Flex,
+  ModalOverlay,
+  Modal,
+  ModalContent,
+  Spinner,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import BuildRollForm from './BuildRollForm';
@@ -35,6 +39,7 @@ import SafetyForm from '../SafetyForm/SafetyForm';
 import SpinningCube from '../SpinningCube/SpinningCube';
 import UsernameModal from '../UsernameModal/UsernameModal';
 import QuickRollBar from '../QuickRollBar/QuickRollBar';
+import useUserRoom from '../hooks/useUserRoom';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -69,8 +74,12 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   updateXCard,
   xCardChanging,
 }) => {
+  const { username, setUsername, isLoaded: userSettingsIsLoaded } = useUserRoom(
+    {
+      roomName,
+    }
+  );
   const [actionInProgress, setActionInProgress] = React.useState(false);
-  const [name, setName] = React.useState('');
   const quickRollRef = React.useRef<HTMLElement>(null!);
   React.useEffect(() => {
     const checkForQuickCommand = (e: KeyboardEvent) => {
@@ -84,18 +93,18 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
 
   const submitQuickRoll = compose(
     onSubmit,
-    savedRollToRoll(name),
+    savedRollToRoll(username),
     createNewRollFromValues
   );
 
   return (
     <>
-      <SettingsBar />
+      <SettingsBar username={username} setUsername={setUsername} />
       <Container maxW="6xl">
         <VStack spacing={4} w="full" align="flex-start">
           <Box w="full">
             <QuickRollBar
-              name={name}
+              name={username}
               onSubmit={onSubmit}
               ref={quickRollRef}
               placeholder="Quick roll (ex. 2d6+1 as Resist)"
@@ -256,7 +265,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                           onSubmit={onSubmit}
                           saveRoll={createRoll}
                           isRolling={loadingStates.isRolling}
-                          rolledByName={name}
+                          rolledByName={username}
                         />
                       </TabPanel>
                       <TabPanel align="center">
@@ -267,7 +276,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                           savedRolls={savedRolls}
                           rollSavedRoll={compose(
                             onSubmit,
-                            savedRollToRoll(name)
+                            savedRollToRoll(username)
                           )}
                         />
                       </TabPanel>
@@ -315,7 +324,28 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           </TabPanels>
         </Tabs>
       </Container>
-      <UsernameModal setNameInRoom={setName} ref={quickRollRef} />
+      <UsernameModal
+        ref={quickRollRef}
+        setUsername={setUsername}
+        isOpen={userSettingsIsLoaded && !username}
+      />
+      <Modal
+        isOpen={!userSettingsIsLoaded}
+        onClose={() => {}}
+        finalFocusRef={quickRollRef}
+      >
+        <ModalOverlay />
+        <ModalContent bgColor="transparent" boxShadow="none" h="full" mt={0}>
+          <Center h="full">
+            <Spinner
+              color="brand.500"
+              size="xl"
+              thickness="4px"
+              speed="0.65s"
+            />
+          </Center>
+        </ModalContent>
+      </Modal>
       <XCardModal safetyModuleId={safetyModule.id} ref={quickRollRef} />
       {Boolean(
         xCardChanging ||

@@ -15,9 +15,11 @@ import { VisualCounter } from '../types';
 const VCounter = ({
   counter,
   setActionInProgress,
+  updateActivity,
 }: {
   counter: VisualCounter;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const [trackedCounter, setTrackedCounter] = React.useState<VisualCounter>(
     counter
@@ -93,6 +95,7 @@ const VCounter = ({
 
   const increment = () => {
     setActionInProgress(true);
+    updateActivity();
     try {
       API.graphql({
         query: mutations.updateCounter,
@@ -109,6 +112,7 @@ const VCounter = ({
   };
   const decrement = () => {
     setActionInProgress(true);
+    updateActivity();
     try {
       API.graphql({
         query: mutations.updateCounter,
@@ -126,6 +130,7 @@ const VCounter = ({
 
   const deleteCounter = async () => {
     setActionInProgress(true);
+    updateActivity();
     try {
       API.graphql({
         query: mutations.deleteCounter,

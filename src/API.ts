@@ -121,6 +121,84 @@ export type DeleteTrophyDarkRoomInput = {
   id?: string | null,
 };
 
+export type CreateUserRoomInput = {
+  id?: string | null,
+  roomKey: string,
+  description?: string | null,
+  createdOn?: string | null,
+  updatedOn?: string | null,
+  defaultRoomUsername?: string | null,
+  userRoomTextRoomId?: string | null,
+  userRoomInteractiveRoomId?: string | null,
+  userRoomTrophyDarkRoomId?: string | null,
+};
+
+export type ModelUserRoomConditionInput = {
+  roomKey?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  createdOn?: ModelStringInput | null,
+  updatedOn?: ModelStringInput | null,
+  defaultRoomUsername?: ModelStringInput | null,
+  and?: Array< ModelUserRoomConditionInput | null > | null,
+  or?: Array< ModelUserRoomConditionInput | null > | null,
+  not?: ModelUserRoomConditionInput | null,
+};
+
+export type UpdateUserRoomInput = {
+  id: string,
+  roomKey?: string | null,
+  description?: string | null,
+  createdOn?: string | null,
+  updatedOn?: string | null,
+  defaultRoomUsername?: string | null,
+  userRoomTextRoomId?: string | null,
+  userRoomInteractiveRoomId?: string | null,
+  userRoomTrophyDarkRoomId?: string | null,
+};
+
+export type DeleteUserRoomInput = {
+  id?: string | null,
+};
+
+export type CreateSavedRollInput = {
+  id?: string | null,
+  rollName: string,
+  dice: Array< string >,
+  modifier: number,
+};
+
+export type ModelSavedRollConditionInput = {
+  rollName?: ModelStringInput | null,
+  dice?: ModelStringInput | null,
+  modifier?: ModelIntInput | null,
+  and?: Array< ModelSavedRollConditionInput | null > | null,
+  or?: Array< ModelSavedRollConditionInput | null > | null,
+  not?: ModelSavedRollConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateSavedRollInput = {
+  id: string,
+  rollName?: string | null,
+  dice?: Array< string > | null,
+  modifier?: number | null,
+};
+
+export type DeleteSavedRollInput = {
+  id?: string | null,
+};
+
 export type CreateSafetyModuleInput = {
   id?: string | null,
   xCardActive: boolean,
@@ -234,18 +312,6 @@ export type ModelCounterConditionInput = {
   not?: ModelCounterConditionInput | null,
 };
 
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type ModelCounterTypeInput = {
   eq?: CounterType | null,
   ne?: CounterType | null,
@@ -311,33 +377,6 @@ export type DeleteVisualDieInput = {
   id?: string | null,
 };
 
-export type CreateSavedRollInput = {
-  id?: string | null,
-  rollName: string,
-  dice: Array< string >,
-  modifier: number,
-};
-
-export type ModelSavedRollConditionInput = {
-  rollName?: ModelStringInput | null,
-  dice?: ModelStringInput | null,
-  modifier?: ModelIntInput | null,
-  and?: Array< ModelSavedRollConditionInput | null > | null,
-  or?: Array< ModelSavedRollConditionInput | null > | null,
-  not?: ModelSavedRollConditionInput | null,
-};
-
-export type UpdateSavedRollInput = {
-  id: string,
-  rollName?: string | null,
-  dice?: Array< string > | null,
-  modifier?: number | null,
-};
-
-export type DeleteSavedRollInput = {
-  id?: string | null,
-};
-
 export type ModelTextRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -347,6 +386,12 @@ export type ModelTextRoomFilterInput = {
   or?: Array< ModelTextRoomFilterInput | null > | null,
   not?: ModelTextRoomFilterInput | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
@@ -362,6 +407,28 @@ export type ModelTrophyDarkRoomFilterInput = {
   and?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
   or?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
   not?: ModelTrophyDarkRoomFilterInput | null,
+};
+
+export type ModelUserRoomFilterInput = {
+  id?: ModelIDInput | null,
+  roomKey?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  createdOn?: ModelStringInput | null,
+  updatedOn?: ModelStringInput | null,
+  defaultRoomUsername?: ModelStringInput | null,
+  and?: Array< ModelUserRoomFilterInput | null > | null,
+  or?: Array< ModelUserRoomFilterInput | null > | null,
+  not?: ModelUserRoomFilterInput | null,
+};
+
+export type ModelSavedRollFilterInput = {
+  id?: ModelIDInput | null,
+  rollName?: ModelStringInput | null,
+  dice?: ModelStringInput | null,
+  modifier?: ModelIntInput | null,
+  and?: Array< ModelSavedRollFilterInput | null > | null,
+  or?: Array< ModelSavedRollFilterInput | null > | null,
+  not?: ModelSavedRollFilterInput | null,
 };
 
 export type ModelSafetyModuleFilterInput = {
@@ -414,22 +481,6 @@ export type ModelVisualDieFilterInput = {
   not?: ModelVisualDieFilterInput | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
-export type ModelSavedRollFilterInput = {
-  id?: ModelIDInput | null,
-  rollName?: ModelStringInput | null,
-  dice?: ModelStringInput | null,
-  modifier?: ModelIntInput | null,
-  and?: Array< ModelSavedRollFilterInput | null > | null,
-  or?: Array< ModelSavedRollFilterInput | null > | null,
-  not?: ModelSavedRollFilterInput | null,
-};
-
 export type CreateTextRoomMutationVariables = {
   input: CreateTextRoomInput,
   condition?: ModelTextRoomConditionInput | null,
@@ -442,6 +493,8 @@ export type CreateTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -450,8 +503,6 @@ export type CreateTextRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -467,6 +518,8 @@ export type UpdateTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -475,8 +528,6 @@ export type UpdateTextRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -492,6 +543,8 @@ export type DeleteTextRoomMutation = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -500,8 +553,6 @@ export type DeleteTextRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -515,6 +566,8 @@ export type CreateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -523,27 +576,15 @@ export type CreateInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -566,22 +607,32 @@ export type CreateInteractiveRoomMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -595,6 +646,8 @@ export type UpdateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -603,27 +656,15 @@ export type UpdateInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -646,22 +687,32 @@ export type UpdateInteractiveRoomMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -675,6 +726,8 @@ export type DeleteInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -683,27 +736,15 @@ export type DeleteInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -726,22 +767,32 @@ export type DeleteInteractiveRoomMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -787,6 +838,381 @@ export type DeleteTrophyDarkRoomMutation = {
     name: string,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type CreateUserRoomMutationVariables = {
+  input: CreateUserRoomInput,
+  condition?: ModelUserRoomConditionInput | null,
+};
+
+export type CreateUserRoomMutation = {
+  createUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdateUserRoomMutationVariables = {
+  input: UpdateUserRoomInput,
+  condition?: ModelUserRoomConditionInput | null,
+};
+
+export type UpdateUserRoomMutation = {
+  updateUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type DeleteUserRoomMutationVariables = {
+  input: DeleteUserRoomInput,
+  condition?: ModelUserRoomConditionInput | null,
+};
+
+export type DeleteUserRoomMutation = {
+  deleteUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type CreateSavedRollMutationVariables = {
+  input: CreateSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type CreateSavedRollMutation = {
+  createSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdateSavedRollMutationVariables = {
+  input: UpdateSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type UpdateSavedRollMutation = {
+  updateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type DeleteSavedRollMutationVariables = {
+  input: DeleteSavedRollInput,
+  condition?: ModelSavedRollConditionInput | null,
+};
+
+export type DeleteSavedRollMutation = {
+  deleteSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -965,10 +1391,22 @@ export type CreateVisualDieMutation = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -977,20 +1415,15 @@ export type CreateVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1013,33 +1446,26 @@ export type CreateVisualDieMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1053,10 +1479,22 @@ export type UpdateVisualDieMutation = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -1065,20 +1503,15 @@ export type UpdateVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1101,33 +1534,26 @@ export type UpdateVisualDieMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1141,10 +1567,22 @@ export type DeleteVisualDieMutation = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -1153,20 +1591,15 @@ export type DeleteVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1189,111 +1622,26 @@ export type DeleteVisualDieMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateSavedRollMutationVariables = {
-  input: CreateSavedRollInput,
-  condition?: ModelSavedRollConditionInput | null,
-};
-
-export type CreateSavedRollMutation = {
-  createSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type UpdateSavedRollMutationVariables = {
-  input: UpdateSavedRollInput,
-  condition?: ModelSavedRollConditionInput | null,
-};
-
-export type UpdateSavedRollMutation = {
-  updateSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type DeleteSavedRollMutationVariables = {
-  input: DeleteSavedRollInput,
-  condition?: ModelSavedRollConditionInput | null,
-};
-
-export type DeleteSavedRollMutation = {
-  deleteSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type GetTextRoomQueryVariables = {
-  id: string,
-};
-
-export type GetTextRoomQuery = {
-  getTextRoom:  {
-    __typename: "TextRoom",
-    id: string,
-    name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
-    safetyModule:  {
-      __typename: "SafetyModule",
-      id: string,
-      xCardActive: boolean,
-      linesAndVeils: Array< string >,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1312,6 +1660,8 @@ export type ListTextRoomsQuery = {
       name: string,
       rolls: Array< string > | null,
       counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -1320,8 +1670,140 @@ export type ListTextRoomsQuery = {
         createdAt: string,
         updatedAt: string,
       },
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetTextRoomQueryVariables = {
+  id: string,
+};
+
+export type GetTextRoomQuery = {
+  getTextRoom:  {
+    __typename: "TextRoom",
+    id: string,
+    name: string,
+    rolls: Array< string > | null,
+    counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
       createdAt: string,
       updatedAt: string,
+    },
+  } | null,
+};
+
+export type TextRoomByNameQueryVariables = {
+  name?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTextRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TextRoomByNameQuery = {
+  textRoomByName:  {
+    __typename: "ModelTextRoomConnection",
+    items:  Array< {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type ListInteractiveRoomsQueryVariables = {
+  filter?: ModelInteractiveRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListInteractiveRoomsQuery = {
+  listInteractiveRooms:  {
+    __typename: "ModelInteractiveRoomConnection",
+    items:  Array< {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1336,6 +1818,8 @@ export type GetInteractiveRoomQuery = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -1344,27 +1828,15 @@ export type GetInteractiveRoomQuery = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -1387,38 +1859,52 @@ export type GetInteractiveRoomQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type ListInteractiveRoomsQueryVariables = {
+export type InteractiveRoomByNameQueryVariables = {
+  name?: string | null,
+  sortDirection?: ModelSortDirection | null,
   filter?: ModelInteractiveRoomFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListInteractiveRoomsQuery = {
-  listInteractiveRooms:  {
+export type InteractiveRoomByNameQuery = {
+  interactiveRoomByName:  {
     __typename: "ModelInteractiveRoomConnection",
     items:  Array< {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -1427,20 +1913,15 @@ export type ListInteractiveRoomsQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1463,38 +1944,27 @@ export type ListInteractiveRoomsQuery = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
-  } | null,
-};
-
-export type GetTrophyDarkRoomQueryVariables = {
-  id: string,
-};
-
-export type GetTrophyDarkRoomQuery = {
-  getTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1518,18 +1988,259 @@ export type ListTrophyDarkRoomsQuery = {
   } | null,
 };
 
-export type GetSafetyModuleQueryVariables = {
+export type GetTrophyDarkRoomQueryVariables = {
   id: string,
 };
 
-export type GetSafetyModuleQuery = {
-  getSafetyModule:  {
-    __typename: "SafetyModule",
+export type GetTrophyDarkRoomQuery = {
+  getTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
     id: string,
-    xCardActive: boolean,
-    linesAndVeils: Array< string >,
+    name: string,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type TrophyDarkRoomByNameQueryVariables = {
+  name?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTrophyDarkRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TrophyDarkRoomByNameQuery = {
+  trophyDarkRoomByName:  {
+    __typename: "ModelTrophyDarkRoomConnection",
+    items:  Array< {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetUserRoomQueryVariables = {
+  id: string,
+};
+
+export type GetUserRoomQuery = {
+  getUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type ListUserRoomsQueryVariables = {
+  filter?: ModelUserRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserRoomsQuery = {
+  listUserRooms:  {
+    __typename: "ModelUserRoomConnection",
+    items:  Array< {
+      __typename: "UserRoom",
+      id: string,
+      roomKey: string,
+      description: string | null,
+      createdOn: string,
+      updatedOn: string,
+      defaultRoomUsername: string | null,
+      textRoom:  {
+        __typename: "TextRoom",
+        id: string,
+        name: string,
+        rolls: Array< string > | null,
+        counters: Array< string > | null,
+        createdAt: string,
+        updatedAt: string,
+        safetyModule:  {
+          __typename: "SafetyModule",
+          id: string,
+          xCardActive: boolean,
+          linesAndVeils: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        },
+      } | null,
+      interactiveRoom:  {
+        __typename: "InteractiveRoom",
+        id: string,
+        name: string,
+        createdAt: string,
+        updatedAt: string,
+        safetyModule:  {
+          __typename: "SafetyModule",
+          id: string,
+          xCardActive: boolean,
+          linesAndVeils: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        },
+        labels:  {
+          __typename: "ModelLabelConnection",
+          nextToken: string | null,
+        } | null,
+        counters:  {
+          __typename: "ModelCounterConnection",
+          nextToken: string | null,
+        } | null,
+        dice:  {
+          __typename: "ModelVisualDieConnection",
+          nextToken: string | null,
+        } | null,
+      } | null,
+      trophyDarkRoom:  {
+        __typename: "TrophyDarkRoom",
+        id: string,
+        name: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetSavedRollQueryVariables = {
+  id: string,
+};
+
+export type GetSavedRollQuery = {
+  getSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type ListSavedRollsQueryVariables = {
+  filter?: ModelSavedRollFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSavedRollsQuery = {
+  listSavedRolls:  {
+    __typename: "ModelSavedRollConnection",
+    items:  Array< {
+      __typename: "SavedRoll",
+      id: string,
+      rollName: string,
+      dice: Array< string >,
+      modifier: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
   } | null,
 };
 
@@ -1551,6 +2262,21 @@ export type ListSafetyModulesQuery = {
       updatedAt: string,
     } | null > | null,
     nextToken: string | null,
+  } | null,
+};
+
+export type GetSafetyModuleQueryVariables = {
+  id: string,
+};
+
+export type GetSafetyModuleQuery = {
+  getSafetyModule:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1649,10 +2375,22 @@ export type GetVisualDieQuery = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -1661,20 +2399,15 @@ export type GetVisualDieQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1697,33 +2430,26 @@ export type GetVisualDieQuery = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1740,33 +2466,6 @@ export type ListVisualDiesQuery = {
       __typename: "VisualDie",
       id: string,
       roomId: string,
-      room:  {
-        __typename: "InteractiveRoom",
-        id: string,
-        name: string,
-        safetyModule:  {
-          __typename: "SafetyModule",
-          id: string,
-          xCardActive: boolean,
-          linesAndVeils: Array< string >,
-          createdAt: string,
-          updatedAt: string,
-        },
-        dice:  {
-          __typename: "ModelVisualDieConnection",
-          nextToken: string | null,
-        } | null,
-        counters:  {
-          __typename: "ModelCounterConnection",
-          nextToken: string | null,
-        } | null,
-        labels:  {
-          __typename: "ModelLabelConnection",
-          nextToken: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
       x: number,
       y: number,
       createdBy: string,
@@ -1777,180 +2476,33 @@ export type ListVisualDiesQuery = {
       type: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type TextRoomByNameQueryVariables = {
-  name?: string | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTextRoomFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type TextRoomByNameQuery = {
-  textRoomByName:  {
-    __typename: "ModelTextRoomConnection",
-    items:  Array< {
-      __typename: "TextRoom",
-      id: string,
-      name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
-      safetyModule:  {
-        __typename: "SafetyModule",
+      room:  {
+        __typename: "InteractiveRoom",
         id: string,
-        xCardActive: boolean,
-        linesAndVeils: Array< string >,
+        name: string,
         createdAt: string,
         updatedAt: string,
-      },
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type InteractiveRoomByNameQueryVariables = {
-  name?: string | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelInteractiveRoomFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type InteractiveRoomByNameQuery = {
-  interactiveRoomByName:  {
-    __typename: "ModelInteractiveRoomConnection",
-    items:  Array< {
-      __typename: "InteractiveRoom",
-      id: string,
-      name: string,
-      safetyModule:  {
-        __typename: "SafetyModule",
-        id: string,
-        xCardActive: boolean,
-        linesAndVeils: Array< string >,
-        createdAt: string,
-        updatedAt: string,
-      },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
-        items:  Array< {
-          __typename: "VisualDie",
+        safetyModule:  {
+          __typename: "SafetyModule",
           id: string,
-          roomId: string,
-          x: number,
-          y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
+          xCardActive: boolean,
+          linesAndVeils: Array< string >,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
-        nextToken: string | null,
+        },
+        labels:  {
+          __typename: "ModelLabelConnection",
+          nextToken: string | null,
+        } | null,
+        counters:  {
+          __typename: "ModelCounterConnection",
+          nextToken: string | null,
+        } | null,
+        dice:  {
+          __typename: "ModelVisualDieConnection",
+          nextToken: string | null,
+        } | null,
       } | null,
-      counters:  {
-        __typename: "ModelCounterConnection",
-        items:  Array< {
-          __typename: "Counter",
-          id: string,
-          roomId: string,
-          title: string,
-          value: number,
-          max: number | null,
-          x: number,
-          y: number,
-          type: CounterType,
-          createdAt: string,
-          updatedAt: string,
-        } | null > | null,
-        nextToken: string | null,
-      } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
-        items:  Array< {
-          __typename: "Label",
-          id: string,
-          roomId: string,
-          contents: string,
-          x: number,
-          y: number,
-          createdAt: string,
-          updatedAt: string,
-        } | null > | null,
-        nextToken: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type TrophyDarkRoomByNameQueryVariables = {
-  name?: string | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTrophyDarkRoomFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type TrophyDarkRoomByNameQuery = {
-  trophyDarkRoomByName:  {
-    __typename: "ModelTrophyDarkRoomConnection",
-    items:  Array< {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type GetSavedRollQueryVariables = {
-  id: string,
-};
-
-export type GetSavedRollQuery = {
-  getSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type ListSavedRollsQueryVariables = {
-  filter?: ModelSavedRollFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListSavedRollsQuery = {
-  listSavedRolls:  {
-    __typename: "ModelSavedRollConnection",
-    items:  Array< {
-      __typename: "SavedRoll",
-      id: string,
-      rollName: string,
-      dice: Array< string >,
-      modifier: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1967,6 +2519,8 @@ export type OnUpdateTextRoomByNameSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -1975,8 +2529,6 @@ export type OnUpdateTextRoomByNameSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1989,6 +2541,8 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -1997,27 +2551,15 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2040,22 +2582,32 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2082,10 +2634,22 @@ export type OnCreateVisualDieByRoomSubscription = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -2094,20 +2658,15 @@ export type OnCreateVisualDieByRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2130,33 +2689,26 @@ export type OnCreateVisualDieByRoomSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2169,10 +2721,22 @@ export type OnUpdateVisualDieByIdSubscription = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -2181,20 +2745,15 @@ export type OnUpdateVisualDieByIdSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2217,33 +2776,26 @@ export type OnUpdateVisualDieByIdSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2328,6 +2880,8 @@ export type OnCreateTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2336,8 +2890,6 @@ export type OnCreateTextRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2348,6 +2900,8 @@ export type OnUpdateTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2356,8 +2910,6 @@ export type OnUpdateTextRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2368,6 +2920,8 @@ export type OnDeleteTextRoomSubscription = {
     name: string,
     rolls: Array< string > | null,
     counters: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2376,8 +2930,6 @@ export type OnDeleteTextRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2386,6 +2938,8 @@ export type OnCreateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2394,27 +2948,15 @@ export type OnCreateInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2437,22 +2979,32 @@ export type OnCreateInteractiveRoomSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2461,6 +3013,8 @@ export type OnUpdateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2469,27 +3023,15 @@ export type OnUpdateInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2512,22 +3054,32 @@ export type OnUpdateInteractiveRoomSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2536,6 +3088,8 @@ export type OnDeleteInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2544,27 +3098,15 @@ export type OnDeleteInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    dice:  {
-      __typename: "ModelVisualDieConnection",
+    labels:  {
+      __typename: "ModelLabelConnection",
       items:  Array< {
-        __typename: "VisualDie",
+        __typename: "Label",
         id: string,
         roomId: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
+        contents: string,
         x: number,
         y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2587,22 +3129,32 @@ export type OnDeleteInteractiveRoomSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    labels:  {
-      __typename: "ModelLabelConnection",
+    dice:  {
+      __typename: "ModelVisualDieConnection",
       items:  Array< {
-        __typename: "Label",
+        __typename: "VisualDie",
         id: string,
         roomId: string,
-        contents: string,
         x: number,
         y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type: string | null,
         createdAt: string,
         updatedAt: string,
+        room:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2633,6 +3185,375 @@ export type OnDeleteTrophyDarkRoomSubscription = {
     name: string,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserRoomSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateUserRoomSubscription = {
+  onCreateUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdateUserRoomSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateUserRoomSubscription = {
+  onUpdateUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeleteUserRoomSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteUserRoomSubscription = {
+  onDeleteUserRoom:  {
+    __typename: "UserRoom",
+    id: string,
+    roomKey: string,
+    description: string | null,
+    createdOn: string,
+    updatedOn: string,
+    defaultRoomUsername: string | null,
+    textRoom:  {
+      __typename: "TextRoom",
+      id: string,
+      name: string,
+      rolls: Array< string > | null,
+      counters: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
+    interactiveRoom:  {
+      __typename: "InteractiveRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+      labels:  {
+        __typename: "ModelLabelConnection",
+        items:  Array< {
+          __typename: "Label",
+          id: string,
+          roomId: string,
+          contents: string,
+          x: number,
+          y: number,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      counters:  {
+        __typename: "ModelCounterConnection",
+        items:  Array< {
+          __typename: "Counter",
+          id: string,
+          roomId: string,
+          title: string,
+          value: number,
+          max: number | null,
+          x: number,
+          y: number,
+          type: CounterType,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      dice:  {
+        __typename: "ModelVisualDieConnection",
+        items:  Array< {
+          __typename: "VisualDie",
+          id: string,
+          roomId: string,
+          x: number,
+          y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    owner: string | null,
+  } | null,
+};
+
+export type OnCreateSavedRollSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateSavedRollSubscription = {
+  onCreateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdateSavedRollSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateSavedRollSubscription = {
+  onUpdateSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeleteSavedRollSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteSavedRollSubscription = {
+  onDeleteSavedRoll:  {
+    __typename: "SavedRoll",
+    id: string,
+    rollName: string,
+    dice: Array< string >,
+    modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -2761,10 +3682,22 @@ export type OnCreateVisualDieSubscription = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -2773,20 +3706,15 @@ export type OnCreateVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2809,33 +3737,26 @@ export type OnCreateVisualDieSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2844,10 +3765,22 @@ export type OnUpdateVisualDieSubscription = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -2856,20 +3789,15 @@ export type OnUpdateVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2892,33 +3820,26 @@ export type OnUpdateVisualDieSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2927,10 +3848,22 @@ export type OnDeleteVisualDieSubscription = {
     __typename: "VisualDie",
     id: string,
     roomId: string,
+    x: number,
+    y: number,
+    createdBy: string,
+    result: number,
+    sides: number,
+    color: string,
+    version: number,
+    type: string | null,
+    createdAt: string,
+    updatedAt: string,
     room:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
       safetyModule:  {
         __typename: "SafetyModule",
         id: string,
@@ -2939,20 +3872,15 @@ export type OnDeleteVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      dice:  {
-        __typename: "ModelVisualDieConnection",
+      labels:  {
+        __typename: "ModelLabelConnection",
         items:  Array< {
-          __typename: "VisualDie",
+          __typename: "Label",
           id: string,
           roomId: string,
+          contents: string,
           x: number,
           y: number,
-          createdBy: string,
-          result: number,
-          sides: number,
-          color: string,
-          version: number,
-          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2975,83 +3903,25 @@ export type OnDeleteVisualDieSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      labels:  {
-        __typename: "ModelLabelConnection",
+      dice:  {
+        __typename: "ModelVisualDieConnection",
         items:  Array< {
-          __typename: "Label",
+          __typename: "VisualDie",
           id: string,
           roomId: string,
-          contents: string,
           x: number,
           y: number,
+          createdBy: string,
+          result: number,
+          sides: number,
+          color: string,
+          version: number,
+          type: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    x: number,
-    y: number,
-    createdBy: string,
-    result: number,
-    sides: number,
-    color: string,
-    version: number,
-    type: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateSavedRollSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnCreateSavedRollSubscription = {
-  onCreateSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type OnUpdateSavedRollSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnUpdateSavedRollSubscription = {
-  onUpdateSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
-export type OnDeleteSavedRollSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnDeleteSavedRollSubscription = {
-  onDeleteSavedRoll:  {
-    __typename: "SavedRoll",
-    id: string,
-    rollName: string,
-    dice: Array< string >,
-    modifier: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
   } | null,
 };

@@ -20,7 +20,12 @@ import {
 import { Link as ReactRouterLink } from 'react-router-dom';
 import ProfileDrawer from '../Profile/ProfileDrawer';
 
-const SettingsBar: React.FC = () => {
+interface SettingsBarProps {
+  username: string;
+  setUsername: (val: string) => void;
+}
+
+const SettingsBar: React.FC<SettingsBarProps> = ({ username, setUsername }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { hasCopied, onCopy } = useClipboard(window.location.href);
@@ -74,7 +79,12 @@ const SettingsBar: React.FC = () => {
           onClick={onOpen}
         />
       </HStack>
-      <ProfileDrawer isOpen={isOpen} onClose={onClose} />
+      <ProfileDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        username={username}
+        setUsername={setUsername}
+      />
     </Flex>
   );
 };

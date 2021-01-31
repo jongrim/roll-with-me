@@ -9,6 +9,7 @@ import RoomProvider from './RoomProvider';
 import Feedback from './Feedback/Feedback';
 import Privacy from './Privacy/Privacy';
 import NewRoom from './NewRoom/NewRoom';
+import UserRoomProvider from './UserRoomProvider';
 
 export const rollWithMeTheme = extendTheme({
   colors: {
@@ -41,33 +42,35 @@ function App() {
   return (
     <ChakraProvider theme={rollWithMeTheme} resetCSS>
       <AuthProvider>
-        <Box className="App">
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/new-room">
-                <NewRoom />
-              </Route>
-              <Route path="/profile">
-                <Profile />
-              </Route>
-              <Route path="/sign-in">
-                <SignIn />
-              </Route>
-              <Route path="/:type/:name">
-                <RoomProvider />
-              </Route>
-              <Route path="/feedback">
-                <Feedback />
-              </Route>
-              <Route path="/privacy">
-                <Privacy />
-              </Route>
-            </Switch>
-          </Router>
-        </Box>
+        <UserRoomProvider>
+          <Box className="App">
+            <Router>
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+                <Route path="/new-room">
+                  <NewRoom />
+                </Route>
+                <Route path="/profile">
+                  <Profile />
+                </Route>
+                <Route path="/sign-in">
+                  <SignIn />
+                </Route>
+                <Route path="/:type/:name">
+                  <RoomProvider />
+                </Route>
+                <Route path="/feedback">
+                  <Feedback />
+                </Route>
+                <Route path="/privacy">
+                  <Privacy />
+                </Route>
+              </Switch>
+            </Router>
+          </Box>
+        </UserRoomProvider>
       </AuthProvider>
     </ChakraProvider>
   );

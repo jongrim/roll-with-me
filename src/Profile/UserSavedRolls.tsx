@@ -1,39 +1,28 @@
 import * as React from 'react';
 import {
-  Box,
   Stat,
   StatNumber,
   StatHelpText,
-  Flex,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Text,
   useColorMode,
   Grid,
   GridItem,
-  Spacer,
   Spinner,
+  HStack,
+  Heading,
 } from '@chakra-ui/react';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import { SavedRoll } from '../types';
-import {
-  RiArrowDropDownLine,
-  RiCloudy2Line,
-  RiDeleteBin4Line,
-  RiPencilLine,
-} from 'react-icons/ri';
+import { RiDeleteBin4Line, RiPencilLine } from 'react-icons/ri';
 import { describeRoll } from '../utils/rolls';
 import EditRollModal from '../TextRoom/EditRollModal';
 import DeleteRollDialog from '../TextRoom/DeleteRollModal';
 
 const UserSavedRolls = () => {
   const [firstLoad, setFirstLoad] = React.useState(true);
-  const [isSavingRoll, setIsSavingRoll] = React.useState(false);
   const [savedRolls, setSavedRolls] = React.useState<SavedRoll[]>([]);
   const [rollToEdit, setRollToEdit] = React.useState<SavedRoll>();
   const [rollToDelete, setRollToDelete] = React.useState<SavedRoll>();
@@ -71,7 +60,6 @@ const UserSavedRolls = () => {
   }, []);
 
   async function updateRollInAmplify(roll: SavedRoll) {
-    setIsSavingRoll(true);
     const rollToSave = {
       id: roll.id,
       rollName: roll.rollName,
@@ -101,8 +89,6 @@ const UserSavedRolls = () => {
       );
     } catch (e) {
       console.warn(e);
-    } finally {
-      setIsSavingRoll(false);
     }
   }
 
@@ -129,12 +115,15 @@ const UserSavedRolls = () => {
       ? { border: '1px solid', borderColor: 'inherit' }
       : { boxShadow: 'lg' };
 
-  if (firstLoad) {
-    return <Spinner />;
-  }
   return (
     <Grid templateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']} gap={6}>
-      {savedRolls.length > 0 ? (
+      <GridItem colSpan={[1, 2, 3]}>
+        <Heading size="md" as="h1">
+          Cloud Saved Rolls
+        </Heading>
+      </GridItem>
+      {firstLoad && <Spinner />}
+      {savedRolls.length > 0 &&
         savedRolls.map((roll) => {
           return (
             <GridItem rounded="lg" {...itemBorder} px={4} py={3} key={roll.id}>
@@ -142,29 +131,27 @@ const UserSavedRolls = () => {
                 <StatNumber>{roll.rollName}</StatNumber>
                 <StatHelpText>{describeRoll(roll)}</StatHelpText>
               </Stat>
-              <Flex>
+              <HStack spacing={2}>
                 <Button
+                  size="sm"
                   leftIcon={<RiPencilLine />}
                   onClick={(e) => setRollToEdit(roll)}
-                  flex="1"
-                  mr={1}
                 >
                   Edit
                 </Button>
                 <Button
+                  size="sm"
                   colorScheme="red"
                   leftIcon={<RiDeleteBin4Line />}
                   onClick={() => setRollToDelete(roll)}
-                  flex="1"
-                  ml={1}
                 >
                   Delete
                 </Button>
-              </Flex>
+              </HStack>
             </GridItem>
           );
-        })
-      ) : (
+        })}
+      {!firstLoad && savedRolls.length === 0 && (
         <Text>You don't have any saved rolls</Text>
       )}
       <EditRollModal

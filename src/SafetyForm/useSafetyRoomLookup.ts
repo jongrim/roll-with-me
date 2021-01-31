@@ -55,8 +55,6 @@ const useSafetyModuleLookup = (id: string) => {
           (i: string) => JSON.parse(i)
         );
         setSafetyModule(nextSafetyModule);
-        // setXCardChanging(false);
-        // setSafetyItemUpdating(false);
       },
     });
     return () => subscription.unsubscribe();

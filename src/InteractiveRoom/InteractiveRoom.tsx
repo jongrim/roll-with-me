@@ -16,6 +16,11 @@ import {
   TabPanel,
   Spacer,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  Center,
+  Spinner,
 } from '@chakra-ui/react';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -53,6 +58,8 @@ import SafetyForm from '../SafetyForm/SafetyForm';
 import { makeNewVisualDie } from './utils';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
+import { UserRoomContext } from '../UserRoomProvider';
+import useUserRoom from '../hooks/useUserRoom';
 
 gsap.registerPlugin(Draggable);
 
@@ -64,12 +71,25 @@ type Props = {
 
 function InteractiveRoom({ name }: Props) {
   const toast = useToast();
+  const { isLoaded: userSettingsIsLoaded, username, setUsername } = useUserRoom(
+    {
+      roomName: name,
+    }
+  );
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
-  const [username, setUsername] = React.useState('');
   const [clockModalIsOpen, setClockModalIsOpen] = React.useState(false);
   const [labelModalIsOpen, setLabelModalIsOpen] = React.useState(false);
   const [color, setColor] = React.useState('#c91db6');
+
+  const { updateRoomActivity } = React.useContext(UserRoomContext);
+
+  const setActivity = React.useCallback(() => {
+    if (data?.id) {
+      // only emit when the action starts
+      updateRoomActivity({ roomKey: 'interactiveRoom', roomId: data.id });
+    }
+  }, [data?.id, updateRoomActivity]);
 
   const quickRollRef = React.useRef<HTMLElement>(null!);
   React.useEffect(() => {
@@ -91,6 +111,16 @@ function InteractiveRoom({ name }: Props) {
     leftOffset?: number;
     type?: 'fudge';
   }) => {
+    if (!data?.id) {
+      toast({
+        status: 'warning',
+        description: 'Try reloading the page and trying again',
+        title: 'Not connected to room',
+        isClosable: true,
+        duration: 7000,
+      });
+      return;
+    }
     setActionInProgress(true);
     try {
       const die = await makeNewVisualDie({ sides, leftOffset });
@@ -98,7 +128,7 @@ function InteractiveRoom({ name }: Props) {
         query: mutations.createVisualDie,
         variables: {
           input: {
-            roomId: data?.id,
+            roomId: data.id,
             x: die.x,
             y: die.y,
             createdBy: username,
@@ -121,7 +151,7 @@ function InteractiveRoom({ name }: Props) {
 
   return (
     <Flex flexDirection="column" h="full" maxW="full">
-      <SettingsBar />
+      <SettingsBar username={username} setUsername={setUsername} />
       <Container maxW="6xl" flex="1" display="flex" flexDirection="column">
         <QuickRollBar
           name={username}
@@ -322,16 +352,19 @@ function InteractiveRoom({ name }: Props) {
                       startingDice={data?.dice?.items}
                       roomId={data?.id}
                       setActionInProgress={setActionInProgress}
+                      updateActivity={setActivity}
                     />
                     <VisualCounters
                       startingCounters={data?.counters?.items}
                       roomId={data?.id}
                       setActionInProgress={setActionInProgress}
+                      updateActivity={setActivity}
                     />
                     <VisualLabels
                       startingLabels={data?.labels.items}
                       roomId={data?.id}
                       setActionInProgress={setActionInProgress}
+                      updateActivity={setActivity}
                     />
                   </>
                 )}
@@ -384,8 +417,28 @@ function InteractiveRoom({ name }: Props) {
           </TabPanels>
         </Tabs>
       </Container>
-
-      <UsernameModal setNameInRoom={setUsername} ref={quickRollRef} />
+      <UsernameModal
+        setUsername={setUsername}
+        isOpen={userSettingsIsLoaded && !username}
+        ref={quickRollRef}
+      />
+      <Modal
+        isOpen={!userSettingsIsLoaded}
+        onClose={() => {}}
+        finalFocusRef={quickRollRef}
+      >
+        <ModalOverlay />
+        <ModalContent bgColor="transparent" boxShadow="none" h="full" mt={0}>
+          <Center h="full">
+            <Spinner
+              color="brand.500"
+              size="xl"
+              thickness="4px"
+              speed="0.65s"
+            />
+          </Center>
+        </ModalContent>
+      </Modal>
       <ClockModal
         isOpen={clockModalIsOpen}
         onClose={() => setClockModalIsOpen(false)}
@@ -436,10 +489,12 @@ const VisualDice = ({
   startingDice = [],
   roomId = '',
   setActionInProgress,
+  updateActivity,
 }: {
   startingDice?: VisualDie[];
   roomId?: string;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
   const [state, dispatch] = React.useReducer(selectionReducer, {
@@ -449,6 +504,7 @@ const VisualDice = ({
 
   const rerollDice = async () => {
     setActionInProgress(true);
+    updateActivity();
     const results = await getRandomNumbers(selectedDice.length);
     const updatedDice = assignResultsToDice<minDie>({
       dice: selectedDice,
@@ -529,6 +585,7 @@ const VisualDice = ({
             setActionInProgress={setActionInProgress}
             isSelected={isSelected}
             selectDie={handleSelection}
+            updateActivity={updateActivity}
           />
         );
       })}
@@ -552,10 +609,12 @@ const VisualCounters = ({
   startingCounters = [],
   roomId = '',
   setActionInProgress,
+  updateActivity,
 }: {
   startingCounters?: VisualCounter[];
   roomId?: string;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const [counters, setCounters] = React.useState<VisualCounter[]>(
     startingCounters
@@ -601,6 +660,7 @@ const VisualCounters = ({
           counter={c}
           key={c.id}
           setActionInProgress={setActionInProgress}
+          updateActivity={updateActivity}
         />
       ))}
     </>
@@ -611,10 +671,12 @@ const VisualLabels = ({
   startingLabels = [],
   roomId = '',
   setActionInProgress,
+  updateActivity,
 }: {
   startingLabels?: VisualLabel[];
   roomId?: string;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const [labels, setLabels] = React.useState<VisualLabel[]>(startingLabels);
   React.useEffect(() => {
@@ -659,6 +721,7 @@ const VisualLabels = ({
           label={l}
           key={l.id}
           setActionInProgress={setActionInProgress}
+          updateActivity={updateActivity}
         />
       ))}
     </>

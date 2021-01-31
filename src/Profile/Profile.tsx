@@ -19,6 +19,7 @@ import UserInfo from './UserInfo';
 import { RiHomeHeartLine } from 'react-icons/ri';
 import DeactivateAccount from './DeactivateAccount';
 import UserSavedRolls from './UserSavedRolls';
+import ActiveRooms from './ActiveRooms';
 
 const Profile: React.FC = () => {
   const { colorMode } = useColorMode();
@@ -86,7 +87,7 @@ const Profile: React.FC = () => {
             >
               Your Rolls
             </Link>
-            {/* <Link
+            <Link
               rounded="lg"
               py={3}
               px={4}
@@ -98,7 +99,7 @@ const Profile: React.FC = () => {
               }}
             >
               Active Rooms
-            </Link> */}
+            </Link>
             <Spacer />
             <Button variant="ghost" onClick={() => Auth.signOut()}>
               Sign Out
@@ -121,7 +122,9 @@ const Profile: React.FC = () => {
               </MainContent>
             </Route>
             <Route path="/profile/rooms">
-              <MainContent>Active rooms</MainContent>
+              <MainContent>
+                <ActiveRooms />
+              </MainContent>
             </Route>
           </Box>
         </Grid>

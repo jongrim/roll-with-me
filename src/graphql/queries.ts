@@ -2,25 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTextRoom = /* GraphQL */ `
-  query GetTextRoom($id: ID!) {
-    getTextRoom(id: $id) {
-      id
-      name
-      rolls
-      counters
-      safetyModule {
-        id
-        xCardActive
-        linesAndVeils
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const listTextRooms = /* GraphQL */ `
   query ListTextRooms(
     $filter: ModelTextRoomFilterInput
@@ -33,6 +14,8 @@ export const listTextRooms = /* GraphQL */ `
         name
         rolls
         counters
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -40,18 +23,20 @@ export const listTextRooms = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
   }
 `;
-export const getInteractiveRoom = /* GraphQL */ `
-  query GetInteractiveRoom($id: ID!) {
-    getInteractiveRoom(id: $id) {
+export const getTextRoom = /* GraphQL */ `
+  query GetTextRoom($id: ID!) {
+    getTextRoom(id: $id) {
       id
       name
+      rolls
+      counters
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -59,58 +44,40 @@ export const getInteractiveRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      dice {
-        items {
+    }
+  }
+`;
+export const textRoomByName = /* GraphQL */ `
+  query TextRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTextRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    textRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        rolls
+        counters
+        createdAt
+        updatedAt
+        safetyModule {
           id
-          roomId
-          room {
-            id
-            name
-            createdAt
-            updatedAt
-          }
-          x
-          y
-          createdBy
-          result
-          sides
-          color
-          version
-          type
+          xCardActive
+          linesAndVeils
           createdAt
           updatedAt
         }
-        nextToken
       }
-      counters {
-        items {
-          id
-          roomId
-          title
-          value
-          max
-          x
-          y
-          type
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      labels {
-        items {
-          id
-          roomId
-          contents
-          x
-          y
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
+      nextToken
     }
   }
 `;
@@ -128,6 +95,8 @@ export const listInteractiveRooms = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -135,18 +104,13 @@ export const listInteractiveRooms = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -167,6 +131,122 @@ export const listInteractiveRooms = /* GraphQL */ `
           }
           nextToken
         }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getInteractiveRoom = /* GraphQL */ `
+  query GetInteractiveRoom($id: ID!) {
+    getInteractiveRoom(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      dice {
+        items {
+          id
+          roomId
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
+          createdAt
+          updatedAt
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const interactiveRoomByName = /* GraphQL */ `
+  query InteractiveRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelInteractiveRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interactiveRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
         labels {
           items {
             id
@@ -179,20 +259,40 @@ export const listInteractiveRooms = /* GraphQL */ `
           }
           nextToken
         }
-        createdAt
-        updatedAt
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
       }
       nextToken
-    }
-  }
-`;
-export const getTrophyDarkRoom = /* GraphQL */ `
-  query GetTrophyDarkRoom($id: ID!) {
-    getTrophyDarkRoom(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -213,14 +313,225 @@ export const listTrophyDarkRooms = /* GraphQL */ `
     }
   }
 `;
-export const getSafetyModule = /* GraphQL */ `
-  query GetSafetyModule($id: ID!) {
-    getSafetyModule(id: $id) {
+export const getTrophyDarkRoom = /* GraphQL */ `
+  query GetTrophyDarkRoom($id: ID!) {
+    getTrophyDarkRoom(id: $id) {
       id
-      xCardActive
-      linesAndVeils
+      name
       createdAt
       updatedAt
+    }
+  }
+`;
+export const trophyDarkRoomByName = /* GraphQL */ `
+  query TrophyDarkRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTrophyDarkRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    trophyDarkRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserRoom = /* GraphQL */ `
+  query GetUserRoom($id: ID!) {
+    getUserRoom(id: $id) {
+      id
+      roomKey
+      description
+      createdOn
+      updatedOn
+      defaultRoomUsername
+      textRoom {
+        id
+        name
+        rolls
+        counters
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      interactiveRoom {
+        id
+        name
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      trophyDarkRoom {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      owner
+    }
+  }
+`;
+export const listUserRooms = /* GraphQL */ `
+  query ListUserRooms(
+    $filter: ModelUserRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        roomKey
+        description
+        createdOn
+        updatedOn
+        defaultRoomUsername
+        textRoom {
+          id
+          name
+          rolls
+          counters
+          createdAt
+          updatedAt
+          safetyModule {
+            id
+            xCardActive
+            linesAndVeils
+            createdAt
+            updatedAt
+          }
+        }
+        interactiveRoom {
+          id
+          name
+          createdAt
+          updatedAt
+          safetyModule {
+            id
+            xCardActive
+            linesAndVeils
+            createdAt
+            updatedAt
+          }
+          labels {
+            nextToken
+          }
+          counters {
+            nextToken
+          }
+          dice {
+            nextToken
+          }
+        }
+        trophyDarkRoom {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getSavedRoll = /* GraphQL */ `
+  query GetSavedRoll($id: ID!) {
+    getSavedRoll(id: $id) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listSavedRolls = /* GraphQL */ `
+  query ListSavedRolls(
+    $filter: ModelSavedRollFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSavedRolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        rollName
+        dice
+        modifier
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
     }
   }
 `;
@@ -239,6 +550,17 @@ export const listSafetyModules = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const getSafetyModule = /* GraphQL */ `
+  query GetSafetyModule($id: ID!) {
+    getSafetyModule(id: $id) {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -319,9 +641,21 @@ export const getVisualDie = /* GraphQL */ `
     getVisualDie(id: $id) {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -329,18 +663,13 @@ export const getVisualDie = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -361,31 +690,24 @@ export const getVisualDie = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -399,28 +721,6 @@ export const listVisualDies = /* GraphQL */ `
       items {
         id
         roomId
-        room {
-          id
-          name
-          safetyModule {
-            id
-            xCardActive
-            linesAndVeils
-            createdAt
-            updatedAt
-          }
-          dice {
-            nextToken
-          }
-          counters {
-            nextToken
-          }
-          labels {
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
         x
         y
         createdBy
@@ -431,174 +731,28 @@ export const listVisualDies = /* GraphQL */ `
         type
         createdAt
         updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const textRoomByName = /* GraphQL */ `
-  query TextRoomByName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelTextRoomFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    textRoomByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        rolls
-        counters
-        safetyModule {
+        room {
           id
-          xCardActive
-          linesAndVeils
+          name
           createdAt
           updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const interactiveRoomByName = /* GraphQL */ `
-  query InteractiveRoomByName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelInteractiveRoomFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interactiveRoomByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        safetyModule {
-          id
-          xCardActive
-          linesAndVeils
-          createdAt
-          updatedAt
-        }
-        dice {
-          items {
+          safetyModule {
             id
-            roomId
-            x
-            y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
+            xCardActive
+            linesAndVeils
             createdAt
             updatedAt
           }
-          nextToken
-        }
-        counters {
-          items {
-            id
-            roomId
-            title
-            value
-            max
-            x
-            y
-            type
-            createdAt
-            updatedAt
+          labels {
+            nextToken
           }
-          nextToken
-        }
-        labels {
-          items {
-            id
-            roomId
-            contents
-            x
-            y
-            createdAt
-            updatedAt
+          counters {
+            nextToken
           }
-          nextToken
+          dice {
+            nextToken
+          }
         }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const trophyDarkRoomByName = /* GraphQL */ `
-  query TrophyDarkRoomByName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelTrophyDarkRoomFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    trophyDarkRoomByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getSavedRoll = /* GraphQL */ `
-  query GetSavedRoll($id: ID!) {
-    getSavedRoll(id: $id) {
-      id
-      rollName
-      dice
-      modifier
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listSavedRolls = /* GraphQL */ `
-  query ListSavedRolls(
-    $filter: ModelSavedRollFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSavedRolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        rollName
-        dice
-        modifier
-        createdAt
-        updatedAt
-        owner
       }
       nextToken
     }
