@@ -32,12 +32,11 @@ const useUserRoom = ({ roomName }: { roomName: string }) => {
   const setUsername = (name: string) => {
     if (user) {
       updateUserSetting({ defaultRoomUsername: name });
+      setName(name);
     } else {
       setName(name);
     }
   };
-
-  // console.log({ isLoaded, userRooms, userRoomSettings });
 
   return {
     username: name,
