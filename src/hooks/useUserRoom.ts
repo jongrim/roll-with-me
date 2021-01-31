@@ -1,8 +1,21 @@
 import * as React from 'react';
 import { AuthContext } from '../AuthProvider';
-import { UserRoomContext } from '../UserRoomProvider';
+import {
+  createUserRoom,
+  getRoomConnectionFromRoomKey,
+  roomKeyType,
+  UserRoomContext,
+} from '../UserRoomProvider';
 
-const useUserRoom = ({ roomName }: { roomName: string }) => {
+const useUserRoom = ({
+  roomName,
+  roomKey,
+  roomId,
+}: {
+  roomName: string;
+  roomKey: roomKeyType;
+  roomId: string;
+}) => {
   const [name, setName] = React.useState('');
   const { user } = React.useContext(AuthContext);
   const { userRooms, isLoaded, updateUserRoom } = React.useContext(
@@ -16,10 +29,6 @@ const useUserRoom = ({ roomName }: { roomName: string }) => {
 
   React.useEffect(() => {
     if (userRoomSettings?.defaultRoomUsername) {
-      console.log(
-        'setting username from effect',
-        userRoomSettings?.defaultRoomUsername
-      );
       setName(userRoomSettings?.defaultRoomUsername);
     }
   }, [userRoomSettings]);
@@ -29,12 +38,17 @@ const useUserRoom = ({ roomName }: { roomName: string }) => {
     updateUserRoom({ id: userRoomSettings?.id, ...args });
   };
 
-  const setUsername = (name: string) => {
+  const setUsername = async (name: string) => {
+    setName(name);
     if (user) {
-      updateUserSetting({ defaultRoomUsername: name });
-      setName(name);
-    } else {
-      setName(name);
+      if (!userRoomSettings) {
+        const roomConnection = getRoomConnectionFromRoomKey(roomKey);
+        createUserRoom({ roomKey, roomId, roomConnection }).then((data) => {
+          updateUserRoom({ id: data.id, defaultRoomUsername: name });
+        });
+      } else {
+        updateUserSetting({ defaultRoomUsername: name });
+      }
     }
   };
 
