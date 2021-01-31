@@ -167,14 +167,14 @@ function Home() {
               <LightMode>
                 <Link
                   as={ReactRouterLink}
-                  color="purple.500"
+                  color="purple.700"
                   w="full"
                   to="/new-room?type=Text"
                   display="inline-flex"
                   alignItems="center"
                   justifyContent="center"
                   border="1px solid"
-                  borderColor="purple.500"
+                  borderColor="purple.700"
                   borderRadius="md"
                   py={2}
                   _hover={{
@@ -185,14 +185,14 @@ function Home() {
                 </Link>
                 <Link
                   as={ReactRouterLink}
-                  color="blue.500"
+                  color="blue.700"
                   w="full"
                   to="/new-room?type=Visual"
                   display="inline-flex"
                   alignItems="center"
                   justifyContent="center"
                   border="1px solid"
-                  borderColor="blue.500"
+                  borderColor="blue.700"
                   borderRadius="md"
                   py={2}
                   _hover={{
@@ -228,8 +228,9 @@ function Home() {
         bg="white"
         p={3}
       >
-        <Center mb={6}>
+        <Center mb={4}>
           <HStack
+            mt={3}
             spacing={3}
             divider={
               <Box color="gray.700" borderLeft="none">
@@ -241,24 +242,44 @@ function Home() {
               <Link
                 as={ReactRouterLink}
                 to="/profile/settings"
-                color="brand.500"
+                color="gray.600"
+                _hover={{
+                  color: 'brand.500',
+                }}
               >
                 Manage profile
               </Link>
             ) : (
               <Button
                 variant="link"
-                color="brand.500"
+                color="gray.600"
+                _hover={{
+                  color: 'brand.500',
+                }}
                 onClick={() => Auth.federatedSignIn()}
                 fontWeight="400"
               >
                 Sign up or sign in
               </Button>
             )}
-            <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+            <Link
+              as={ReactRouterLink}
+              to="/feedback"
+              color="gray.600"
+              _hover={{
+                color: 'brand.500',
+              }}
+            >
               Provide feedback
             </Link>
-            <Link as={ReactRouterLink} to="/privacy" color="brand.500">
+            <Link
+              as={ReactRouterLink}
+              to="/privacy"
+              color="gray.600"
+              _hover={{
+                color: 'brand.500',
+              }}
+            >
               Privacy policy
             </Link>
           </HStack>

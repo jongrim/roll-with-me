@@ -1,16 +1,12 @@
 import * as React from 'react';
 import {
-  Box,
   Editable,
   EditableInput,
   EditablePreview,
   Flex,
-  HStack,
   IconButton,
-  Text,
-  VStack,
 } from '@chakra-ui/react';
-import { RiDeleteBin4Line, RiPencilLine } from 'react-icons/ri';
+import { RiDeleteBin4Line } from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import gsap, { Elastic } from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -21,14 +17,17 @@ import { VisualLabel } from '../types';
 const VLabel = ({
   label,
   setActionInProgress,
+  updateActivity,
 }: {
   label: VisualLabel;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const [trackedLabel, setTrackedLabel] = React.useState<VisualLabel>(label);
   const editLabel = async (val: string) => {
     if (val === trackedLabel.contents) return;
     setActionInProgress(true);
+    updateActivity();
     try {
       API.graphql({
         query: mutations.updateLabel,
@@ -132,6 +131,7 @@ const VLabel = ({
       <LabelActions
         id={trackedLabel.id}
         setActionInProgress={setActionInProgress}
+        updateActivity={updateActivity}
       />
     </Flex>
   );
@@ -140,12 +140,15 @@ const VLabel = ({
 const LabelActions = ({
   id,
   setActionInProgress,
+  updateActivity,
 }: {
   id: string;
   setActionInProgress: (val: boolean) => void;
+  updateActivity: () => void;
 }) => {
   const deleteLabel = async () => {
     setActionInProgress(true);
+    updateActivity();
     try {
       await API.graphql({
         query: mutations.deleteLabel,

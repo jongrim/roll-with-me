@@ -1,7 +1,7 @@
 type TextRoom
   @model
   @key(name: "textRoomByName", fields: ["name"], queryField: "textRoomByName")
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   name: String!
   rolls: [AWSJSON!]
@@ -16,7 +16,7 @@ type InteractiveRoom
     fields: ["name"]
     queryField: "interactiveRoomByName"
   )
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   name: String!
   safetyModule: SafetyModule! @connection
@@ -32,9 +32,23 @@ type TrophyDarkRoom
     fields: ["name"]
     queryField: "trophyDarkRoomByName"
   )
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   name: String!
+}
+
+type UserRoom
+  @model(timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" })
+  @auth(rules: [{ allow: owner, provider: userPools }]) {
+  id: ID!
+  textRoom: TextRoom @connection
+  interactiveRoom: InteractiveRoom @connection
+  trophyDarkRoom: TrophyDarkRoom @connection
+  roomKey: String!
+  description: String
+  createdOn: AWSDateTime!
+  updatedOn: AWSDateTime!
+  defaultRoomUsername: String
 }
 
 type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
@@ -44,7 +58,7 @@ type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
   modifier: Int!
 }
 
-type SafetyModule @model @auth(rules: [{ allow: public }]) {
+type SafetyModule @model @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   xCardActive: Boolean!
   linesAndVeils: [AWSJSON!]!
@@ -53,7 +67,7 @@ type SafetyModule @model @auth(rules: [{ allow: public }]) {
 type Label
   @model
   @key(name: "byRoom", fields: ["roomId"])
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   roomId: ID!
   contents: String!
@@ -64,7 +78,7 @@ type Label
 type Counter
   @model
   @key(name: "byRoom", fields: ["roomId"])
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   roomId: ID!
   title: String!
@@ -83,7 +97,7 @@ enum CounterType {
 type VisualDie
   @model
   @key(name: "byRoom", fields: ["roomId"])
-  @auth(rules: [{ allow: public }]) {
+  @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   roomId: ID!
   room: InteractiveRoom @connection(fields: ["roomId"])

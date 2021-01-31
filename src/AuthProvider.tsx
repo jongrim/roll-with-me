@@ -34,7 +34,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
-      console.log({ event, data });
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':

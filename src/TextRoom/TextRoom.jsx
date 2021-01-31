@@ -10,6 +10,7 @@ import { getRandomNumbers } from '../functions/randomNumbers';
 import { assignResultsToDice, sumOfDice } from '../utils/rolls';
 
 import { useToast } from '@chakra-ui/react';
+import { UserRoomContext } from '../UserRoomProvider';
 
 const LOCAL_STORAGE_ROLL_KEY = 'local-saved-rolls';
 
@@ -74,6 +75,7 @@ function TextRoom({ name }) {
 
   // Loading User Rolls
   const { user } = React.useContext(AuthContext);
+  const { updateRoomActivity } = React.useContext(UserRoomContext);
   const [savedRolls, setSavedRolls] = React.useState([]);
   React.useEffect(() => {
     async function loadSavedRolls() {
@@ -302,6 +304,10 @@ function TextRoom({ name }) {
   }
 
   async function onSubmit(rollWithoutResults) {
+    updateRoomActivity({
+      roomKey: 'textRoom',
+      roomId,
+    });
     setIsRolling(true);
     try {
       const results = await getRandomNumbers(rollWithoutResults.dice.length);

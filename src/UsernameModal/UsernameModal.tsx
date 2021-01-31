@@ -10,21 +10,25 @@ import {
   Input,
   Button,
   Text,
+  Link,
 } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { AuthContext } from '../AuthProvider';
 
 interface UsernameModalProps {
-  setNameInRoom: (name: string) => void;
+  isOpen: boolean;
+  setUsername: (val: string) => void;
 }
 
 const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
-  ({ setNameInRoom }, quickRollRef) => {
+  ({ isOpen, setUsername }, quickRollRef) => {
     const toast = useToast();
-    const [nameModalIsOpen, setNameModalIsOpen] = React.useState(true);
+    const { user } = React.useContext(AuthContext);
     const [name, setName] = React.useState('');
     const [nameError, setNameError] = React.useState(false);
     return (
       <Modal
-        isOpen={nameModalIsOpen}
+        isOpen={isOpen}
         onClose={() => {
           if (!name) {
             setNameError(true);
@@ -37,8 +41,7 @@ const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
             });
             return;
           }
-          setNameModalIsOpen(false);
-          setNameInRoom(name);
+          setUsername(name);
         }}
         size="xl"
         // @ts-ignore
@@ -60,8 +63,7 @@ const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
                 });
                 return;
               }
-              setNameModalIsOpen(false);
-              setNameInRoom(name);
+              setUsername(name);
             }}
           >
             <ModalHeader>Set your name</ModalHeader>
@@ -73,6 +75,20 @@ const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
                 onChange={({ target }) => setName(target.value)}
                 placeholder="Name"
               />
+              {user && (
+                <Text size="sm" fontWeight="300" mt={3}>
+                  This will be saved for you. Change it later from the sidebar
+                  or your{' '}
+                  <Link
+                    as={ReactRouterLink}
+                    to="/profile/rooms"
+                    color="brand.500"
+                  >
+                    active rooms
+                  </Link>{' '}
+                  page.
+                </Text>
+              )}
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="brand" type="submit">

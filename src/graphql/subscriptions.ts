@@ -9,6 +9,8 @@ export const onUpdateTextRoomByName = /* GraphQL */ `
       name
       rolls
       counters
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -16,8 +18,6 @@ export const onUpdateTextRoomByName = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -26,6 +26,8 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
     onUpdateInteractiveRoomByName(name: $name) {
       id
       name
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -33,24 +35,13 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      dice {
+      labels {
         items {
           id
           roomId
-          room {
-            id
-            name
-            createdAt
-            updatedAt
-          }
+          contents
           x
           y
-          createdBy
-          result
-          sides
-          color
-          version
-          type
           createdAt
           updatedAt
         }
@@ -71,20 +62,29 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
         }
         nextToken
       }
-      labels {
+      dice {
         items {
           id
           roomId
-          contents
           x
           y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
           createdAt
           updatedAt
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -103,9 +103,21 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
     onCreateVisualDieByRoom(roomId: $roomId) {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -113,18 +125,13 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -145,31 +152,24 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -178,9 +178,21 @@ export const onUpdateVisualDieById = /* GraphQL */ `
     onUpdateVisualDieById(id: $id) {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -188,18 +200,13 @@ export const onUpdateVisualDieById = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -220,31 +227,24 @@ export const onUpdateVisualDieById = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -313,6 +313,8 @@ export const onCreateTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -320,8 +322,6 @@ export const onCreateTextRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -332,6 +332,8 @@ export const onUpdateTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -339,8 +341,6 @@ export const onUpdateTextRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -351,6 +351,8 @@ export const onDeleteTextRoom = /* GraphQL */ `
       name
       rolls
       counters
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -358,8 +360,6 @@ export const onDeleteTextRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -368,6 +368,8 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
     onCreateInteractiveRoom {
       id
       name
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -375,24 +377,13 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      dice {
+      labels {
         items {
           id
           roomId
-          room {
-            id
-            name
-            createdAt
-            updatedAt
-          }
+          contents
           x
           y
-          createdBy
-          result
-          sides
-          color
-          version
-          type
           createdAt
           updatedAt
         }
@@ -413,20 +404,29 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
         }
         nextToken
       }
-      labels {
+      dice {
         items {
           id
           roomId
-          contents
           x
           y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
           createdAt
           updatedAt
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -435,6 +435,8 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
     onUpdateInteractiveRoom {
       id
       name
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -442,24 +444,13 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      dice {
+      labels {
         items {
           id
           roomId
-          room {
-            id
-            name
-            createdAt
-            updatedAt
-          }
+          contents
           x
           y
-          createdBy
-          result
-          sides
-          color
-          version
-          type
           createdAt
           updatedAt
         }
@@ -480,20 +471,29 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
         }
         nextToken
       }
-      labels {
+      dice {
         items {
           id
           roomId
-          contents
           x
           y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
           createdAt
           updatedAt
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -502,6 +502,8 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
     onDeleteInteractiveRoom {
       id
       name
+      createdAt
+      updatedAt
       safetyModule {
         id
         xCardActive
@@ -509,24 +511,13 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      dice {
+      labels {
         items {
           id
           roomId
-          room {
-            id
-            name
-            createdAt
-            updatedAt
-          }
+          contents
           x
           y
-          createdBy
-          result
-          sides
-          color
-          version
-          type
           createdAt
           updatedAt
         }
@@ -547,20 +538,29 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
         }
         nextToken
       }
-      labels {
+      dice {
         items {
           id
           roomId
-          contents
           x
           y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
           createdAt
           updatedAt
+          room {
+            id
+            name
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -591,6 +591,318 @@ export const onDeleteTrophyDarkRoom = /* GraphQL */ `
       name
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateUserRoom = /* GraphQL */ `
+  subscription OnCreateUserRoom($owner: String!) {
+    onCreateUserRoom(owner: $owner) {
+      id
+      roomKey
+      description
+      createdOn
+      updatedOn
+      defaultRoomUsername
+      textRoom {
+        id
+        name
+        rolls
+        counters
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      interactiveRoom {
+        id
+        name
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      trophyDarkRoom {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      owner
+    }
+  }
+`;
+export const onUpdateUserRoom = /* GraphQL */ `
+  subscription OnUpdateUserRoom($owner: String!) {
+    onUpdateUserRoom(owner: $owner) {
+      id
+      roomKey
+      description
+      createdOn
+      updatedOn
+      defaultRoomUsername
+      textRoom {
+        id
+        name
+        rolls
+        counters
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      interactiveRoom {
+        id
+        name
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      trophyDarkRoom {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      owner
+    }
+  }
+`;
+export const onDeleteUserRoom = /* GraphQL */ `
+  subscription OnDeleteUserRoom($owner: String!) {
+    onDeleteUserRoom(owner: $owner) {
+      id
+      roomKey
+      description
+      createdOn
+      updatedOn
+      defaultRoomUsername
+      textRoom {
+        id
+        name
+        rolls
+        counters
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      interactiveRoom {
+        id
+        name
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        labels {
+          items {
+            id
+            roomId
+            contents
+            x
+            y
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        counters {
+          items {
+            id
+            roomId
+            title
+            value
+            max
+            x
+            y
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        dice {
+          items {
+            id
+            roomId
+            x
+            y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      trophyDarkRoom {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      owner
+    }
+  }
+`;
+export const onCreateSavedRoll = /* GraphQL */ `
+  subscription OnCreateSavedRoll($owner: String!) {
+    onCreateSavedRoll(owner: $owner) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateSavedRoll = /* GraphQL */ `
+  subscription OnUpdateSavedRoll($owner: String!) {
+    onUpdateSavedRoll(owner: $owner) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteSavedRoll = /* GraphQL */ `
+  subscription OnDeleteSavedRoll($owner: String!) {
+    onDeleteSavedRoll(owner: $owner) {
+      id
+      rollName
+      dice
+      modifier
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -719,9 +1031,21 @@ export const onCreateVisualDie = /* GraphQL */ `
     onCreateVisualDie {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -729,18 +1053,13 @@ export const onCreateVisualDie = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -761,31 +1080,24 @@ export const onCreateVisualDie = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -794,9 +1106,21 @@ export const onUpdateVisualDie = /* GraphQL */ `
     onUpdateVisualDie {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -804,18 +1128,13 @@ export const onUpdateVisualDie = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -836,31 +1155,24 @@ export const onUpdateVisualDie = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -869,9 +1181,21 @@ export const onDeleteVisualDie = /* GraphQL */ `
     onDeleteVisualDie {
       id
       roomId
+      x
+      y
+      createdBy
+      result
+      sides
+      color
+      version
+      type
+      createdAt
+      updatedAt
       room {
         id
         name
+        createdAt
+        updatedAt
         safetyModule {
           id
           xCardActive
@@ -879,18 +1203,13 @@ export const onDeleteVisualDie = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        dice {
+        labels {
           items {
             id
             roomId
+            contents
             x
             y
-            createdBy
-            result
-            sides
-            color
-            version
-            type
             createdAt
             updatedAt
           }
@@ -911,70 +1230,24 @@ export const onDeleteVisualDie = /* GraphQL */ `
           }
           nextToken
         }
-        labels {
+        dice {
           items {
             id
             roomId
-            contents
             x
             y
+            createdBy
+            result
+            sides
+            color
+            version
+            type
             createdAt
             updatedAt
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
-      x
-      y
-      createdBy
-      result
-      sides
-      color
-      version
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateSavedRoll = /* GraphQL */ `
-  subscription OnCreateSavedRoll($owner: String!) {
-    onCreateSavedRoll(owner: $owner) {
-      id
-      rollName
-      dice
-      modifier
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateSavedRoll = /* GraphQL */ `
-  subscription OnUpdateSavedRoll($owner: String!) {
-    onUpdateSavedRoll(owner: $owner) {
-      id
-      rollName
-      dice
-      modifier
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteSavedRoll = /* GraphQL */ `
-  subscription OnDeleteSavedRoll($owner: String!) {
-    onDeleteSavedRoll(owner: $owner) {
-      id
-      rollName
-      dice
-      modifier
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

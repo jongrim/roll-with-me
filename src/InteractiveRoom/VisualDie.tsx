@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   Box,
-  Center,
   Grid,
   HStack,
   Icon,
@@ -17,7 +16,6 @@ import {
   RiDeleteBin4Line,
   RiUser3Fill,
   RiSettings4Fill,
-  RiAddLine,
 } from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import gsap, { Elastic } from 'gsap';
@@ -47,7 +45,8 @@ const VDie: React.FC<{
   setActionInProgress: (val: boolean) => void;
   isSelected: boolean;
   selectDie: (die: { id: string; sides: number; version: number }) => void;
-}> = ({ die, setActionInProgress, isSelected, selectDie }) => {
+  updateActivity: () => void;
+}> = ({ die, setActionInProgress, isSelected, selectDie, updateActivity }) => {
   const [trackedDie, setTrackedDie] = React.useState<VisualDie>(die);
   const [actionsVisible, setActionsVisible] = React.useState(false);
   const el = React.useRef(null);
@@ -144,7 +143,7 @@ const VDie: React.FC<{
   const { colorMode } = useColorMode();
   const buttonHighlight =
     colorMode === 'light'
-      ? { boxShadow: 'lg' }
+      ? { boxShadow: 'lg', border: '1px solid', borderColor: trackedDie.color }
       : { border: '1px solid', borderColor: trackedDie.color };
 
   if (trackedDie.type === 'fudge') {
@@ -156,6 +155,7 @@ const VDie: React.FC<{
         buttonHighlight={buttonHighlight}
         actionsVisible={actionsVisible}
         setActionInProgress={setActionInProgress}
+        updateActivity={updateActivity}
         isSelected={isSelected}
       />
     );
@@ -171,12 +171,12 @@ const VDie: React.FC<{
               width="72px"
               height="72px"
               placeItems="center"
-              {...(isSelected ? buttonHighlight : {})}
               borderRadius="md"
             >
               <Box gridArea="1 / 1">
                 <motion.div animate={controls}>
                   <IconButton
+                    {...(isSelected ? buttonHighlight : {})}
                     p={3}
                     aria-label="die"
                     onClick={() => {}}
@@ -206,6 +206,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -224,12 +225,12 @@ const VDie: React.FC<{
               width="72px"
               height="72px"
               placeItems="center"
-              {...(isSelected ? buttonHighlight : {})}
               borderRadius="md"
             >
               <Box gridArea="1 / 1">
                 <motion.div animate={controls}>
                   <IconButton
+                    {...(isSelected ? buttonHighlight : {})}
                     role="button"
                     p={3}
                     aria-label="die"
@@ -259,6 +260,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -281,12 +283,12 @@ const VDie: React.FC<{
                 width="72px"
                 height="72px"
                 placeItems="center"
-                {...(isSelected ? buttonHighlight : {})}
                 borderRadius="md"
               >
                 <Box gridArea="1 / 1">
                   <motion.div animate={controls}>
                     <IconButton
+                      {...(isSelected ? buttonHighlight : {})}
                       p={3}
                       aria-label="die"
                       onClick={() => {}}
@@ -323,6 +325,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -345,12 +348,12 @@ const VDie: React.FC<{
                 width="72px"
                 height="72px"
                 placeItems="center"
-                {...(isSelected ? buttonHighlight : {})}
                 borderRadius="md"
               >
                 <Box gridArea="1 / 1">
                   <motion.div animate={controls}>
                     <IconButton
+                      {...(isSelected ? buttonHighlight : {})}
                       p={3}
                       aria-label="die"
                       onClick={() => {}}
@@ -387,6 +390,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -406,12 +410,12 @@ const VDie: React.FC<{
                 width="72px"
                 height="72px"
                 placeItems="center"
-                {...(isSelected ? buttonHighlight : {})}
                 borderRadius="md"
               >
                 <Box gridArea="1 / 1">
                   <motion.div animate={controls}>
                     <IconButton
+                      {...(isSelected ? buttonHighlight : {})}
                       p={3}
                       aria-label="die"
                       onClick={() => {}}
@@ -453,6 +457,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -471,12 +476,12 @@ const VDie: React.FC<{
               width="72px"
               height="72px"
               placeItems="center"
-              {...(isSelected ? buttonHighlight : {})}
               borderRadius="md"
             >
               <Box gridArea="1 / 1">
                 <motion.div animate={controls}>
                   <IconButton
+                    {...(isSelected ? buttonHighlight : {})}
                     p={3}
                     aria-label="die"
                     onClick={() => {}}
@@ -506,6 +511,7 @@ const VDie: React.FC<{
             id={trackedDie.id}
             sides={trackedDie.sides}
             setActionInProgress={setActionInProgress}
+            updateActivity={updateActivity}
             version={trackedDie.version}
           />
         </Box>
@@ -521,15 +527,18 @@ const DieActions = ({
   sides,
   setActionInProgress,
   version,
+  updateActivity,
 }: {
   id: string;
   isVisible: boolean;
   sides: number;
   setActionInProgress: (val: boolean) => void;
   version: number;
+  updateActivity: () => void;
 }) => {
   const deleteDie = async () => {
     setActionInProgress(true);
+    updateActivity();
     try {
       await API.graphql({
         query: mutations.deleteVisualDie,
@@ -547,6 +556,7 @@ const DieActions = ({
   };
   const rerollDie = async () => {
     setActionInProgress(true);
+    updateActivity();
     const results = await getRandomNumbers(1);
     try {
       const finalResult = (results[0] % sides) + 1;
@@ -567,16 +577,16 @@ const DieActions = ({
   return (
     <>
       <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
-        <HStack spacing={2} mt={2}>
+        <HStack spacing={2} mt={4}>
           <IconButton
-            variant="dark-lg"
+            variant="ghost"
             icon={<RiRestartLine />}
             size="sm"
             aria-label="roll die"
             onClick={rerollDie}
           />
           <IconButton
-            variant="dark-lg"
+            variant="ghost"
             icon={<RiDeleteBin4Line />}
             size="sm"
             aria-label="delete die"
@@ -620,6 +630,7 @@ interface FudgeDieProps {
   buttonHighlight: Record<string, unknown>;
   actionsVisible: boolean;
   controls: AnimationControls;
+  updateActivity: () => void;
 }
 
 const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
@@ -631,6 +642,7 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
       controls,
       actionsVisible,
       setActionInProgress,
+      updateActivity,
     },
     el
   ) => {
@@ -647,12 +659,12 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
             width="72px"
             height="72px"
             placeItems="center"
-            {...(isSelected ? buttonHighlight : {})}
             borderRadius="md"
           >
             <Box gridArea="1 / 1">
               <motion.div animate={controls}>
                 <IconButton
+                  {...(isSelected ? buttonHighlight : {})}
                   role="button"
                   p={3}
                   aria-label="die"
@@ -680,6 +692,7 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
           id={trackedDie.id}
           sides={trackedDie.sides}
           setActionInProgress={setActionInProgress}
+          updateActivity={updateActivity}
           version={trackedDie.version}
         />
       </Box>
