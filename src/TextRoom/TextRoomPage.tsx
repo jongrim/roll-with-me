@@ -77,6 +77,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   const { username, setUsername, isLoaded: userSettingsIsLoaded } = useUserRoom(
     {
       roomName,
+      roomId,
+      roomKey: 'textRoom',
     }
   );
   const [actionInProgress, setActionInProgress] = React.useState(false);

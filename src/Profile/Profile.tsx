@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
           </Link>
         </Flex>
       </GridItem>
-      <GridItem>
+      <GridItem h="full">
         <Grid
           templateColumns={['1fr', '1fr', '250px 1fr']}
           templateRows={['60px 1fr', '60px 1fr', '1fr']}
@@ -105,7 +105,7 @@ const Profile: React.FC = () => {
               Sign Out
             </Button>
           </Flex>
-          <Box>
+          <Box h="full" overflow="auto">
             <Route exact path="/profile/settings">
               <MainContent>
                 <UserInfo />

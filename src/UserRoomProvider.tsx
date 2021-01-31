@@ -22,9 +22,11 @@ type roomConnectionType =
   | 'userRoomTextRoomId'
   | 'userRoomTrophyDarkRoomId';
 
-type roomKeyType = 'textRoom' | 'interactiveRoom' | 'trophyDarkRoom';
+export type roomKeyType = 'textRoom' | 'interactiveRoom' | 'trophyDarkRoom';
 
-const getRoomConnectionFromRoomKey = (key: roomKeyType): roomConnectionType => {
+export const getRoomConnectionFromRoomKey = (
+  key: roomKeyType
+): roomConnectionType => {
   switch (key) {
     case 'textRoom':
       return 'userRoomTextRoomId';
@@ -52,7 +54,7 @@ async function lookupUserRooms() {
   return data?.listUserRooms;
 }
 
-async function createUserRoom({
+export async function createUserRoom({
   roomId,
   roomKey,
   roomConnection,
@@ -64,7 +66,8 @@ async function createUserRoom({
   roomUsername?: string;
 }) {
   try {
-    await API.graphql({
+    // @ts-ignore
+    const { data } = await API.graphql({
       query: mutations.createUserRoom,
       // @ts-ignore
       authMode: 'AMAZON_COGNITO_USER_POOLS',
@@ -76,6 +79,7 @@ async function createUserRoom({
         },
       },
     });
+    return data.createUserRoom;
   } catch (e) {
     console.warn(e);
   }
@@ -83,10 +87,10 @@ async function createUserRoom({
 
 async function updateUserRoom({
   id,
-  ...rest
+  defaultRoomUsername,
 }: {
   id: string;
-  rest?: Record<string, string>[];
+  defaultRoomUsername?: string;
 }) {
   try {
     await API.graphql({
@@ -96,7 +100,7 @@ async function updateUserRoom({
       variables: {
         input: {
           id,
-          ...rest,
+          defaultRoomUsername,
         },
       },
     });
@@ -112,18 +116,18 @@ interface AddToUserRoomArgs {
 
 export const UserRoomContext = React.createContext<{
   userRooms: userRoom[];
-  updateRoomActivity: ({ roomKey, roomId }: AddToUserRoomArgs) => void;
+  updateRoomActivity: ({ roomKey, roomId }: AddToUserRoomArgs) => Promise<void>;
   updateUserRoom: ({
     id,
-    ...rest
+    defaultRoomUsername,
   }: {
     id: string;
-    rest?: Record<string, string>[];
+    defaultRoomUsername?: string;
   }) => void;
   isLoaded: boolean;
 }>({
   userRooms: [],
-  updateRoomActivity: () => {},
+  updateRoomActivity: () => Promise.resolve(),
   updateUserRoom,
   isLoaded: false,
 });
@@ -202,7 +206,6 @@ const UserRoomProvider: React.FC = ({ children }) => {
   const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    console.log({ user });
     dispatch({ type: 'loading' });
 
     lookupUserRooms()
@@ -274,7 +277,7 @@ const UserRoomProvider: React.FC = ({ children }) => {
       if (matchingRoom) {
         updateUserRoom({ id: matchingRoom.id });
       } else {
-        createUserRoom({ roomConnection, roomId, roomKey });
+        return createUserRoom({ roomConnection, roomId, roomKey });
       }
     },
     [user, userRooms]
