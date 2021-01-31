@@ -71,13 +71,15 @@ type Props = {
 
 function InteractiveRoom({ name }: Props) {
   const toast = useToast();
+  const [actionInProgress, setActionInProgress] = React.useState(false);
+  const { data, isLoading } = useRoomLookup(name);
   const { isLoaded: userSettingsIsLoaded, username, setUsername } = useUserRoom(
     {
       roomName: name,
+      roomId: data?.id || '',
+      roomKey: 'interactiveRoom',
     }
   );
-  const [actionInProgress, setActionInProgress] = React.useState(false);
-  const { data, isLoading } = useRoomLookup(name);
   const [clockModalIsOpen, setClockModalIsOpen] = React.useState(false);
   const [labelModalIsOpen, setLabelModalIsOpen] = React.useState(false);
   const [color, setColor] = React.useState('#c91db6');
