@@ -44,16 +44,20 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
   const groupResults = Object.values(diceMap).map((results) => results.sum);
   return (
     <>
-      <Heading
-        as="h3"
-        size="md"
+      <HStack
+        spacing={2}
         borderBottom="2px solid"
         borderBottomColor="inherit"
         pb={1}
         mb={2}
       >
-        Last Roll
-      </Heading>
+        <Heading as="h3" size="md">
+          Last Roll
+        </Heading>
+        <Text size="sm" fontWeight="300">
+          by {roll.rolledBy}
+        </Text>
+      </HStack>
       {isRolling ? (
         <Center h="100%">
           <CircularProgress isIndeterminate color="blue.300" />
@@ -74,7 +78,7 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
                   <Heading as="h4" size="sm" colorScheme="brand">
                     {key}
                   </Heading>
-                  <Text color="gray.400" fontSize={12}>
+                  <Text fontSize="xs" fontWeight="300" opacity="0.8">
                     {results.sum} total
                   </Text>
                 </HStack>

@@ -63,23 +63,17 @@ const ProfileDrawer = React.forwardRef<HTMLButtonElement, ProfileDrawerProps>(
                       <EditableInput />
                     </Editable>
                   </Box>
+                  <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+                    Provide feedback
+                  </Link>
                   {user ? (
-                    <Stack spacing={6} divider={<Divider />}>
-                      <Link
-                        as={ReactRouterLink}
-                        to="/profile/settings"
-                        color="brand.500"
-                      >
-                        Manage profile
-                      </Link>
-                      <Link
-                        as={ReactRouterLink}
-                        to="/feedback"
-                        color="brand.500"
-                      >
-                        Provide feedback
-                      </Link>
-                    </Stack>
+                    <Link
+                      as={ReactRouterLink}
+                      to="/profile/settings"
+                      color="brand.500"
+                    >
+                      Manage profile
+                    </Link>
                   ) : (
                     <Button
                       onClick={() =>

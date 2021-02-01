@@ -53,28 +53,39 @@ export function sumOfDice(dice: Die[]): number {
 }
 
 export function getRollFromQuickString(s: string): Roll {
-  const baseDiceReg = /^\dd\d+/i;
+  const baseDiceReg = /\d{0,3}d\d+/gi;
   const modifierReg = /(\+|-)\s?\d/;
   const rollNameReg = /as (.+)/i;
+  const countReg = /\d+d/;
+  const sidesReg = /d\d+/;
 
-  const baseDice = baseDiceReg.exec(s);
-  if (!baseDice) {
+  const baseDice = [...s.matchAll(baseDiceReg)];
+  if (baseDice.length === 0) {
     throw new Error('could not parse roll');
   }
   const modifier = modifierReg.exec(s);
   const rollNameGroups = s.match(rollNameReg);
 
+  const fallbackName = baseDice.map((group) => group[0]).join(', ');
+  const dice = baseDice
+    .map((group) => {
+      const count = countReg.exec(group[0])?.[0].replace('d', '');
+      const sides = sidesReg.exec(group[0])?.[0].replace('d', '');
+      return makeNDice({
+        count: Number(count),
+        sides: Number(sides),
+      });
+    })
+    .flat();
+
   return {
     id: uuidv4(),
     createdAt: new Date().toISOString(),
     modifier: Number(modifier?.[0].replace(' ', '') ?? 0),
-    rollName: rollNameGroups?.[1] ?? `${baseDice?.[0]} ${modifier?.[0] ?? ''}`,
+    rollName: rollNameGroups?.[1] ?? `${fallbackName} ${modifier?.[0] ?? ''}`,
     rolledBy: '',
     sum: 0,
-    dice: makeNDice({
-      count: Number(baseDice?.[0].substr(0, 1)),
-      sides: Number(baseDice?.[0].substr(2)),
-    }),
+    dice,
   };
 }
 
