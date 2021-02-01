@@ -82,7 +82,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
     }
   );
   const [actionInProgress, setActionInProgress] = React.useState(false);
-  const quickRollRef = React.useRef<HTMLElement>(null!);
+  const quickRollRef = React.useRef<HTMLInputElement>(null!);
   React.useEffect(() => {
     const checkForQuickCommand = (e: KeyboardEvent) => {
       if (e.key === '/' && e.ctrlKey) {
@@ -250,7 +250,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             <TabPanel px={0}>
               <Grid
                 templateColumns={['1fr', '1fr', '1fr 1fr']}
-                templateRows="1fr"
+                templateRows="minmax(0, 1fr)"
                 w="full"
                 gap={8}
               >

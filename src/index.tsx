@@ -59,9 +59,6 @@ const updatedAwsConfig = {
   },
 };
 
-console.log(updatedAwsConfig.oauth.redirectSignIn);
-console.log(updatedAwsConfig.oauth.redirectSignOut);
-
 Amplify.configure(updatedAwsConfig);
 
 ReactDOM.render(
