@@ -15,6 +15,8 @@ import {
   Grid,
   IconButton,
   Icon,
+  Collapse,
+  HStack,
 } from '@chakra-ui/react';
 import {
   GiD4,
@@ -33,6 +35,7 @@ interface NewDieProps {
 }
 
 const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
+  const [customFormVisible, setCustomFormVisible] = React.useState(false);
   const [name, setName] = React.useState<string>('');
   const [sides, setSides] = React.useState<number>();
   const [qty, setQty] = React.useState<number>(1);
@@ -152,69 +155,89 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
           </Grid>
         </GridItem>
         <GridItem colSpan={2}>
-          <Heading textAlign="left" as="h3" size="sm">
-            Or custom dice
-          </Heading>
+          <Button
+            variant="ghost"
+            onClick={() => setCustomFormVisible((cur) => !cur)}
+          >
+            {customFormVisible
+              ? 'Hide custom dice form'
+              : 'Show custom dice form'}
+          </Button>
         </GridItem>
         <GridItem colSpan={2}>
-          <FormControl>
-            <FormLabel>Die Name</FormLabel>
-            <Input
-              size="sm"
-              variant="flushed"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
-              value={name}
-            />
-            <FormHelperText textAlign="left">
-              Leave blank to autofill
-            </FormHelperText>
-          </FormControl>
-        </GridItem>
-        <GridItem>
-          <FormControl isRequired>
-            <FormLabel>Sides</FormLabel>
-            <NumberInput
-              size="sm"
-              min={1}
-              onChange={(_, val) => setSides(val)}
-              value={sides || ''}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-        </GridItem>
-        <GridItem>
-          <FormControl isRequired>
-            <FormLabel>Quantity</FormLabel>
-            <NumberInput
-              size="sm"
-              min={1}
-              onChange={(_, val) => setQty(val)}
-              value={qty || ''}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-        </GridItem>
-        <GridItem colStart={2} justifySelf="end">
-          <Button
-            leftIcon={<RiAddCircleLine />}
-            colorScheme="brand"
-            variant="outline"
-            type="submit"
-          >
-            Add Die
-          </Button>
+          <Collapse in={customFormVisible} animateOpacity>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <GridItem colSpan={2}>
+                <FormControl>
+                  <FormLabel>Die Name</FormLabel>
+                  <Input
+                    size="sm"
+                    variant="flushed"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setName(e.target.value)
+                    }
+                    value={name}
+                  />
+                  <FormHelperText textAlign="left">
+                    Leave blank to autofill
+                  </FormHelperText>
+                </FormControl>
+              </GridItem>
+              <GridItem>
+                <FormControl isRequired>
+                  <FormLabel>Sides</FormLabel>
+                  <NumberInput
+                    size="sm"
+                    min={1}
+                    onChange={(_, val) => setSides(val)}
+                    value={sides || ''}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              </GridItem>
+              <GridItem>
+                <FormControl isRequired>
+                  <FormLabel>Quantity</FormLabel>
+                  <NumberInput
+                    size="sm"
+                    min={1}
+                    onChange={(_, val) => setQty(val)}
+                    value={qty || ''}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              </GridItem>
+              <GridItem colStart={2} justifySelf="end">
+                <HStack spacing={4}>
+                  <Button
+                    leftIcon={<RiAddCircleLine />}
+                    colorScheme="brand"
+                    variant="outline"
+                    type="submit"
+                  >
+                    Add Die
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={() => setCustomFormVisible(false)}
+                  >
+                    Close
+                  </Button>
+                </HStack>
+              </GridItem>
+            </Grid>
+          </Collapse>
         </GridItem>
       </Grid>
     </form>

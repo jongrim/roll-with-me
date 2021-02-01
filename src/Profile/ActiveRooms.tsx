@@ -64,8 +64,8 @@ const RoomCard = ({ room }: { room: userRoom }) => {
       _hover={{ boxShadow: 'lg' }}
     >
       <Text fontWeight="400" fontSize="xs" opacity="0.8">
-        {roomType === 'r' && 'text room'}
-        {roomType === 'i' && 'visual dice room'}
+        {roomType === 'r' && 'text dice'}
+        {roomType === 'i' && 'visual dice'}
         {roomType === 'trophy-dark' && 'trophy dark room'}
       </Text>
       <Link as={ReactRouterLink} to={`/${roomType}/${name}`}>

@@ -33,9 +33,13 @@ const RollsHistory: React.FC<RollsHistoryProps> = ({ rolls }) => {
   return (
     <Container maxW="full" px={0}>
       <Heading as="h3" size="md" textAlign="center" pb={1} mb={2}>
-        Rolls History
+        Roll History
       </Heading>
-      <Grid templateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr']} gap={8}>
+      <Grid
+        templateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr']}
+        templateRows="minmax(0, 1fr)"
+        gap={8}
+      >
         {rolls.map((roll) => (
           <GridItem
             key={`${roll.id} - ${roll.createdAt}`}

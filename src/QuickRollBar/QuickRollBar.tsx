@@ -16,7 +16,7 @@ interface QuickRollBarProps {
   placeholder: string;
 }
 
-const QuickRollBar = React.forwardRef<HTMLElement, QuickRollBarProps>(
+const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
   ({ name, onSubmit, placeholder }, ref) => {
     const [quickRollValue, setQuickRollValue] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -46,7 +46,6 @@ const QuickRollBar = React.forwardRef<HTMLElement, QuickRollBarProps>(
               placeholder={placeholder}
               value={quickRollValue}
               onChange={({ target }) => setQuickRollValue(target.value)}
-              //@ts-ignore
               ref={ref}
             />
           </InputGroup>

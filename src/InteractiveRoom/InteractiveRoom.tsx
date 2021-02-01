@@ -21,6 +21,7 @@ import {
   ModalContent,
   Center,
   Spinner,
+  VStack,
 } from '@chakra-ui/react';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -33,7 +34,12 @@ import QuickRollBar from '../QuickRollBar/QuickRollBar';
 import SettingsBar from '../SettingsBar';
 import UsernameModal from '../UsernameModal/UsernameModal';
 import useRoomLookup from './useRoomLookup';
-import { RiAddBoxLine, RiRestartLine, RiTBoxLine } from 'react-icons/ri';
+import {
+  RiAddBoxLine,
+  RiDeleteBin4Line,
+  RiRestartLine,
+  RiTBoxLine,
+} from 'react-icons/ri';
 import {
   GiD4,
   GiPerspectiveDiceSixFacesSix,
@@ -93,7 +99,7 @@ function InteractiveRoom({ name }: Props) {
     }
   }, [data?.id, updateRoomActivity]);
 
-  const quickRollRef = React.useRef<HTMLElement>(null!);
+  const quickRollRef = React.useRef<HTMLInputElement>(null!);
   React.useEffect(() => {
     const checkForQuickCommand = (e: KeyboardEvent) => {
       if (e.key === '/' && e.ctrlKey) {
@@ -499,10 +505,9 @@ const VisualDice = ({
   updateActivity: () => void;
 }) => {
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
-  const [state, dispatch] = React.useReducer(selectionReducer, {
+  const [{ selectedDice }, dispatch] = React.useReducer(selectionReducer, {
     selectedDice: [],
   });
-  const { selectedDice } = state;
 
   const rerollDice = async () => {
     setActionInProgress(true);
@@ -522,6 +527,30 @@ const VisualDice = ({
                 id: die.id,
                 result: die.result,
                 version: die.version + 1,
+              },
+            },
+          })
+        )
+      );
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+      dispatch({ type: 'clear' });
+    }
+  };
+
+  const deleteDice = async () => {
+    setActionInProgress(true);
+    updateActivity();
+    try {
+      await Promise.allSettled(
+        selectedDice.map((die) =>
+          API.graphql({
+            query: mutations.deleteVisualDie,
+            variables: {
+              input: {
+                id: die.id,
               },
             },
           })
@@ -592,16 +621,25 @@ const VisualDice = ({
         );
       })}
       {selectedDice.length > 0 && (
-        <IconButton
-          position="absolute"
-          top="48%"
-          colorScheme="brand"
-          icon={<RiRestartLine />}
-          size="lg"
-          aria-label="roll die"
-          onClick={rerollDice}
-          zIndex="2000"
-        />
+        <VStack spacing={6} top="48%" position="absolute">
+          <IconButton
+            colorScheme="brand"
+            icon={<RiRestartLine />}
+            size="lg"
+            aria-label="roll dice"
+            onClick={rerollDice}
+            zIndex="2000"
+          />
+          <IconButton
+            colorScheme="red"
+            variant="outline"
+            icon={<RiDeleteBin4Line />}
+            size="lg"
+            aria-label="delete dice"
+            onClick={deleteDice}
+            zIndex="2000"
+          />
+        </VStack>
       )}
     </>
   );

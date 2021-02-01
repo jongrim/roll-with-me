@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <Grid templateRows="56px 1fr" h="full">
+    <Grid templateRows="56px minmax(0, 1fr)" h="full">
       <GridItem>
         <Flex p={2}>
           <Link as={ReactRouterLink} to="/">

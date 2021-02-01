@@ -81,7 +81,7 @@ function Home() {
       >
         <Box mt={10} mb={16}>
           <Heading as="h2" fontSize="xl" color="black">
-            Make a new text room now
+            Start using the text dice app now
           </Heading>
           <Flex>
             <InputGroup>
@@ -138,7 +138,7 @@ function Home() {
               fontSize="sm"
               textAlign={['center', 'center', 'left']}
             >
-              Make a room and share the URL with friends to roll dice together
+              Start an app and share the URL with friends to roll dice together
               <br />
               Come back to it later and pick up where you left off
             </Text>
@@ -154,7 +154,7 @@ function Home() {
         >
           <GridItem>
             <Heading as="h3" fontSize="xl" color="black">
-              Dice Rooms
+              Dice Apps
             </Heading>
           </GridItem>
           <GridItem>
@@ -181,7 +181,7 @@ function Home() {
                     backgroundColor: 'purple.50',
                   }}
                 >
-                  Text Room
+                  Text Dice Roller
                 </Link>
                 <Link
                   as={ReactRouterLink}
@@ -199,7 +199,7 @@ function Home() {
                     backgroundColor: 'blue.50',
                   }}
                 >
-                  Visual Dice Room
+                  Visual Dice Table
                 </Link>
               </LightMode>
             </Stack>
