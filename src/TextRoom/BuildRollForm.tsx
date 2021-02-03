@@ -79,6 +79,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
         )}
       </Grid>
       <form
+        data-testid="roll-final-info"
         onSubmit={(e: React.BaseSyntheticEvent) => {
           e.preventDefault();
           const newRoll: Roll = compose(
@@ -126,7 +127,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             </FormControl>
           </GridItem>
           <GridItem>
-            <FormControl>
+            <FormControl id="roll-name">
               <FormLabel>Name</FormLabel>
               <Input
                 size="sm"
@@ -138,7 +139,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <FormControl display="flex" alignItems="center">
+            <FormControl display="flex" alignItems="center" id="save-roll">
               <FormLabel>Save roll?</FormLabel>
               <Switch
                 isChecked={saveNewRoll}
