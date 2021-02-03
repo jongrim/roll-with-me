@@ -63,7 +63,7 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
           <CircularProgress isIndeterminate color="blue.300" />
         </Center>
       ) : (
-        <>
+        <Box data-testid="last-roll-results">
           <Stat>
             <StatLabel>{roll?.rollName}</StatLabel>
             <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
@@ -71,9 +71,9 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
               roll?.modifier
             }`}</StatHelpText>
           </Stat>
-          {Object.entries(diceMap).map(([key, results]) => {
+          {Object.entries(diceMap).map(([key, results], i) => {
             return (
-              <Box key={key} mt={4}>
+              <Box key={key} mt={4} data-testid={`die-${i}`}>
                 <HStack spacing={2}>
                   <Heading as="h4" size="sm" colorScheme="brand">
                     {key}
@@ -96,7 +96,7 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
               </Box>
             );
           })}
-        </>
+        </Box>
       )}
     </>
   );

@@ -11,6 +11,8 @@ import {
   Button,
   Text,
   Link,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider';
@@ -48,7 +50,7 @@ const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
         finalFocusRef={quickRollRef}
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent data-testid="username-modal">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -68,27 +70,28 @@ const UsernameModal = React.forwardRef<HTMLElement, UsernameModalProps>(
           >
             <ModalHeader>Set your name</ModalHeader>
             <ModalBody>
-              <Text pb={2}>Choose a username for your rolls</Text>
-              <Input
-                isInvalid={nameError}
-                value={name}
-                onChange={({ target }) => setName(target.value)}
-                placeholder="Name"
-              />
-              {user && (
-                <Text size="sm" fontWeight="300" mt={3}>
-                  This will be saved for you. Change it later from the sidebar
-                  or your{' '}
-                  <Link
-                    as={ReactRouterLink}
-                    to="/profile/rooms"
-                    color="brand.500"
-                  >
-                    active rooms
-                  </Link>{' '}
-                  page.
-                </Text>
-              )}
+              <FormControl id="username" isRequired isInvalid={nameError}>
+                <FormLabel pb={2}>Choose a username for your rolls</FormLabel>
+                <Input
+                  value={name}
+                  onChange={({ target }) => setName(target.value)}
+                  placeholder="Name"
+                />
+                {user && (
+                  <Text size="sm" fontWeight="300" mt={3}>
+                    This will be saved for you. Change it later from the sidebar
+                    or your{' '}
+                    <Link
+                      as={ReactRouterLink}
+                      to="/profile/rooms"
+                      color="brand.500"
+                    >
+                      active rooms
+                    </Link>{' '}
+                    page.
+                  </Text>
+                )}
+              </FormControl>
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="brand" type="submit">
