@@ -26,6 +26,7 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
     onUpdateInteractiveRoomByName(name: $name) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -79,6 +80,7 @@ export const onUpdateInteractiveRoomByName = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -116,6 +118,7 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -191,6 +194,7 @@ export const onUpdateVisualDieById = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -368,6 +372,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
     onCreateInteractiveRoom {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -421,6 +426,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -435,6 +441,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
     onUpdateInteractiveRoom {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -488,6 +495,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -502,6 +510,7 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
     onDeleteInteractiveRoom {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -555,6 +564,7 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -621,6 +631,7 @@ export const onCreateUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -712,6 +723,7 @@ export const onUpdateUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -803,6 +815,7 @@ export const onDeleteUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -1044,6 +1057,7 @@ export const onCreateVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -1119,6 +1133,7 @@ export const onUpdateVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -1194,6 +1209,7 @@ export const onDeleteVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {

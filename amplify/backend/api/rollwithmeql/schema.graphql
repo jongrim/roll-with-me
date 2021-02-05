@@ -23,6 +23,7 @@ type InteractiveRoom
   dice: [VisualDie] @connection(keyName: "byRoom", fields: ["id"])
   counters: [Counter] @connection(keyName: "byRoom", fields: ["id"])
   labels: [Label] @connection(keyName: "byRoom", fields: ["id"])
+  backgroundImageUrl: String
 }
 
 type TrophyDarkRoom

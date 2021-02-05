@@ -74,11 +74,13 @@ export type DeleteTextRoomInput = {
 export type CreateInteractiveRoomInput = {
   id?: string | null,
   name: string,
+  backgroundImageUrl?: string | null,
   interactiveRoomSafetyModuleId: string,
 };
 
 export type ModelInteractiveRoomConditionInput = {
   name?: ModelStringInput | null,
+  backgroundImageUrl?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomConditionInput | null > | null,
   or?: Array< ModelInteractiveRoomConditionInput | null > | null,
   not?: ModelInteractiveRoomConditionInput | null,
@@ -93,6 +95,7 @@ export enum CounterType {
 export type UpdateInteractiveRoomInput = {
   id: string,
   name?: string | null,
+  backgroundImageUrl?: string | null,
   interactiveRoomSafetyModuleId?: string | null,
 };
 
@@ -396,6 +399,7 @@ export enum ModelSortDirection {
 export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  backgroundImageUrl?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomFilterInput | null > | null,
   or?: Array< ModelInteractiveRoomFilterInput | null > | null,
   not?: ModelInteractiveRoomFilterInput | null,
@@ -566,6 +570,7 @@ export type CreateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -627,6 +632,7 @@ export type CreateInteractiveRoomMutation = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -646,6 +652,7 @@ export type UpdateInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -707,6 +714,7 @@ export type UpdateInteractiveRoomMutation = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -726,6 +734,7 @@ export type DeleteInteractiveRoomMutation = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -787,6 +796,7 @@ export type DeleteInteractiveRoomMutation = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -876,6 +886,7 @@ export type CreateUserRoomMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -983,6 +994,7 @@ export type UpdateUserRoomMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1090,6 +1102,7 @@ export type DeleteUserRoomMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1405,6 +1418,7 @@ export type CreateVisualDieMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1493,6 +1507,7 @@ export type UpdateVisualDieMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1581,6 +1596,7 @@ export type DeleteVisualDieMutation = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1744,6 +1760,7 @@ export type ListInteractiveRoomsQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1818,6 +1835,7 @@ export type GetInteractiveRoomQuery = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1879,6 +1897,7 @@ export type GetInteractiveRoomQuery = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -1903,6 +1922,7 @@ export type InteractiveRoomByNameQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2058,6 +2078,7 @@ export type GetUserRoomQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2168,6 +2189,7 @@ export type ListUserRoomsQuery = {
         __typename: "InteractiveRoom",
         id: string,
         name: string,
+        backgroundImageUrl: string | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -2389,6 +2411,7 @@ export type GetVisualDieQuery = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2480,6 +2503,7 @@ export type ListVisualDiesQuery = {
         __typename: "InteractiveRoom",
         id: string,
         name: string,
+        backgroundImageUrl: string | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -2541,6 +2565,7 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -2602,6 +2627,7 @@ export type OnUpdateInteractiveRoomByNameSubscription = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -2648,6 +2674,7 @@ export type OnCreateVisualDieByRoomSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2735,6 +2762,7 @@ export type OnUpdateVisualDieByIdSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2938,6 +2966,7 @@ export type OnCreateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -2999,6 +3028,7 @@ export type OnCreateInteractiveRoomSubscription = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -3013,6 +3043,7 @@ export type OnUpdateInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -3074,6 +3105,7 @@ export type OnUpdateInteractiveRoomSubscription = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -3088,6 +3120,7 @@ export type OnDeleteInteractiveRoomSubscription = {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
+    backgroundImageUrl: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -3149,6 +3182,7 @@ export type OnDeleteInteractiveRoomSubscription = {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
+          backgroundImageUrl: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -3222,6 +3256,7 @@ export type OnCreateUserRoomSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3328,6 +3363,7 @@ export type OnUpdateUserRoomSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3434,6 +3470,7 @@ export type OnDeleteUserRoomSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3696,6 +3733,7 @@ export type OnCreateVisualDieSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3779,6 +3817,7 @@ export type OnUpdateVisualDieSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3862,6 +3901,7 @@ export type OnDeleteVisualDieSubscription = {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
+      backgroundImageUrl: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
