@@ -37,6 +37,7 @@ import useRoomLookup from './useRoomLookup';
 import {
   RiAddBoxLine,
   RiDeleteBin4Line,
+  RiImage2Line,
   RiRestartLine,
   RiTBoxLine,
 } from 'react-icons/ri';
@@ -66,6 +67,7 @@ import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
 import { UserRoomContext } from '../UserRoomProvider';
 import useUserRoom from '../hooks/useUserRoom';
+import BackgroundImageModal from './BackgroundImageModal';
 
 gsap.registerPlugin(Draggable);
 
@@ -88,6 +90,10 @@ function InteractiveRoom({ name }: Props) {
   );
   const [clockModalIsOpen, setClockModalIsOpen] = React.useState(false);
   const [labelModalIsOpen, setLabelModalIsOpen] = React.useState(false);
+  const [
+    backgroundImgModalIsOpen,
+    setBackgroundImgModalIsOpen,
+  ] = React.useState(false);
   const [color, setColor] = React.useState('#c91db6');
 
   const { updateRoomActivity } = React.useContext(UserRoomContext);
@@ -353,7 +359,16 @@ function InteractiveRoom({ name }: Props) {
                 For best results, choose a color with good contrast on light and
                 dark backgrounds
               </Text>
-              <Container flex="1" maxW="6xl" id={DICEBOX_ID}>
+              <Container
+                flex="1"
+                maxW="6xl"
+                id={DICEBOX_ID}
+                background={
+                  data?.backgroundImageUrl
+                    ? `center / contain no-repeat url(${data.backgroundImageUrl})`
+                    : ''
+                }
+              >
                 {!isLoading && (
                   <>
                     <VisualDice
@@ -394,6 +409,14 @@ function InteractiveRoom({ name }: Props) {
                     icon={<Icon as={RiTBoxLine} w={6} h={6} />}
                     onClick={() => setLabelModalIsOpen(true)}
                     aria-label="new label"
+                  />
+                  <IconButton
+                    variant="outline"
+                    size="sm"
+                    colorScheme="yellow"
+                    icon={<Icon as={RiImage2Line} w={6} h={6} />}
+                    onClick={() => setBackgroundImgModalIsOpen(true)}
+                    aria-label="set a background image"
                   />
                 </HStack>
                 <Spacer />
@@ -458,6 +481,13 @@ function InteractiveRoom({ name }: Props) {
         onClose={() => setLabelModalIsOpen(false)}
         ref={quickRollRef}
         roomId={data?.id}
+      />
+      <BackgroundImageModal
+        isOpen={backgroundImgModalIsOpen}
+        onClose={() => setBackgroundImgModalIsOpen(false)}
+        ref={quickRollRef}
+        roomId={data?.id}
+        currentUrl={data?.backgroundImageUrl}
       />
       {data?.safetyModule.id && (
         <XCardModal safetyModuleId={data.safetyModule.id} ref={quickRollRef} />

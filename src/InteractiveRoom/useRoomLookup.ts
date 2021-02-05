@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
+import * as subscriptions from '../graphql/subscriptions';
 import { InteractiveRoomData } from '../APITypes';
 
 const getRoomId = async (name: string) => {
@@ -44,6 +45,23 @@ const useRoomLookup = (name: string) => {
       });
     }
   }, [name]);
+
+  React.useEffect(() => {
+    if (!roomData) return;
+    const subscription = API.graphql({
+      query: subscriptions.onUpdateInteractiveRoom,
+      variables: {
+        id: roomData.id,
+      },
+      // @ts-ignore
+    }).subscribe({
+      // @ts-ignore
+      next: ({ value }) => {
+        setRoomData(value.data?.onUpdateInteractiveRoom);
+      },
+    });
+    return () => subscription.unsubscribe();
+  }, [roomData]);
 
   return { data: roomData, isLoading };
 };

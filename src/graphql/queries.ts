@@ -95,6 +95,7 @@ export const listInteractiveRooms = /* GraphQL */ `
       items {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -158,6 +159,7 @@ export const getInteractiveRoom = /* GraphQL */ `
     getInteractiveRoom(id: $id) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -211,6 +213,7 @@ export const getInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -238,6 +241,7 @@ export const interactiveRoomByName = /* GraphQL */ `
       items {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -375,6 +379,7 @@ export const getUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -471,6 +476,7 @@ export const listUserRooms = /* GraphQL */ `
         interactiveRoom {
           id
           name
+          backgroundImageUrl
           createdAt
           updatedAt
           safetyModule {
@@ -654,6 +660,7 @@ export const getVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -734,6 +741,7 @@ export const listVisualDies = /* GraphQL */ `
         room {
           id
           name
+          backgroundImageUrl
           createdAt
           updatedAt
           safetyModule {

@@ -21,4 +21,5 @@ export type InteractiveRoomData = {
   id: string;
   name: string;
   safetyModule: SafetyModule;
+  backgroundImageUrl?: string;
 };
