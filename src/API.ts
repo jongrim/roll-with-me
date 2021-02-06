@@ -202,6 +202,46 @@ export type DeleteSavedRollInput = {
   id?: string | null,
 };
 
+export type CreateSafetyItemInput = {
+  id?: string | null,
+  label: string,
+  classification: SafetyClassification,
+  note?: string | null,
+};
+
+export enum SafetyClassification {
+  line = "line",
+  veil = "veil",
+  ask = "ask",
+  consent = "consent",
+}
+
+
+export type ModelSafetyItemConditionInput = {
+  label?: ModelStringInput | null,
+  classification?: ModelSafetyClassificationInput | null,
+  note?: ModelStringInput | null,
+  and?: Array< ModelSafetyItemConditionInput | null > | null,
+  or?: Array< ModelSafetyItemConditionInput | null > | null,
+  not?: ModelSafetyItemConditionInput | null,
+};
+
+export type ModelSafetyClassificationInput = {
+  eq?: SafetyClassification | null,
+  ne?: SafetyClassification | null,
+};
+
+export type UpdateSafetyItemInput = {
+  id: string,
+  label?: string | null,
+  classification?: SafetyClassification | null,
+  note?: string | null,
+};
+
+export type DeleteSafetyItemInput = {
+  id?: string | null,
+};
+
 export type CreateSafetyModuleInput = {
   id?: string | null,
   xCardActive: boolean,
@@ -433,6 +473,16 @@ export type ModelSavedRollFilterInput = {
   and?: Array< ModelSavedRollFilterInput | null > | null,
   or?: Array< ModelSavedRollFilterInput | null > | null,
   not?: ModelSavedRollFilterInput | null,
+};
+
+export type ModelSafetyItemFilterInput = {
+  id?: ModelIDInput | null,
+  label?: ModelStringInput | null,
+  classification?: ModelSafetyClassificationInput | null,
+  note?: ModelStringInput | null,
+  and?: Array< ModelSafetyItemFilterInput | null > | null,
+  or?: Array< ModelSafetyItemFilterInput | null > | null,
+  not?: ModelSafetyItemFilterInput | null,
 };
 
 export type ModelSafetyModuleFilterInput = {
@@ -1223,6 +1273,60 @@ export type DeleteSavedRollMutation = {
     rollName: string,
     dice: Array< string >,
     modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type CreateSafetyItemMutationVariables = {
+  input: CreateSafetyItemInput,
+  condition?: ModelSafetyItemConditionInput | null,
+};
+
+export type CreateSafetyItemMutation = {
+  createSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdateSafetyItemMutationVariables = {
+  input: UpdateSafetyItemInput,
+  condition?: ModelSafetyItemConditionInput | null,
+};
+
+export type UpdateSafetyItemMutation = {
+  updateSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type DeleteSafetyItemMutationVariables = {
+  input: DeleteSafetyItemInput,
+  condition?: ModelSafetyItemConditionInput | null,
+};
+
+export type DeleteSafetyItemMutation = {
+  deleteSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -2258,6 +2362,46 @@ export type ListSavedRollsQuery = {
       rollName: string,
       dice: Array< string >,
       modifier: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetSafetyItemQueryVariables = {
+  id: string,
+};
+
+export type GetSafetyItemQuery = {
+  getSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type ListSafetyItemsQueryVariables = {
+  filter?: ModelSafetyItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSafetyItemsQuery = {
+  listSafetyItems:  {
+    __typename: "ModelSafetyItemConnection",
+    items:  Array< {
+      __typename: "SafetyItem",
+      id: string,
+      label: string,
+      classification: SafetyClassification,
+      note: string | null,
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -3588,6 +3732,57 @@ export type OnDeleteSavedRollSubscription = {
     rollName: string,
     dice: Array< string >,
     modifier: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnCreateSafetyItemSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateSafetyItemSubscription = {
+  onCreateSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdateSafetyItemSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateSafetyItemSubscription = {
+  onUpdateSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeleteSafetyItemSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteSafetyItemSubscription = {
+  onDeleteSafetyItem:  {
+    __typename: "SafetyItem",
+    id: string,
+    label: string,
+    classification: SafetyClassification,
+    note: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,

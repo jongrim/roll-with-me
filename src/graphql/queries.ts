@@ -541,6 +541,39 @@ export const listSavedRolls = /* GraphQL */ `
     }
   }
 `;
+export const getSafetyItem = /* GraphQL */ `
+  query GetSafetyItem($id: ID!) {
+    getSafetyItem(id: $id) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listSafetyItems = /* GraphQL */ `
+  query ListSafetyItems(
+    $filter: ModelSafetyItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSafetyItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        label
+        classification
+        note
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const listSafetyModules = /* GraphQL */ `
   query ListSafetyModules(
     $filter: ModelSafetyModuleFilterInput

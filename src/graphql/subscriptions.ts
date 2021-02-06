@@ -919,6 +919,45 @@ export const onDeleteSavedRoll = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSafetyItem = /* GraphQL */ `
+  subscription OnCreateSafetyItem($owner: String!) {
+    onCreateSafetyItem(owner: $owner) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateSafetyItem = /* GraphQL */ `
+  subscription OnUpdateSafetyItem($owner: String!) {
+    onUpdateSafetyItem(owner: $owner) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteSafetyItem = /* GraphQL */ `
+  subscription OnDeleteSafetyItem($owner: String!) {
+    onDeleteSafetyItem(owner: $owner) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const onCreateSafetyModule = /* GraphQL */ `
   subscription OnCreateSafetyModule {
     onCreateSafetyModule {

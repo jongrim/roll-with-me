@@ -656,6 +656,54 @@ export const deleteSavedRoll = /* GraphQL */ `
     }
   }
 `;
+export const createSafetyItem = /* GraphQL */ `
+  mutation CreateSafetyItem(
+    $input: CreateSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    createSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateSafetyItem = /* GraphQL */ `
+  mutation UpdateSafetyItem(
+    $input: UpdateSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    updateSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteSafetyItem = /* GraphQL */ `
+  mutation DeleteSafetyItem(
+    $input: DeleteSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    deleteSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createSafetyModule = /* GraphQL */ `
   mutation CreateSafetyModule(
     $input: CreateSafetyModuleInput!
