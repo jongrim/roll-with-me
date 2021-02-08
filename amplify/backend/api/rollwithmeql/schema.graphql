@@ -59,6 +59,20 @@ type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
   modifier: Int!
 }
 
+type SafetyItem @model @auth(rules: [{ allow: owner, provider: userPools }]) {
+  id: ID!
+  label: String!
+  classification: SafetyClassification!
+  note: String
+}
+
+enum SafetyClassification {
+  line
+  veil
+  ask
+  consent
+}
+
 type SafetyModule @model @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   xCardActive: Boolean!

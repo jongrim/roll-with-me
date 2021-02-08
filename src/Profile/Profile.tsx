@@ -20,6 +20,7 @@ import { RiHomeHeartLine } from 'react-icons/ri';
 import DeactivateAccount from './DeactivateAccount';
 import UserSavedRolls from './UserSavedRolls';
 import ActiveRooms from './ActiveRooms';
+import SafetyItems from './SafetyItems';
 
 const Profile: React.FC = () => {
   const { colorMode } = useColorMode();
@@ -34,8 +35,13 @@ const Profile: React.FC = () => {
     return null;
   }
 
+  const activeLinkStyle = {
+    fontWeight: 600,
+    backgroundColor: colorMode === 'dark' ? 'blue.700' : 'blue.50',
+  };
+
   return (
-    <Grid templateRows="56px minmax(0, 1fr)" h="full">
+    <Grid templateRows="auto minmax(0, 1fr)" h="full">
       <GridItem>
         <Flex p={2}>
           <Link as={ReactRouterLink} to="/">
@@ -67,10 +73,7 @@ const Profile: React.FC = () => {
               px={4}
               as={ReactRouterLink}
               to="/profile/settings"
-              _activeLink={{
-                fontWeight: 600,
-                backgroundColor: colorMode === 'dark' ? 'blue.700' : 'blue.50',
-              }}
+              _activeLink={activeLinkStyle}
             >
               Account Settings
             </Link>
@@ -80,10 +83,7 @@ const Profile: React.FC = () => {
               px={4}
               as={ReactRouterLink}
               to="/profile/rolls"
-              _activeLink={{
-                fontWeight: 600,
-                backgroundColor: colorMode === 'dark' ? 'blue.700' : 'blue.50',
-              }}
+              _activeLink={activeLinkStyle}
             >
               Your Rolls
             </Link>
@@ -92,11 +92,18 @@ const Profile: React.FC = () => {
               py={3}
               px={4}
               as={ReactRouterLink}
+              to="/profile/safety"
+              _activeLink={activeLinkStyle}
+            >
+              Your Safety List
+            </Link>
+            <Link
+              rounded="lg"
+              py={3}
+              px={4}
+              as={ReactRouterLink}
               to="/profile/rooms"
-              _activeLink={{
-                fontWeight: 600,
-                backgroundColor: colorMode === 'dark' ? 'blue.700' : 'blue.50',
-              }}
+              _activeLink={activeLinkStyle}
             >
               Active Rooms
             </Link>
@@ -121,6 +128,11 @@ const Profile: React.FC = () => {
                 <UserSavedRolls />
               </MainContent>
             </Route>
+            <Route path="/profile/safety">
+              <MainContent>
+                <SafetyItems />
+              </MainContent>
+            </Route>
             <Route path="/profile/rooms">
               <MainContent>
                 <ActiveRooms />
@@ -134,7 +146,7 @@ const Profile: React.FC = () => {
 };
 
 const MainContent: React.FC = ({ children }) => (
-  <Box py={3} px={4}>
+  <Box py={3} px={4} h="full">
     {children}
   </Box>
 );
