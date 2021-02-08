@@ -1,8 +1,8 @@
 context('guest user', () => {
   it('can create a new text roller', () => {
-    cy.visit('http://localhost:3000');
     cy.intercept('/random-room-name').as('newRoom');
-    cy.wait('@newRoom');
+    cy.visit('http://localhost:3000');
+    cy.wait('@newRoom', { timeout: 7000 });
     cy.findByText('Go').click();
     cy.url().should('contain', '/r/');
   });
