@@ -5,7 +5,6 @@ import {
   Box,
   Select,
   Text,
-  CloseButton,
   FormControl,
   Input,
   Button,
@@ -23,6 +22,7 @@ import {
   RiCheckLine,
   RiCloseLine,
   RiAddLine,
+  RiDeleteBin4Line,
 } from 'react-icons/ri';
 import { ClassifiedItem } from '../types';
 
@@ -64,6 +64,7 @@ const SafetyItem = ({
       boxShadow="lg"
       p={3}
       bg={getItemBackground(item)}
+      data-testid="safety-item"
     >
       <Flex position="relative">
         <Box flex="1">
@@ -155,12 +156,16 @@ const SafetyItem = ({
             placement="top"
             openDelay={700}
           >
-            <CloseButton
+            <IconButton
+              size="sm"
+              variant="ghost"
+              icon={<RiDeleteBin4Line />}
               color="gray.800"
               _hover={{
                 backgroundColor: 'rgba(0, 0, 0, 0.06)',
               }}
               onClick={() => removeSafetyItem(item)}
+              aria-label="Delete item"
             />
           </Tooltip>
         </HStack>
@@ -186,7 +191,7 @@ const Note = ({
 
   if (!note && !isEditing) {
     return (
-      <Box h="48px">
+      <Box minH="48px">
         <Button
           variant="link"
           colorScheme="gray"
@@ -221,6 +226,7 @@ const Note = ({
               _hover={{
                 borderColor: 'gray.500',
               }}
+              data-testid="note-input"
             />
             <InputRightElement pr={10}>
               <ButtonGroup spacing={2} size="sm">
@@ -249,7 +255,7 @@ const Note = ({
       </form>
     </Box>
   ) : (
-    <HStack h="48px" alignItems="center">
+    <HStack minH="48px" alignItems="center">
       <Text color="gray.800">{note}</Text>
       <IconButton
         variant="link"

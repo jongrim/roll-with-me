@@ -25,3 +25,17 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import '@testing-library/cypress/add-commands';
+
+Cypress.Commands.add('login', () => {
+  cy.intercept('POST', 'https://cognito-idp.us-east-1.amazonaws.com/').as(
+    'signIn'
+  );
+  cy.visit('http://localhost:3000');
+  cy.findByText('Sign up or sign in');
+  cy.visit('http://localhost:3000/sign-in');
+  cy.findByLabelText(/Username/i).type('cypress');
+  cy.findByLabelText(/Password/i).type('Cypress@rwm');
+  cy.findByText('Submit').click();
+  cy.wait('@signIn');
+  cy.wait('@signIn');
+});

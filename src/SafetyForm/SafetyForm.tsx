@@ -244,6 +244,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
         })}
       </Grid>
       <form
+        data-testid="new-item-form"
         onSubmit={(e) => {
           e.preventDefault();
           const newItem = createItem({
