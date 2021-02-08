@@ -21,7 +21,9 @@ const isLocalhost = Boolean(
 
 const isDevDeploy = Boolean(window.location.hostname.includes('dev'));
 
-const isMainDeploy = Boolean(window.location.hostname.includes('main'));
+const isMainDeploy =
+  Boolean(window.location.hostname.includes('main')) ||
+  Boolean(window.location.hostname.includes('next'));
 
 // Assuming you have two redirect URIs, and the first is for localhost and second is for production
 const [
