@@ -76,6 +76,7 @@ export const createInteractiveRoom = /* GraphQL */ `
     createInteractiveRoom(input: $input, condition: $condition) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -129,6 +130,7 @@ export const createInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -146,6 +148,7 @@ export const updateInteractiveRoom = /* GraphQL */ `
     updateInteractiveRoom(input: $input, condition: $condition) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -199,6 +202,7 @@ export const updateInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -216,6 +220,7 @@ export const deleteInteractiveRoom = /* GraphQL */ `
     deleteInteractiveRoom(input: $input, condition: $condition) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -269,6 +274,7 @@ export const deleteInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -347,6 +353,7 @@ export const createUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -441,6 +448,7 @@ export const updateUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -535,6 +543,7 @@ export const deleteUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -641,6 +650,54 @@ export const deleteSavedRoll = /* GraphQL */ `
       rollName
       dice
       modifier
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createSafetyItem = /* GraphQL */ `
+  mutation CreateSafetyItem(
+    $input: CreateSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    createSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateSafetyItem = /* GraphQL */ `
+  mutation UpdateSafetyItem(
+    $input: UpdateSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    updateSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteSafetyItem = /* GraphQL */ `
+  mutation DeleteSafetyItem(
+    $input: DeleteSafetyItemInput!
+    $condition: ModelSafetyItemConditionInput
+  ) {
+    deleteSafetyItem(input: $input, condition: $condition) {
+      id
+      label
+      classification
+      note
       createdAt
       updatedAt
       owner
@@ -815,6 +872,7 @@ export const createVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -893,6 +951,7 @@ export const updateVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -971,6 +1030,7 @@ export const deleteVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {

@@ -95,6 +95,7 @@ export const listInteractiveRooms = /* GraphQL */ `
       items {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -158,6 +159,7 @@ export const getInteractiveRoom = /* GraphQL */ `
     getInteractiveRoom(id: $id) {
       id
       name
+      backgroundImageUrl
       createdAt
       updatedAt
       safetyModule {
@@ -211,6 +213,7 @@ export const getInteractiveRoom = /* GraphQL */ `
           room {
             id
             name
+            backgroundImageUrl
             createdAt
             updatedAt
           }
@@ -238,6 +241,7 @@ export const interactiveRoomByName = /* GraphQL */ `
       items {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -375,6 +379,7 @@ export const getUserRoom = /* GraphQL */ `
       interactiveRoom {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -471,6 +476,7 @@ export const listUserRooms = /* GraphQL */ `
         interactiveRoom {
           id
           name
+          backgroundImageUrl
           createdAt
           updatedAt
           safetyModule {
@@ -527,6 +533,39 @@ export const listSavedRolls = /* GraphQL */ `
         rollName
         dice
         modifier
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getSafetyItem = /* GraphQL */ `
+  query GetSafetyItem($id: ID!) {
+    getSafetyItem(id: $id) {
+      id
+      label
+      classification
+      note
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listSafetyItems = /* GraphQL */ `
+  query ListSafetyItems(
+    $filter: ModelSafetyItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSafetyItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        label
+        classification
+        note
         createdAt
         updatedAt
         owner
@@ -654,6 +693,7 @@ export const getVisualDie = /* GraphQL */ `
       room {
         id
         name
+        backgroundImageUrl
         createdAt
         updatedAt
         safetyModule {
@@ -734,6 +774,7 @@ export const listVisualDies = /* GraphQL */ `
         room {
           id
           name
+          backgroundImageUrl
           createdAt
           updatedAt
           safetyModule {

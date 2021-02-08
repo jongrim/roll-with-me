@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {
   Badge,
-  Box,
   Button,
-  CloseButton,
   Divider,
   Flex,
   FormControl,
@@ -15,13 +13,17 @@ import {
   Input,
   Link,
   Select,
+  Spacer,
   Text,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { ClassifiedItem } from '../types';
 import * as mutations from '../graphql/mutations';
 import { API } from 'aws-amplify';
+import { createSafetyItem, loadSafetyItems } from '../functions/safetyItems';
 import useSafetyModuleLookup from './useSafetyRoomLookup';
+import SafetyItem from './SafetyItem';
+import { AuthContext } from '../AuthProvider';
 
 interface SafetyFormProps {
   id: string;
@@ -43,27 +45,24 @@ const createItem = ({
   note,
 });
 
-const getItemBackground = (item: ClassifiedItem): string => {
-  switch (item.classification) {
-    case 'line':
-      return 'red.100';
-    case 'veil':
-      return 'yellow.100';
-    case 'ask':
-      return 'cyan.100';
-    case 'consent':
-      return 'green.100';
-    default:
-      return 'white';
-  }
-};
-
 const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
+  const { user } = React.useContext(AuthContext);
   const [newLabel, setNewLabel] = React.useState('');
   const [newClass, setNewClass] = React.useState('');
   const [newNote, setNewNote] = React.useState('');
+  const [userSafetyItems, setUserSafetyItems] = React.useState<
+    ClassifiedItem[]
+  >([]);
 
   const { data } = useSafetyModuleLookup(id);
+
+  React.useEffect(() => {
+    if (user) {
+      loadSafetyItems().then((items) => {
+        setUserSafetyItems(items);
+      });
+    }
+  }, [user]);
 
   async function addSafetyItem(value: ClassifiedItem) {
     setActionInProgress(true);
@@ -75,6 +74,28 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
             id: data?.id,
             linesAndVeils: data?.linesAndVeils
               .concat(value)
+              .map((i) => JSON.stringify(i)),
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setActionInProgress(false);
+    }
+    return;
+  }
+
+  async function addSafetyItems(items: ClassifiedItem[]) {
+    setActionInProgress(true);
+    try {
+      await API.graphql({
+        query: mutations.updateSafetyModule,
+        variables: {
+          input: {
+            id: data?.id,
+            linesAndVeils: data?.linesAndVeils
+              .concat(items)
               .map((i) => JSON.stringify(i)),
           },
         },
@@ -183,67 +204,47 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
       <Divider my={6} />
       <Grid templateColumns={['1fr', '1fr', '1fr 1fr']} gap={6} p={[1, 2, 4]}>
         <GridItem colSpan={[1, 1, 2]}>
-          <HStack spacing={4}>
-            <Badge color="gray.800" p={1} rounded="md" bg="red.100">
-              Line
-            </Badge>
-            <Badge color="gray.800" p={1} rounded="md" bg="yellow.100">
-              Veil
-            </Badge>
-            <Badge color="gray.800" p={1} rounded="md" bg="cyan.100">
-              Ask First
-            </Badge>
-            <Badge color="gray.800" p={1} rounded="md" bg="green.100">
-              Enthusiastic Consent
-            </Badge>
-          </HStack>
+          <Flex>
+            <HStack spacing={4}>
+              <Badge color="gray.800" p={1} rounded="md" bg="red.100">
+                Line
+              </Badge>
+              <Badge color="gray.800" p={1} rounded="md" bg="yellow.100">
+                Veil
+              </Badge>
+              <Badge color="gray.800" p={1} rounded="md" bg="cyan.100">
+                Ask First
+              </Badge>
+              <Badge color="gray.800" p={1} rounded="md" bg="green.100">
+                Enthusiastic Consent
+              </Badge>
+            </HStack>
+            <Spacer />
+            {userSafetyItems.length > 0 && (
+              <Button
+                variant="link"
+                colorScheme="brand"
+                onClick={() => addSafetyItems(userSafetyItems)}
+              >
+                Add my safety items
+              </Button>
+            )}
+          </Flex>
         </GridItem>
         {data?.linesAndVeils?.map((item) => {
           return (
-            <GridItem
+            <SafetyItem
               key={item.id}
-              rounded="lg"
-              boxShadow="lg"
-              p={3}
-              bg={getItemBackground(item)}
-            >
-              <Flex position="relative">
-                <Box flex="1">
-                  <Text size="lg" fontWeight="600" color="gray.800" pr={10}>
-                    {item.label}
-                  </Text>
-                  <Text color="gray.600">{item.note}</Text>
-                  <Select
-                    color="gray.800"
-                    variant="flushed"
-                    borderColor="gray.500"
-                    onChange={({ target }) =>
-                      updateSafetyItem({
-                        ...item,
-                        classification: target.value as ClassifiedItem['classification'],
-                      })
-                    }
-                    defaultValue={item.classification}
-                  >
-                    <option value="line">Line</option>
-                    <option value="veil">Veil</option>
-                    <option value="ask">Ask First</option>
-                    <option value="consent">Enthusiatic Consent</option>
-                  </Select>
-                </Box>
-                <CloseButton
-                  color="gray.800"
-                  onClick={() => removeSafetyItem(item)}
-                  position="absolute"
-                  top="0"
-                  right="0"
-                />
-              </Flex>
-            </GridItem>
+              item={item}
+              removeSafetyItem={removeSafetyItem}
+              updateSafetyItem={updateSafetyItem}
+              createSafetyItem={user && createSafetyItem}
+            />
           );
         })}
       </Grid>
       <form
+        data-testid="new-item-form"
         onSubmit={(e) => {
           e.preventDefault();
           const newItem = createItem({

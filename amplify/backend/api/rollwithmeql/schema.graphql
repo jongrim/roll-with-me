@@ -23,6 +23,7 @@ type InteractiveRoom
   dice: [VisualDie] @connection(keyName: "byRoom", fields: ["id"])
   counters: [Counter] @connection(keyName: "byRoom", fields: ["id"])
   labels: [Label] @connection(keyName: "byRoom", fields: ["id"])
+  backgroundImageUrl: String
 }
 
 type TrophyDarkRoom
@@ -56,6 +57,20 @@ type SavedRoll @model @auth(rules: [{ allow: owner, provider: userPools }]) {
   rollName: String!
   dice: [AWSJSON!]!
   modifier: Int!
+}
+
+type SafetyItem @model @auth(rules: [{ allow: owner, provider: userPools }]) {
+  id: ID!
+  label: String!
+  classification: SafetyClassification!
+  note: String
+}
+
+enum SafetyClassification {
+  line
+  veil
+  ask
+  consent
 }
 
 type SafetyModule @model @auth(rules: [{ allow: public }, { allow: private }]) {

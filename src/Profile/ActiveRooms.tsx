@@ -26,7 +26,11 @@ const ActiveRooms = () => {
         Active Rooms
       </Heading>
       <Text mt={3}>Rooms you've been active in during the last 30 days</Text>
-      <Grid mt={6} templateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']} gap={6}>
+      <Grid
+        mt={6}
+        templateColumns={['1fr', '1fr 1fr', '1fr 1fr', '1fr 1fr 1fr']}
+        gap={6}
+      >
         {userRooms.map((room) => (
           <RoomCard key={room.id} room={room} />
         ))}
@@ -51,12 +55,13 @@ const RoomCard = ({ room }: { room: userRoom }) => {
   const { colorMode } = useColorMode();
   const itemBorder =
     colorMode === 'dark'
-      ? { border: '1px solid', borderColor: 'inherit' }
-      : { boxShadow: 'md' };
+      ? { borderColor: 'inherit' }
+      : { boxShadow: 'md', borderColor: 'gray.50' };
   const name = room[room.roomKey]?.name;
   return (
     <GridItem
       key={room.id}
+      border="1px solid"
       {...itemBorder}
       rounded="lg"
       py={3}
