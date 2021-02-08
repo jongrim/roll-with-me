@@ -41,7 +41,7 @@ context('guest user', () => {
       cy.findByLabelText(/Name/i).type('every die');
       cy.findByText(/Roll/).click();
     });
-    cy.wait('@randomNumbers');
+    cy.wait('@randomNumbers', { timeout: 7000 });
     cy.findByTestId(/last-roll-results/).within(() => {
       const numbers = ['4', '6', '8', '10', '20'];
       numbers.forEach((n) => cy.findByText(`D${n}`));
@@ -53,7 +53,7 @@ context('guest user', () => {
     cy.findByPlaceholderText('Quick roll (ex. 2d6+1 as Resist)').type(
       '2d6 1d20 + 2 as cypress whammie{enter}'
     );
-    cy.wait('@randomNumbers');
+    cy.wait('@randomNumbers', { timeout: 7000 });
     cy.findByText('Last Roll');
     cy.findByText('by cypress');
     cy.findByTestId('die-0').within(() => {
