@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
@@ -16,6 +17,7 @@ const LOCAL_STORAGE_ROLL_KEY = 'local-saved-rolls';
 
 function TextRoom({ name }) {
   const toast = useToast();
+  const history = useHistory();
 
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
@@ -67,11 +69,18 @@ function TextRoom({ name }) {
         safety.linesAndVeils = safety.linesAndVeils.map((i) => JSON.parse(i));
         setSafetyModule(safety);
       } catch (e) {
+        if (
+          e.errors &&
+          e.errors[0].message ===
+            "Variable 'id' has coerced Null value for NonNull type 'ID!'"
+        ) {
+          history.push(`/new-room?type=text&name=${name}&notFound=true`);
+        }
         console.error(e);
       }
     }
     getRoomData();
-  }, [name]);
+  }, [name, history]);
 
   // Loading User Rolls
   const { user } = React.useContext(AuthContext);
