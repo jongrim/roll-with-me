@@ -60,19 +60,22 @@ const roomTypeReducer = (
 const NewRoom: React.FC = () => {
   const history = useHistory();
   const query = useQuery();
+  const showNotFound = query.get('notFound') ?? false;
   const options = ['Text', 'Visual'];
   const inputEl = React.useRef<HTMLInputElement>(null);
 
-  const [name, setName] = React.useState('');
+  const [name, setName] = React.useState(query.get('name') ?? '');
   const [starterNames, setStarterNames] = React.useState<string[]>([]);
   React.useEffect(() => {
     async function starterName() {
       const result = await getNewRoomNames(6);
       setStarterNames(result);
-      setName(result[0]);
+      if (!name) {
+        setName(result[0]);
+      }
     }
     starterName();
-  }, []);
+  }, [name]);
 
   const [{ roomShortCode }, dispatch] = React.useReducer(roomTypeReducer, {
     roomShortCode: getRoomShortCode(query.get('type') ?? 'Text'),
@@ -90,7 +93,9 @@ const NewRoom: React.FC = () => {
     <Container maxW="4xl" h="full">
       <Center flexDirection="column" mt={12}>
         <Heading as="h1" size="md">
-          Create a new room
+          {showNotFound
+            ? "That room doesn't exist... yet"
+            : 'Create a new room'}
         </Heading>
         <Text mt={6}>Room type</Text>
         <HStack {...group} mt={4}>
@@ -117,6 +122,7 @@ const NewRoom: React.FC = () => {
               onChange={({ target }) => setName(target.value)}
               placeholder="Loading..."
               ref={inputEl}
+              data-testid="room-name"
             />
             <VStack spacing={4} mt={4}>
               {starterNames.slice(1).map((cur) => (
