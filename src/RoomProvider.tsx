@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveRoom from './InteractiveRoom/InteractiveRoom';
 import TextRoom from './TextRoom/TextRoom';
-import TrophyDarkRoom from './TrophyDarkRoom/TrophyDarkRoom';
+import TrophyDarkRoom from './TrophyDark/TrophyDarkRoom';
 
 function RoomProvider() {
   const { name, type } = useParams<{ name: string; type: string }>();
