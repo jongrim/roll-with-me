@@ -33,9 +33,31 @@ type TrophyDarkRoom
     fields: ["name"]
     queryField: "trophyDarkRoomByName"
   )
-  @auth(rules: [{ allow: public }, { allow: private }]) {
+  @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
+  safetyModule: SafetyModule! @connection
+  lightDice: [AWSJSON!]!
+  darkDice: [AWSJSON!]!
+  characters: [TrophyDarkCharacter]
+    @connection(keyName: "byGame", fields: ["id"])
+}
+
+type TrophyDarkCharacter
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(name: "byGame", fields: ["gameID"]) {
+  id: ID!
+  gameID: ID!
+  playerName: String!
+  characterName: String!
+  characterPronouns: String!
+  characterImageUrl: AWSURL
+  ruin: Int!
+  occupation: String!
+  background: String!
+  drive: String!
+  rituals: [String!]!
 }
 
 type UserRoom
@@ -129,10 +151,6 @@ type VisualDie
 type Subscription {
   onUpdateTextRoomByName(name: String!): TextRoom
     @aws_subscribe(mutations: ["updateTextRoom"])
-  onUpdateInteractiveRoomByName(name: String!): InteractiveRoom
-    @aws_subscribe(mutations: ["updateInteractiveRoom"])
-  onUpdateTrophyDarkRoomByName(name: String!): TrophyDarkRoom
-    @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
   onCreateVisualDieByRoom(roomId: String!): VisualDie
     @aws_subscribe(mutations: ["createVisualDie"])
   onUpdateVisualDieById(id: String!): VisualDie
@@ -145,4 +163,8 @@ type Subscription {
     @aws_subscribe(mutations: ["createLabel"])
   onUpdateLabelById(id: String!): Label
     @aws_subscribe(mutations: ["updateLabel"])
+  onCreateTrophyDarkCharacterByGame(gameID: String!): TrophyDarkCharacter
+    @aws_subscribe(mutations: ["createTrophyDarkCharacter"])
+  onUpdateTrophyDarkCharacterById(id: String!): TrophyDarkCharacter
+    @aws_subscribe(mutations: ["updateTrophyDarkCharacter"])
 }

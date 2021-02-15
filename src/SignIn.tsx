@@ -12,7 +12,7 @@ async function signIn({
   password: string;
 }) {
   try {
-    const user = await Auth.signIn(username, password);
+    await Auth.signIn(username, password);
   } catch (error) {
     console.log('error signing in', error);
   }

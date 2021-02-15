@@ -2,6 +2,7 @@ import {
   CreateTextRoomMutation,
   CreateSafetyModuleMutation,
   CreateInteractiveRoomMutation,
+  CreateTrophyDarkRoomMutation,
 } from '../API';
 import gql from '../gql';
 import * as mutations from '../graphql/mutations';
@@ -35,6 +36,15 @@ export const handleNewRoomRequest = async (
             newSafetyModule.data?.createSafetyModule?.id,
         }
       );
+    }
+    if (type === 'trophy-dark') {
+      await gql<CreateTrophyDarkRoomMutation>(mutations.createTrophyDarkRoom, {
+        name,
+        trophyDarkRoomSafetyModuleId:
+          newSafetyModule.data?.createSafetyModule?.id,
+        lightDice: [],
+        darkDice: [],
+      });
     }
   } catch (e) {
     console.warn('could not create room', e);

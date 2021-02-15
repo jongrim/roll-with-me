@@ -2,6 +2,192 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createTrophyDarkRoom = /* GraphQL */ `
+  mutation CreateTrophyDarkRoom(
+    $input: CreateTrophyDarkRoomInput!
+    $condition: ModelTrophyDarkRoomConditionInput
+  ) {
+    createTrophyDarkRoom(input: $input, condition: $condition) {
+      id
+      name
+      lightDice
+      darkDice
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          occupation
+          background
+          drive
+          rituals
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateTrophyDarkRoom = /* GraphQL */ `
+  mutation UpdateTrophyDarkRoom(
+    $input: UpdateTrophyDarkRoomInput!
+    $condition: ModelTrophyDarkRoomConditionInput
+  ) {
+    updateTrophyDarkRoom(input: $input, condition: $condition) {
+      id
+      name
+      lightDice
+      darkDice
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          occupation
+          background
+          drive
+          rituals
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteTrophyDarkRoom = /* GraphQL */ `
+  mutation DeleteTrophyDarkRoom(
+    $input: DeleteTrophyDarkRoomInput!
+    $condition: ModelTrophyDarkRoomConditionInput
+  ) {
+    deleteTrophyDarkRoom(input: $input, condition: $condition) {
+      id
+      name
+      lightDice
+      darkDice
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          occupation
+          background
+          drive
+          rituals
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createTrophyDarkCharacter = /* GraphQL */ `
+  mutation CreateTrophyDarkCharacter(
+    $input: CreateTrophyDarkCharacterInput!
+    $condition: ModelTrophyDarkCharacterConditionInput
+  ) {
+    createTrophyDarkCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      occupation
+      background
+      drive
+      rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrophyDarkCharacter = /* GraphQL */ `
+  mutation UpdateTrophyDarkCharacter(
+    $input: UpdateTrophyDarkCharacterInput!
+    $condition: ModelTrophyDarkCharacterConditionInput
+  ) {
+    updateTrophyDarkCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      occupation
+      background
+      drive
+      rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrophyDarkCharacter = /* GraphQL */ `
+  mutation DeleteTrophyDarkCharacter(
+    $input: DeleteTrophyDarkCharacterInput!
+    $condition: ModelTrophyDarkCharacterConditionInput
+  ) {
+    deleteTrophyDarkCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      occupation
+      background
+      drive
+      rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createTextRoom = /* GraphQL */ `
   mutation CreateTextRoom(
     $input: CreateTextRoomInput!
@@ -284,45 +470,6 @@ export const deleteInteractiveRoom = /* GraphQL */ `
     }
   }
 `;
-export const createTrophyDarkRoom = /* GraphQL */ `
-  mutation CreateTrophyDarkRoom(
-    $input: CreateTrophyDarkRoomInput!
-    $condition: ModelTrophyDarkRoomConditionInput
-  ) {
-    createTrophyDarkRoom(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateTrophyDarkRoom = /* GraphQL */ `
-  mutation UpdateTrophyDarkRoom(
-    $input: UpdateTrophyDarkRoomInput!
-    $condition: ModelTrophyDarkRoomConditionInput
-  ) {
-    updateTrophyDarkRoom(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteTrophyDarkRoom = /* GraphQL */ `
-  mutation DeleteTrophyDarkRoom(
-    $input: DeleteTrophyDarkRoomInput!
-    $condition: ModelTrophyDarkRoomConditionInput
-  ) {
-    deleteTrophyDarkRoom(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createUserRoom = /* GraphQL */ `
   mutation CreateUserRoom(
     $input: CreateUserRoomInput!
@@ -330,6 +477,39 @@ export const createUserRoom = /* GraphQL */ `
   ) {
     createUserRoom(input: $input, condition: $condition) {
       id
+      trophyDarkRoom {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
       roomKey
       description
       createdOn
@@ -407,12 +587,6 @@ export const createUserRoom = /* GraphQL */ `
           }
           nextToken
         }
-      }
-      trophyDarkRoom {
-        id
-        name
-        createdAt
-        updatedAt
       }
       owner
     }
@@ -425,6 +599,39 @@ export const updateUserRoom = /* GraphQL */ `
   ) {
     updateUserRoom(input: $input, condition: $condition) {
       id
+      trophyDarkRoom {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
       roomKey
       description
       createdOn
@@ -502,12 +709,6 @@ export const updateUserRoom = /* GraphQL */ `
           }
           nextToken
         }
-      }
-      trophyDarkRoom {
-        id
-        name
-        createdAt
-        updatedAt
       }
       owner
     }
@@ -520,6 +721,39 @@ export const deleteUserRoom = /* GraphQL */ `
   ) {
     deleteUserRoom(input: $input, condition: $condition) {
       id
+      trophyDarkRoom {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
       roomKey
       description
       createdOn
@@ -597,12 +831,6 @@ export const deleteUserRoom = /* GraphQL */ `
           }
           nextToken
         }
-      }
-      trophyDarkRoom {
-        id
-        name
-        createdAt
-        updatedAt
       }
       owner
     }
