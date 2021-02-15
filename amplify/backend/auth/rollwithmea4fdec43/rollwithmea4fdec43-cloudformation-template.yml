@@ -137,11 +137,16 @@ Parameters:
     Type: String
   
             
+  hostedUIProviderCreds:
+    Type: String
+  
+            
   oAuthMetadata:
     Type: String
   
             
-  hostedUIProviderCreds:
+            
+  serviceName:
     Type: String
   
             

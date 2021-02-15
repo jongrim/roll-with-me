@@ -31,6 +31,7 @@ const [
   productionRedirectSignIn,
   mainDeployRedirectSignIn,
   devDeployRedirectSignIn,
+  nextDeployRedirectSignIn,
 ] = awsConfig.oauth.redirectSignIn.split(',');
 
 const [
@@ -38,6 +39,7 @@ const [
   productionRedirectSignOut,
   mainDeployRedirectSignOut,
   devDeployRedirectSignOut,
+  nextDeployRedirectSignOut,
 ] = awsConfig.oauth.redirectSignOut.split(',');
 
 const updatedAwsConfig = {
@@ -50,14 +52,14 @@ const updatedAwsConfig = {
       ? devDeployRedirectSignIn
       : isMainDeploy
       ? mainDeployRedirectSignIn
-      : productionRedirectSignIn,
+      : nextDeployRedirectSignIn,
     redirectSignOut: isLocalhost
       ? localRedirectSignOut
       : isDevDeploy
       ? devDeployRedirectSignOut
       : isMainDeploy
       ? mainDeployRedirectSignOut
-      : productionRedirectSignOut,
+      : nextDeployRedirectSignOut,
   },
 };
 
