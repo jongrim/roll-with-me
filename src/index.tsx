@@ -21,9 +21,7 @@ const isLocalhost = Boolean(
 
 const isDevDeploy = Boolean(window.location.hostname.includes('dev'));
 
-const isMainDeploy =
-  Boolean(window.location.hostname.includes('main')) ||
-  Boolean(window.location.hostname.includes('next'));
+const isMainDeploy = Boolean(window.location.hostname.includes('main'));
 
 // Assuming you have two redirect URIs, and the first is for localhost and second is for production
 const [
@@ -42,24 +40,30 @@ const [
   nextDeployRedirectSignOut,
 ] = awsConfig.oauth.redirectSignOut.split(',');
 
+const redirectSignIn = isLocalhost
+  ? localRedirectSignIn
+  : isDevDeploy
+  ? devDeployRedirectSignIn
+  : isMainDeploy
+  ? mainDeployRedirectSignIn
+  : nextDeployRedirectSignIn;
+
+const redirectSignOut = isLocalhost
+  ? localRedirectSignOut
+  : isDevDeploy
+  ? devDeployRedirectSignOut
+  : isMainDeploy
+  ? mainDeployRedirectSignOut
+  : nextDeployRedirectSignOut;
+
+console.log({ redirectSignIn, redirectSignOut });
+
 const updatedAwsConfig = {
   ...awsConfig,
   oauth: {
     ...awsConfig.oauth,
-    redirectSignIn: isLocalhost
-      ? localRedirectSignIn
-      : isDevDeploy
-      ? devDeployRedirectSignIn
-      : isMainDeploy
-      ? mainDeployRedirectSignIn
-      : nextDeployRedirectSignIn,
-    redirectSignOut: isLocalhost
-      ? localRedirectSignOut
-      : isDevDeploy
-      ? devDeployRedirectSignOut
-      : isMainDeploy
-      ? mainDeployRedirectSignOut
-      : nextDeployRedirectSignOut,
+    redirectSignIn,
+    redirectSignOut,
   },
 };
 
