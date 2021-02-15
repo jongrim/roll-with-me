@@ -2,21 +2,21 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTextRoomInput = {
+export type CreateTrophyDarkRoomInput = {
   id?: string | null,
   name: string,
-  rolls?: Array< string > | null,
-  counters?: Array< string > | null,
-  textRoomSafetyModuleId: string,
+  lightDice: Array< string >,
+  darkDice: Array< string >,
+  trophyDarkRoomSafetyModuleId: string,
 };
 
-export type ModelTextRoomConditionInput = {
+export type ModelTrophyDarkRoomConditionInput = {
   name?: ModelStringInput | null,
-  rolls?: ModelStringInput | null,
-  counters?: ModelStringInput | null,
-  and?: Array< ModelTextRoomConditionInput | null > | null,
-  or?: Array< ModelTextRoomConditionInput | null > | null,
-  not?: ModelTextRoomConditionInput | null,
+  lightDice?: ModelStringInput | null,
+  darkDice?: ModelStringInput | null,
+  and?: Array< ModelTrophyDarkRoomConditionInput | null > | null,
+  or?: Array< ModelTrophyDarkRoomConditionInput | null > | null,
+  not?: ModelTrophyDarkRoomConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -57,6 +57,111 @@ export type ModelSizeInput = {
   ge?: number | null,
   gt?: number | null,
   between?: Array< number | null > | null,
+};
+
+export type UpdateTrophyDarkRoomInput = {
+  id: string,
+  name?: string | null,
+  lightDice?: Array< string > | null,
+  darkDice?: Array< string > | null,
+  trophyDarkRoomSafetyModuleId?: string | null,
+};
+
+export type DeleteTrophyDarkRoomInput = {
+  id?: string | null,
+};
+
+export type CreateTrophyDarkCharacterInput = {
+  id?: string | null,
+  gameID: string,
+  playerName: string,
+  characterName: string,
+  characterPronouns: string,
+  characterImageUrl?: string | null,
+  ruin: number,
+  occupation: string,
+  background: string,
+  drive: string,
+  rituals: Array< string >,
+};
+
+export type ModelTrophyDarkCharacterConditionInput = {
+  gameID?: ModelIDInput | null,
+  playerName?: ModelStringInput | null,
+  characterName?: ModelStringInput | null,
+  characterPronouns?: ModelStringInput | null,
+  characterImageUrl?: ModelStringInput | null,
+  ruin?: ModelIntInput | null,
+  occupation?: ModelStringInput | null,
+  background?: ModelStringInput | null,
+  drive?: ModelStringInput | null,
+  rituals?: ModelStringInput | null,
+  and?: Array< ModelTrophyDarkCharacterConditionInput | null > | null,
+  or?: Array< ModelTrophyDarkCharacterConditionInput | null > | null,
+  not?: ModelTrophyDarkCharacterConditionInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateTrophyDarkCharacterInput = {
+  id: string,
+  gameID?: string | null,
+  playerName?: string | null,
+  characterName?: string | null,
+  characterPronouns?: string | null,
+  characterImageUrl?: string | null,
+  ruin?: number | null,
+  occupation?: string | null,
+  background?: string | null,
+  drive?: string | null,
+  rituals?: Array< string > | null,
+};
+
+export type DeleteTrophyDarkCharacterInput = {
+  id?: string | null,
+};
+
+export type CreateTextRoomInput = {
+  id?: string | null,
+  name: string,
+  rolls?: Array< string > | null,
+  counters?: Array< string > | null,
+  textRoomSafetyModuleId: string,
+};
+
+export type ModelTextRoomConditionInput = {
+  name?: ModelStringInput | null,
+  rolls?: ModelStringInput | null,
+  counters?: ModelStringInput | null,
+  and?: Array< ModelTextRoomConditionInput | null > | null,
+  or?: Array< ModelTextRoomConditionInput | null > | null,
+  not?: ModelTextRoomConditionInput | null,
 };
 
 export type UpdateTextRoomInput = {
@@ -100,27 +205,6 @@ export type UpdateInteractiveRoomInput = {
 };
 
 export type DeleteInteractiveRoomInput = {
-  id?: string | null,
-};
-
-export type CreateTrophyDarkRoomInput = {
-  id?: string | null,
-  name: string,
-};
-
-export type ModelTrophyDarkRoomConditionInput = {
-  name?: ModelStringInput | null,
-  and?: Array< ModelTrophyDarkRoomConditionInput | null > | null,
-  or?: Array< ModelTrophyDarkRoomConditionInput | null > | null,
-  not?: ModelTrophyDarkRoomConditionInput | null,
-};
-
-export type UpdateTrophyDarkRoomInput = {
-  id: string,
-  name?: string | null,
-};
-
-export type DeleteTrophyDarkRoomInput = {
   id?: string | null,
 };
 
@@ -177,18 +261,6 @@ export type ModelSavedRollConditionInput = {
   and?: Array< ModelSavedRollConditionInput | null > | null,
   or?: Array< ModelSavedRollConditionInput | null > | null,
   not?: ModelSavedRollConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateSavedRollInput = {
@@ -289,22 +361,6 @@ export type ModelLabelConditionInput = {
   and?: Array< ModelLabelConditionInput | null > | null,
   or?: Array< ModelLabelConditionInput | null > | null,
   not?: ModelLabelConditionInput | null,
-};
-
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
 };
 
 export type ModelFloatInput = {
@@ -420,6 +476,39 @@ export type DeleteVisualDieInput = {
   id?: string | null,
 };
 
+export type ModelTrophyDarkRoomFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  lightDice?: ModelStringInput | null,
+  darkDice?: ModelStringInput | null,
+  and?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
+  or?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
+  not?: ModelTrophyDarkRoomFilterInput | null,
+};
+
+export type ModelTrophyDarkCharacterFilterInput = {
+  id?: ModelIDInput | null,
+  gameID?: ModelIDInput | null,
+  playerName?: ModelStringInput | null,
+  characterName?: ModelStringInput | null,
+  characterPronouns?: ModelStringInput | null,
+  characterImageUrl?: ModelStringInput | null,
+  ruin?: ModelIntInput | null,
+  occupation?: ModelStringInput | null,
+  background?: ModelStringInput | null,
+  drive?: ModelStringInput | null,
+  rituals?: ModelStringInput | null,
+  and?: Array< ModelTrophyDarkCharacterFilterInput | null > | null,
+  or?: Array< ModelTrophyDarkCharacterFilterInput | null > | null,
+  not?: ModelTrophyDarkCharacterFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelTextRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -430,12 +519,6 @@ export type ModelTextRoomFilterInput = {
   not?: ModelTextRoomFilterInput | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
 export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -443,14 +526,6 @@ export type ModelInteractiveRoomFilterInput = {
   and?: Array< ModelInteractiveRoomFilterInput | null > | null,
   or?: Array< ModelInteractiveRoomFilterInput | null > | null,
   not?: ModelInteractiveRoomFilterInput | null,
-};
-
-export type ModelTrophyDarkRoomFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  and?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
-  or?: Array< ModelTrophyDarkRoomFilterInput | null > | null,
-  not?: ModelTrophyDarkRoomFilterInput | null,
 };
 
 export type ModelUserRoomFilterInput = {
@@ -533,6 +608,213 @@ export type ModelVisualDieFilterInput = {
   and?: Array< ModelVisualDieFilterInput | null > | null,
   or?: Array< ModelVisualDieFilterInput | null > | null,
   not?: ModelVisualDieFilterInput | null,
+};
+
+export type CreateTrophyDarkRoomMutationVariables = {
+  input: CreateTrophyDarkRoomInput,
+  condition?: ModelTrophyDarkRoomConditionInput | null,
+};
+
+export type CreateTrophyDarkRoomMutation = {
+  createTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type UpdateTrophyDarkRoomMutationVariables = {
+  input: UpdateTrophyDarkRoomInput,
+  condition?: ModelTrophyDarkRoomConditionInput | null,
+};
+
+export type UpdateTrophyDarkRoomMutation = {
+  updateTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type DeleteTrophyDarkRoomMutationVariables = {
+  input: DeleteTrophyDarkRoomInput,
+  condition?: ModelTrophyDarkRoomConditionInput | null,
+};
+
+export type DeleteTrophyDarkRoomMutation = {
+  deleteTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type CreateTrophyDarkCharacterMutationVariables = {
+  input: CreateTrophyDarkCharacterInput,
+  condition?: ModelTrophyDarkCharacterConditionInput | null,
+};
+
+export type CreateTrophyDarkCharacterMutation = {
+  createTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTrophyDarkCharacterMutationVariables = {
+  input: UpdateTrophyDarkCharacterInput,
+  condition?: ModelTrophyDarkCharacterConditionInput | null,
+};
+
+export type UpdateTrophyDarkCharacterMutation = {
+  updateTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTrophyDarkCharacterMutationVariables = {
+  input: DeleteTrophyDarkCharacterInput,
+  condition?: ModelTrophyDarkCharacterConditionInput | null,
+};
+
+export type DeleteTrophyDarkCharacterMutation = {
+  deleteTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
 };
 
 export type CreateTextRoomMutationVariables = {
@@ -856,51 +1138,6 @@ export type DeleteInteractiveRoomMutation = {
   } | null,
 };
 
-export type CreateTrophyDarkRoomMutationVariables = {
-  input: CreateTrophyDarkRoomInput,
-  condition?: ModelTrophyDarkRoomConditionInput | null,
-};
-
-export type CreateTrophyDarkRoomMutation = {
-  createTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateTrophyDarkRoomMutationVariables = {
-  input: UpdateTrophyDarkRoomInput,
-  condition?: ModelTrophyDarkRoomConditionInput | null,
-};
-
-export type UpdateTrophyDarkRoomMutation = {
-  updateTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteTrophyDarkRoomMutationVariables = {
-  input: DeleteTrophyDarkRoomInput,
-  condition?: ModelTrophyDarkRoomConditionInput | null,
-};
-
-export type DeleteTrophyDarkRoomMutation = {
-  deleteTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type CreateUserRoomMutationVariables = {
   input: CreateUserRoomInput,
   condition?: ModelUserRoomConditionInput | null,
@@ -910,6 +1147,43 @@ export type CreateUserRoomMutation = {
   createUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -997,13 +1271,6 @@ export type CreateUserRoomMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,
@@ -1018,6 +1285,43 @@ export type UpdateUserRoomMutation = {
   updateUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -1105,13 +1409,6 @@ export type UpdateUserRoomMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,
@@ -1126,6 +1423,43 @@ export type DeleteUserRoomMutation = {
   deleteUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -1213,13 +1547,6 @@ export type DeleteUserRoomMutation = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,
@@ -1765,6 +2092,204 @@ export type DeleteVisualDieMutation = {
   } | null,
 };
 
+export type GetTrophyDarkRoomQueryVariables = {
+  id: string,
+};
+
+export type GetTrophyDarkRoomQuery = {
+  getTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type ListTrophyDarkRoomsQueryVariables = {
+  filter?: ModelTrophyDarkRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTrophyDarkRoomsQuery = {
+  listTrophyDarkRooms:  {
+    __typename: "ModelTrophyDarkRoomConnection",
+    items:  Array< {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetTrophyDarkCharacterQueryVariables = {
+  id: string,
+};
+
+export type GetTrophyDarkCharacterQuery = {
+  getTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTrophyDarkCharactersQueryVariables = {
+  filter?: ModelTrophyDarkCharacterFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTrophyDarkCharactersQuery = {
+  listTrophyDarkCharacters:  {
+    __typename: "ModelTrophyDarkCharacterConnection",
+    items:  Array< {
+      __typename: "TrophyDarkCharacter",
+      id: string,
+      gameID: string,
+      playerName: string,
+      characterName: string,
+      characterPronouns: string,
+      characterImageUrl: string | null,
+      ruin: number,
+      occupation: string,
+      background: string,
+      drive: string,
+      rituals: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type TrophyDarkRoomByNameQueryVariables = {
+  name?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTrophyDarkRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TrophyDarkRoomByNameQuery = {
+  trophyDarkRoomByName:  {
+    __typename: "ModelTrophyDarkRoomConnection",
+    items:  Array< {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type ListTextRoomsQueryVariables = {
   filter?: ModelTextRoomFilterInput | null,
   limit?: number | null,
@@ -2092,62 +2617,6 @@ export type InteractiveRoomByNameQuery = {
   } | null,
 };
 
-export type ListTrophyDarkRoomsQueryVariables = {
-  filter?: ModelTrophyDarkRoomFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListTrophyDarkRoomsQuery = {
-  listTrophyDarkRooms:  {
-    __typename: "ModelTrophyDarkRoomConnection",
-    items:  Array< {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type GetTrophyDarkRoomQueryVariables = {
-  id: string,
-};
-
-export type GetTrophyDarkRoomQuery = {
-  getTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type TrophyDarkRoomByNameQueryVariables = {
-  name?: string | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTrophyDarkRoomFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type TrophyDarkRoomByNameQuery = {
-  trophyDarkRoomByName:  {
-    __typename: "ModelTrophyDarkRoomConnection",
-    items:  Array< {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
 export type GetUserRoomQueryVariables = {
   id: string,
 };
@@ -2156,6 +2625,43 @@ export type GetUserRoomQuery = {
   getUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -2244,13 +2750,6 @@ export type GetUserRoomQuery = {
         nextToken: string | null,
       } | null,
     } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     owner: string | null,
   } | null,
 };
@@ -2267,6 +2766,27 @@ export type ListUserRoomsQuery = {
     items:  Array< {
       __typename: "UserRoom",
       id: string,
+      trophyDarkRoom:  {
+        __typename: "TrophyDarkRoom",
+        id: string,
+        name: string,
+        lightDice: Array< string >,
+        darkDice: Array< string >,
+        characters:  {
+          __typename: "ModelTrophyDarkCharacterConnection",
+          nextToken: string | null,
+        } | null,
+        createdAt: string,
+        updatedAt: string,
+        safetyModule:  {
+          __typename: "SafetyModule",
+          id: string,
+          xCardActive: boolean,
+          linesAndVeils: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        },
+      } | null,
       roomKey: string,
       description: string | null,
       createdOn: string,
@@ -2316,13 +2836,6 @@ export type ListUserRoomsQuery = {
           __typename: "ModelVisualDieConnection",
           nextToken: string | null,
         } | null,
-      } | null,
-      trophyDarkRoom:  {
-        __typename: "TrophyDarkRoom",
-        id: string,
-        name: string,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       owner: string | null,
     } | null > | null,
@@ -2700,101 +3213,6 @@ export type OnUpdateTextRoomByNameSubscription = {
   } | null,
 };
 
-export type OnUpdateInteractiveRoomByNameSubscriptionVariables = {
-  name: string,
-};
-
-export type OnUpdateInteractiveRoomByNameSubscription = {
-  onUpdateInteractiveRoomByName:  {
-    __typename: "InteractiveRoom",
-    id: string,
-    name: string,
-    backgroundImageUrl: string | null,
-    createdAt: string,
-    updatedAt: string,
-    safetyModule:  {
-      __typename: "SafetyModule",
-      id: string,
-      xCardActive: boolean,
-      linesAndVeils: Array< string >,
-      createdAt: string,
-      updatedAt: string,
-    },
-    labels:  {
-      __typename: "ModelLabelConnection",
-      items:  Array< {
-        __typename: "Label",
-        id: string,
-        roomId: string,
-        contents: string,
-        x: number,
-        y: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
-    counters:  {
-      __typename: "ModelCounterConnection",
-      items:  Array< {
-        __typename: "Counter",
-        id: string,
-        roomId: string,
-        title: string,
-        value: number,
-        max: number | null,
-        x: number,
-        y: number,
-        type: CounterType,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
-    dice:  {
-      __typename: "ModelVisualDieConnection",
-      items:  Array< {
-        __typename: "VisualDie",
-        id: string,
-        roomId: string,
-        x: number,
-        y: number,
-        createdBy: string,
-        result: number,
-        sides: number,
-        color: string,
-        version: number,
-        type: string | null,
-        createdAt: string,
-        updatedAt: string,
-        room:  {
-          __typename: "InteractiveRoom",
-          id: string,
-          name: string,
-          backgroundImageUrl: string | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnUpdateTrophyDarkRoomByNameSubscriptionVariables = {
-  name: string,
-};
-
-export type OnUpdateTrophyDarkRoomByNameSubscription = {
-  onUpdateTrophyDarkRoomByName:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type OnCreateVisualDieByRoomSubscriptionVariables = {
   roomId: string,
 };
@@ -3040,6 +3458,229 @@ export type OnUpdateLabelByIdSubscription = {
     contents: string,
     x: number,
     y: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTrophyDarkCharacterByGameSubscriptionVariables = {
+  gameID: string,
+};
+
+export type OnCreateTrophyDarkCharacterByGameSubscription = {
+  onCreateTrophyDarkCharacterByGame:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTrophyDarkCharacterByIdSubscriptionVariables = {
+  id: string,
+};
+
+export type OnUpdateTrophyDarkCharacterByIdSubscription = {
+  onUpdateTrophyDarkCharacterById:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTrophyDarkRoomSubscription = {
+  onCreateTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnUpdateTrophyDarkRoomSubscription = {
+  onUpdateTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnDeleteTrophyDarkRoomSubscription = {
+  onDeleteTrophyDarkRoom:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnCreateTrophyDarkCharacterSubscription = {
+  onCreateTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTrophyDarkCharacterSubscription = {
+  onUpdateTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTrophyDarkCharacterSubscription = {
+  onDeleteTrophyDarkCharacter:  {
+    __typename: "TrophyDarkCharacter",
+    id: string,
+    gameID: string,
+    playerName: string,
+    characterName: string,
+    characterPronouns: string,
+    characterImageUrl: string | null,
+    ruin: number,
+    occupation: string,
+    background: string,
+    drive: string,
+    rituals: Array< string >,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3336,36 +3977,6 @@ export type OnDeleteInteractiveRoomSubscription = {
   } | null,
 };
 
-export type OnCreateTrophyDarkRoomSubscription = {
-  onCreateTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateTrophyDarkRoomSubscription = {
-  onUpdateTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteTrophyDarkRoomSubscription = {
-  onDeleteTrophyDarkRoom:  {
-    __typename: "TrophyDarkRoom",
-    id: string,
-    name: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type OnCreateUserRoomSubscriptionVariables = {
   owner: string,
 };
@@ -3374,6 +3985,43 @@ export type OnCreateUserRoomSubscription = {
   onCreateUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -3461,13 +4109,6 @@ export type OnCreateUserRoomSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,
@@ -3481,6 +4122,43 @@ export type OnUpdateUserRoomSubscription = {
   onUpdateUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -3568,13 +4246,6 @@ export type OnUpdateUserRoomSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,
@@ -3588,6 +4259,43 @@ export type OnDeleteUserRoomSubscription = {
   onDeleteUserRoom:  {
     __typename: "UserRoom",
     id: string,
+    trophyDarkRoom:  {
+      __typename: "TrophyDarkRoom",
+      id: string,
+      name: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      characters:  {
+        __typename: "ModelTrophyDarkCharacterConnection",
+        items:  Array< {
+          __typename: "TrophyDarkCharacter",
+          id: string,
+          gameID: string,
+          playerName: string,
+          characterName: string,
+          characterPronouns: string,
+          characterImageUrl: string | null,
+          ruin: number,
+          occupation: string,
+          background: string,
+          drive: string,
+          rituals: Array< string >,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      safetyModule:  {
+        __typename: "SafetyModule",
+        id: string,
+        xCardActive: boolean,
+        linesAndVeils: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
+    } | null,
     roomKey: string,
     description: string | null,
     createdOn: string,
@@ -3675,13 +4383,6 @@ export type OnDeleteUserRoomSubscription = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-    } | null,
-    trophyDarkRoom:  {
-      __typename: "TrophyDarkRoom",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     owner: string | null,
   } | null,

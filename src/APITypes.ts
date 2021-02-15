@@ -1,10 +1,21 @@
-import { GetTextRoomQuery } from './API';
+import {
+  GetTextRoomQuery,
+  GetTrophyDarkRoomQuery,
+  GetTrophyDarkCharacterQuery,
+} from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export type TextRoomDetails = Omit<
   Exclude<GetTextRoomQuery['getTextRoom'], null>,
   '__typename'
 >;
+
+export type TrophyDarkRoomDetails = Omit<
+  Exclude<GetTrophyDarkRoomQuery['getTrophyDarkRoom'], null>,
+  '__typename'
+>;
+
+export type TrophyDarkCharacter = GetTrophyDarkCharacterQuery['getTrophyDarkCharacter'];
 
 export type InteractiveRoomData = {
   createdAt: string;

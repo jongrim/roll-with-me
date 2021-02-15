@@ -40,7 +40,7 @@ function Home() {
     starterName();
   }, []);
   const history = useHistory();
-  const requestRoom = (type: 'r' | 'i') => {
+  const requestRoom = (type: 'r' | 'i' | 'trophy-dark') => {
     handleNewRoomRequest(type, name).then(() => {
       history.push(`/${type}/${name}`);
     });
@@ -185,18 +185,18 @@ function Home() {
                 </Link>
                 <Link
                   as={ReactRouterLink}
-                  color="blue.700"
+                  color="purple.700"
                   w="full"
                   to="/new-room?type=Visual"
                   display="inline-flex"
                   alignItems="center"
                   justifyContent="center"
                   border="1px solid"
-                  borderColor="blue.700"
+                  borderColor="purple.700"
                   borderRadius="md"
                   py={2}
                   _hover={{
-                    backgroundColor: 'blue.50',
+                    backgroundColor: 'purple.50',
                   }}
                 >
                   Visual Dice Table
@@ -207,20 +207,29 @@ function Home() {
           <GridItem>
             <Stack spacing={3}>
               <LightMode>
-                <Button disabled variant="outline" colorScheme="green" w="full">
-                  Trophy Dark - Coming Soon
-                </Button>
+                <Link
+                  as={ReactRouterLink}
+                  color="green.700"
+                  w="full"
+                  to="/new-room?type=TrophyDark"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid"
+                  borderColor="green.700"
+                  borderRadius="md"
+                  py={2}
+                  _hover={{
+                    backgroundColor: 'green.50',
+                  }}
+                >
+                  Trophy Dark
+                </Link>
               </LightMode>
             </Stack>
           </GridItem>
         </Grid>
       </GridItem>
-      {/* <GridItem h="xl" colSpan={6} bg="teal.50">
-        First call out
-      </GridItem>
-      <GridItem h="xl" colSpan={6} bg="black.200">
-        Trophy Dark
-      </GridItem> */}
       <GridItem
         colSpan={6}
         border="1px"

@@ -2,6 +2,188 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getTrophyDarkRoom = /* GraphQL */ `
+  query GetTrophyDarkRoom($id: ID!) {
+    getTrophyDarkRoom(id: $id) {
+      id
+      name
+      lightDice
+      darkDice
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          occupation
+          background
+          drive
+          rituals
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listTrophyDarkRooms = /* GraphQL */ `
+  query ListTrophyDarkRooms(
+    $filter: ModelTrophyDarkRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyDarkRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getTrophyDarkCharacter = /* GraphQL */ `
+  query GetTrophyDarkCharacter($id: ID!) {
+    getTrophyDarkCharacter(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      occupation
+      background
+      drive
+      rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrophyDarkCharacters = /* GraphQL */ `
+  query ListTrophyDarkCharacters(
+    $filter: ModelTrophyDarkCharacterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyDarkCharacters(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gameID
+        playerName
+        characterName
+        characterPronouns
+        characterImageUrl
+        ruin
+        occupation
+        background
+        drive
+        rituals
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const trophyDarkRoomByName = /* GraphQL */ `
+  query TrophyDarkRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTrophyDarkRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    trophyDarkRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const listTextRooms = /* GraphQL */ `
   query ListTextRooms(
     $filter: ModelTextRoomFilterInput
@@ -300,62 +482,43 @@ export const interactiveRoomByName = /* GraphQL */ `
     }
   }
 `;
-export const listTrophyDarkRooms = /* GraphQL */ `
-  query ListTrophyDarkRooms(
-    $filter: ModelTrophyDarkRoomFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTrophyDarkRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getTrophyDarkRoom = /* GraphQL */ `
-  query GetTrophyDarkRoom($id: ID!) {
-    getTrophyDarkRoom(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const trophyDarkRoomByName = /* GraphQL */ `
-  query TrophyDarkRoomByName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelTrophyDarkRoomFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    trophyDarkRoomByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getUserRoom = /* GraphQL */ `
   query GetUserRoom($id: ID!) {
     getUserRoom(id: $id) {
       id
+      trophyDarkRoom {
+        id
+        name
+        lightDice
+        darkDice
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            occupation
+            background
+            drive
+            rituals
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
       roomKey
       description
       createdOn
@@ -434,12 +597,6 @@ export const getUserRoom = /* GraphQL */ `
           nextToken
         }
       }
-      trophyDarkRoom {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       owner
     }
   }
@@ -453,6 +610,24 @@ export const listUserRooms = /* GraphQL */ `
     listUserRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        trophyDarkRoom {
+          id
+          name
+          lightDice
+          darkDice
+          characters {
+            nextToken
+          }
+          createdAt
+          updatedAt
+          safetyModule {
+            id
+            xCardActive
+            linesAndVeils
+            createdAt
+            updatedAt
+          }
+        }
         roomKey
         description
         createdOn
@@ -495,12 +670,6 @@ export const listUserRooms = /* GraphQL */ `
           dice {
             nextToken
           }
-        }
-        trophyDarkRoom {
-          id
-          name
-          createdAt
-          updatedAt
         }
         owner
       }
