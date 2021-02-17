@@ -2,6 +2,8 @@ import {
   GetTextRoomQuery,
   GetTrophyDarkRoomQuery,
   GetTrophyDarkCharacterQuery,
+  GetHeartRoomQuery,
+  GetHeartCharacterQuery,
 } from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
@@ -16,6 +18,13 @@ export type TrophyDarkRoomDetails = Omit<
 >;
 
 export type TrophyDarkCharacter = GetTrophyDarkCharacterQuery['getTrophyDarkCharacter'];
+
+export type HeartRoomDetails = Omit<
+  Exclude<GetHeartRoomQuery['getHeartRoom'], null>,
+  '__typename'
+>;
+
+export type HeartCharacter = GetHeartCharacterQuery['getHeartCharacter'];
 
 export type InteractiveRoomData = {
   createdAt: string;

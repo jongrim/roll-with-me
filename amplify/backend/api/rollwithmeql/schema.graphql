@@ -60,6 +60,56 @@ type TrophyDarkCharacter
   rituals: [String!]!
 }
 
+type HeartRoom
+  @model
+  @key(name: "heartRoomByName", fields: ["name"], queryField: "heartRoomByName")
+  @auth(rules: [{ allow: public }, { allow: private }]) {
+  id: ID!
+  name: String!
+  d4Dice: [AWSJSON!]!
+  d6Dice: [AWSJSON!]!
+  d8Dice: [AWSJSON!]!
+  d10Dice: [AWSJSON!]!
+  d12Dice: [AWSJSON!]!
+  safetyModule: SafetyModule! @connection
+  characters: [HeartCharacter] @connection(keyName: "byGame", fields: ["id"])
+}
+
+type HeartCharacter
+  @model
+  @auth(rules: [{ allow: public }, { allow: private }])
+  @key(name: "byGame", fields: ["gameID"]) {
+  id: ID!
+  gameID: ID!
+  playerName: String!
+  characterName: String!
+  characterPronouns: String!
+  characterImageUrl: AWSURL
+  ancestry: String!
+  calling: String!
+  class: String!
+  beats: [AWSJSON!]!
+  fallout: [AWSJSON!]!
+  bloodProtection: Int!
+  bloodStress: Int!
+  echoProtection: Int!
+  echoStress: Int!
+  fortuneProtection: Int!
+  fortuneStress: Int!
+  mindProtection: Int!
+  mindStress: Int!
+  supplyProtection: Int!
+  supplyStress: Int!
+  skills: [String!]!
+  domains: [String!]!
+  knacks: [String!]!
+  abilities: [AWSJSON!]!
+  equipment: [AWSJSON!]!
+  resources: [AWSJSON!]!
+  bonds: [AWSJSON!]!
+  notes: String!
+}
+
 type UserRoom
   @model(timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" })
   @auth(rules: [{ allow: owner, provider: userPools }]) {
@@ -167,4 +217,8 @@ type Subscription {
     @aws_subscribe(mutations: ["createTrophyDarkCharacter"])
   onUpdateTrophyDarkCharacterById(id: String!): TrophyDarkCharacter
     @aws_subscribe(mutations: ["updateTrophyDarkCharacter"])
+  onCreateHeartCharacterByGame(gameID: String!): HeartCharacter
+    @aws_subscribe(mutations: ["createHeartCharacter"])
+  onUpdateHeartCharacterById(id: String!): HeartCharacter
+    @aws_subscribe(mutations: ["updateHeartCharacter"])
 }

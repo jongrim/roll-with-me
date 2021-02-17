@@ -100,7 +100,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   );
 
   return (
-    <>
+    <Box h="full" overflow="auto">
       <SettingsBar username={username} setUsername={setUsername} />
       <Container maxW="6xl">
         <VStack spacing={4} w="full" align="flex-start">
@@ -356,7 +356,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           loadingStates.isSavingRoll ||
           actionInProgress
       ) && <SpinningCube />}
-    </>
+    </Box>
   );
 };
 

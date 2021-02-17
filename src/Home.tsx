@@ -11,7 +11,6 @@ import {
   Flex,
   Button,
   IconButton,
-  LightMode,
   Input,
   InputGroup,
   Box,
@@ -27,6 +26,7 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from './AuthProvider';
 import { handleNewRoomRequest } from './NewRoom/handleNewRoomRequest';
 import getNewRoomNames from './functions/randomNames';
+import isLocalhost from './utils/isLocalHost';
 
 function Home() {
   const [name, setName] = React.useState<string>('');
@@ -98,16 +98,14 @@ function Home() {
                 placeholder="Loading..."
               />
             </InputGroup>
-            <LightMode>
-              <Button
-                rightIcon={<RiArrowRightLine />}
-                colorScheme="brand"
-                variant="outline"
-                onClick={() => requestRoom('r')}
-              >
-                Go
-              </Button>
-            </LightMode>
+            <Button
+              rightIcon={<RiArrowRightLine />}
+              colorScheme="brand"
+              variant="outline"
+              onClick={() => requestRoom('r')}
+            >
+              Go
+            </Button>
           </Flex>
         </Box>
         <Flex
@@ -156,76 +154,86 @@ function Home() {
             <Heading as="h3" fontSize="xl" color="black">
               Dice Apps
             </Heading>
+            <Stack spacing={3} mt={3}>
+              <Link
+                as={ReactRouterLink}
+                color="purple.700"
+                w="full"
+                to="/new-room?type=Text"
+                display="inline-flex"
+                alignItems="center"
+                justifyContent="center"
+                border="1px solid"
+                borderColor="purple.700"
+                borderRadius="md"
+                py={2}
+                _hover={{
+                  backgroundColor: 'purple.50',
+                }}
+              >
+                Text Dice Roller
+              </Link>
+              <Link
+                as={ReactRouterLink}
+                color="purple.700"
+                w="full"
+                to="/new-room?type=Visual"
+                display="inline-flex"
+                alignItems="center"
+                justifyContent="center"
+                border="1px solid"
+                borderColor="purple.700"
+                borderRadius="md"
+                py={2}
+                _hover={{
+                  backgroundColor: 'purple.50',
+                }}
+              >
+                Visual Dice Table
+              </Link>
+            </Stack>
           </GridItem>
           <GridItem>
             <Heading as="h3" fontSize="xl" color="black">
               Game Rooms
             </Heading>
-          </GridItem>
-          <GridItem>
-            <Stack spacing={3}>
-              <LightMode>
-                <Link
-                  as={ReactRouterLink}
-                  color="purple.700"
-                  w="full"
-                  to="/new-room?type=Text"
-                  display="inline-flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  border="1px solid"
-                  borderColor="purple.700"
-                  borderRadius="md"
-                  py={2}
-                  _hover={{
-                    backgroundColor: 'purple.50',
-                  }}
-                >
-                  Text Dice Roller
-                </Link>
-                <Link
-                  as={ReactRouterLink}
-                  color="purple.700"
-                  w="full"
-                  to="/new-room?type=Visual"
-                  display="inline-flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  border="1px solid"
-                  borderColor="purple.700"
-                  borderRadius="md"
-                  py={2}
-                  _hover={{
-                    backgroundColor: 'purple.50',
-                  }}
-                >
-                  Visual Dice Table
-                </Link>
-              </LightMode>
-            </Stack>
-          </GridItem>
-          <GridItem>
-            <Stack spacing={3}>
-              <LightMode>
-                <Link
-                  as={ReactRouterLink}
-                  color="green.700"
-                  w="full"
-                  to="/new-room?type=TrophyDark"
-                  display="inline-flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  border="1px solid"
-                  borderColor="green.700"
-                  borderRadius="md"
-                  py={2}
-                  _hover={{
-                    backgroundColor: 'green.50',
-                  }}
-                >
-                  Trophy Dark
-                </Link>
-              </LightMode>
+            <Stack spacing={3} mt={3}>
+              <Link
+                as={ReactRouterLink}
+                color="green.700"
+                w="full"
+                to="/new-room?type=TrophyDark"
+                display="inline-flex"
+                alignItems="center"
+                justifyContent="center"
+                border="1px solid"
+                borderColor="green.700"
+                borderRadius="md"
+                py={2}
+                _hover={{
+                  backgroundColor: 'green.50',
+                }}
+              >
+                Trophy Dark
+              </Link>
+              <Link
+                as={ReactRouterLink}
+                color="red.700"
+                w="full"
+                to="/new-room?type=Heart"
+                display="inline-flex"
+                alignItems="center"
+                justifyContent="center"
+                border="1px solid"
+                borderColor="red.700"
+                borderRadius="md"
+                py={2}
+                _hover={{
+                  backgroundColor: 'red.50',
+                }}
+              >
+                Heart
+              </Link>
             </Stack>
           </GridItem>
         </Grid>

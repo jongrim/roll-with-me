@@ -21,42 +21,56 @@ import { RiArrowRightLine } from 'react-icons/ri';
 import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion';
 import { handleNewRoomRequest } from './handleNewRoomRequest';
 import getNewRoomNames from '../functions/randomNames';
+import {
+  roomPathCodes,
+  roomCodes,
+  roomNames,
+  roomNamesType,
+} from '../roomPaths';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 interface RoomTypeState {
-  roomShortCode: 'r' | 'i' | 'trophy-dark';
+  roomShortCode: roomPathCodes;
 }
 
+// used for building the target URL
 const getRoomShortCode = (type: string) => {
   switch (type) {
-    case 'Text':
-      return 'r';
-    case 'Visual':
-      return 'i';
-    case 'TrophyDark':
-      return 'trophy-dark';
+    case roomNames.text:
+      return roomCodes.text;
+    case roomNames.visual:
+      return roomCodes.visual;
+    case roomNames.trophyDark:
+      return roomCodes.trophyDark;
+    case roomNames.heart:
+      return roomCodes.heart;
     default:
-      return 'r';
+      return roomCodes.text;
   }
 };
 
+// used for getting the display value of the radio buttons
 const getDefaultValueFromType = (type: string) => {
   switch (type.toLowerCase()) {
     case 'text':
-      return 'Text';
+      return roomNames.text;
     case 'visual':
-      return 'Visual';
+      return roomNames.visual;
     case 'trophydark':
-      return 'Trophy Dark';
+      return roomNames.trophyDark;
+    case 'heart':
+      return roomNames.heart;
     default:
-      return 'Text';
+      return roomNames.text;
   }
 };
 
-type roomTypeReducerEvent = { payload: 'Text' | 'Visual' | 'Trophy Dark' };
+type roomTypeReducerEvent = {
+  payload: roomNamesType;
+};
 
 const roomTypeReducer = (
   state: RoomTypeState,
@@ -65,15 +79,19 @@ const roomTypeReducer = (
   switch (event.payload) {
     case 'Text':
       return {
-        roomShortCode: 'r',
+        roomShortCode: roomCodes.text,
       };
     case 'Visual':
       return {
-        roomShortCode: 'i',
+        roomShortCode: roomCodes.visual,
       };
     case 'Trophy Dark':
       return {
-        roomShortCode: 'trophy-dark',
+        roomShortCode: roomCodes.trophyDark,
+      };
+    case 'Heart':
+      return {
+        roomShortCode: roomCodes.heart,
       };
   }
 };
@@ -82,7 +100,7 @@ const NewRoom: React.FC = () => {
   const history = useHistory();
   const query = useQuery();
   const showNotFound = query.get('notFound') ?? false;
-  const options = ['Text', 'Visual', 'Trophy Dark'];
+  const options = Object.values(roomNames);
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   const [name, setName] = React.useState(query.get('name') ?? '');
@@ -102,14 +120,16 @@ const NewRoom: React.FC = () => {
     }
   }, [name, starterNames]);
 
+  const roomTypeFromURL = getDefaultValueFromType(query.get('type') ?? '');
+
   const [{ roomShortCode }, dispatch] = React.useReducer(roomTypeReducer, {
-    roomShortCode: getRoomShortCode(query.get('type') ?? 'Text'),
+    roomShortCode: getRoomShortCode(roomTypeFromURL),
   });
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'room type',
     defaultValue: getDefaultValueFromType(query.get('type') ?? ''),
-    onChange: (nextValue: 'Text' | 'Visual' | 'Trophy Dark') =>
+    onChange: (nextValue: 'Text' | 'Visual' | 'Trophy Dark' | 'Heart') =>
       dispatch({ payload: nextValue }),
   });
 
@@ -242,6 +262,7 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
       animate={controls}
     >
       <Box
+        as="span"
         display="inline-block"
         fontFamily="Faith Collapsing"
         fontWeight="600"
@@ -279,6 +300,7 @@ const Fun = ({ strike }: { strike: boolean }) => {
   return (
     <motion.span layout>
       <Flex
+        as="span"
         display="inline-block"
         alignItems="stretch"
         justifyContent="center"

@@ -470,6 +470,309 @@ export const deleteInteractiveRoom = /* GraphQL */ `
     }
   }
 `;
+export const createHeartRoom = /* GraphQL */ `
+  mutation CreateHeartRoom(
+    $input: CreateHeartRoomInput!
+    $condition: ModelHeartRoomConditionInput
+  ) {
+    createHeartRoom(input: $input, condition: $condition) {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateHeartRoom = /* GraphQL */ `
+  mutation UpdateHeartRoom(
+    $input: UpdateHeartRoomInput!
+    $condition: ModelHeartRoomConditionInput
+  ) {
+    updateHeartRoom(input: $input, condition: $condition) {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteHeartRoom = /* GraphQL */ `
+  mutation DeleteHeartRoom(
+    $input: DeleteHeartRoomInput!
+    $condition: ModelHeartRoomConditionInput
+  ) {
+    deleteHeartRoom(input: $input, condition: $condition) {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createHeartCharacter = /* GraphQL */ `
+  mutation CreateHeartCharacter(
+    $input: CreateHeartCharacterInput!
+    $condition: ModelHeartCharacterConditionInput
+  ) {
+    createHeartCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateHeartCharacter = /* GraphQL */ `
+  mutation UpdateHeartCharacter(
+    $input: UpdateHeartCharacterInput!
+    $condition: ModelHeartCharacterConditionInput
+  ) {
+    updateHeartCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteHeartCharacter = /* GraphQL */ `
+  mutation DeleteHeartCharacter(
+    $input: DeleteHeartCharacterInput!
+    $condition: ModelHeartCharacterConditionInput
+  ) {
+    deleteHeartCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createUserRoom = /* GraphQL */ `
   mutation CreateUserRoom(
     $input: CreateUserRoomInput!
