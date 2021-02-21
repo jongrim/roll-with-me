@@ -49,9 +49,11 @@ export const domains: Domain[] = [
   'Wild',
 ];
 
+export type ResourceValue = 'D4' | 'D6' | 'D8' | 'D10' | 'D12';
 export interface Resource {
+  id: string;
   name: string;
-  value: 'D4' | 'D6' | 'D8' | 'D10' | 'D12';
+  value: ResourceValue;
   domain: Domain;
   tags?: string[];
 }
@@ -78,9 +80,12 @@ export const equipmentQualities: EquipmentQuality[] = [
   'Renowned',
 ];
 
+export type EquipmentType = 'Kill' | 'Delve' | 'Mend' | 'Miscellaneous';
+
 export interface Equipment {
+  id: string;
   name: string;
-  type: 'Kill' | 'Delve' | 'Mend' | 'Miscellaneous';
+  type: EquipmentType;
   rank?: EquipmentRank;
   tags?: string[];
   quality: EquipmentQuality;
@@ -101,15 +106,19 @@ export interface MendEquipment extends Equipment {
   rank: EquipmentRank;
 }
 
+export type AbilityType = 'core' | 'minor' | 'major' | 'zenith';
 export interface Ability {
+  id: string;
   name: string;
   description: string;
-  level: 'core' | 'minor' | 'major' | 'zenith';
+  type: AbilityType;
 }
 
+export type BeatType = 'minor' | 'major' | 'zenith';
 export interface Beat {
+  id: string;
   description: string;
-  level: 'minor' | 'major' | 'zenith';
+  type: BeatType;
 }
 
 export type Ancestry = 'Drow' | 'Aelfir' | 'Human' | 'Gnoll';
@@ -151,18 +160,17 @@ export const callings: Calling[] = [
   'Penitent',
 ];
 
+export type FalloutType = 'minor' | 'major' | 'critical';
 export interface Fallout {
+  id: string;
   resistance: Resistance;
   title: string;
   description: string;
-  level: 'minor' | 'major' | 'critical';
+  type: FalloutType;
 }
 
 export interface Bond {
+  id: string;
   name: string;
-  bloodStress: number;
-  mindStress: number;
-  echoStress: number;
-  fortuneStress: number;
-  supplyStress: number;
+  notes: string;
 }

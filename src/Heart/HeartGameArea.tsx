@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
-import RulesSummary from './RulesSummary';
 import TrophyDice from './TrophyDice';
 import { HeartCharacter } from '../APITypes';
 import CharacterList from './CharacterList';

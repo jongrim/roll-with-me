@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Container, Flex, useToast } from '@chakra-ui/react';
+import { Box, Container, Flex, Image, useToast } from '@chakra-ui/react';
 import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion';
 import useHeartRoomLookup from './useHeartRoomLookup';
 import { useMachine } from '@xstate/react';
@@ -11,7 +11,7 @@ import CharacterChoice from './CharacterChoice';
 import HeartGameArea from './HeartGameArea';
 import CharacterForm from './CharacterForm';
 import { HeartCharacter } from '../APITypes';
-
+import heart from './heart.svg';
 import './heart.css';
 
 export const NEW_CHARACTER = 'NEW';
@@ -179,7 +179,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
                   default:
                     try {
                       API.graphql({
-                        query: mutations.updateTrophyDarkCharacter,
+                        query: mutations.updateHeartCharacter,
                         variables: {
                           input: {
                             id: character,
@@ -201,7 +201,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { duration: 1 } }}
             >
-              HEART SVG
+              <Image src={heart} w={36} alt="heart with black tendrils" />
             </motion.div>
           </AnimateSharedLayout>
         </Flex>

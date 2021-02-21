@@ -3,20 +3,16 @@ import {
   Grid,
   GridItem,
   Box,
-  Checkbox,
   Flex,
   Divider,
   Center,
   Button,
   Input,
-  InputGroup,
-  InputLeftAddon,
   FormControl,
   FormLabel,
   Icon,
   Image,
   Text,
-  Stack,
   Select,
 } from '@chakra-ui/react';
 import { RiCameraFill } from 'react-icons/ri';
@@ -153,6 +149,7 @@ const CharacterForm = ({
             <Select
               placeholder="Select an ancestry"
               onChange={({ target }) => setAncestry(target.value)}
+              defaultValue={ancestry}
             >
               {ancestries.map((ancestry) => (
                 <option key={ancestry} value={ancestry}>
@@ -168,6 +165,7 @@ const CharacterForm = ({
             <Select
               placeholder="Select a calling"
               onChange={({ target }) => setCalling(target.value)}
+              defaultValue={calling}
             >
               {callings.map((calling) => (
                 <option key={calling} value={calling}>
@@ -183,6 +181,7 @@ const CharacterForm = ({
             <Select
               placeholder="Select a class"
               onChange={({ target }) => setCharClass(target.value)}
+              defaultValue={charClass}
             >
               {classes.map((classOption) => (
                 <option key={classOption} value={classOption}>
