@@ -269,6 +269,80 @@ export const onUpdateTrophyDarkCharacterById = /* GraphQL */ `
     }
   }
 `;
+export const onCreateHeartCharacterByGame = /* GraphQL */ `
+  subscription OnCreateHeartCharacterByGame($gameID: String!) {
+    onCreateHeartCharacterByGame(gameID: $gameID) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateHeartCharacterById = /* GraphQL */ `
+  subscription OnUpdateHeartCharacterById($id: String!) {
+    onUpdateHeartCharacterById(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateTrophyDarkRoom = /* GraphQL */ `
   subscription OnCreateTrophyDarkRoom {
     onCreateTrophyDarkRoom {
@@ -698,6 +772,291 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
         }
         nextToken
       }
+    }
+  }
+`;
+export const onCreateHeartRoom = /* GraphQL */ `
+  subscription OnCreateHeartRoom {
+    onCreateHeartRoom {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateHeartRoom = /* GraphQL */ `
+  subscription OnUpdateHeartRoom {
+    onUpdateHeartRoom {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteHeartRoom = /* GraphQL */ `
+  subscription OnDeleteHeartRoom {
+    onDeleteHeartRoom {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onCreateHeartCharacter = /* GraphQL */ `
+  subscription OnCreateHeartCharacter {
+    onCreateHeartCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateHeartCharacter = /* GraphQL */ `
+  subscription OnUpdateHeartCharacter {
+    onUpdateHeartCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteHeartCharacter = /* GraphQL */ `
+  subscription OnDeleteHeartCharacter {
+    onDeleteHeartCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
     }
   }
 `;

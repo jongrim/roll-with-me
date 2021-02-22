@@ -482,6 +482,283 @@ export const interactiveRoomByName = /* GraphQL */ `
     }
   }
 `;
+export const getHeartRoom = /* GraphQL */ `
+  query GetHeartRoom($id: ID!) {
+    getHeartRoom(id: $id) {
+      id
+      name
+      d4Dice
+      d6Dice
+      d8Dice
+      d10Dice
+      d12Dice
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ancestry
+          calling
+          class
+          beats
+          fallout
+          bloodProtection
+          bloodStress
+          echoProtection
+          echoStress
+          fortuneProtection
+          fortuneStress
+          mindProtection
+          mindStress
+          supplyProtection
+          supplyStress
+          skills
+          domains
+          knacks
+          abilities
+          equipment
+          resources
+          bonds
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listHeartRooms = /* GraphQL */ `
+  query ListHeartRooms(
+    $filter: ModelHeartRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHeartRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        d4Dice
+        d6Dice
+        d8Dice
+        d10Dice
+        d12Dice
+        createdAt
+        updatedAt
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ancestry
+            calling
+            class
+            beats
+            fallout
+            bloodProtection
+            bloodStress
+            echoProtection
+            echoStress
+            fortuneProtection
+            fortuneStress
+            mindProtection
+            mindStress
+            supplyProtection
+            supplyStress
+            skills
+            domains
+            knacks
+            abilities
+            equipment
+            resources
+            bonds
+            notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const heartRoomByName = /* GraphQL */ `
+  query HeartRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelHeartRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    heartRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        d4Dice
+        d6Dice
+        d8Dice
+        d10Dice
+        d12Dice
+        createdAt
+        updatedAt
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ancestry
+            calling
+            class
+            beats
+            fallout
+            bloodProtection
+            bloodStress
+            echoProtection
+            echoStress
+            fortuneProtection
+            fortuneStress
+            mindProtection
+            mindStress
+            supplyProtection
+            supplyStress
+            skills
+            domains
+            knacks
+            abilities
+            equipment
+            resources
+            bonds
+            notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getHeartCharacter = /* GraphQL */ `
+  query GetHeartCharacter($id: ID!) {
+    getHeartCharacter(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ancestry
+      calling
+      class
+      beats
+      fallout
+      bloodProtection
+      bloodStress
+      echoProtection
+      echoStress
+      fortuneProtection
+      fortuneStress
+      mindProtection
+      mindStress
+      supplyProtection
+      supplyStress
+      skills
+      domains
+      knacks
+      abilities
+      equipment
+      resources
+      bonds
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listHeartCharacters = /* GraphQL */ `
+  query ListHeartCharacters(
+    $filter: ModelHeartCharacterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHeartCharacters(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        gameID
+        playerName
+        characterName
+        characterPronouns
+        characterImageUrl
+        ancestry
+        calling
+        class
+        beats
+        fallout
+        bloodProtection
+        bloodStress
+        echoProtection
+        echoStress
+        fortuneProtection
+        fortuneStress
+        mindProtection
+        mindStress
+        supplyProtection
+        supplyStress
+        skills
+        domains
+        knacks
+        abilities
+        equipment
+        resources
+        bonds
+        notes
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUserRoom = /* GraphQL */ `
   query GetUserRoom($id: ID!) {
     getUserRoom(id: $id) {

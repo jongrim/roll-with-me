@@ -167,24 +167,6 @@ const TrophyDice = ({ lightDice, darkDice, id }: TrophyDiceProps) => {
 const LightDie = ({ result }: { result: string }) => {
   switch (result) {
     case '1':
-      return <Icon h={14} w={14} as={GiInvertedDice1} />;
-    case '2':
-      return <Icon h={14} w={14} as={GiInvertedDice2} />;
-    case '3':
-      return <Icon h={14} w={14} as={GiInvertedDice3} />;
-    case '4':
-      return <Icon h={14} w={14} as={GiInvertedDice4} />;
-    case '5':
-      return <Icon h={14} w={14} as={GiInvertedDice5} />;
-    case '6':
-      return <Icon h={14} w={14} as={GiInvertedDice6} />;
-    default:
-      return null;
-  }
-};
-const DarkDie = ({ result }: { result: string }) => {
-  switch (result) {
-    case '1':
       return <Icon h={14} w={14} as={GiDiceSixFacesOne} />;
     case '2':
       return <Icon h={14} w={14} as={GiDiceSixFacesTwo} />;
@@ -196,6 +178,24 @@ const DarkDie = ({ result }: { result: string }) => {
       return <Icon h={14} w={14} as={GiDiceSixFacesFive} />;
     case '6':
       return <Icon h={14} w={14} as={GiDiceSixFacesSix} />;
+    default:
+      return null;
+  }
+};
+const DarkDie = ({ result }: { result: string }) => {
+  switch (result) {
+    case '1':
+      return <Icon h={14} w={14} as={GiInvertedDice1} />;
+    case '2':
+      return <Icon h={14} w={14} as={GiInvertedDice2} />;
+    case '3':
+      return <Icon h={14} w={14} as={GiInvertedDice3} />;
+    case '4':
+      return <Icon h={14} w={14} as={GiInvertedDice4} />;
+    case '5':
+      return <Icon h={14} w={14} as={GiInvertedDice5} />;
+    case '6':
+      return <Icon h={14} w={14} as={GiInvertedDice6} />;
     default:
       return null;
   }
