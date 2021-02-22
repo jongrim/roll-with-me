@@ -3,12 +3,14 @@ import {
   CreateSafetyModuleMutation,
   CreateInteractiveRoomMutation,
   CreateTrophyDarkRoomMutation,
+  CreateHeartRoomMutation,
 } from '../API';
 import gql from '../gql';
 import * as mutations from '../graphql/mutations';
+import { roomCodes, roomPathCodes } from '../roomPaths';
 
 export const handleNewRoomRequest = async (
-  type: 'r' | 'i' | 'trophy-dark',
+  type: roomPathCodes,
   name: string
 ) => {
   try {
@@ -20,14 +22,14 @@ export const handleNewRoomRequest = async (
         linesAndVeils: [],
       }
     );
-    if (type === 'r') {
+    if (type === roomCodes.text) {
       await gql<CreateTextRoomMutation>(mutations.createTextRoom, {
         name,
         rolls: [],
         textRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
       });
     }
-    if (type === 'i') {
+    if (type === roomCodes.visual) {
       await gql<CreateInteractiveRoomMutation>(
         mutations.createInteractiveRoom,
         {
@@ -37,13 +39,24 @@ export const handleNewRoomRequest = async (
         }
       );
     }
-    if (type === 'trophy-dark') {
+    if (type === roomCodes.trophyDark) {
       await gql<CreateTrophyDarkRoomMutation>(mutations.createTrophyDarkRoom, {
         name,
         trophyDarkRoomSafetyModuleId:
           newSafetyModule.data?.createSafetyModule?.id,
         lightDice: [],
         darkDice: [],
+      });
+    }
+    if (type === roomCodes.heart) {
+      await gql<CreateHeartRoomMutation>(mutations.createHeartRoom, {
+        name,
+        heartRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
+        d4Dice: [],
+        d6Dice: [],
+        d8Dice: [],
+        d10Dice: [],
+        d12Dice: [],
       });
     }
   } catch (e) {

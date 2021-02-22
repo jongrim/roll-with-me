@@ -164,7 +164,7 @@ function InteractiveRoom({ name }: Props) {
   const debouncedColor = debounce((color) => setColor(color), 900);
 
   return (
-    <Flex flexDirection="column" h="full" maxW="full">
+    <Flex flexDirection="column" h="full" maxW="full" overflow="auto">
       <SettingsBar username={username} setUsername={setUsername} />
       <Container maxW="6xl" flex="1" display="flex" flexDirection="column">
         <QuickRollBar

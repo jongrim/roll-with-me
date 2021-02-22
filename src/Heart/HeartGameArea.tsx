@@ -11,44 +11,48 @@ import {
 } from '@chakra-ui/react';
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
-import RulesSummary from './RulesSummary';
-import TrophyDice from './TrophyDice';
-import { TrophyDarkCharacter } from '../APITypes';
+import HeartDiceForm from './HeartDiceForm';
+import { HeartCharacter } from '../APITypes';
 import CharacterList from './CharacterList';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
+import HeartDiceDisplay from './HeartDiceDisplay';
 
-interface TrophyDarkGameProps {
+interface HeartGameProps {
   name: string;
   username: string;
   setUsername: (val: string) => void;
-  characters: TrophyDarkCharacter[];
+  characters: HeartCharacter[];
   characterChoice: 'GM' | string;
-  lightDice: string[];
-  darkDice: string[];
   id: string;
   safetyModuleId: string;
+  dice: {
+    d4Dice: { username: string; result: number }[];
+    d6Dice: { username: string; result: number }[];
+    d8Dice: { username: string; result: number }[];
+    d10Dice: { username: string; result: number }[];
+    d12Dice: { username: string; result: number }[];
+  };
 }
 
-const TrophyDarkGameArea = ({
+const HeartGameArea = ({
   name,
   username,
   setUsername,
   characters,
   characterChoice,
-  lightDice,
-  darkDice,
   id,
   safetyModuleId,
-}: TrophyDarkGameProps) => {
+  dice,
+}: HeartGameProps) => {
   const activeLink = useColorModeValue(
     { opacity: 1, backgroundColor: 'gray.100' },
     { opacity: 1, backgroundColor: 'gray.700' }
   );
   const ref = React.useRef<HTMLButtonElement>(null);
   return (
-    <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Roboto Slab">
+    <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Alegreya">
       <GridItem>
         <SettingsBar username={username} setUsername={setUsername} />
       </GridItem>
@@ -77,7 +81,7 @@ const TrophyDarkGameArea = ({
                   opacity="0.8"
                   _activeLink={activeLink}
                   as={ReactRouterLink}
-                  to={`/trophy-dark/${name}/table`}
+                  to={`/heart/${name}/table`}
                 >
                   Table
                 </Link>
@@ -88,18 +92,7 @@ const TrophyDarkGameArea = ({
                   opacity="0.8"
                   _activeLink={activeLink}
                   as={ReactRouterLink}
-                  to={`/trophy-dark/${name}/rules`}
-                >
-                  How to Play
-                </Link>
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/trophy-dark/${name}/safety`}
+                  to={`/heart/${name}/safety`}
                 >
                   Safety
                 </Link>
@@ -114,26 +107,31 @@ const TrophyDarkGameArea = ({
                 </Button>
               </Stack>
               <Spacer />
-              <Link isExternal href="https://trophyrpg.com/" justifySelf="end">
-                Get More Trophy
+              <Link
+                isExternal
+                href="https://rowanrookanddecard.com/product/heart-the-city-beneath-rpg/"
+                justifySelf="end"
+                fontWeight="500"
+              >
+                Get Heart
               </Link>
             </Flex>
           </GridItem>
           <GridItem overflow="auto">
-            <Route
-              exact
-              path={[
-                `/trophy-dark/${name}/table`,
-                `/trophy-dark/${name}/rules`,
-              ]}
-            >
+            <Route exact path={`/heart/${name}/table`}>
               <Grid
                 h="full"
                 templateColumns={['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']}
+                templateRows={[
+                  'auto minmax(0, 1fr)',
+                  'auto minmax(0, 1fr)',
+                  'auto minmax(0, 1fr)',
+                  'minmax(0, 1fr)',
+                ]}
                 gap={6}
                 alignContent="start"
               >
-                <Route exact path={`/trophy-dark/${name}/table`}>
+                <Route exact path={`/heart/${name}/table`}>
                   <GridItem
                     overflow={['unset', 'unset', 'unset', 'auto']}
                     rowStart={[2, 2, 2, 1]}
@@ -147,25 +145,17 @@ const TrophyDarkGameArea = ({
                     />
                   </GridItem>
                 </Route>
-                <Route exact path={`/trophy-dark/${name}/rules`}>
-                  <GridItem
-                    overflow={['unset', 'unset', 'unset', 'auto']}
-                    rowStart={[2, 2, 2, 1]}
-                    pr={6}
-                  >
-                    <RulesSummary />
-                  </GridItem>
-                </Route>
-                <GridItem rowStart={[1, 1, 1, 1]} pr={[8, 8, 8, 0]}>
-                  <TrophyDice
-                    lightDice={lightDice}
-                    darkDice={darkDice}
-                    id={id}
-                  />
+                <GridItem
+                  rowStart={[1, 1, 1, 1]}
+                  pr={[8, 8, 8, 0]}
+                  pl={[0, 0, 3]}
+                >
+                  <HeartDiceForm id={id} username={username} />
+                  <HeartDiceDisplay {...dice} />
                 </GridItem>
               </Grid>
             </Route>
-            <Route exact path={`/trophy-dark/${name}/safety`}>
+            <Route exact path={`/heart/${name}/safety`}>
               <SafetyForm
                 id={safetyModuleId}
                 setActionInProgress={(val) => {
@@ -173,7 +163,7 @@ const TrophyDarkGameArea = ({
                 }}
               />
             </Route>
-            <Redirect path="*" to={`/trophy-dark/${name}/table`} />
+            <Redirect path="*" to={`/heart/${name}/table`} />
           </GridItem>
         </Grid>
       </GridItem>
@@ -184,4 +174,4 @@ const TrophyDarkGameArea = ({
   );
 };
 
-export default TrophyDarkGameArea;
+export default HeartGameArea;
