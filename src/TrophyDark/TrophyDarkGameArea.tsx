@@ -53,7 +53,15 @@ const TrophyDarkGameArea = ({
         <SettingsBar username={username} setUsername={setUsername} />
       </GridItem>
       <GridItem p={4}>
-        <Grid h="full" templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}>
+        <Grid
+          h="full"
+          templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
+          templateRows={[
+            'auto minmax(0, 1fr)',
+            'auto minmax(0, 1fr)',
+            'minmax(0, 1fr)',
+          ]}
+        >
           <GridItem pr={3} pb={3} h="full">
             <Flex direction={['row', 'row', 'column']} h="full">
               <Stack

@@ -11,12 +11,13 @@ import {
 } from '@chakra-ui/react';
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
-import TrophyDice from './TrophyDice';
+import HeartDiceForm from './HeartDiceForm';
 import { HeartCharacter } from '../APITypes';
 import CharacterList from './CharacterList';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
+import HeartDiceDisplay from './HeartDiceDisplay';
 
 interface HeartGameProps {
   name: string;
@@ -26,6 +27,13 @@ interface HeartGameProps {
   characterChoice: 'GM' | string;
   id: string;
   safetyModuleId: string;
+  dice: {
+    d4Dice: { username: string; result: number }[];
+    d6Dice: { username: string; result: number }[];
+    d8Dice: { username: string; result: number }[];
+    d10Dice: { username: string; result: number }[];
+    d12Dice: { username: string; result: number }[];
+  };
 }
 
 const HeartGameArea = ({
@@ -36,6 +44,7 @@ const HeartGameArea = ({
   characterChoice,
   id,
   safetyModuleId,
+  dice,
 }: HeartGameProps) => {
   const activeLink = useColorModeValue(
     { opacity: 1, backgroundColor: 'gray.100' },
@@ -51,7 +60,11 @@ const HeartGameArea = ({
         <Grid
           h="full"
           templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
-          templateRows="minmax(0, 1fr)"
+          templateRows={[
+            'auto minmax(0, 1fr)',
+            'auto minmax(0, 1fr)',
+            'minmax(0, 1fr)',
+          ]}
         >
           <GridItem pr={3} pb={3} h="full">
             <Flex direction={['row', 'row', 'column']} h="full">
@@ -98,6 +111,7 @@ const HeartGameArea = ({
                 isExternal
                 href="https://rowanrookanddecard.com/product/heart-the-city-beneath-rpg/"
                 justifySelf="end"
+                fontWeight="500"
               >
                 Get Heart
               </Link>
@@ -108,7 +122,12 @@ const HeartGameArea = ({
               <Grid
                 h="full"
                 templateColumns={['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']}
-                templateRows="minmax(0, 1fr)"
+                templateRows={[
+                  'auto minmax(0, 1fr)',
+                  'auto minmax(0, 1fr)',
+                  'auto minmax(0, 1fr)',
+                  'minmax(0, 1fr)',
+                ]}
                 gap={6}
                 alignContent="start"
               >
@@ -126,8 +145,13 @@ const HeartGameArea = ({
                     />
                   </GridItem>
                 </Route>
-                <GridItem rowStart={[1, 1, 1, 1]} pr={[8, 8, 8, 0]}>
-                  HEART DICE
+                <GridItem
+                  rowStart={[1, 1, 1, 1]}
+                  pr={[8, 8, 8, 0]}
+                  pl={[0, 0, 3]}
+                >
+                  <HeartDiceForm id={id} username={username} />
+                  <HeartDiceDisplay {...dice} />
                 </GridItem>
               </Grid>
             </Route>

@@ -273,6 +273,28 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           characterChoice={state.context.characterChoice}
           id={data?.id ?? ''}
           safetyModuleId={data?.safetyModule?.id ?? ''}
+          dice={{
+            d4Dice:
+              data?.d4Dice?.map(
+                (d) => JSON.parse(d) as { username: string; result: number }
+              ) ?? [],
+            d6Dice:
+              data?.d6Dice?.map(
+                (d) => JSON.parse(d) as { username: string; result: number }
+              ) ?? [],
+            d8Dice:
+              data?.d8Dice?.map(
+                (d) => JSON.parse(d) as { username: string; result: number }
+              ) ?? [],
+            d10Dice:
+              data?.d10Dice?.map(
+                (d) => JSON.parse(d) as { username: string; result: number }
+              ) ?? [],
+            d12Dice:
+              data?.d12Dice?.map(
+                (d) => JSON.parse(d) as { username: string; result: number }
+              ) ?? [],
+          }}
         />
       );
     default:

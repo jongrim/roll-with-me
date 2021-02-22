@@ -100,7 +100,7 @@ const NewRoom: React.FC = () => {
   const history = useHistory();
   const query = useQuery();
   const showNotFound = query.get('notFound') ?? false;
-  const options = Object.values(roomNames);
+  const options = ['Text', 'Visual', 'Trophy Dark'];
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   const [name, setName] = React.useState(query.get('name') ?? '');

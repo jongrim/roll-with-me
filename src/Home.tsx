@@ -216,24 +216,26 @@ function Home() {
               >
                 Trophy Dark
               </Link>
-              <Link
-                as={ReactRouterLink}
-                color="red.700"
-                w="full"
-                to="/new-room?type=Heart"
-                display="inline-flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid"
-                borderColor="red.700"
-                borderRadius="md"
-                py={2}
-                _hover={{
-                  backgroundColor: 'red.50',
-                }}
-              >
-                Heart
-              </Link>
+              {isLocalhost && (
+                <Link
+                  as={ReactRouterLink}
+                  color="red.700"
+                  w="full"
+                  to="/new-room?type=Heart"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid"
+                  borderColor="red.700"
+                  borderRadius="md"
+                  py={2}
+                  _hover={{
+                    backgroundColor: 'red.50',
+                  }}
+                >
+                  Heart
+                </Link>
+              )}
             </Stack>
           </GridItem>
         </Grid>

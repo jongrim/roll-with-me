@@ -11,6 +11,7 @@ import {
   Flex,
   Text,
   Spacer,
+  HStack,
 } from '@chakra-ui/react';
 import { HeartCharacter } from '../APITypes';
 import Character from './Character';
@@ -34,7 +35,7 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
       <Grid h="full" px={2}>
         {playerCharacter && (
           <GridItem mb={8}>
-            <Heading size="md" as="h2" fontFamily="Alegreya">
+            <Heading size="md" as="h2" fontFamily="Alegreya" mb={4}>
               Your Character
             </Heading>
             <MyCharacter character={playerCharacter} />
@@ -70,10 +71,19 @@ const CharacterListItem = ({ character }: CharacterListItemProps) => {
       <AccordionItem>
         <AccordionButton>
           <Flex flex="1" fontFamily="Alegreya">
-            <Text>
-              {trackedCharacter.characterName} –{' '}
-              {trackedCharacter.characterPronouns}
-            </Text>
+            <HStack spacing={3}>
+              <Text fontWeight="500">
+                {trackedCharacter.characterName} –{' '}
+                {trackedCharacter.characterPronouns}
+              </Text>
+              <Text opacity="0.8">
+                {[
+                  trackedCharacter.ancestry,
+                  trackedCharacter.class,
+                  trackedCharacter.calling,
+                ].join(', ')}
+              </Text>
+            </HStack>
             <Spacer />
             <Text mr={6}>{trackedCharacter.playerName}</Text>
           </Flex>

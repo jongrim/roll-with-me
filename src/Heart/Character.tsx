@@ -19,14 +19,12 @@ import {
   NumberDecrementStepper,
   Stack,
   Checkbox,
-  Switch,
   FormLabel,
   Textarea,
   Spacer,
   IconButton,
   Tag,
   TagLabel,
-  TagCloseButton,
 } from '@chakra-ui/react';
 import { RiCameraFill, RiPencilLine, RiDeleteBin4Line } from 'react-icons/ri';
 import { API } from 'aws-amplify';
@@ -166,21 +164,19 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             </GridItem>
             <GridItem>
               <Flex direction="column" alignItems="flex-end">
-                <Text fontSize="lg" fontWeight="600" letterSpacing="1.5px">
+                <Text fontSize="xl" fontWeight="600" letterSpacing="1.3px">
                   {character.characterName}
                 </Text>
-                <Text fontSize="sm" opacity="0.9">
-                  {character.characterPronouns}
+                <Text opacity="0.9">{character.characterPronouns}</Text>
+                <Text fontSize="lg" mt={4}>
+                  {character.ancestry} {character.class}
                 </Text>
-                <Text fontSize="md" mt={4}>
-                  {character.ancestry} – {character.class}
-                </Text>
-                <Text fontSize="sm">{character.calling}</Text>
+                <Text>{character.calling}</Text>
                 {canEdit && (
                   <Button
                     mt={4}
                     leftIcon={<RiPencilLine />}
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => setIsEditing(true)}
                     size="sm"
                   >
@@ -200,16 +196,14 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                 return (
                   <Box key={beat.description}>
                     <Text>{beat.description}</Text>
-                    <Text fontSize="sm" fontWeight="300" opacity="0.9">
-                      {beat.type}
-                    </Text>
+                    <Text opacity="0.8">{beat.type}</Text>
                   </Box>
                 );
               })}
             </Stack>
             <Center mt={6}>
               <Button
-                variant="outline"
+                variant="ghost"
                 width="md"
                 onClick={() => setBeatsFormOpen(true)}
               >
@@ -242,12 +236,19 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                 return (
                   <Box key={cur.id}>
                     <Flex>
-                      <Text>{cur.title}</Text>
+                      <Box>
+                        <Text fontSize="lg" fontWeight="500">
+                          {cur.title}
+                        </Text>
+                        <Text opacity="0.8">
+                          {cur.type} – {cur.resistance}
+                        </Text>
+                      </Box>
                       <Spacer />
                       <IconButton
                         size="sm"
-                        variant="outline"
-                        aria-label="delete fallout"
+                        variant="ghost"
+                        aria-label="delete this fallout"
                         icon={<RiDeleteBin4Line />}
                         onClick={async () => {
                           const filteredFallout = fallout
@@ -262,9 +263,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         }}
                       />
                     </Flex>
-                    <Text fontSize="lg">{cur.description}</Text>
-                    <Text fontSize="sm" fontWeight="300" opacity="0.9">
-                      {cur.type} – {cur.resistance}
+                    <Text fontSize="lg" mt={2}>
+                      {cur.description}
                     </Text>
                   </Box>
                 );
@@ -272,7 +272,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             </Stack>
             <Center mt={6}>
               <Button
-                variant="outline"
+                variant="ghost"
                 width="md"
                 onClick={() => setFalloutFormOpen(true)}
               >
@@ -478,15 +478,13 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                           <Text fontSize="lg" fontWeight="600">
                             {cur.name}
                           </Text>
-                          <Text fontWeight="300" opacity="0.9">
-                            {cur.type}
-                          </Text>
+                          <Text opacity="0.8">{cur.type}</Text>
                         </HStack>
                         <Spacer />
                         <IconButton
                           size="sm"
-                          variant="outline"
-                          aria-label="delete fallout"
+                          variant="ghost"
+                          aria-label="delete this ability"
                           icon={<RiDeleteBin4Line />}
                           onClick={async () => {
                             const filtered = abilities
@@ -508,7 +506,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               </Stack>
               <Center mt={6}>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   w="md"
                   onClick={() => {
                     setAbilityFormOpen(true);
@@ -544,7 +542,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                       <Flex>
                         <Box w="md">
                           <Text fontSize="lg">{cur.name}</Text>
-                          <Text fontSize="sm" fontWeight="300" opacity="0.9">
+                          <Text opacity="0.8">
                             {[
                               cur.type,
                               `${cur.quality} quality`,
@@ -568,8 +566,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         <Spacer />
                         <IconButton
                           size="sm"
-                          variant="outline"
-                          aria-label="delete fallout"
+                          variant="ghost"
+                          aria-label="delete this equipment"
                           icon={<RiDeleteBin4Line />}
                           onClick={async () => {
                             const filtered = equipment
@@ -590,7 +588,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               </Stack>
               <Center mt={6}>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   w="md"
                   onClick={() => setEquipmentFormOpen(true)}
                 >
@@ -624,7 +622,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                       <Flex>
                         <Box w="md">
                           <Text fontSize="lg">{cur.name}</Text>
-                          <Text fontSize="sm" fontWeight="300" opacity="0.9">
+                          <Text opacity="0.9">
                             {[cur.value, cur.domain].join(' – ')}
                           </Text>
                           <HStack spacing={3} mt={2}>
@@ -644,8 +642,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         <Spacer />
                         <IconButton
                           size="sm"
-                          variant="outline"
-                          aria-label="delete fallout"
+                          variant="ghost"
+                          aria-label="delete this resource"
                           icon={<RiDeleteBin4Line />}
                           onClick={async () => {
                             const filtered = resources
@@ -666,7 +664,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               </Stack>
               <Center mt={6}>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   w="md"
                   onClick={() => setResourceFormOpen(true)}
                 >
@@ -705,8 +703,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                       <Spacer />
                       <IconButton
                         size="sm"
-                        variant="outline"
-                        aria-label="delete fallout"
+                        variant="ghost"
+                        aria-label="delete this bond"
                         icon={<RiDeleteBin4Line />}
                         onClick={async () => {
                           const filtered = bonds
@@ -742,7 +740,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               </Stack>
               <Center mt={6}>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   w="md"
                   onClick={() => setBondFormOpen(true)}
                 >
