@@ -51,6 +51,7 @@ function Home() {
       templateRows="auto 1fr 1fr auto"
       bg="white"
       h="full"
+      overflow="auto"
     >
       <GridItem colSpan={6} bg="gray.800">
         <Container centerContent py={2}>
