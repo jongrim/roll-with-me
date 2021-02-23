@@ -178,7 +178,7 @@ const VDie: React.FC<{
                   <IconButton
                     {...(isSelected ? buttonHighlight : {})}
                     p={3}
-                    aria-label="die"
+                    aria-label={`${trackedDie.sides} sided die`}
                     onClick={() => {}}
                     variant="ghost"
                     color={trackedDie.color}
@@ -233,7 +233,7 @@ const VDie: React.FC<{
                     {...(isSelected ? buttonHighlight : {})}
                     role="button"
                     p={3}
-                    aria-label="die"
+                    aria-label={`${trackedDie.sides} sided die`}
                     onClick={() => {}}
                     variant="ghost"
                     color={trackedDie.color}
@@ -290,7 +290,7 @@ const VDie: React.FC<{
                     <IconButton
                       {...(isSelected ? buttonHighlight : {})}
                       p={3}
-                      aria-label="die"
+                      aria-label={`${trackedDie.sides} sided die`}
                       onClick={() => {}}
                       variant="ghost"
                       color={trackedDie.color}
@@ -355,7 +355,7 @@ const VDie: React.FC<{
                     <IconButton
                       {...(isSelected ? buttonHighlight : {})}
                       p={3}
-                      aria-label="die"
+                      aria-label={`${trackedDie.sides} sided die`}
                       onClick={() => {}}
                       variant="ghost"
                       color={trackedDie.color}
@@ -417,7 +417,7 @@ const VDie: React.FC<{
                     <IconButton
                       {...(isSelected ? buttonHighlight : {})}
                       p={3}
-                      aria-label="die"
+                      aria-label={`${trackedDie.sides} sided die`}
                       onClick={() => {}}
                       variant="ghost"
                       color={trackedDie.color}
@@ -483,7 +483,7 @@ const VDie: React.FC<{
                   <IconButton
                     {...(isSelected ? buttonHighlight : {})}
                     p={3}
-                    aria-label="die"
+                    aria-label={`${trackedDie.sides} sided die`}
                     onClick={() => {}}
                     variant="ghost"
                     color={trackedDie.color}
@@ -667,7 +667,7 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
                   {...(isSelected ? buttonHighlight : {})}
                   role="button"
                   p={3}
-                  aria-label="die"
+                  aria-label={`fudge die`}
                   onClick={() => {}}
                   variant="ghost"
                   color={trackedDie.color}

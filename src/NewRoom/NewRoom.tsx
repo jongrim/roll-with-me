@@ -59,7 +59,7 @@ const getDefaultValueFromType = (type: string) => {
       return roomNames.text;
     case 'visual':
       return roomNames.visual;
-    case 'trophydark':
+    case 'trophy-dark':
       return roomNames.trophyDark;
     case 'heart':
       return roomNames.heart;
@@ -202,6 +202,7 @@ const NewRoom: React.FC = () => {
               rightIcon={<RiArrowRightLine />}
               colorScheme="brand"
               variant="outline"
+              data-testid="go-to-new-room"
               onClick={() => {
                 handleNewRoomRequest(roomShortCode, name).then(() => {
                   history.push(`/${roomShortCode}/${name}`);

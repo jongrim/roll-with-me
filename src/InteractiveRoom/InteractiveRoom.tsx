@@ -234,7 +234,7 @@ function InteractiveRoom({ name }: Props) {
                     w={20}
                     icon={<Icon h={12} w={12} color={color} as={GiD4} />}
                     onClick={() => addDie({ sides: 4 })}
-                    aria-label="4 sided die"
+                    aria-label="New 4 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -255,7 +255,7 @@ function InteractiveRoom({ name }: Props) {
                       />
                     }
                     onClick={() => addDie({ sides: 6 })}
-                    aria-label="6 sided die"
+                    aria-label="New 6 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -276,7 +276,7 @@ function InteractiveRoom({ name }: Props) {
                       />
                     }
                     onClick={() => addDie({ sides: 8 })}
-                    aria-label="8 sided die"
+                    aria-label="New 8 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -290,7 +290,7 @@ function InteractiveRoom({ name }: Props) {
                     w={20}
                     icon={<Icon h={12} w={12} color={color} as={GiD10} />}
                     onClick={() => addDie({ sides: 10 })}
-                    aria-label="10 sided die"
+                    aria-label="New 10 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -304,7 +304,7 @@ function InteractiveRoom({ name }: Props) {
                     w={20}
                     icon={<Icon h={12} w={12} color={color} as={GiD12} />}
                     onClick={() => addDie({ sides: 12 })}
-                    aria-label="12 sided die"
+                    aria-label="New 12 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -325,7 +325,7 @@ function InteractiveRoom({ name }: Props) {
                       />
                     }
                     onClick={() => addDie({ sides: 20 })}
-                    aria-label="20 sided die"
+                    aria-label="New 20 sided die"
                   />
                 </Tooltip>
                 <Tooltip
@@ -341,7 +341,7 @@ function InteractiveRoom({ name }: Props) {
                       <Icon h={12} w={12} color={color} as={RiAddBoxLine} />
                     }
                     onClick={() => addDie({ sides: 6, type: 'fudge' })}
-                    aria-label="fudge die"
+                    aria-label="New fudge die"
                   />
                 </Tooltip>
                 <Input
@@ -400,7 +400,7 @@ function InteractiveRoom({ name }: Props) {
                     colorScheme="red"
                     icon={<BsClock />}
                     onClick={() => setClockModalIsOpen(true)}
-                    aria-label="new clock"
+                    aria-label="New clock"
                   />
                   <IconButton
                     variant="outline"
@@ -408,7 +408,7 @@ function InteractiveRoom({ name }: Props) {
                     colorScheme="orange"
                     icon={<Icon as={RiTBoxLine} w={6} h={6} />}
                     onClick={() => setLabelModalIsOpen(true)}
-                    aria-label="new label"
+                    aria-label="New label"
                   />
                   <IconButton
                     variant="outline"
@@ -416,7 +416,7 @@ function InteractiveRoom({ name }: Props) {
                     colorScheme="yellow"
                     icon={<Icon as={RiImage2Line} w={6} h={6} />}
                     onClick={() => setBackgroundImgModalIsOpen(true)}
-                    aria-label="set a background image"
+                    aria-label="New background image"
                   />
                 </HStack>
                 <Spacer />
