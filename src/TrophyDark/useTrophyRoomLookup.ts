@@ -43,7 +43,9 @@ const useTrophyRoomLookup = (name: string) => {
         })
         .catch((e) => {
           if (e.message === 'room not found') {
-            history.push(`/new-room?type=visual&name=${name}&notFound=true`);
+            history.push(
+              `/new-room?type=trophy-dark&name=${name}&notFound=true`
+            );
           }
         });
     }
