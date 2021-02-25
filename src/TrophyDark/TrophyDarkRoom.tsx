@@ -212,57 +212,60 @@ const TrophyDarkRoom = ({ name }: TDarkProps) => {
         throw new Error('no game module loaded');
       }
       return (
-        <Flex
-          direction="column"
-          fontFamily="Roboto Slab"
-          alignItems="center"
-          justifyContent="center"
-          minH="full"
-          py={12}
-        >
-          <Container maxW="4xl">
-            <CharacterForm
-              submitText="Begin Your Journey"
-              onDone={async (character) => {
-                try {
-                  // @ts-ignore
-                  const { data: createdCharacter } = await API.graphql({
-                    query: mutations.createTrophyDarkCharacter,
-                    variables: {
-                      input: {
-                        gameID: data?.id,
-                        playerName: username,
-                        ...character,
+        <Box h="full" overflow="auto">
+          <Flex
+            direction="column"
+            fontFamily="Roboto Slab"
+            alignItems="center"
+            justifyContent="center"
+            py={12}
+            minH="full"
+            overflow="auto"
+          >
+            <Container maxW="4xl">
+              <CharacterForm
+                submitText="Begin Your Journey"
+                onDone={async (character) => {
+                  try {
+                    // @ts-ignore
+                    const { data: createdCharacter } = await API.graphql({
+                      query: mutations.createTrophyDarkCharacter,
+                      variables: {
+                        input: {
+                          gameID: data?.id,
+                          playerName: username,
+                          ...character,
+                        },
                       },
-                    },
-                  });
-                  toast({
-                    status: 'success',
-                    title: 'Character created',
-                    isClosable: true,
-                    duration: 3000,
-                  });
-                  send('CREATE', {
-                    value: createdCharacter?.createTrophyDarkCharacter?.id,
-                  });
-                } catch (e) {
-                  let errorMessage = 'Check your values and try again';
-                  if (e.errors[0]?.message?.includes('valid URL')) {
-                    errorMessage =
-                      'The image URL you provided is not valid. Either remove it or provide a different one.';
+                    });
+                    toast({
+                      status: 'success',
+                      title: 'Character created',
+                      isClosable: true,
+                      duration: 3000,
+                    });
+                    send('CREATE', {
+                      value: createdCharacter?.createTrophyDarkCharacter?.id,
+                    });
+                  } catch (e) {
+                    let errorMessage = 'Check your values and try again';
+                    if (e.errors[0]?.message?.includes('valid URL')) {
+                      errorMessage =
+                        'The image URL you provided is not valid. Either remove it or provide a different one.';
+                    }
+                    toast({
+                      status: 'error',
+                      title: 'Unable to create character',
+                      description: errorMessage,
+                      isClosable: true,
+                      duration: 5000,
+                    });
                   }
-                  toast({
-                    status: 'error',
-                    title: 'Unable to create character',
-                    description: errorMessage,
-                    isClosable: true,
-                    duration: 5000,
-                  });
-                }
-              }}
-            />
-          </Container>
-        </Flex>
+                }}
+              />
+            </Container>
+          </Flex>
+        </Box>
       );
     case 'PLAYING':
       return (

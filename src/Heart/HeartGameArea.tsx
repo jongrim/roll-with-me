@@ -18,6 +18,7 @@ import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
 import HeartDiceDisplay from './HeartDiceDisplay';
+import HeartMap from './HeartMap';
 
 interface HeartGameProps {
   name: string;
@@ -84,6 +85,17 @@ const HeartGameArea = ({
                   to={`/heart/${name}/table`}
                 >
                   Table
+                </Link>
+                <Link
+                  rounded="md"
+                  px={3}
+                  py={2}
+                  opacity="0.8"
+                  _activeLink={activeLink}
+                  as={ReactRouterLink}
+                  to={`/heart/${name}/map`}
+                >
+                  Map
                 </Link>
                 <Link
                   rounded="md"
@@ -162,6 +174,9 @@ const HeartGameArea = ({
                   // TODO: show in progress indicator
                 }}
               />
+            </Route>
+            <Route exact path={`/heart/${name}/map`}>
+              <HeartMap />
             </Route>
             <Redirect path="*" to={`/heart/${name}/table`} />
           </GridItem>
