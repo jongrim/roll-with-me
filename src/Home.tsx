@@ -203,7 +203,7 @@ function Home() {
                 as={ReactRouterLink}
                 color="green.700"
                 w="full"
-                to="/new-room?type=TrophyDark"
+                to="/new-room?type=trophy-dark"
                 display="inline-flex"
                 alignItems="center"
                 justifyContent="center"

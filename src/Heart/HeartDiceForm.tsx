@@ -119,7 +119,7 @@ const HeartDiceForm = ({ id, username }: HeartDiceFormProps) => {
           { val: d10, set: setD10, label: 'D10' },
           { val: d12, set: setD12, label: 'D12' },
         ].map(({ val, set, label }) => (
-          <GridItem>
+          <GridItem key={label}>
             <FormControl id={`die-${label}`}>
               <FormLabel fontSize="xl">{label}</FormLabel>
               <NumberInput
