@@ -537,6 +537,13 @@ export const getHeartRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -597,6 +604,13 @@ export const listHeartRooms = /* GraphQL */ `
           id
           xCardActive
           linesAndVeils
+          createdAt
+          updatedAt
+        }
+        hexMapModule {
+          id
+          gridConfiguration
+          backgroundImages
           createdAt
           updatedAt
         }
@@ -670,6 +684,13 @@ export const heartRoomByName = /* GraphQL */ `
           id
           xCardActive
           linesAndVeils
+          createdAt
+          updatedAt
+        }
+        hexMapModule {
+          id
+          gridConfiguration
+          backgroundImages
           createdAt
           updatedAt
         }
@@ -1044,6 +1065,35 @@ export const getSafetyModule = /* GraphQL */ `
       id
       xCardActive
       linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listHexMapModules = /* GraphQL */ `
+  query ListHexMapModules(
+    $filter: ModelHexMapModuleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHexMapModules(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getHexMapModule = /* GraphQL */ `
+  query GetHexMapModule($id: ID!) {
+    getHexMapModule(id: $id) {
+      id
+      gridConfiguration
+      backgroundImages
       createdAt
       updatedAt
     }

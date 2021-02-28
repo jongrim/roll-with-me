@@ -830,6 +830,13 @@ export const onCreateHeartRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -888,6 +895,13 @@ export const onUpdateHeartRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -943,6 +957,13 @@ export const onDeleteHeartRoom = /* GraphQL */ `
         id
         xCardActive
         linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
         createdAt
         updatedAt
       }
@@ -1523,6 +1544,39 @@ export const onDeleteSafetyModule = /* GraphQL */ `
       id
       xCardActive
       linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateHexMapModule = /* GraphQL */ `
+  subscription OnCreateHexMapModule {
+    onCreateHexMapModule {
+      id
+      gridConfiguration
+      backgroundImages
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateHexMapModule = /* GraphQL */ `
+  subscription OnUpdateHexMapModule {
+    onUpdateHexMapModule {
+      id
+      gridConfiguration
+      backgroundImages
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteHexMapModule = /* GraphQL */ `
+  subscription OnDeleteHexMapModule {
+    onDeleteHexMapModule {
+      id
+      gridConfiguration
+      backgroundImages
       createdAt
       updatedAt
     }

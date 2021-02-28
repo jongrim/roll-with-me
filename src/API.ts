@@ -59,6 +59,50 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type TrophyDarkRoom = {
+  __typename: "TrophyDarkRoom",
+  id?: string,
+  name?: string,
+  lightDice?: Array< string >,
+  darkDice?: Array< string >,
+  characters?: ModelTrophyDarkCharacterConnection,
+  createdAt?: string,
+  updatedAt?: string,
+  safetyModule?: SafetyModule,
+};
+
+export type ModelTrophyDarkCharacterConnection = {
+  __typename: "ModelTrophyDarkCharacterConnection",
+  items?:  Array<TrophyDarkCharacter | null > | null,
+  nextToken?: string | null,
+};
+
+export type TrophyDarkCharacter = {
+  __typename: "TrophyDarkCharacter",
+  id?: string,
+  gameID?: string,
+  playerName?: string,
+  characterName?: string,
+  characterPronouns?: string,
+  characterImageUrl?: string | null,
+  ruin?: number,
+  occupation?: string,
+  background?: string,
+  drive?: string,
+  rituals?: Array< string >,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type SafetyModule = {
+  __typename: "SafetyModule",
+  id?: string,
+  xCardActive?: boolean,
+  linesAndVeils?: Array< string >,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
 export type UpdateTrophyDarkRoomInput = {
   id: string,
   name?: string | null,
@@ -164,6 +208,17 @@ export type ModelTextRoomConditionInput = {
   not?: ModelTextRoomConditionInput | null,
 };
 
+export type TextRoom = {
+  __typename: "TextRoom",
+  id?: string,
+  name?: string,
+  rolls?: Array< string > | null,
+  counters?: Array< string > | null,
+  createdAt?: string,
+  updatedAt?: string,
+  safetyModule?: SafetyModule,
+};
+
 export type UpdateTextRoomInput = {
   id: string,
   name?: string | null,
@@ -191,11 +246,84 @@ export type ModelInteractiveRoomConditionInput = {
   not?: ModelInteractiveRoomConditionInput | null,
 };
 
+export type InteractiveRoom = {
+  __typename: "InteractiveRoom",
+  id?: string,
+  name?: string,
+  backgroundImageUrl?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+  safetyModule?: SafetyModule,
+  labels?: ModelLabelConnection,
+  counters?: ModelCounterConnection,
+  dice?: ModelVisualDieConnection,
+};
+
+export type ModelLabelConnection = {
+  __typename: "ModelLabelConnection",
+  items?:  Array<Label | null > | null,
+  nextToken?: string | null,
+};
+
+export type Label = {
+  __typename: "Label",
+  id?: string,
+  roomId?: string,
+  contents?: string,
+  x?: number,
+  y?: number,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type ModelCounterConnection = {
+  __typename: "ModelCounterConnection",
+  items?:  Array<Counter | null > | null,
+  nextToken?: string | null,
+};
+
+export type Counter = {
+  __typename: "Counter",
+  id?: string,
+  roomId?: string,
+  title?: string,
+  value?: number,
+  max?: number | null,
+  x?: number,
+  y?: number,
+  type?: CounterType,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
 export enum CounterType {
   CLOCK = "CLOCK",
   OTHER = "OTHER",
 }
 
+
+export type ModelVisualDieConnection = {
+  __typename: "ModelVisualDieConnection",
+  items?:  Array<VisualDie | null > | null,
+  nextToken?: string | null,
+};
+
+export type VisualDie = {
+  __typename: "VisualDie",
+  id?: string,
+  roomId?: string,
+  x?: number,
+  y?: number,
+  createdBy?: string,
+  result?: number,
+  sides?: number,
+  color?: string,
+  version?: number,
+  type?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+  room?: InteractiveRoom,
+};
 
 export type UpdateInteractiveRoomInput = {
   id: string,
@@ -217,6 +345,7 @@ export type CreateHeartRoomInput = {
   d10Dice: Array< string >,
   d12Dice: Array< string >,
   heartRoomSafetyModuleId: string,
+  heartRoomHexMapModuleId: string,
 };
 
 export type ModelHeartRoomConditionInput = {
@@ -231,6 +360,71 @@ export type ModelHeartRoomConditionInput = {
   not?: ModelHeartRoomConditionInput | null,
 };
 
+export type HeartRoom = {
+  __typename: "HeartRoom",
+  id?: string,
+  name?: string,
+  d4Dice?: Array< string >,
+  d6Dice?: Array< string >,
+  d8Dice?: Array< string >,
+  d10Dice?: Array< string >,
+  d12Dice?: Array< string >,
+  createdAt?: string,
+  updatedAt?: string,
+  characters?: ModelHeartCharacterConnection,
+  safetyModule?: SafetyModule,
+  hexMapModule?: HexMapModule,
+};
+
+export type ModelHeartCharacterConnection = {
+  __typename: "ModelHeartCharacterConnection",
+  items?:  Array<HeartCharacter | null > | null,
+  nextToken?: string | null,
+};
+
+export type HeartCharacter = {
+  __typename: "HeartCharacter",
+  id?: string,
+  gameID?: string,
+  playerName?: string,
+  characterName?: string,
+  characterPronouns?: string,
+  characterImageUrl?: string | null,
+  ancestry?: string,
+  calling?: string,
+  class?: string,
+  beats?: Array< string >,
+  fallout?: Array< string >,
+  bloodProtection?: number,
+  bloodStress?: number,
+  echoProtection?: number,
+  echoStress?: number,
+  fortuneProtection?: number,
+  fortuneStress?: number,
+  mindProtection?: number,
+  mindStress?: number,
+  supplyProtection?: number,
+  supplyStress?: number,
+  skills?: Array< string >,
+  domains?: Array< string >,
+  knacks?: Array< string >,
+  abilities?: Array< string >,
+  equipment?: Array< string >,
+  resources?: Array< string >,
+  bonds?: Array< string >,
+  notes?: string,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export interface HexMapModule {
+  id: string,
+  gridConfiguration: string,
+  backgroundImages: Array< string >,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateHeartRoomInput = {
   id: string,
   name?: string | null,
@@ -240,6 +434,7 @@ export type UpdateHeartRoomInput = {
   d10Dice?: Array< string > | null,
   d12Dice?: Array< string > | null,
   heartRoomSafetyModuleId?: string | null,
+  heartRoomHexMapModuleId?: string | null,
 };
 
 export type DeleteHeartRoomInput = {
@@ -371,6 +566,20 @@ export type ModelUserRoomConditionInput = {
   not?: ModelUserRoomConditionInput | null,
 };
 
+export type UserRoom = {
+  __typename: "UserRoom",
+  id?: string,
+  trophyDarkRoom?: TrophyDarkRoom,
+  roomKey?: string,
+  description?: string | null,
+  createdOn?: string,
+  updatedOn?: string,
+  defaultRoomUsername?: string | null,
+  textRoom?: TextRoom,
+  interactiveRoom?: InteractiveRoom,
+  owner?: string | null,
+};
+
 export type UpdateUserRoomInput = {
   id: string,
   roomKey?: string | null,
@@ -401,6 +610,17 @@ export type ModelSavedRollConditionInput = {
   and?: Array< ModelSavedRollConditionInput | null > | null,
   or?: Array< ModelSavedRollConditionInput | null > | null,
   not?: ModelSavedRollConditionInput | null,
+};
+
+export type SavedRoll = {
+  __typename: "SavedRoll",
+  id?: string,
+  rollName?: string,
+  dice?: Array< string >,
+  modifier?: number,
+  createdAt?: string,
+  updatedAt?: string,
+  owner?: string | null,
 };
 
 export type UpdateSavedRollInput = {
@@ -443,6 +663,17 @@ export type ModelSafetyClassificationInput = {
   ne?: SafetyClassification | null,
 };
 
+export type SafetyItem = {
+  __typename: "SafetyItem",
+  id?: string,
+  label?: string,
+  classification?: SafetyClassification,
+  note?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+  owner?: string | null,
+};
+
 export type UpdateSafetyItemInput = {
   id: string,
   label?: string | null,
@@ -482,6 +713,30 @@ export type UpdateSafetyModuleInput = {
 };
 
 export type DeleteSafetyModuleInput = {
+  id?: string | null,
+};
+
+export type CreateHexMapModuleInput = {
+  id?: string | null,
+  gridConfiguration: string,
+  backgroundImages: Array< string >,
+};
+
+export type ModelHexMapModuleConditionInput = {
+  gridConfiguration?: ModelStringInput | null,
+  backgroundImages?: ModelStringInput | null,
+  and?: Array< ModelHexMapModuleConditionInput | null > | null,
+  or?: Array< ModelHexMapModuleConditionInput | null > | null,
+  not?: ModelHexMapModuleConditionInput | null,
+};
+
+export type UpdateHexMapModuleInput = {
+  id: string,
+  gridConfiguration?: string | null,
+  backgroundImages?: Array< string > | null,
+};
+
+export type DeleteHexMapModuleInput = {
   id?: string | null,
 };
 
@@ -626,6 +881,12 @@ export type ModelTrophyDarkRoomFilterInput = {
   not?: ModelTrophyDarkRoomFilterInput | null,
 };
 
+export type ModelTrophyDarkRoomConnection = {
+  __typename: "ModelTrophyDarkRoomConnection",
+  items?:  Array<TrophyDarkRoom | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelTrophyDarkCharacterFilterInput = {
   id?: ModelIDInput | null,
   gameID?: ModelIDInput | null,
@@ -659,6 +920,12 @@ export type ModelTextRoomFilterInput = {
   not?: ModelTextRoomFilterInput | null,
 };
 
+export type ModelTextRoomConnection = {
+  __typename: "ModelTextRoomConnection",
+  items?:  Array<TextRoom | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -666,6 +933,12 @@ export type ModelInteractiveRoomFilterInput = {
   and?: Array< ModelInteractiveRoomFilterInput | null > | null,
   or?: Array< ModelInteractiveRoomFilterInput | null > | null,
   not?: ModelInteractiveRoomFilterInput | null,
+};
+
+export type ModelInteractiveRoomConnection = {
+  __typename: "ModelInteractiveRoomConnection",
+  items?:  Array<InteractiveRoom | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelHeartRoomFilterInput = {
@@ -679,6 +952,12 @@ export type ModelHeartRoomFilterInput = {
   and?: Array< ModelHeartRoomFilterInput | null > | null,
   or?: Array< ModelHeartRoomFilterInput | null > | null,
   not?: ModelHeartRoomFilterInput | null,
+};
+
+export type ModelHeartRoomConnection = {
+  __typename: "ModelHeartRoomConnection",
+  items?:  Array<HeartRoom | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelHeartCharacterFilterInput = {
@@ -728,6 +1007,12 @@ export type ModelUserRoomFilterInput = {
   not?: ModelUserRoomFilterInput | null,
 };
 
+export type ModelUserRoomConnection = {
+  __typename: "ModelUserRoomConnection",
+  items?:  Array<UserRoom | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelSavedRollFilterInput = {
   id?: ModelIDInput | null,
   rollName?: ModelStringInput | null,
@@ -736,6 +1021,12 @@ export type ModelSavedRollFilterInput = {
   and?: Array< ModelSavedRollFilterInput | null > | null,
   or?: Array< ModelSavedRollFilterInput | null > | null,
   not?: ModelSavedRollFilterInput | null,
+};
+
+export type ModelSavedRollConnection = {
+  __typename: "ModelSavedRollConnection",
+  items?:  Array<SavedRoll | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelSafetyItemFilterInput = {
@@ -748,6 +1039,12 @@ export type ModelSafetyItemFilterInput = {
   not?: ModelSafetyItemFilterInput | null,
 };
 
+export type ModelSafetyItemConnection = {
+  __typename: "ModelSafetyItemConnection",
+  items?:  Array<SafetyItem | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelSafetyModuleFilterInput = {
   id?: ModelIDInput | null,
   xCardActive?: ModelBooleanInput | null,
@@ -755,6 +1052,27 @@ export type ModelSafetyModuleFilterInput = {
   and?: Array< ModelSafetyModuleFilterInput | null > | null,
   or?: Array< ModelSafetyModuleFilterInput | null > | null,
   not?: ModelSafetyModuleFilterInput | null,
+};
+
+export type ModelSafetyModuleConnection = {
+  __typename: "ModelSafetyModuleConnection",
+  items?:  Array<SafetyModule | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelHexMapModuleFilterInput = {
+  id?: ModelIDInput | null,
+  gridConfiguration?: ModelStringInput | null,
+  backgroundImages?: ModelStringInput | null,
+  and?: Array< ModelHexMapModuleFilterInput | null > | null,
+  or?: Array< ModelHexMapModuleFilterInput | null > | null,
+  not?: ModelHexMapModuleFilterInput | null,
+};
+
+export type ModelHexMapModuleConnection = {
+  __typename: "ModelHexMapModuleConnection",
+  items?:  Array<HexMapModule | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelLabelFilterInput = {
@@ -799,27 +1117,27 @@ export type ModelVisualDieFilterInput = {
 };
 
 export type CreateTrophyDarkRoomMutationVariables = {
-  input: CreateTrophyDarkRoomInput,
+  input?: CreateTrophyDarkRoomInput,
   condition?: ModelTrophyDarkRoomConditionInput | null,
 };
 
 export type CreateTrophyDarkRoomMutation = {
-  createTrophyDarkRoom:  {
+  createTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -828,7 +1146,7 @@ export type CreateTrophyDarkRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -844,27 +1162,27 @@ export type CreateTrophyDarkRoomMutation = {
 };
 
 export type UpdateTrophyDarkRoomMutationVariables = {
-  input: UpdateTrophyDarkRoomInput,
+  input?: UpdateTrophyDarkRoomInput,
   condition?: ModelTrophyDarkRoomConditionInput | null,
 };
 
 export type UpdateTrophyDarkRoomMutation = {
-  updateTrophyDarkRoom:  {
+  updateTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -873,7 +1191,7 @@ export type UpdateTrophyDarkRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -889,27 +1207,27 @@ export type UpdateTrophyDarkRoomMutation = {
 };
 
 export type DeleteTrophyDarkRoomMutationVariables = {
-  input: DeleteTrophyDarkRoomInput,
+  input?: DeleteTrophyDarkRoomInput,
   condition?: ModelTrophyDarkRoomConditionInput | null,
 };
 
 export type DeleteTrophyDarkRoomMutation = {
-  deleteTrophyDarkRoom:  {
+  deleteTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -918,7 +1236,7 @@ export type DeleteTrophyDarkRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -934,19 +1252,19 @@ export type DeleteTrophyDarkRoomMutation = {
 };
 
 export type CreateTrophyDarkCharacterMutationVariables = {
-  input: CreateTrophyDarkCharacterInput,
+  input?: CreateTrophyDarkCharacterInput,
   condition?: ModelTrophyDarkCharacterConditionInput | null,
 };
 
 export type CreateTrophyDarkCharacterMutation = {
-  createTrophyDarkCharacter:  {
+  createTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -958,19 +1276,19 @@ export type CreateTrophyDarkCharacterMutation = {
 };
 
 export type UpdateTrophyDarkCharacterMutationVariables = {
-  input: UpdateTrophyDarkCharacterInput,
+  input?: UpdateTrophyDarkCharacterInput,
   condition?: ModelTrophyDarkCharacterConditionInput | null,
 };
 
 export type UpdateTrophyDarkCharacterMutation = {
-  updateTrophyDarkCharacter:  {
+  updateTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -982,19 +1300,19 @@ export type UpdateTrophyDarkCharacterMutation = {
 };
 
 export type DeleteTrophyDarkCharacterMutationVariables = {
-  input: DeleteTrophyDarkCharacterInput,
+  input?: DeleteTrophyDarkCharacterInput,
   condition?: ModelTrophyDarkCharacterConditionInput | null,
 };
 
 export type DeleteTrophyDarkCharacterMutation = {
-  deleteTrophyDarkCharacter:  {
+  deleteTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -1006,17 +1324,17 @@ export type DeleteTrophyDarkCharacterMutation = {
 };
 
 export type CreateTextRoomMutationVariables = {
-  input: CreateTextRoomInput,
+  input?: CreateTextRoomInput,
   condition?: ModelTextRoomConditionInput | null,
 };
 
 export type CreateTextRoomMutation = {
-  createTextRoom:  {
+  createTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1031,17 +1349,17 @@ export type CreateTextRoomMutation = {
 };
 
 export type UpdateTextRoomMutationVariables = {
-  input: UpdateTextRoomInput,
+  input?: UpdateTextRoomInput,
   condition?: ModelTextRoomConditionInput | null,
 };
 
 export type UpdateTextRoomMutation = {
-  updateTextRoom:  {
+  updateTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1056,17 +1374,17 @@ export type UpdateTextRoomMutation = {
 };
 
 export type DeleteTextRoomMutationVariables = {
-  input: DeleteTextRoomInput,
+  input?: DeleteTextRoomInput,
   condition?: ModelTextRoomConditionInput | null,
 };
 
 export type DeleteTextRoomMutation = {
-  deleteTextRoom:  {
+  deleteTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1081,16 +1399,16 @@ export type DeleteTextRoomMutation = {
 };
 
 export type CreateInteractiveRoomMutationVariables = {
-  input: CreateInteractiveRoomInput,
+  input?: CreateInteractiveRoomInput,
   condition?: ModelInteractiveRoomConditionInput | null,
 };
 
 export type CreateInteractiveRoomMutation = {
-  createInteractiveRoom:  {
+  createInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1101,9 +1419,9 @@ export type CreateInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -1113,28 +1431,28 @@ export type CreateInteractiveRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -1145,34 +1463,34 @@ export type CreateInteractiveRoomMutation = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type UpdateInteractiveRoomMutationVariables = {
-  input: UpdateInteractiveRoomInput,
+  input?: UpdateInteractiveRoomInput,
   condition?: ModelInteractiveRoomConditionInput | null,
 };
 
 export type UpdateInteractiveRoomMutation = {
-  updateInteractiveRoom:  {
+  updateInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1183,9 +1501,9 @@ export type UpdateInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -1195,28 +1513,28 @@ export type UpdateInteractiveRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -1227,34 +1545,34 @@ export type UpdateInteractiveRoomMutation = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type DeleteInteractiveRoomMutationVariables = {
-  input: DeleteInteractiveRoomInput,
+  input?: DeleteInteractiveRoomInput,
   condition?: ModelInteractiveRoomConditionInput | null,
 };
 
 export type DeleteInteractiveRoomMutation = {
-  deleteInteractiveRoom:  {
+  deleteInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1265,9 +1583,9 @@ export type DeleteInteractiveRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -1277,28 +1595,28 @@ export type DeleteInteractiveRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -1309,30 +1627,30 @@ export type DeleteInteractiveRoomMutation = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type CreateHeartRoomMutationVariables = {
-  input: CreateHeartRoomInput,
+  input?: CreateHeartRoomInput,
   condition?: ModelHeartRoomConditionInput | null,
 };
 
 export type CreateHeartRoomMutation = {
-  createHeartRoom:  {
+  createHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -1343,16 +1661,16 @@ export type CreateHeartRoomMutation = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -1379,13 +1697,21 @@ export type CreateHeartRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
       linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
       createdAt: string,
       updatedAt: string,
     },
@@ -1393,12 +1719,12 @@ export type CreateHeartRoomMutation = {
 };
 
 export type UpdateHeartRoomMutationVariables = {
-  input: UpdateHeartRoomInput,
+  input?: UpdateHeartRoomInput,
   condition?: ModelHeartRoomConditionInput | null,
 };
 
 export type UpdateHeartRoomMutation = {
-  updateHeartRoom:  {
+  updateHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -1409,16 +1735,16 @@ export type UpdateHeartRoomMutation = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -1445,13 +1771,21 @@ export type UpdateHeartRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
       linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
       createdAt: string,
       updatedAt: string,
     },
@@ -1459,12 +1793,12 @@ export type UpdateHeartRoomMutation = {
 };
 
 export type DeleteHeartRoomMutationVariables = {
-  input: DeleteHeartRoomInput,
+  input?: DeleteHeartRoomInput,
   condition?: ModelHeartRoomConditionInput | null,
 };
 
 export type DeleteHeartRoomMutation = {
-  deleteHeartRoom:  {
+  deleteHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -1475,16 +1809,16 @@ export type DeleteHeartRoomMutation = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -1511,7 +1845,7 @@ export type DeleteHeartRoomMutation = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
@@ -1521,23 +1855,31 @@ export type DeleteHeartRoomMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
 export type CreateHeartCharacterMutationVariables = {
-  input: CreateHeartCharacterInput,
+  input?: CreateHeartCharacterInput,
   condition?: ModelHeartCharacterConditionInput | null,
 };
 
 export type CreateHeartCharacterMutation = {
-  createHeartCharacter:  {
+  createHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -1567,19 +1909,19 @@ export type CreateHeartCharacterMutation = {
 };
 
 export type UpdateHeartCharacterMutationVariables = {
-  input: UpdateHeartCharacterInput,
+  input?: UpdateHeartCharacterInput,
   condition?: ModelHeartCharacterConditionInput | null,
 };
 
 export type UpdateHeartCharacterMutation = {
-  updateHeartCharacter:  {
+  updateHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -1609,19 +1951,19 @@ export type UpdateHeartCharacterMutation = {
 };
 
 export type DeleteHeartCharacterMutationVariables = {
-  input: DeleteHeartCharacterInput,
+  input?: DeleteHeartCharacterInput,
   condition?: ModelHeartCharacterConditionInput | null,
 };
 
 export type DeleteHeartCharacterMutation = {
-  deleteHeartCharacter:  {
+  deleteHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -1651,30 +1993,30 @@ export type DeleteHeartCharacterMutation = {
 };
 
 export type CreateUserRoomMutationVariables = {
-  input: CreateUserRoomInput,
+  input?: CreateUserRoomInput,
   condition?: ModelUserRoomConditionInput | null,
 };
 
 export type CreateUserRoomMutation = {
-  createUserRoom:  {
+  createUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -1683,7 +2025,7 @@ export type CreateUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1697,16 +2039,16 @@ export type CreateUserRoomMutation = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1718,11 +2060,11 @@ export type CreateUserRoomMutation = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1733,9 +2075,9 @@ export type CreateUserRoomMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -1745,28 +2087,28 @@ export type CreateUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -1777,42 +2119,42 @@ export type CreateUserRoomMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type UpdateUserRoomMutationVariables = {
-  input: UpdateUserRoomInput,
+  input?: UpdateUserRoomInput,
   condition?: ModelUserRoomConditionInput | null,
 };
 
 export type UpdateUserRoomMutation = {
-  updateUserRoom:  {
+  updateUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -1821,7 +2163,7 @@ export type UpdateUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1835,16 +2177,16 @@ export type UpdateUserRoomMutation = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1856,11 +2198,11 @@ export type UpdateUserRoomMutation = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1871,9 +2213,9 @@ export type UpdateUserRoomMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -1883,28 +2225,28 @@ export type UpdateUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -1915,42 +2257,42 @@ export type UpdateUserRoomMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type DeleteUserRoomMutationVariables = {
-  input: DeleteUserRoomInput,
+  input?: DeleteUserRoomInput,
   condition?: ModelUserRoomConditionInput | null,
 };
 
 export type DeleteUserRoomMutation = {
-  deleteUserRoom:  {
+  deleteUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -1959,7 +2301,7 @@ export type DeleteUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1973,16 +2315,16 @@ export type DeleteUserRoomMutation = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -1994,11 +2336,11 @@ export type DeleteUserRoomMutation = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2009,9 +2351,9 @@ export type DeleteUserRoomMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -2021,28 +2363,28 @@ export type DeleteUserRoomMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -2053,24 +2395,24 @@ export type DeleteUserRoomMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type CreateSavedRollMutationVariables = {
-  input: CreateSavedRollInput,
+  input?: CreateSavedRollInput,
   condition?: ModelSavedRollConditionInput | null,
 };
 
 export type CreateSavedRollMutation = {
-  createSavedRoll:  {
+  createSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -2078,17 +2420,17 @@ export type CreateSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type UpdateSavedRollMutationVariables = {
-  input: UpdateSavedRollInput,
+  input?: UpdateSavedRollInput,
   condition?: ModelSavedRollConditionInput | null,
 };
 
 export type UpdateSavedRollMutation = {
-  updateSavedRoll:  {
+  updateSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -2096,17 +2438,17 @@ export type UpdateSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type DeleteSavedRollMutationVariables = {
-  input: DeleteSavedRollInput,
+  input?: DeleteSavedRollInput,
   condition?: ModelSavedRollConditionInput | null,
 };
 
 export type DeleteSavedRollMutation = {
-  deleteSavedRoll:  {
+  deleteSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -2114,71 +2456,71 @@ export type DeleteSavedRollMutation = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type CreateSafetyItemMutationVariables = {
-  input: CreateSafetyItemInput,
+  input?: CreateSafetyItemInput,
   condition?: ModelSafetyItemConditionInput | null,
 };
 
 export type CreateSafetyItemMutation = {
-  createSafetyItem:  {
+  createSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type UpdateSafetyItemMutationVariables = {
-  input: UpdateSafetyItemInput,
+  input?: UpdateSafetyItemInput,
   condition?: ModelSafetyItemConditionInput | null,
 };
 
 export type UpdateSafetyItemMutation = {
-  updateSafetyItem:  {
+  updateSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type DeleteSafetyItemMutationVariables = {
-  input: DeleteSafetyItemInput,
+  input?: DeleteSafetyItemInput,
   condition?: ModelSafetyItemConditionInput | null,
 };
 
 export type DeleteSafetyItemMutation = {
-  deleteSafetyItem:  {
+  deleteSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type CreateSafetyModuleMutationVariables = {
-  input: CreateSafetyModuleInput,
+  input?: CreateSafetyModuleInput,
   condition?: ModelSafetyModuleConditionInput | null,
 };
 
 export type CreateSafetyModuleMutation = {
-  createSafetyModule:  {
+  createSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -2189,12 +2531,12 @@ export type CreateSafetyModuleMutation = {
 };
 
 export type UpdateSafetyModuleMutationVariables = {
-  input: UpdateSafetyModuleInput,
+  input?: UpdateSafetyModuleInput,
   condition?: ModelSafetyModuleConditionInput | null,
 };
 
 export type UpdateSafetyModuleMutation = {
-  updateSafetyModule:  {
+  updateSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -2205,12 +2547,12 @@ export type UpdateSafetyModuleMutation = {
 };
 
 export type DeleteSafetyModuleMutationVariables = {
-  input: DeleteSafetyModuleInput,
+  input?: DeleteSafetyModuleInput,
   condition?: ModelSafetyModuleConditionInput | null,
 };
 
 export type DeleteSafetyModuleMutation = {
-  deleteSafetyModule:  {
+  deleteSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -2220,13 +2562,61 @@ export type DeleteSafetyModuleMutation = {
   } | null,
 };
 
+export type CreateHexMapModuleMutationVariables = {
+  input?: CreateHexMapModuleInput,
+  condition?: ModelHexMapModuleConditionInput | null,
+};
+
+export type CreateHexMapModuleMutation = {
+  createHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateHexMapModuleMutationVariables = {
+  input?: UpdateHexMapModuleInput,
+  condition?: ModelHexMapModuleConditionInput | null,
+};
+
+export type UpdateHexMapModuleMutation = {
+  updateHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteHexMapModuleMutationVariables = {
+  input?: DeleteHexMapModuleInput,
+  condition?: ModelHexMapModuleConditionInput | null,
+};
+
+export type DeleteHexMapModuleMutation = {
+  deleteHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateLabelMutationVariables = {
-  input: CreateLabelInput,
+  input?: CreateLabelInput,
   condition?: ModelLabelConditionInput | null,
 };
 
 export type CreateLabelMutation = {
-  createLabel:  {
+  createLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -2239,12 +2629,12 @@ export type CreateLabelMutation = {
 };
 
 export type UpdateLabelMutationVariables = {
-  input: UpdateLabelInput,
+  input?: UpdateLabelInput,
   condition?: ModelLabelConditionInput | null,
 };
 
 export type UpdateLabelMutation = {
-  updateLabel:  {
+  updateLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -2257,12 +2647,12 @@ export type UpdateLabelMutation = {
 };
 
 export type DeleteLabelMutationVariables = {
-  input: DeleteLabelInput,
+  input?: DeleteLabelInput,
   condition?: ModelLabelConditionInput | null,
 };
 
 export type DeleteLabelMutation = {
-  deleteLabel:  {
+  deleteLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -2275,18 +2665,18 @@ export type DeleteLabelMutation = {
 };
 
 export type CreateCounterMutationVariables = {
-  input: CreateCounterInput,
+  input?: CreateCounterInput,
   condition?: ModelCounterConditionInput | null,
 };
 
 export type CreateCounterMutation = {
-  createCounter:  {
+  createCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -2296,18 +2686,18 @@ export type CreateCounterMutation = {
 };
 
 export type UpdateCounterMutationVariables = {
-  input: UpdateCounterInput,
+  input?: UpdateCounterInput,
   condition?: ModelCounterConditionInput | null,
 };
 
 export type UpdateCounterMutation = {
-  updateCounter:  {
+  updateCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -2317,18 +2707,18 @@ export type UpdateCounterMutation = {
 };
 
 export type DeleteCounterMutationVariables = {
-  input: DeleteCounterInput,
+  input?: DeleteCounterInput,
   condition?: ModelCounterConditionInput | null,
 };
 
 export type DeleteCounterMutation = {
-  deleteCounter:  {
+  deleteCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -2338,12 +2728,12 @@ export type DeleteCounterMutation = {
 };
 
 export type CreateVisualDieMutationVariables = {
-  input: CreateVisualDieInput,
+  input?: CreateVisualDieInput,
   condition?: ModelVisualDieConditionInput | null,
 };
 
 export type CreateVisualDieMutation = {
-  createVisualDie:  {
+  createVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -2354,14 +2744,14 @@ export type CreateVisualDieMutation = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2372,9 +2762,9 @@ export type CreateVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -2384,28 +2774,28 @@ export type CreateVisualDieMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -2416,23 +2806,23 @@ export type CreateVisualDieMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type UpdateVisualDieMutationVariables = {
-  input: UpdateVisualDieInput,
+  input?: UpdateVisualDieInput,
   condition?: ModelVisualDieConditionInput | null,
 };
 
 export type UpdateVisualDieMutation = {
-  updateVisualDie:  {
+  updateVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -2443,14 +2833,14 @@ export type UpdateVisualDieMutation = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2461,9 +2851,9 @@ export type UpdateVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -2473,28 +2863,28 @@ export type UpdateVisualDieMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -2505,23 +2895,23 @@ export type UpdateVisualDieMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type DeleteVisualDieMutationVariables = {
-  input: DeleteVisualDieInput,
+  input?: DeleteVisualDieInput,
   condition?: ModelVisualDieConditionInput | null,
 };
 
 export type DeleteVisualDieMutation = {
-  deleteVisualDie:  {
+  deleteVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -2532,14 +2922,14 @@ export type DeleteVisualDieMutation = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2550,9 +2940,9 @@ export type DeleteVisualDieMutation = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -2562,28 +2952,28 @@ export type DeleteVisualDieMutation = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -2594,37 +2984,37 @@ export type DeleteVisualDieMutation = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type GetTrophyDarkRoomQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetTrophyDarkRoomQuery = {
-  getTrophyDarkRoom:  {
+  getTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -2633,7 +3023,7 @@ export type GetTrophyDarkRoomQuery = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2655,24 +3045,24 @@ export type ListTrophyDarkRoomsQueryVariables = {
 };
 
 export type ListTrophyDarkRoomsQuery = {
-  listTrophyDarkRooms:  {
+  listTrophyDarkRooms?:  {
     __typename: "ModelTrophyDarkRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -2681,7 +3071,7 @@ export type ListTrophyDarkRoomsQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2694,23 +3084,23 @@ export type ListTrophyDarkRoomsQuery = {
         updatedAt: string,
       },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetTrophyDarkCharacterQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetTrophyDarkCharacterQuery = {
-  getTrophyDarkCharacter:  {
+  getTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -2728,16 +3118,16 @@ export type ListTrophyDarkCharactersQueryVariables = {
 };
 
 export type ListTrophyDarkCharactersQuery = {
-  listTrophyDarkCharacters:  {
+  listTrophyDarkCharacters?:  {
     __typename: "ModelTrophyDarkCharacterConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "TrophyDarkCharacter",
       id: string,
       gameID: string,
       playerName: string,
       characterName: string,
       characterPronouns: string,
-      characterImageUrl: string | null,
+      characterImageUrl?: string | null,
       ruin: number,
       occupation: string,
       background: string,
@@ -2746,7 +3136,7 @@ export type ListTrophyDarkCharactersQuery = {
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -2759,24 +3149,24 @@ export type TrophyDarkRoomByNameQueryVariables = {
 };
 
 export type TrophyDarkRoomByNameQuery = {
-  trophyDarkRoomByName:  {
+  trophyDarkRoomByName?:  {
     __typename: "ModelTrophyDarkRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -2785,7 +3175,7 @@ export type TrophyDarkRoomByNameQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2798,7 +3188,7 @@ export type TrophyDarkRoomByNameQuery = {
         updatedAt: string,
       },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -2809,14 +3199,14 @@ export type ListTextRoomsQueryVariables = {
 };
 
 export type ListTextRoomsQuery = {
-  listTextRooms:  {
+  listTextRooms?:  {
     __typename: "ModelTextRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2828,21 +3218,21 @@ export type ListTextRoomsQuery = {
         updatedAt: string,
       },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetTextRoomQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetTextRoomQuery = {
-  getTextRoom:  {
+  getTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -2865,14 +3255,14 @@ export type TextRoomByNameQueryVariables = {
 };
 
 export type TextRoomByNameQuery = {
-  textRoomByName:  {
+  textRoomByName?:  {
     __typename: "ModelTextRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2884,7 +3274,7 @@ export type TextRoomByNameQuery = {
         updatedAt: string,
       },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -2895,13 +3285,13 @@ export type ListInteractiveRoomsQueryVariables = {
 };
 
 export type ListInteractiveRoomsQuery = {
-  listInteractiveRooms:  {
+  listInteractiveRooms?:  {
     __typename: "ModelInteractiveRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2912,9 +3302,9 @@ export type ListInteractiveRoomsQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -2924,28 +3314,28 @@ export type ListInteractiveRoomsQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -2956,27 +3346,27 @@ export type ListInteractiveRoomsQuery = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetInteractiveRoomQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetInteractiveRoomQuery = {
-  getInteractiveRoom:  {
+  getInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -2987,9 +3377,9 @@ export type GetInteractiveRoomQuery = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -2999,28 +3389,28 @@ export type GetInteractiveRoomQuery = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -3031,19 +3421,19 @@ export type GetInteractiveRoomQuery = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
@@ -3057,13 +3447,13 @@ export type InteractiveRoomByNameQueryVariables = {
 };
 
 export type InteractiveRoomByNameQuery = {
-  interactiveRoomByName:  {
+  interactiveRoomByName?:  {
     __typename: "ModelInteractiveRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3074,9 +3464,9 @@ export type InteractiveRoomByNameQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -3086,28 +3476,28 @@ export type InteractiveRoomByNameQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -3118,23 +3508,23 @@ export type InteractiveRoomByNameQuery = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetHeartRoomQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetHeartRoomQuery = {
-  getHeartRoom:  {
+  getHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -3145,16 +3535,16 @@ export type GetHeartRoomQuery = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -3181,13 +3571,21 @@ export type GetHeartRoomQuery = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
       linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
       createdAt: string,
       updatedAt: string,
     },
@@ -3201,9 +3599,9 @@ export type ListHeartRoomsQueryVariables = {
 };
 
 export type ListHeartRoomsQuery = {
-  listHeartRooms:  {
+  listHeartRooms?:  {
     __typename: "ModelHeartRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "HeartRoom",
       id: string,
       name: string,
@@ -3214,16 +3612,16 @@ export type ListHeartRoomsQuery = {
       d12Dice: Array< string >,
       createdAt: string,
       updatedAt: string,
-      characters:  {
+      characters?:  {
         __typename: "ModelHeartCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "HeartCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ancestry: string,
           calling: string,
           class: string,
@@ -3250,7 +3648,7 @@ export type ListHeartRoomsQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       safetyModule:  {
         __typename: "SafetyModule",
@@ -3260,8 +3658,16 @@ export type ListHeartRoomsQuery = {
         createdAt: string,
         updatedAt: string,
       },
+      hexMapModule:  {
+        __typename: "HexMapModule",
+        id: string,
+        gridConfiguration: string,
+        backgroundImages: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -3274,9 +3680,9 @@ export type HeartRoomByNameQueryVariables = {
 };
 
 export type HeartRoomByNameQuery = {
-  heartRoomByName:  {
+  heartRoomByName?:  {
     __typename: "ModelHeartRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "HeartRoom",
       id: string,
       name: string,
@@ -3287,16 +3693,16 @@ export type HeartRoomByNameQuery = {
       d12Dice: Array< string >,
       createdAt: string,
       updatedAt: string,
-      characters:  {
+      characters?:  {
         __typename: "ModelHeartCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "HeartCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ancestry: string,
           calling: string,
           class: string,
@@ -3323,7 +3729,7 @@ export type HeartRoomByNameQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       safetyModule:  {
         __typename: "SafetyModule",
@@ -3333,24 +3739,32 @@ export type HeartRoomByNameQuery = {
         createdAt: string,
         updatedAt: string,
       },
+      hexMapModule:  {
+        __typename: "HexMapModule",
+        id: string,
+        gridConfiguration: string,
+        backgroundImages: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      },
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetHeartCharacterQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetHeartCharacterQuery = {
-  getHeartCharacter:  {
+  getHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -3386,16 +3800,16 @@ export type ListHeartCharactersQueryVariables = {
 };
 
 export type ListHeartCharactersQuery = {
-  listHeartCharacters:  {
+  listHeartCharacters?:  {
     __typename: "ModelHeartCharacterConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "HeartCharacter",
       id: string,
       gameID: string,
       playerName: string,
       characterName: string,
       characterPronouns: string,
-      characterImageUrl: string | null,
+      characterImageUrl?: string | null,
       ancestry: string,
       calling: string,
       class: string,
@@ -3422,34 +3836,34 @@ export type ListHeartCharactersQuery = {
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetUserRoomQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetUserRoomQuery = {
-  getUserRoom:  {
+  getUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -3458,7 +3872,7 @@ export type GetUserRoomQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -3472,16 +3886,16 @@ export type GetUserRoomQuery = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3493,11 +3907,11 @@ export type GetUserRoomQuery = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3508,9 +3922,9 @@ export type GetUserRoomQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -3520,28 +3934,28 @@ export type GetUserRoomQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -3552,14 +3966,14 @@ export type GetUserRoomQuery = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -3570,20 +3984,20 @@ export type ListUserRoomsQueryVariables = {
 };
 
 export type ListUserRoomsQuery = {
-  listUserRooms:  {
+  listUserRooms?:  {
     __typename: "ModelUserRoomConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "UserRoom",
       id: string,
-      trophyDarkRoom:  {
+      trophyDarkRoom?:  {
         __typename: "TrophyDarkRoom",
         id: string,
         name: string,
         lightDice: Array< string >,
         darkDice: Array< string >,
-        characters:  {
+        characters?:  {
           __typename: "ModelTrophyDarkCharacterConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -3597,16 +4011,16 @@ export type ListUserRoomsQuery = {
         },
       } | null,
       roomKey: string,
-      description: string | null,
+      description?: string | null,
       createdOn: string,
       updatedOn: string,
-      defaultRoomUsername: string | null,
-      textRoom:  {
+      defaultRoomUsername?: string | null,
+      textRoom?:  {
         __typename: "TextRoom",
         id: string,
         name: string,
-        rolls: Array< string > | null,
-        counters: Array< string > | null,
+        rolls?: Array< string > | null,
+        counters?: Array< string > | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -3618,11 +4032,11 @@ export type ListUserRoomsQuery = {
           updatedAt: string,
         },
       } | null,
-      interactiveRoom:  {
+      interactiveRoom?:  {
         __typename: "InteractiveRoom",
         id: string,
         name: string,
-        backgroundImageUrl: string | null,
+        backgroundImageUrl?: string | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -3633,31 +4047,31 @@ export type ListUserRoomsQuery = {
           createdAt: string,
           updatedAt: string,
         },
-        labels:  {
+        labels?:  {
           __typename: "ModelLabelConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
-        counters:  {
+        counters?:  {
           __typename: "ModelCounterConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
-        dice:  {
+        dice?:  {
           __typename: "ModelVisualDieConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
       } | null,
-      owner: string | null,
+      owner?: string | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetSavedRollQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetSavedRollQuery = {
-  getSavedRoll:  {
+  getSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -3665,7 +4079,7 @@ export type GetSavedRollQuery = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -3676,9 +4090,9 @@ export type ListSavedRollsQueryVariables = {
 };
 
 export type ListSavedRollsQuery = {
-  listSavedRolls:  {
+  listSavedRolls?:  {
     __typename: "ModelSavedRollConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "SavedRoll",
       id: string,
       rollName: string,
@@ -3686,26 +4100,26 @@ export type ListSavedRollsQuery = {
       modifier: number,
       createdAt: string,
       updatedAt: string,
-      owner: string | null,
+      owner?: string | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetSafetyItemQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetSafetyItemQuery = {
-  getSafetyItem:  {
+  getSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -3716,19 +4130,19 @@ export type ListSafetyItemsQueryVariables = {
 };
 
 export type ListSafetyItemsQuery = {
-  listSafetyItems:  {
+  listSafetyItems?:  {
     __typename: "ModelSafetyItemConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "SafetyItem",
       id: string,
       label: string,
       classification: SafetyClassification,
-      note: string | null,
+      note?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner: string | null,
+      owner?: string | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -3739,9 +4153,9 @@ export type ListSafetyModulesQueryVariables = {
 };
 
 export type ListSafetyModulesQuery = {
-  listSafetyModules:  {
+  listSafetyModules?:  {
     __typename: "ModelSafetyModuleConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
@@ -3749,16 +4163,16 @@ export type ListSafetyModulesQuery = {
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetSafetyModuleQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetSafetyModuleQuery = {
-  getSafetyModule:  {
+  getSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -3768,12 +4182,48 @@ export type GetSafetyModuleQuery = {
   } | null,
 };
 
+export type ListHexMapModulesQueryVariables = {
+  filter?: ModelHexMapModuleFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListHexMapModulesQuery = {
+  listHexMapModules?:  {
+    __typename: "ModelHexMapModuleConnection",
+    items?:  Array< {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetHexMapModuleQueryVariables = {
+  id?: string,
+};
+
+export type GetHexMapModuleQuery = {
+  getHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetLabelQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetLabelQuery = {
-  getLabel:  {
+  getLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -3792,9 +4242,9 @@ export type ListLabelsQueryVariables = {
 };
 
 export type ListLabelsQuery = {
-  listLabels:  {
+  listLabels?:  {
     __typename: "ModelLabelConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "Label",
       id: string,
       roomId: string,
@@ -3804,22 +4254,22 @@ export type ListLabelsQuery = {
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetCounterQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetCounterQuery = {
-  getCounter:  {
+  getCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -3835,31 +4285,31 @@ export type ListCountersQueryVariables = {
 };
 
 export type ListCountersQuery = {
-  listCounters:  {
+  listCounters?:  {
     __typename: "ModelCounterConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "Counter",
       id: string,
       roomId: string,
       title: string,
       value: number,
-      max: number | null,
+      max?: number | null,
       x: number,
       y: number,
       type: CounterType,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetVisualDieQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetVisualDieQuery = {
-  getVisualDie:  {
+  getVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -3870,14 +4320,14 @@ export type GetVisualDieQuery = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3888,9 +4338,9 @@ export type GetVisualDieQuery = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -3900,28 +4350,28 @@ export type GetVisualDieQuery = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -3932,11 +4382,11 @@ export type GetVisualDieQuery = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
@@ -3949,9 +4399,9 @@ export type ListVisualDiesQueryVariables = {
 };
 
 export type ListVisualDiesQuery = {
-  listVisualDies:  {
+  listVisualDies?:  {
     __typename: "ModelVisualDieConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "VisualDie",
       id: string,
       roomId: string,
@@ -3962,14 +4412,14 @@ export type ListVisualDiesQuery = {
       sides: number,
       color: string,
       version: number,
-      type: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      room:  {
+      room?:  {
         __typename: "InteractiveRoom",
         id: string,
         name: string,
-        backgroundImageUrl: string | null,
+        backgroundImageUrl?: string | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -3980,35 +4430,35 @@ export type ListVisualDiesQuery = {
           createdAt: string,
           updatedAt: string,
         },
-        labels:  {
+        labels?:  {
           __typename: "ModelLabelConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
-        counters:  {
+        counters?:  {
           __typename: "ModelCounterConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
-        dice:  {
+        dice?:  {
           __typename: "ModelVisualDieConnection",
-          nextToken: string | null,
+          nextToken?: string | null,
         } | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type OnUpdateTextRoomByNameSubscriptionVariables = {
-  name: string,
+  name?: string,
 };
 
 export type OnUpdateTextRoomByNameSubscription = {
-  onUpdateTextRoomByName:  {
+  onUpdateTextRoomByName?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4023,11 +4473,11 @@ export type OnUpdateTextRoomByNameSubscription = {
 };
 
 export type OnCreateVisualDieByRoomSubscriptionVariables = {
-  roomId: string,
+  roomId?: string,
 };
 
 export type OnCreateVisualDieByRoomSubscription = {
-  onCreateVisualDieByRoom:  {
+  onCreateVisualDieByRoom?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -4038,14 +4488,14 @@ export type OnCreateVisualDieByRoomSubscription = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -4056,9 +4506,9 @@ export type OnCreateVisualDieByRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -4068,28 +4518,28 @@ export type OnCreateVisualDieByRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -4100,22 +4550,22 @@ export type OnCreateVisualDieByRoomSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type OnUpdateVisualDieByIdSubscriptionVariables = {
-  id: string,
+  id?: string,
 };
 
 export type OnUpdateVisualDieByIdSubscription = {
-  onUpdateVisualDieById:  {
+  onUpdateVisualDieById?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -4126,14 +4576,14 @@ export type OnUpdateVisualDieByIdSubscription = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -4144,9 +4594,9 @@ export type OnUpdateVisualDieByIdSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -4156,28 +4606,28 @@ export type OnUpdateVisualDieByIdSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -4188,28 +4638,28 @@ export type OnUpdateVisualDieByIdSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type OnCreateCounterByRoomSubscriptionVariables = {
-  roomId: string,
+  roomId?: string,
 };
 
 export type OnCreateCounterByRoomSubscription = {
-  onCreateCounterByRoom:  {
+  onCreateCounterByRoom?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -4219,17 +4669,17 @@ export type OnCreateCounterByRoomSubscription = {
 };
 
 export type OnUpdateCounterByIdSubscriptionVariables = {
-  id: string,
+  id?: string,
 };
 
 export type OnUpdateCounterByIdSubscription = {
-  onUpdateCounterById:  {
+  onUpdateCounterById?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -4239,11 +4689,11 @@ export type OnUpdateCounterByIdSubscription = {
 };
 
 export type OnCreateLabelByRoomSubscriptionVariables = {
-  roomId: string,
+  roomId?: string,
 };
 
 export type OnCreateLabelByRoomSubscription = {
-  onCreateLabelByRoom:  {
+  onCreateLabelByRoom?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -4256,11 +4706,11 @@ export type OnCreateLabelByRoomSubscription = {
 };
 
 export type OnUpdateLabelByIdSubscriptionVariables = {
-  id: string,
+  id?: string,
 };
 
 export type OnUpdateLabelByIdSubscription = {
-  onUpdateLabelById:  {
+  onUpdateLabelById?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -4273,18 +4723,18 @@ export type OnUpdateLabelByIdSubscription = {
 };
 
 export type OnCreateTrophyDarkCharacterByGameSubscriptionVariables = {
-  gameID: string,
+  gameID?: string,
 };
 
 export type OnCreateTrophyDarkCharacterByGameSubscription = {
-  onCreateTrophyDarkCharacterByGame:  {
+  onCreateTrophyDarkCharacterByGame?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -4296,18 +4746,18 @@ export type OnCreateTrophyDarkCharacterByGameSubscription = {
 };
 
 export type OnUpdateTrophyDarkCharacterByIdSubscriptionVariables = {
-  id: string,
+  id?: string,
 };
 
 export type OnUpdateTrophyDarkCharacterByIdSubscription = {
-  onUpdateTrophyDarkCharacterById:  {
+  onUpdateTrophyDarkCharacterById?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -4319,18 +4769,18 @@ export type OnUpdateTrophyDarkCharacterByIdSubscription = {
 };
 
 export type OnCreateHeartCharacterByGameSubscriptionVariables = {
-  gameID: string,
+  gameID?: string,
 };
 
 export type OnCreateHeartCharacterByGameSubscription = {
-  onCreateHeartCharacterByGame:  {
+  onCreateHeartCharacterByGame?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -4360,18 +4810,18 @@ export type OnCreateHeartCharacterByGameSubscription = {
 };
 
 export type OnUpdateHeartCharacterByIdSubscriptionVariables = {
-  id: string,
+  id?: string,
 };
 
 export type OnUpdateHeartCharacterByIdSubscription = {
-  onUpdateHeartCharacterById:  {
+  onUpdateHeartCharacterById?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -4401,22 +4851,22 @@ export type OnUpdateHeartCharacterByIdSubscription = {
 };
 
 export type OnCreateTrophyDarkRoomSubscription = {
-  onCreateTrophyDarkRoom:  {
+  onCreateTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -4425,7 +4875,7 @@ export type OnCreateTrophyDarkRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -4441,22 +4891,22 @@ export type OnCreateTrophyDarkRoomSubscription = {
 };
 
 export type OnUpdateTrophyDarkRoomSubscription = {
-  onUpdateTrophyDarkRoom:  {
+  onUpdateTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -4465,7 +4915,7 @@ export type OnUpdateTrophyDarkRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -4481,22 +4931,22 @@ export type OnUpdateTrophyDarkRoomSubscription = {
 };
 
 export type OnDeleteTrophyDarkRoomSubscription = {
-  onDeleteTrophyDarkRoom:  {
+  onDeleteTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
     id: string,
     name: string,
     lightDice: Array< string >,
     darkDice: Array< string >,
-    characters:  {
+    characters?:  {
       __typename: "ModelTrophyDarkCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "TrophyDarkCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ruin: number,
         occupation: string,
         background: string,
@@ -4505,7 +4955,7 @@ export type OnDeleteTrophyDarkRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -4521,14 +4971,14 @@ export type OnDeleteTrophyDarkRoomSubscription = {
 };
 
 export type OnCreateTrophyDarkCharacterSubscription = {
-  onCreateTrophyDarkCharacter:  {
+  onCreateTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -4540,14 +4990,14 @@ export type OnCreateTrophyDarkCharacterSubscription = {
 };
 
 export type OnUpdateTrophyDarkCharacterSubscription = {
-  onUpdateTrophyDarkCharacter:  {
+  onUpdateTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -4559,14 +5009,14 @@ export type OnUpdateTrophyDarkCharacterSubscription = {
 };
 
 export type OnDeleteTrophyDarkCharacterSubscription = {
-  onDeleteTrophyDarkCharacter:  {
+  onDeleteTrophyDarkCharacter?:  {
     __typename: "TrophyDarkCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ruin: number,
     occupation: string,
     background: string,
@@ -4578,12 +5028,12 @@ export type OnDeleteTrophyDarkCharacterSubscription = {
 };
 
 export type OnCreateTextRoomSubscription = {
-  onCreateTextRoom:  {
+  onCreateTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4598,12 +5048,12 @@ export type OnCreateTextRoomSubscription = {
 };
 
 export type OnUpdateTextRoomSubscription = {
-  onUpdateTextRoom:  {
+  onUpdateTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4618,12 +5068,12 @@ export type OnUpdateTextRoomSubscription = {
 };
 
 export type OnDeleteTextRoomSubscription = {
-  onDeleteTextRoom:  {
+  onDeleteTextRoom?:  {
     __typename: "TextRoom",
     id: string,
     name: string,
-    rolls: Array< string > | null,
-    counters: Array< string > | null,
+    rolls?: Array< string > | null,
+    counters?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4638,11 +5088,11 @@ export type OnDeleteTextRoomSubscription = {
 };
 
 export type OnCreateInteractiveRoomSubscription = {
-  onCreateInteractiveRoom:  {
+  onCreateInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4653,9 +5103,9 @@ export type OnCreateInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -4665,28 +5115,28 @@ export type OnCreateInteractiveRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -4697,29 +5147,29 @@ export type OnCreateInteractiveRoomSubscription = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type OnUpdateInteractiveRoomSubscription = {
-  onUpdateInteractiveRoom:  {
+  onUpdateInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4730,9 +5180,9 @@ export type OnUpdateInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -4742,28 +5192,28 @@ export type OnUpdateInteractiveRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -4774,29 +5224,29 @@ export type OnUpdateInteractiveRoomSubscription = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type OnDeleteInteractiveRoomSubscription = {
-  onDeleteInteractiveRoom:  {
+  onDeleteInteractiveRoom?:  {
     __typename: "InteractiveRoom",
     id: string,
     name: string,
-    backgroundImageUrl: string | null,
+    backgroundImageUrl?: string | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4807,9 +5257,9 @@ export type OnDeleteInteractiveRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    labels:  {
+    labels?:  {
       __typename: "ModelLabelConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Label",
         id: string,
         roomId: string,
@@ -4819,28 +5269,28 @@ export type OnDeleteInteractiveRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    counters:  {
+    counters?:  {
       __typename: "ModelCounterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "Counter",
         id: string,
         roomId: string,
         title: string,
         value: number,
-        max: number | null,
+        max?: number | null,
         x: number,
         y: number,
         type: CounterType,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
-    dice:  {
+    dice?:  {
       __typename: "ModelVisualDieConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "VisualDie",
         id: string,
         roomId: string,
@@ -4851,25 +5301,25 @@ export type OnDeleteInteractiveRoomSubscription = {
         sides: number,
         color: string,
         version: number,
-        type: string | null,
+        type?: string | null,
         createdAt: string,
         updatedAt: string,
-        room:  {
+        room?:  {
           __typename: "InteractiveRoom",
           id: string,
           name: string,
-          backgroundImageUrl: string | null,
+          backgroundImageUrl?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
   } | null,
 };
 
 export type OnCreateHeartRoomSubscription = {
-  onCreateHeartRoom:  {
+  onCreateHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -4880,16 +5330,16 @@ export type OnCreateHeartRoomSubscription = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -4916,13 +5366,21 @@ export type OnCreateHeartRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
       linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
       createdAt: string,
       updatedAt: string,
     },
@@ -4930,7 +5388,7 @@ export type OnCreateHeartRoomSubscription = {
 };
 
 export type OnUpdateHeartRoomSubscription = {
-  onUpdateHeartRoom:  {
+  onUpdateHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -4941,16 +5399,16 @@ export type OnUpdateHeartRoomSubscription = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -4977,13 +5435,21 @@ export type OnUpdateHeartRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
       xCardActive: boolean,
       linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
       createdAt: string,
       updatedAt: string,
     },
@@ -4991,7 +5457,7 @@ export type OnUpdateHeartRoomSubscription = {
 };
 
 export type OnDeleteHeartRoomSubscription = {
-  onDeleteHeartRoom:  {
+  onDeleteHeartRoom?:  {
     __typename: "HeartRoom",
     id: string,
     name: string,
@@ -5002,16 +5468,16 @@ export type OnDeleteHeartRoomSubscription = {
     d12Dice: Array< string >,
     createdAt: string,
     updatedAt: string,
-    characters:  {
+    characters?:  {
       __typename: "ModelHeartCharacterConnection",
-      items:  Array< {
+      items?:  Array< {
         __typename: "HeartCharacter",
         id: string,
         gameID: string,
         playerName: string,
         characterName: string,
         characterPronouns: string,
-        characterImageUrl: string | null,
+        characterImageUrl?: string | null,
         ancestry: string,
         calling: string,
         class: string,
@@ -5038,7 +5504,7 @@ export type OnDeleteHeartRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null > | null,
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     safetyModule:  {
       __typename: "SafetyModule",
@@ -5048,18 +5514,26 @@ export type OnDeleteHeartRoomSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    hexMapModule:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
 export type OnCreateHeartCharacterSubscription = {
-  onCreateHeartCharacter:  {
+  onCreateHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -5089,14 +5563,14 @@ export type OnCreateHeartCharacterSubscription = {
 };
 
 export type OnUpdateHeartCharacterSubscription = {
-  onUpdateHeartCharacter:  {
+  onUpdateHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -5126,14 +5600,14 @@ export type OnUpdateHeartCharacterSubscription = {
 };
 
 export type OnDeleteHeartCharacterSubscription = {
-  onDeleteHeartCharacter:  {
+  onDeleteHeartCharacter?:  {
     __typename: "HeartCharacter",
     id: string,
     gameID: string,
     playerName: string,
     characterName: string,
     characterPronouns: string,
-    characterImageUrl: string | null,
+    characterImageUrl?: string | null,
     ancestry: string,
     calling: string,
     class: string,
@@ -5163,29 +5637,29 @@ export type OnDeleteHeartCharacterSubscription = {
 };
 
 export type OnCreateUserRoomSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnCreateUserRoomSubscription = {
-  onCreateUserRoom:  {
+  onCreateUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -5194,7 +5668,7 @@ export type OnCreateUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5208,16 +5682,16 @@ export type OnCreateUserRoomSubscription = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5229,11 +5703,11 @@ export type OnCreateUserRoomSubscription = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5244,9 +5718,9 @@ export type OnCreateUserRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -5256,28 +5730,28 @@ export type OnCreateUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -5288,41 +5762,41 @@ export type OnCreateUserRoomSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserRoomSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnUpdateUserRoomSubscription = {
-  onUpdateUserRoom:  {
+  onUpdateUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -5331,7 +5805,7 @@ export type OnUpdateUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5345,16 +5819,16 @@ export type OnUpdateUserRoomSubscription = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5366,11 +5840,11 @@ export type OnUpdateUserRoomSubscription = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5381,9 +5855,9 @@ export type OnUpdateUserRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -5393,28 +5867,28 @@ export type OnUpdateUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -5425,41 +5899,41 @@ export type OnUpdateUserRoomSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserRoomSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnDeleteUserRoomSubscription = {
-  onDeleteUserRoom:  {
+  onDeleteUserRoom?:  {
     __typename: "UserRoom",
     id: string,
-    trophyDarkRoom:  {
+    trophyDarkRoom?:  {
       __typename: "TrophyDarkRoom",
       id: string,
       name: string,
       lightDice: Array< string >,
       darkDice: Array< string >,
-      characters:  {
+      characters?:  {
         __typename: "ModelTrophyDarkCharacterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "TrophyDarkCharacter",
           id: string,
           gameID: string,
           playerName: string,
           characterName: string,
           characterPronouns: string,
-          characterImageUrl: string | null,
+          characterImageUrl?: string | null,
           ruin: number,
           occupation: string,
           background: string,
@@ -5468,7 +5942,7 @@ export type OnDeleteUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5482,16 +5956,16 @@ export type OnDeleteUserRoomSubscription = {
       },
     } | null,
     roomKey: string,
-    description: string | null,
+    description?: string | null,
     createdOn: string,
     updatedOn: string,
-    defaultRoomUsername: string | null,
-    textRoom:  {
+    defaultRoomUsername?: string | null,
+    textRoom?:  {
       __typename: "TextRoom",
       id: string,
       name: string,
-      rolls: Array< string > | null,
-      counters: Array< string > | null,
+      rolls?: Array< string > | null,
+      counters?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5503,11 +5977,11 @@ export type OnDeleteUserRoomSubscription = {
         updatedAt: string,
       },
     } | null,
-    interactiveRoom:  {
+    interactiveRoom?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5518,9 +5992,9 @@ export type OnDeleteUserRoomSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -5530,28 +6004,28 @@ export type OnDeleteUserRoomSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -5562,23 +6036,23 @@ export type OnDeleteUserRoomSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateSavedRollSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnCreateSavedRollSubscription = {
-  onCreateSavedRoll:  {
+  onCreateSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -5586,16 +6060,16 @@ export type OnCreateSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateSavedRollSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnUpdateSavedRollSubscription = {
-  onUpdateSavedRoll:  {
+  onUpdateSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -5603,16 +6077,16 @@ export type OnUpdateSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteSavedRollSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnDeleteSavedRollSubscription = {
-  onDeleteSavedRoll:  {
+  onDeleteSavedRoll?:  {
     __typename: "SavedRoll",
     id: string,
     rollName: string,
@@ -5620,63 +6094,63 @@ export type OnDeleteSavedRollSubscription = {
     modifier: number,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateSafetyItemSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnCreateSafetyItemSubscription = {
-  onCreateSafetyItem:  {
+  onCreateSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateSafetyItemSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnUpdateSafetyItemSubscription = {
-  onUpdateSafetyItem:  {
+  onUpdateSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteSafetyItemSubscriptionVariables = {
-  owner: string,
+  owner?: string,
 };
 
 export type OnDeleteSafetyItemSubscription = {
-  onDeleteSafetyItem:  {
+  onDeleteSafetyItem?:  {
     __typename: "SafetyItem",
     id: string,
     label: string,
     classification: SafetyClassification,
-    note: string | null,
+    note?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateSafetyModuleSubscription = {
-  onCreateSafetyModule:  {
+  onCreateSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -5687,7 +6161,7 @@ export type OnCreateSafetyModuleSubscription = {
 };
 
 export type OnUpdateSafetyModuleSubscription = {
-  onUpdateSafetyModule:  {
+  onUpdateSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -5698,7 +6172,7 @@ export type OnUpdateSafetyModuleSubscription = {
 };
 
 export type OnDeleteSafetyModuleSubscription = {
-  onDeleteSafetyModule:  {
+  onDeleteSafetyModule?:  {
     __typename: "SafetyModule",
     id: string,
     xCardActive: boolean,
@@ -5708,8 +6182,41 @@ export type OnDeleteSafetyModuleSubscription = {
   } | null,
 };
 
+export type OnCreateHexMapModuleSubscription = {
+  onCreateHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateHexMapModuleSubscription = {
+  onUpdateHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteHexMapModuleSubscription = {
+  onDeleteHexMapModule?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateLabelSubscription = {
-  onCreateLabel:  {
+  onCreateLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -5722,7 +6229,7 @@ export type OnCreateLabelSubscription = {
 };
 
 export type OnUpdateLabelSubscription = {
-  onUpdateLabel:  {
+  onUpdateLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -5735,7 +6242,7 @@ export type OnUpdateLabelSubscription = {
 };
 
 export type OnDeleteLabelSubscription = {
-  onDeleteLabel:  {
+  onDeleteLabel?:  {
     __typename: "Label",
     id: string,
     roomId: string,
@@ -5748,13 +6255,13 @@ export type OnDeleteLabelSubscription = {
 };
 
 export type OnCreateCounterSubscription = {
-  onCreateCounter:  {
+  onCreateCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -5764,13 +6271,13 @@ export type OnCreateCounterSubscription = {
 };
 
 export type OnUpdateCounterSubscription = {
-  onUpdateCounter:  {
+  onUpdateCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -5780,13 +6287,13 @@ export type OnUpdateCounterSubscription = {
 };
 
 export type OnDeleteCounterSubscription = {
-  onDeleteCounter:  {
+  onDeleteCounter?:  {
     __typename: "Counter",
     id: string,
     roomId: string,
     title: string,
     value: number,
-    max: number | null,
+    max?: number | null,
     x: number,
     y: number,
     type: CounterType,
@@ -5796,7 +6303,7 @@ export type OnDeleteCounterSubscription = {
 };
 
 export type OnCreateVisualDieSubscription = {
-  onCreateVisualDie:  {
+  onCreateVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -5807,14 +6314,14 @@ export type OnCreateVisualDieSubscription = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5825,9 +6332,9 @@ export type OnCreateVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -5837,28 +6344,28 @@ export type OnCreateVisualDieSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -5869,18 +6376,18 @@ export type OnCreateVisualDieSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type OnUpdateVisualDieSubscription = {
-  onUpdateVisualDie:  {
+  onUpdateVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -5891,14 +6398,14 @@ export type OnUpdateVisualDieSubscription = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5909,9 +6416,9 @@ export type OnUpdateVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -5921,28 +6428,28 @@ export type OnUpdateVisualDieSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -5953,18 +6460,18 @@ export type OnUpdateVisualDieSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
 };
 
 export type OnDeleteVisualDieSubscription = {
-  onDeleteVisualDie:  {
+  onDeleteVisualDie?:  {
     __typename: "VisualDie",
     id: string,
     roomId: string,
@@ -5975,14 +6482,14 @@ export type OnDeleteVisualDieSubscription = {
     sides: number,
     color: string,
     version: number,
-    type: string | null,
+    type?: string | null,
     createdAt: string,
     updatedAt: string,
-    room:  {
+    room?:  {
       __typename: "InteractiveRoom",
       id: string,
       name: string,
-      backgroundImageUrl: string | null,
+      backgroundImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5993,9 +6500,9 @@ export type OnDeleteVisualDieSubscription = {
         createdAt: string,
         updatedAt: string,
       },
-      labels:  {
+      labels?:  {
         __typename: "ModelLabelConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Label",
           id: string,
           roomId: string,
@@ -6005,28 +6512,28 @@ export type OnDeleteVisualDieSubscription = {
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      counters:  {
+      counters?:  {
         __typename: "ModelCounterConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Counter",
           id: string,
           roomId: string,
           title: string,
           value: number,
-          max: number | null,
+          max?: number | null,
           x: number,
           y: number,
           type: CounterType,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
-      dice:  {
+      dice?:  {
         __typename: "ModelVisualDieConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "VisualDie",
           id: string,
           roomId: string,
@@ -6037,11 +6544,11 @@ export type OnDeleteVisualDieSubscription = {
           sides: number,
           color: string,
           version: number,
-          type: string | null,
+          type?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null,
   } | null,
