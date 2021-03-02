@@ -51,7 +51,6 @@ function Home() {
       templateRows="auto 1fr 1fr auto"
       bg="white"
       h="full"
-      overflow="auto"
     >
       <GridItem colSpan={6} bg="gray.800">
         <Container centerContent py={2}>
@@ -108,13 +107,16 @@ function Home() {
               Go
             </Button>
           </Flex>
+          <Text color="gray.600" mt={2} fontSize="sm">
+            This name identifies your room. Change it to whatever you like!
+          </Text>
         </Box>
         <Flex
           flexDirection={['column-reverse', 'column-reverse', 'row', 'row']}
           justifyContent="center"
           alignItems="center"
         >
-          <Stack spacing={2} mt={[3, 3, 0]} mr={[0, 0, 3]}>
+          <Box mt={[3, 3, 0]} mr={[0, 0, 3]}>
             <Heading
               as="h1"
               fontFamily="title"
@@ -134,14 +136,14 @@ function Home() {
             </Text>
             <Text
               color="gray.900"
-              fontSize="sm"
               textAlign={['center', 'center', 'left']}
+              mt={3}
             >
               Start an app and share the URL with friends to roll dice together
               <br />
               Come back to it later and pick up where you left off
             </Text>
-          </Stack>
+          </Box>
           <Img w="40" src={logo} alt="Person holding cup of coffee" />
         </Flex>
       </GridItem>
