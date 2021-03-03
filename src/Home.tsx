@@ -154,7 +154,7 @@ function Home() {
           bg="white"
         >
           <GridItem>
-            <Heading as="h3" fontSize="xl" color="black">
+            <Heading as="h3" size="md" color="black">
               Dice Apps
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -197,7 +197,7 @@ function Home() {
             </Stack>
           </GridItem>
           <GridItem>
-            <Heading as="h3" fontSize="xl" color="black">
+            <Heading as="h3" size="md" color="black">
               Game Rooms
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -309,7 +309,7 @@ function Home() {
         <Flex justifyContent="center">
           <Text color="gray.600">Designed and Developed by Jon Grim</Text>
         </Flex>
-        <Flex justifyContent="center" mt={2}>
+        <Flex justifyContent="center" mt={4}>
           <Link href="https://github.com/jongrim/roll-with-me" isExternal>
             <IconButton
               icon={<FaGithub />}
@@ -340,6 +340,17 @@ function Home() {
             />
           </Link>
         </Flex>
+        <Text color="gray.600" mt={4} fontSize="sm" textAlign="center">
+          Prefer the old version? You can find it
+          <Link
+            isExternal
+            color="brand.500"
+            to="https://obscure-ridge-20711.herokuapp.com/"
+            ml={1}
+          >
+            here
+          </Link>
+        </Text>
       </GridItem>
     </Grid>
   );

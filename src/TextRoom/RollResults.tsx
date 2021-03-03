@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
   Box,
-  Center,
-  CircularProgress,
   Divider,
   Grid,
   GridItem,
@@ -17,7 +15,7 @@ import {
   useColorModeValue,
   useMediaQuery,
 } from '@chakra-ui/react';
-import { AnimateSharedLayout, AnimatePresence, motion } from 'framer-motion';
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import { Die, Roll } from '../types';
 
 interface RollResultsProps {
