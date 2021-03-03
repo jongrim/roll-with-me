@@ -8,6 +8,7 @@ export const onUpdateTextRoomByName = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       counters
       createdAt
       updatedAt
@@ -517,6 +518,7 @@ export const onCreateTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       counters
       createdAt
       updatedAt
@@ -536,6 +538,7 @@ export const onUpdateTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       counters
       createdAt
       updatedAt
@@ -555,6 +558,7 @@ export const onDeleteTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       counters
       createdAt
       updatedAt
@@ -1127,6 +1131,7 @@ export const onCreateUserRoom = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt
@@ -1246,6 +1251,7 @@ export const onUpdateUserRoom = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt
@@ -1365,6 +1371,7 @@ export const onDeleteUserRoom = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt

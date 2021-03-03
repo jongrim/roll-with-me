@@ -21,6 +21,7 @@ function TextRoom({ name }) {
 
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
+  const [customDice, setCustomDice] = React.useState([]);
 
   const [safetyModule, setSafetyModule] = React.useState({});
 
@@ -43,7 +44,11 @@ function TextRoom({ name }) {
       next: ({ value }) => {
         const nextRolls = value.data.onUpdateTextRoomByName?.rolls ?? [];
         const parsedRolls = nextRolls.map((roll) => JSON.parse(roll));
+        const nextCustomDice =
+          value.data.onUpdateTextRoomByName?.customDice ?? [];
+        const parsedCustomDice = nextCustomDice.map((die) => JSON.parse(die));
         setRolls(parsedRolls);
+        setCustomDice(parsedCustomDice);
         setIsRolling(false);
       },
     });
@@ -65,6 +70,8 @@ function TextRoom({ name }) {
         });
         const rolls = data?.getTextRoom?.rolls ?? [];
         setRolls(rolls.map((roll) => JSON.parse(roll)));
+        const customDice = data?.getTextRoom?.customDice ?? [];
+        setCustomDice(customDice.map((die) => JSON.parse(die)));
         const safety = data?.getTextRoom?.safetyModule ?? {};
         safety.linesAndVeils = safety.linesAndVeils.map((i) => JSON.parse(i));
         setSafetyModule(safety);
@@ -370,6 +377,7 @@ function TextRoom({ name }) {
       roomName={name}
       onSubmit={onSubmit}
       rolls={rolls}
+      customDice={customDice}
       savedRolls={savedRolls}
       createRoll={saveRoll}
       deleteRoll={deleteRoll}

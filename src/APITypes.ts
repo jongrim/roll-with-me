@@ -1,4 +1,3 @@
-import { HexMapModule } from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export interface TextRoomDetails {
@@ -53,7 +52,7 @@ export interface HeartRoomDetails {
     items: HeartCharacter[];
   };
   safetyModule: RawSafetyModule;
-  hexMapModule: HexMapModule;
+  hexMapModule: RawHexMapModule;
 }
 
 export interface HeartCharacter {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import {
   Box,
   Divider,
@@ -141,19 +142,30 @@ const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
         border="1px solid"
         borderColor={borderColor}
       >
-        <HStack spacing={2}>
+        <HStack spacing={1}>
           <Text fontWeight="600">{roll.rolledBy}</Text>
-          <Text fontSize="sm">rolled {roll.rollName}</Text>
+          <Text fontSize="sm" maxW={48} isTruncated>
+            rolled {roll.rollName}
+          </Text>
         </HStack>
-        <Flex mt={3} align="center">
+        <Flex mt={1} align="center">
           <Text fontSize="xl" fontWeight="bold" lineHeight="tall">
             {roll.sum}
           </Text>
-          <Text fontSize="sm" color={subtleTextColor} ml={2}>
+          <Text
+            fontSize="sm"
+            color={subtleTextColor}
+            ml={2}
+            maxW={60}
+            isTruncated
+          >
             ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
             {roll.modifier})
           </Text>
         </Flex>
+        <Text fontSize="sm" fontWeight="300">
+          {formatDistanceToNow(parseISO(roll.createdAt))} ago
+        </Text>
       </Box>
     </motion.div>
   );

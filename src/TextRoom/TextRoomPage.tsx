@@ -41,12 +41,14 @@ import UsernameModal from '../UsernameModal/UsernameModal';
 import QuickRollBar from '../QuickRollBar/QuickRollBar';
 import useUserRoom from '../hooks/useUserRoom';
 import TextRoomControls from './TextRoomControls';
+import { CustomDie } from '../utils/dice';
 
 interface TextRoomPageProps {
   roomId: string;
   roomName: string;
   onSubmit: (roll: Roll) => void;
   rolls: Roll[];
+  customDice: CustomDie[];
   savedRolls: SavedRoll[];
   createRoll: (roll: SavedRoll) => void;
   deleteRoll: (roll: SavedRoll) => void;
@@ -66,6 +68,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   roomName,
   onSubmit,
   rolls,
+  customDice,
   savedRolls,
   createRoll,
   deleteRoll,
@@ -99,6 +102,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
     savedRollToRoll(username),
     createNewRollFromValues
   );
+
+  console.log(customDice);
 
   return (
     <Box h="full" overflow="auto">
@@ -280,6 +285,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                           saveRoll={createRoll}
                           isRolling={loadingStates.isRolling}
                           rolledByName={username}
+                          savedCustomDice={customDice}
+                          roomId={roomId}
                         />
                       </TabPanel>
                       <TabPanel align="center">
@@ -288,10 +295,12 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                           deleteRoll={deleteRoll}
                           editRoll={editRoll}
                           savedRolls={savedRolls}
+                          savedCustomDice={customDice}
                           rollSavedRoll={compose(
                             onSubmit,
                             savedRollToRoll(username)
                           )}
+                          roomId={roomId}
                         />
                       </TabPanel>
                       <TabPanel>
@@ -342,7 +351,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               />
             </TabPanel>
             <TabPanel px={0}>
-              <TextRoomControls roomId={roomId} />
+              <TextRoomControls roomId={roomId} savedCustomDice={customDice} />
             </TabPanel>
           </TabPanels>
         </Tabs>
