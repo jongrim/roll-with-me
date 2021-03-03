@@ -51,7 +51,6 @@ function Home() {
       templateRows="auto 1fr 1fr auto"
       bg="white"
       h="full"
-      overflow="auto"
     >
       <GridItem colSpan={6} bg="gray.800">
         <Container centerContent py={2}>
@@ -108,13 +107,16 @@ function Home() {
               Go
             </Button>
           </Flex>
+          <Text color="gray.600" mt={2} fontSize="sm">
+            This name identifies your room. Change it to whatever you like!
+          </Text>
         </Box>
         <Flex
           flexDirection={['column-reverse', 'column-reverse', 'row', 'row']}
           justifyContent="center"
           alignItems="center"
         >
-          <Stack spacing={2} mt={[3, 3, 0]} mr={[0, 0, 3]}>
+          <Box mt={[3, 3, 0]} mr={[0, 0, 3]}>
             <Heading
               as="h1"
               fontFamily="title"
@@ -134,14 +136,14 @@ function Home() {
             </Text>
             <Text
               color="gray.900"
-              fontSize="sm"
               textAlign={['center', 'center', 'left']}
+              mt={3}
             >
               Start an app and share the URL with friends to roll dice together
               <br />
               Come back to it later and pick up where you left off
             </Text>
-          </Stack>
+          </Box>
           <Img w="40" src={logo} alt="Person holding cup of coffee" />
         </Flex>
       </GridItem>
@@ -152,7 +154,7 @@ function Home() {
           bg="white"
         >
           <GridItem>
-            <Heading as="h3" fontSize="xl" color="black">
+            <Heading as="h3" size="md" color="black">
               Dice Apps
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -195,7 +197,7 @@ function Home() {
             </Stack>
           </GridItem>
           <GridItem>
-            <Heading as="h3" fontSize="xl" color="black">
+            <Heading as="h3" size="md" color="black">
               Game Rooms
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -307,7 +309,7 @@ function Home() {
         <Flex justifyContent="center">
           <Text color="gray.600">Designed and Developed by Jon Grim</Text>
         </Flex>
-        <Flex justifyContent="center" mt={2}>
+        <Flex justifyContent="center" mt={4}>
           <Link href="https://github.com/jongrim/roll-with-me" isExternal>
             <IconButton
               icon={<FaGithub />}
@@ -338,6 +340,17 @@ function Home() {
             />
           </Link>
         </Flex>
+        <Text color="gray.600" mt={4} fontSize="sm" textAlign="center">
+          Prefer the old version? You can find it
+          <Link
+            isExternal
+            color="brand.500"
+            to="https://obscure-ridge-20711.herokuapp.com/"
+            ml={1}
+          >
+            here
+          </Link>
+        </Text>
       </GridItem>
     </Grid>
   );

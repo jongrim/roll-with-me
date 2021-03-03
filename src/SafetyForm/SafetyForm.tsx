@@ -204,7 +204,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
       <Divider my={6} />
       <Grid templateColumns={['1fr', '1fr', '1fr 1fr']} gap={6} p={[1, 2, 4]}>
         <GridItem colSpan={[1, 1, 2]}>
-          <Flex>
+          <Flex wrap="wrap">
             <HStack spacing={4}>
               <Badge color="gray.800" p={1} rounded="md" bg="red.100">
                 Line
@@ -225,6 +225,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
                 variant="link"
                 colorScheme="brand"
                 onClick={() => addSafetyItems(userSafetyItems)}
+                mt={[4, 0]}
               >
                 Add my safety items
               </Button>

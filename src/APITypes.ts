@@ -1,30 +1,110 @@
-import {
-  GetTextRoomQuery,
-  GetTrophyDarkRoomQuery,
-  GetTrophyDarkCharacterQuery,
-  GetHeartRoomQuery,
-  GetHeartCharacterQuery,
-} from './API';
+import { HexMapModule } from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
-export type TextRoomDetails = Omit<
-  Exclude<GetTextRoomQuery['getTextRoom'], null>,
-  '__typename'
->;
+export interface TextRoomDetails {
+  id: string;
+  name: string;
+  rolls?: Array<string> | null;
+  counters?: Array<string> | null;
+  createdAt: string;
+  updatedAt: string;
+  safetyModule: RawSafetyModule;
+}
 
-export type TrophyDarkRoomDetails = Omit<
-  Exclude<GetTrophyDarkRoomQuery['getTrophyDarkRoom'], null>,
-  '__typename'
->;
+export interface TrophyDarkRoomDetails {
+  id: string;
+  name: string;
+  lightDice: Array<string>;
+  darkDice: Array<string>;
+  characters: {
+    items: TrophyDarkCharacter[];
+  };
+  createdAt: string;
+  updatedAt: string;
+  safetyModule: RawSafetyModule;
+}
 
-export type TrophyDarkCharacter = GetTrophyDarkCharacterQuery['getTrophyDarkCharacter'];
+export interface TrophyDarkCharacter {
+  id: string;
+  gameID: string;
+  playerName: string;
+  characterName: string;
+  characterPronouns: string;
+  characterImageUrl?: string | null;
+  ruin: number;
+  occupation: string;
+  background: string;
+  drive: string;
+  rituals: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface HeartRoomDetails {
+  id: string;
+  name: string;
+  d4Dice: Array<string>;
+  d6Dice: Array<string>;
+  d8Dice: Array<string>;
+  d10Dice: Array<string>;
+  d12Dice: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+  characters: {
+    items: HeartCharacter[];
+  };
+  safetyModule: RawSafetyModule;
+  hexMapModule: HexMapModule;
+}
 
-export type HeartRoomDetails = Omit<
-  Exclude<GetHeartRoomQuery['getHeartRoom'], null>,
-  '__typename'
->;
+export interface HeartCharacter {
+  id: string;
+  gameID: string;
+  playerName: string;
+  characterName: string;
+  characterPronouns: string;
+  characterImageUrl?: string | null;
+  ancestry: string;
+  calling: string;
+  class: string;
+  beats: Array<string>;
+  fallout: Array<string>;
+  bloodProtection: number;
+  bloodStress: number;
+  echoProtection: number;
+  echoStress: number;
+  fortuneProtection: number;
+  fortuneStress: number;
+  mindProtection: number;
+  mindStress: number;
+  supplyProtection: number;
+  supplyStress: number;
+  skills: Array<string>;
+  domains: Array<string>;
+  knacks: Array<string>;
+  abilities: Array<string>;
+  equipment: Array<string>;
+  resources: Array<string>;
+  bonds: Array<string>;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-export type HeartCharacter = GetHeartCharacterQuery['getHeartCharacter'];
+export interface RawSafetyModule {
+  id: string;
+  xCardActive: boolean;
+  linesAndVeils: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RawHexMapModule {
+  id: string;
+  gridConfiguration: string;
+  backgroundImages: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export type InteractiveRoomData = {
   createdAt: string;

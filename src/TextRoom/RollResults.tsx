@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
   Box,
-  Center,
-  CircularProgress,
   Divider,
   Grid,
   GridItem,
@@ -13,11 +11,15 @@ import {
   StatLabel,
   StatNumber,
   Text,
+  Flex,
+  useColorModeValue,
+  useMediaQuery,
 } from '@chakra-ui/react';
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import { Die, Roll } from '../types';
 
 interface RollResultsProps {
-  roll: Roll;
+  rolls: Roll[];
   isRolling: boolean;
 }
 
@@ -28,7 +30,40 @@ interface dieResultsMap {
   };
 }
 
-const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
+const RollResults = ({ rolls, isRolling }: RollResultsProps) => {
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+  return (
+    <AnimateSharedLayout>
+      <HStack
+        spacing={2}
+        borderBottom="2px solid"
+        borderBottomColor="inherit"
+        pb={1}
+        mb={2}
+      >
+        <Heading as="h3" size="md">
+          Last Roll
+        </Heading>
+        <Text size="sm" fontWeight="300">
+          by {rolls[0].rolledBy}
+        </Text>
+      </HStack>
+      <DetailedRollResults roll={rolls[0]} />
+      {isLargerThan800 && (
+        <Box position="relative">
+          <Text opacity="0.7" mt={10} mb={-6} textAlign="right">
+            Recent Rolls
+          </Text>
+          {rolls.slice(1).map((roll, i) => {
+            return <RollSummary roll={roll} key={roll.id} offset={i} />;
+          })}
+        </Box>
+      )}
+    </AnimateSharedLayout>
+  );
+};
+
+const DetailedRollResults = ({ roll }: { roll: Roll }) => {
   const diceMap: dieResultsMap = React.useMemo(() => {
     let map: dieResultsMap = {};
     roll?.dice.forEach((d) => {
@@ -43,62 +78,84 @@ const RollResults: React.FC<RollResultsProps> = ({ roll, isRolling }) => {
   }, [roll]);
   const groupResults = Object.values(diceMap).map((results) => results.sum);
   return (
-    <>
-      <HStack
-        spacing={2}
-        borderBottom="2px solid"
-        borderBottomColor="inherit"
-        pb={1}
-        mb={2}
+    <motion.div
+      data-testid="last-roll-results"
+      initial={{ opacity: 0, scale: 0.6, y: -50 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      id="detailed-results"
+    >
+      <Stat>
+        <StatLabel>{roll?.rollName}</StatLabel>
+        <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
+        <StatHelpText fontSize={14}>{`${groupResults.join(' + ')} + ${
+          roll?.modifier
+        }`}</StatHelpText>
+      </Stat>
+      {Object.entries(diceMap).map(([key, results], i) => {
+        return (
+          <Box key={key} mt={4} data-testid={`die-${i}`}>
+            <HStack spacing={2}>
+              <Heading as="h4" size="sm" colorScheme="brand">
+                {key}
+              </Heading>
+              <Text fontSize="xs" fontWeight="300" opacity="0.8">
+                {results.sum} total
+              </Text>
+            </HStack>
+            <Divider mt={1} mb={2} />
+            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+              {results.dice.map((d, i) => (
+                <GridItem key={d.id}>
+                  <Stat>
+                    <StatNumber>{d.result}</StatNumber>
+                    <StatHelpText fontSize={11}>Die {i + 1}</StatHelpText>
+                  </Stat>
+                </GridItem>
+              ))}
+            </Grid>
+          </Box>
+        );
+      })}
+    </motion.div>
+  );
+};
+
+const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
+  const opacity = 1 - offset * 0.3;
+  const y = offset * 120;
+  const borderColor = useColorModeValue('gray.50', 'inherit');
+  const subtleTextColor = useColorModeValue('gray.600', 'gray.400');
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -50, scale: 0.9 }}
+      animate={{ opacity, y, scale: 1 }}
+      transition={{ duration: 0.4 }}
+      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+      style={{ position: 'absolute', right: 0 }}
+    >
+      <Box
+        mt={8}
+        p={3}
+        boxShadow="md"
+        rounded="md"
+        border="1px solid"
+        borderColor={borderColor}
       >
-        <Heading as="h3" size="md">
-          Last Roll
-        </Heading>
-        <Text size="sm" fontWeight="300">
-          by {roll.rolledBy}
-        </Text>
-      </HStack>
-      {isRolling ? (
-        <Center h="100%">
-          <CircularProgress isIndeterminate color="blue.300" />
-        </Center>
-      ) : (
-        <Box data-testid="last-roll-results">
-          <Stat>
-            <StatLabel>{roll?.rollName}</StatLabel>
-            <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
-            <StatHelpText fontSize={14}>{`${groupResults.join(' + ')} + ${
-              roll?.modifier
-            }`}</StatHelpText>
-          </Stat>
-          {Object.entries(diceMap).map(([key, results], i) => {
-            return (
-              <Box key={key} mt={4} data-testid={`die-${i}`}>
-                <HStack spacing={2}>
-                  <Heading as="h4" size="sm" colorScheme="brand">
-                    {key}
-                  </Heading>
-                  <Text fontSize="xs" fontWeight="300" opacity="0.8">
-                    {results.sum} total
-                  </Text>
-                </HStack>
-                <Divider mt={1} mb={2} />
-                <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-                  {results.dice.map((d, i) => (
-                    <GridItem key={d.id}>
-                      <Stat>
-                        <StatNumber>{d.result}</StatNumber>
-                        <StatHelpText fontSize={11}>Die {i + 1}</StatHelpText>
-                      </Stat>
-                    </GridItem>
-                  ))}
-                </Grid>
-              </Box>
-            );
-          })}
-        </Box>
-      )}
-    </>
+        <HStack spacing={2}>
+          <Text fontWeight="600">{roll.rolledBy}</Text>
+          <Text fontSize="sm">rolled {roll.rollName}</Text>
+        </HStack>
+        <Flex mt={3} align="center">
+          <Text fontSize="xl" fontWeight="bold" lineHeight="tall">
+            {roll.sum}
+          </Text>
+          <Text fontSize="sm" color={subtleTextColor} ml={2}>
+            ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
+            {roll.modifier})
+          </Text>
+        </Flex>
+      </Box>
+    </motion.div>
   );
 };
 

@@ -38,7 +38,14 @@
         "rollwithmea4fdec43": {}
       },
       "function": {
-        "randomRoomName": {}
+        "randomRoomName": {
+          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
+          "s3Key": "amplify-builds/randomRoomName-54587641794572782f57-build.zip"
+        },
+        "randomNumbers": {
+          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
+          "s3Key": "amplify-builds/randomNumbers-434362492f4535784b6a-build.zip"
+        }
       }
     }
   }
