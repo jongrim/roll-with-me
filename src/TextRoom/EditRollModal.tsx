@@ -26,22 +26,28 @@ import {
   Button,
   Input,
   ButtonGroup,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Die, SavedRoll } from '../types';
 import NewDie from './NewDie';
 import { createNewRollFromValues } from '../utils/rolls';
+import { CustomDie } from '../utils/dice';
 
 interface EditRollModalProps {
   savedRoll?: SavedRoll;
   onSubmit: (roll: SavedRoll) => void;
   onCancel: () => void;
+  savedCustomDice?: CustomDie[];
+  roomId?: string;
 }
 
-const EditRollModal: React.FC<EditRollModalProps> = ({
+const EditRollModal = ({
   savedRoll,
   onSubmit,
   onCancel,
-}) => {
+  savedCustomDice,
+  roomId,
+}: EditRollModalProps) => {
   return (
     <Modal isOpen={Boolean(savedRoll)} onClose={onCancel} size="xl">
       <ModalOverlay />
@@ -57,6 +63,8 @@ const EditRollModal: React.FC<EditRollModalProps> = ({
               savedRoll={savedRoll}
               onSubmit={onSubmit}
               onCancel={onCancel}
+              savedCustomDice={savedCustomDice}
+              roomId={roomId}
             />
           )}
         </ModalBody>
@@ -70,20 +78,29 @@ interface EditRollFormProps {
   savedRoll: SavedRoll;
   onSubmit: (roll: SavedRoll) => void;
   onCancel: () => void;
+  savedCustomDice?: CustomDie[];
+  roomId?: string;
 }
 
-const EditRollForm: React.FC<EditRollFormProps> = ({
+const EditRollForm = ({
   savedRoll,
   onSubmit,
   onCancel,
-}) => {
+  savedCustomDice,
+  roomId,
+}: EditRollFormProps) => {
+  const borderColor = useColorModeValue('gray.50', 'inherit');
   const [dice, setDice] = React.useState<Die[]>(savedRoll.dice);
   const [diceError, setDiceError] = React.useState('');
   const [name, setName] = React.useState(savedRoll.rollName);
   const [modifier, setModifier] = React.useState(savedRoll.modifier);
   return (
     <>
-      <NewDie onSubmit={(die: Die) => setDice((cur) => cur.concat(die))} />
+      <NewDie
+        onSubmit={(die: Die) => setDice((cur) => cur.concat(die))}
+        customDice={savedCustomDice}
+        roomId={roomId}
+      />
       <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={3}>
         <GridItem colSpan={2}>
           {diceError && <Text color="red.600">{diceError}</Text>}
@@ -94,7 +111,14 @@ const EditRollForm: React.FC<EditRollFormProps> = ({
         {dice.length > 0 ? (
           dice.map((die) => {
             return (
-              <GridItem key={die.id} boxShadow="lg" rounded="md" p={2}>
+              <GridItem
+                key={die.id}
+                boxShadow="md"
+                rounded="lg"
+                p={2}
+                border="1px solid"
+                borderColor={borderColor}
+              >
                 <Flex>
                   <Stat>
                     <StatLabel>{die.sides} sided</StatLabel>

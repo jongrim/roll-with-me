@@ -24,6 +24,7 @@ import { SavedRoll } from '../types';
 import { createEmptySavedRoll, describeRoll } from '../utils/rolls';
 import EditRollModal from './EditRollModal';
 import DeleteRollDialog from './DeleteRollModal';
+import { CustomDie } from '../utils/dice';
 
 interface SavedRollsProps {
   savedRolls: SavedRoll[];
@@ -31,6 +32,8 @@ interface SavedRollsProps {
   deleteRoll: (roll: SavedRoll) => void;
   editRoll: (roll: SavedRoll) => void;
   rollSavedRoll: (roll: SavedRoll) => void;
+  savedCustomDice: CustomDie[];
+  roomId: string;
 }
 
 const SavedRolls: React.FC<SavedRollsProps> = ({
@@ -39,6 +42,8 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
   editRoll,
   savedRolls,
   rollSavedRoll,
+  savedCustomDice,
+  roomId,
 }) => {
   const { user } = React.useContext(AuthContext);
   const { colorMode } = useColorMode();
@@ -114,6 +119,7 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
       </Button>
       <EditRollModal
         savedRoll={rollToEdit}
+        savedCustomDice={savedCustomDice}
         onSubmit={(roll) => {
           if (isNewRoll) {
             createRoll(roll);
@@ -123,6 +129,7 @@ const SavedRolls: React.FC<SavedRollsProps> = ({
           cleanUpModal();
         }}
         onCancel={cleanUpModal}
+        roomId={roomId}
       />
       <DeleteRollDialog
         isOpen={Boolean(rollToDelete)}
