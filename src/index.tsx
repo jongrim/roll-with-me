@@ -46,7 +46,7 @@ const redirectSignIn = isLocalhost
   ? devDeployRedirectSignIn
   : isMainDeploy
   ? mainDeployRedirectSignIn
-  : nextDeployRedirectSignIn;
+  : productionRedirectSignIn;
 
 const redirectSignOut = isLocalhost
   ? localRedirectSignOut
@@ -54,7 +54,7 @@ const redirectSignOut = isLocalhost
   ? devDeployRedirectSignOut
   : isMainDeploy
   ? mainDeployRedirectSignOut
-  : nextDeployRedirectSignOut;
+  : productionRedirectSignOut;
 
 console.log({ redirectSignIn, redirectSignOut });
 
