@@ -18,7 +18,6 @@ export const makeNewVisualDie = async ({
     MIN_WIDTH,
     ...getBoxes(),
   });
-  console.log(top, left);
   const results = await getRandomNumbers(1);
   const diceWithResults = assignResultsToDice({
     dice: [die],

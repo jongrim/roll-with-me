@@ -273,6 +273,15 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           characterChoice={state.context.characterChoice}
           id={data?.id ?? ''}
           safetyModuleId={data?.safetyModule?.id ?? ''}
+          hexMap={
+            data?.hexMapModule ?? {
+              id: '',
+              gridConfiguration: '{}',
+              backgroundImages: [],
+              createdAt: '',
+              updatedAt: '',
+            }
+          }
           dice={{
             d4Dice:
               data?.d4Dice?.map(

@@ -528,6 +528,13 @@ export const createHeartRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -589,6 +596,13 @@ export const updateHeartRoom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -647,6 +661,13 @@ export const deleteHeartRoom = /* GraphQL */ `
         id
         xCardActive
         linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
         createdAt
         updatedAt
       }
@@ -1272,6 +1293,48 @@ export const deleteSafetyModule = /* GraphQL */ `
       id
       xCardActive
       linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createHexMapModule = /* GraphQL */ `
+  mutation CreateHexMapModule(
+    $input: CreateHexMapModuleInput!
+    $condition: ModelHexMapModuleConditionInput
+  ) {
+    createHexMapModule(input: $input, condition: $condition) {
+      id
+      gridConfiguration
+      backgroundImages
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateHexMapModule = /* GraphQL */ `
+  mutation UpdateHexMapModule(
+    $input: UpdateHexMapModuleInput!
+    $condition: ModelHexMapModuleConditionInput
+  ) {
+    updateHexMapModule(input: $input, condition: $condition) {
+      id
+      gridConfiguration
+      backgroundImages
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteHexMapModule = /* GraphQL */ `
+  mutation DeleteHexMapModule(
+    $input: DeleteHexMapModuleInput!
+    $condition: ModelHexMapModuleConditionInput
+  ) {
+    deleteHexMapModule(input: $input, condition: $condition) {
+      id
+      gridConfiguration
+      backgroundImages
       createdAt
       updatedAt
     }

@@ -12,13 +12,14 @@ import {
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
 import HeartDiceForm from './HeartDiceForm';
-import { HeartCharacter } from '../APITypes';
+import { HeartCharacter, RawHexMapModule } from '../APITypes';
 import CharacterList from './CharacterList';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
 import HeartDiceDisplay from './HeartDiceDisplay';
 import HeartMap from './HeartMap';
+import useMap from '../MapModule/useMap';
 
 interface HeartGameProps {
   name: string;
@@ -28,6 +29,7 @@ interface HeartGameProps {
   characterChoice: 'GM' | string;
   id: string;
   safetyModuleId: string;
+  hexMap: RawHexMapModule;
   dice: {
     d4Dice: { username: string; result: number }[];
     d6Dice: { username: string; result: number }[];
@@ -45,6 +47,7 @@ const HeartGameArea = ({
   characterChoice,
   id,
   safetyModuleId,
+  hexMap,
   dice,
 }: HeartGameProps) => {
   const activeLink = useColorModeValue(
@@ -52,6 +55,7 @@ const HeartGameArea = ({
     { opacity: 1, backgroundColor: 'gray.700' }
   );
   const ref = React.useRef<HTMLButtonElement>(null);
+  const mapModule = useMap({ map: hexMap });
   return (
     <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Alegreya">
       <GridItem>
@@ -176,7 +180,7 @@ const HeartGameArea = ({
               />
             </Route>
             <Route exact path={`/heart/${name}/map`}>
-              <HeartMap />
+              <HeartMap hexMap={mapModule} />
             </Route>
             <Redirect path="*" to={`/heart/${name}/table`} />
           </GridItem>

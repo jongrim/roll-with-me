@@ -72,6 +72,7 @@ type HeartRoom
   d10Dice: [AWSJSON!]!
   d12Dice: [AWSJSON!]!
   safetyModule: SafetyModule! @connection
+  hexMapModule: HexMapModule! @connection
   characters: [HeartCharacter] @connection(keyName: "byGame", fields: ["id"])
 }
 
@@ -149,6 +150,12 @@ type SafetyModule @model @auth(rules: [{ allow: public }, { allow: private }]) {
   id: ID!
   xCardActive: Boolean!
   linesAndVeils: [AWSJSON!]!
+}
+
+type HexMapModule @model @auth(rules: [{ allow: public }, { allow: private }]) {
+  id: ID!
+  gridConfiguration: AWSJSON!
+  backgroundImages: [AWSJSON!]!
 }
 
 type Label

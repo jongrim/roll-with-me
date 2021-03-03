@@ -14,8 +14,8 @@ interface MapDrawerProps {
 
 const MapDrawer = ({ children, isOpen, onClose }: MapDrawerProps) => {
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-      <DrawerOverlay>
+    <Drawer isOpen={isOpen} placement="left" size="md" onClose={onClose}>
+      <DrawerOverlay background="rgba(0, 0, 0, 0.12)">
         <DrawerContent>
           <DrawerCloseButton />
           {children}

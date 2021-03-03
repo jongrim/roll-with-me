@@ -108,9 +108,11 @@ export function getCountOfDiceTypesFromRoll(roll: SavedRoll): string {
     .join(' + ');
 }
 
+// Used for rolling a saved roll or a pre-defined roll
 export const savedRollToRoll = (name: string) => (roll: SavedRoll): Roll => {
   return {
     ...roll,
+    id: uuidv4(),
     createdAt: new Date().toISOString(),
     sum: 0,
     rolledBy: name,

@@ -112,8 +112,8 @@ const UserSavedRolls = () => {
 
   const itemBorder =
     colorMode === 'dark'
-      ? { border: '1px solid', borderColor: 'inherit' }
-      : { boxShadow: 'lg' };
+      ? { borderColor: 'inherit' }
+      : { boxShadow: 'md', borderColor: 'gray.50' };
 
   return (
     <Grid templateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']} gap={6}>
@@ -126,7 +126,14 @@ const UserSavedRolls = () => {
       {savedRolls.length > 0 &&
         savedRolls.map((roll) => {
           return (
-            <GridItem rounded="lg" {...itemBorder} px={4} py={3} key={roll.id}>
+            <GridItem
+              rounded="lg"
+              border="1px solid"
+              {...itemBorder}
+              px={4}
+              py={3}
+              key={roll.id}
+            >
               <Stat>
                 <StatNumber>{roll.rollName}</StatNumber>
                 <StatHelpText>{describeRoll(roll)}</StatHelpText>

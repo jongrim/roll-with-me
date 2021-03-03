@@ -40,6 +40,7 @@ import SpinningCube from '../SpinningCube/SpinningCube';
 import UsernameModal from '../UsernameModal/UsernameModal';
 import QuickRollBar from '../QuickRollBar/QuickRollBar';
 import useUserRoom from '../hooks/useUserRoom';
+import TextRoomControls from './TextRoomControls';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -245,6 +246,17 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             >
               Roll History
             </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+              flex={[1, 1, 1, 0]}
+            >
+              Room Controls
+            </Tab>
           </TabList>
           <TabPanels>
             <TabPanel px={0}>
@@ -291,7 +303,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                 <GridItem order={[1, 1, 2]}>
                   {rolls[0] ? (
                     <RollResults
-                      roll={rolls[0]}
+                      rolls={rolls.slice(0, 4)}
                       isRolling={loadingStates.isRolling}
                     />
                   ) : (
@@ -321,7 +333,16 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               />
             </TabPanel>
             <TabPanel px={0}>
-              <RollsHistory rolls={rolls} />
+              <RollsHistory
+                rolls={rolls}
+                roomId={roomId}
+                rollAgain={onSubmit}
+                saveRoll={createRoll}
+                username={username}
+              />
+            </TabPanel>
+            <TabPanel px={0}>
+              <TextRoomControls roomId={roomId} />
             </TabPanel>
           </TabPanels>
         </Tabs>

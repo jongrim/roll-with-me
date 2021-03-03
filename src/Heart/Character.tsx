@@ -98,7 +98,6 @@ const Character = ({ character, canEdit }: CharacterProps) => {
 
   const handleDelayedChange = (wait?: number) =>
     debouncedUpdate(async (key, val) => {
-      console.log('update');
       setSaving(true);
       await updateCharacter({
         id: character.id,
