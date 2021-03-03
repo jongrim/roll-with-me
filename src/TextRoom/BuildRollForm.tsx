@@ -20,6 +20,7 @@ import {
   StatNumber,
   Switch,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Die, Roll, SavedRoll } from '../types';
@@ -49,6 +50,8 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
 
   const [saveNewRoll, setSaveNewRoll] = React.useState(false);
 
+  const borderColor = useColorModeValue('gray.50', 'inherit');
+
   return (
     <>
       <NewDie onSubmit={addDieToDice} />
@@ -56,7 +59,14 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
         {dice.length > 0 ? (
           dice.map((die) => {
             return (
-              <GridItem key={die.id} boxShadow="lg" rounded="md" p={2}>
+              <GridItem
+                key={die.id}
+                boxShadow="lg"
+                rounded="md"
+                p={2}
+                border="1px solid"
+                borderColor={borderColor}
+              >
                 <Flex>
                   <Stat>
                     <StatLabel>{die.sides} sided</StatLabel>
