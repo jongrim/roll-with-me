@@ -27,12 +27,15 @@ import { Die, Roll, SavedRoll } from '../types';
 import NewDie from './NewDie';
 import { createNewRollFromValues, savedRollToRoll } from '../utils/rolls';
 import { compose } from '../utils/fnTools';
+import { CustomDie } from '../utils/dice';
 
 interface BuildRollFormProps {
   onSubmit: (roll: Roll) => void;
   saveRoll: (roll: SavedRoll) => void;
   isRolling: boolean;
   rolledByName: string;
+  savedCustomDice: CustomDie[];
+  roomId: string;
 }
 
 const BuildRollForm: React.FC<BuildRollFormProps> = ({
@@ -40,6 +43,8 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
   saveRoll,
   isRolling,
   rolledByName,
+  savedCustomDice,
+  roomId,
 }) => {
   // custom dice
   const [dice, setDice] = React.useState<Die[]>([]);
@@ -54,7 +59,11 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
 
   return (
     <>
-      <NewDie onSubmit={addDieToDice} />
+      <NewDie
+        onSubmit={addDieToDice}
+        customDice={savedCustomDice}
+        roomId={roomId}
+      />
       <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={4}>
         {dice.length > 0 ? (
           dice.map((die) => {

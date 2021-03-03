@@ -17,6 +17,12 @@ import {
   Icon,
   Collapse,
   HStack,
+  Switch,
+  useToast,
+  Text,
+  Link,
+  Flex,
+  Box,
 } from '@chakra-ui/react';
 import {
   GiD4,
@@ -29,27 +35,89 @@ import {
 import { RiAddCircleLine } from 'react-icons/ri';
 import { Die } from '../types';
 import { createDieOfNSides } from '../utils/rolls';
+import { createCustomDie, CustomDie } from '../utils/dice';
+import { API } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+
+async function saveCustomDiceToRoom({
+  id,
+  customDice,
+}: {
+  id: string;
+  customDice: CustomDie[];
+}) {
+  const jsonDice = customDice.map((die) => JSON.stringify(die));
+  await API.graphql({
+    query: mutations.updateTextRoom,
+    variables: {
+      input: {
+        id,
+        customDice: jsonDice,
+      },
+    },
+  });
+}
 
 interface NewDieProps {
   onSubmit: (die: Die) => void;
+  customDice?: CustomDie[];
+  roomId?: string;
 }
 
-const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
+const NewDie = ({ onSubmit, customDice, roomId }: NewDieProps) => {
   const [customFormVisible, setCustomFormVisible] = React.useState(false);
+  const [saveCustomDie, setSaveCustomDie] = React.useState(false);
   const [name, setName] = React.useState<string>('');
   const [sides, setSides] = React.useState<number>();
   const [qty, setQty] = React.useState<number>(1);
+  const toast = useToast();
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         // TODO should show errors
         if (!sides || !qty) return;
+        if (saveCustomDie && roomId && customDice) {
+          saveCustomDiceToRoom({
+            id: roomId,
+            customDice: customDice?.concat(createCustomDie({ name, sides })),
+          })
+            .then(() => {
+              toast({
+                status: 'success',
+                title: 'Custom die save to room',
+                duration: 3000,
+                isClosable: true,
+              });
+            })
+            .catch(() => {
+              toast({
+                status: 'warning',
+                title: 'Unable to save die',
+                duration: 3000,
+                isClosable: true,
+                description: (
+                  <Text>
+                    Please try again. If the problem persists, please{' '}
+                    <Link
+                      href="/feedback"
+                      isExternal
+                      fontWeight="600"
+                      textDecoration="underline"
+                    >
+                      report an issue
+                    </Link>
+                  </Text>
+                ),
+              });
+            });
+        }
         for (let i = 0; i < qty; i++) {
           onSubmit(createDieOfNSides({ name: name || `d${sides}`, n: sides }));
         }
         setName('');
         setSides(undefined);
+        setSaveCustomDie(false);
       }}
     >
       <Grid templateColumns="repeat(2, 1fr)" gap={4}>
@@ -152,6 +220,25 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
               }}
               aria-label="d20"
             />
+            {customDice?.map((die) => (
+              <Button
+                key={die.id}
+                h={20}
+                type="button"
+                variant="ghost"
+                display="inline-block"
+                onClick={() => {
+                  onSubmit(createDieOfNSides({ n: die.sides, name: die.name }));
+                }}
+              >
+                <Box as="span" fontSize="xs" display="block">
+                  {die.sides} sided
+                </Box>
+                <Box as="span" display="block" mt={1}>
+                  {die.name}
+                </Box>
+              </Button>
+            ))}
           </Grid>
         </GridItem>
         <GridItem colSpan={2}>
@@ -217,6 +304,22 @@ const NewDie: React.FC<NewDieProps> = ({ onSubmit }) => {
                   </NumberInput>
                 </FormControl>
               </GridItem>
+              {customDice && (
+                <GridItem colSpan={2} justifySelf="end">
+                  <FormControl id="save-custom-die">
+                    <Flex alignItems="center" justifyContent="flex-end">
+                      <FormLabel>Save as Custom Die?</FormLabel>
+                      <Switch
+                        isChecked={saveCustomDie}
+                        onChange={() => setSaveCustomDie((cur) => !cur)}
+                      />
+                    </Flex>
+                    <FormHelperText mt={-1}>
+                      Adds this custom die to the room
+                    </FormHelperText>
+                  </FormControl>
+                </GridItem>
+              )}
               <GridItem colStart={2} justifySelf="end">
                 <HStack spacing={4}>
                   <Button

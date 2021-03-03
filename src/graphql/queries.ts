@@ -195,6 +195,7 @@ export const listTextRooms = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt
@@ -216,6 +217,7 @@ export const getTextRoom = /* GraphQL */ `
       id
       name
       rolls
+      customDice
       counters
       createdAt
       updatedAt
@@ -248,6 +250,7 @@ export const textRoomByName = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt
@@ -826,6 +829,7 @@ export const getUserRoom = /* GraphQL */ `
         id
         name
         rolls
+        customDice
         counters
         createdAt
         updatedAt
@@ -935,6 +939,7 @@ export const listUserRooms = /* GraphQL */ `
           id
           name
           rolls
+          customDice
           counters
           createdAt
           updatedAt
