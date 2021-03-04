@@ -56,8 +56,6 @@ const redirectSignOut = isLocalhost
   ? mainDeployRedirectSignOut
   : productionRedirectSignOut;
 
-console.log({ redirectSignIn, redirectSignOut });
-
 const updatedAwsConfig = {
   ...awsConfig,
   oauth: {
