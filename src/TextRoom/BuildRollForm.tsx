@@ -115,8 +115,6 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             saveRoll(newRoll);
           }
           onSubmit(newRoll);
-          setName('');
-          setModifier(undefined);
           setSaveNewRoll(false);
         }}
       >
