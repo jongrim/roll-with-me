@@ -103,8 +103,6 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
     createNewRollFromValues
   );
 
-  console.log(customDice);
-
   return (
     <Box h="full" overflow="auto">
       <SettingsBar username={username} setUsername={setUsername} />

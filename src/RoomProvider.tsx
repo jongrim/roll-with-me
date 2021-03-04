@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import HeartRoom from './Heart/HeartRoom';
 import InteractiveRoom from './InteractiveRoom/InteractiveRoom';
 import { roomCodes } from './roomPaths';
@@ -19,7 +19,7 @@ function RoomProvider() {
     case roomCodes.heart:
       return <HeartRoom name={name} />;
     default:
-      return <div>Sorry, that room type isn't recognized</div>;
+      return <Redirect path="*" to="/new-room?notFound=true" />;
   }
 }
 
