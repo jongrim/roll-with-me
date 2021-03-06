@@ -10,6 +10,7 @@ import Feedback from './Feedback/Feedback';
 import Privacy from './Privacy/Privacy';
 import NewRoom from './NewRoom/NewRoom';
 import UserRoomProvider from './UserRoomProvider';
+import Guide from './Guide/Guide';
 
 export const rollWithMeTheme = extendTheme({
   colors: {
@@ -66,6 +67,9 @@ function App() {
                 </Route>
                 <Route path="/privacy">
                   <Privacy />
+                </Route>
+                <Route path="/guide">
+                  <Guide />
                 </Route>
               </Switch>
             </Router>

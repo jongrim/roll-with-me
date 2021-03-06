@@ -310,6 +310,16 @@ function Home() {
             >
               Privacy policy
             </Link>
+            <Link
+              as={ReactRouterLink}
+              to="/guide"
+              color="gray.600"
+              _hover={{
+                color: 'brand.500',
+              }}
+            >
+              Usage guide
+            </Link>
           </HStack>
         </Center>
         <Flex justifyContent="center">

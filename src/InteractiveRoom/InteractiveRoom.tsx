@@ -68,6 +68,7 @@ import XCardModal from '../XCardModal/XCardModal';
 import { UserRoomContext } from '../UserRoomProvider';
 import useUserRoom from '../hooks/useUserRoom';
 import BackgroundImageModal from './BackgroundImageModal';
+import InteractiveRoomControls from './InteractiveRoomControls';
 
 gsap.registerPlugin(Draggable);
 
@@ -218,6 +219,16 @@ function InteractiveRoom({ name }: Props) {
               opacity="0.6"
             >
               Safety
+            </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+            >
+              Room Controls
             </Tab>
           </TabList>
           <TabPanels display="flex" flexDirection="column" flex="1">
@@ -444,6 +455,9 @@ function InteractiveRoom({ name }: Props) {
                   setActionInProgress={setActionInProgress}
                 />
               )}
+            </TabPanel>
+            <TabPanel>
+              {data?.id && <InteractiveRoomControls roomId={data.id} />}
             </TabPanel>
           </TabPanels>
         </Tabs>
