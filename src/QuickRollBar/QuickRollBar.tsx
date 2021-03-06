@@ -9,15 +9,17 @@ import {
 } from '@chakra-ui/react';
 import { getRollFromQuickString } from '../utils/rolls';
 import { Roll } from '../types';
+import { CustomDie } from '../utils/dice';
 
 interface QuickRollBarProps {
   name: string;
   onSubmit: (roll: Roll) => void;
   placeholder: string;
+  customDice?: CustomDie[];
 }
 
 const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
-  ({ name, onSubmit, placeholder }, ref) => {
+  ({ name, onSubmit, placeholder, customDice }, ref) => {
     const [quickRollValue, setQuickRollValue] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
     return (
@@ -25,7 +27,10 @@ const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
         onSubmit={(e) => {
           e.preventDefault();
           try {
-            const quickRoll = getRollFromQuickString(quickRollValue);
+            const quickRoll = getRollFromQuickString(
+              quickRollValue,
+              customDice
+            );
             quickRoll.rolledBy = name;
             onSubmit(quickRoll);
             setErrorMessage('');

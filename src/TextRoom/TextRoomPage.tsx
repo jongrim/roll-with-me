@@ -114,6 +114,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               onSubmit={onSubmit}
               ref={quickRollRef}
               placeholder="Quick roll (ex. 2d6+1 as Resist)"
+              customDice={customDice}
             />
           </Box>
           <Flex w="full">

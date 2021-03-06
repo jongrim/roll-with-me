@@ -15,7 +15,6 @@ import {
   Tooltip,
   Grid,
   GridItem,
-  useColorMode,
   Spacer,
   Button,
   Flex,
@@ -24,6 +23,7 @@ import {
   Stack,
   useToast,
   Link,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import {
   RiDeleteBin4Line,
@@ -139,11 +139,11 @@ const RollHistoryEntry = ({
   saveRoll: (roll: SavedRoll) => void;
 }) => {
   const { isOpen, onToggle } = useDisclosure();
-  const { colorMode } = useColorMode();
-  const itemBorder =
-    colorMode === 'dark'
-      ? { borderColor: 'inherit' }
-      : { boxShadow: 'md', borderColor: 'gray.50' };
+  const subtleTextColor = useColorModeValue('gray.600', 'gray.400');
+  const itemBorder = useColorModeValue(
+    { boxShadow: 'md', borderColor: 'gray.50' },
+    { borderColor: 'inherit' }
+  );
   return (
     <GridItem
       key={`${roll.id} - ${roll.createdAt}`}
@@ -159,7 +159,7 @@ const RollHistoryEntry = ({
             <Text fontSize="xl" fontWeight="bold" lineHeight="tall">
               {roll.sum}
             </Text>
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm" color={subtleTextColor}>
               ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
               {roll.modifier})
             </Text>
