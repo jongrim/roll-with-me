@@ -16,6 +16,7 @@ import {
   Box,
   Center,
   HStack,
+  LightMode,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
@@ -41,9 +42,15 @@ function Home() {
   }, []);
   const history = useHistory();
   const requestRoom = (type: 'r' | 'i' | 'trophy-dark') => {
-    handleNewRoomRequest(type, name).then(() => {
-      history.push(`/${type}/${name}`);
-    });
+    handleNewRoomRequest(type, name)
+      .then(() => {
+        history.push(`/${type}/${name}`);
+      })
+      .catch((e) => {
+        if (e.message === 'room exists') {
+          history.push(`/new-room?name=${name}&roomExists=true`);
+        }
+      });
   };
   return (
     <Grid
@@ -98,14 +105,16 @@ function Home() {
                 placeholder="Loading..."
               />
             </InputGroup>
-            <Button
-              rightIcon={<RiArrowRightLine />}
-              colorScheme="brand"
-              variant="outline"
-              onClick={() => requestRoom('r')}
-            >
-              Go
-            </Button>
+            <LightMode>
+              <Button
+                rightIcon={<RiArrowRightLine />}
+                colorScheme="brand"
+                variant="outline"
+                onClick={() => requestRoom('r')}
+              >
+                Go
+              </Button>
+            </LightMode>
           </Flex>
           <Text color="gray.600" mt={2} fontSize="sm">
             This name identifies your room. Change it to whatever you like!
@@ -304,6 +313,16 @@ function Home() {
             >
               Privacy policy
             </Link>
+            <Link
+              as={ReactRouterLink}
+              to="/guide"
+              color="gray.600"
+              _hover={{
+                color: 'brand.500',
+              }}
+            >
+              Usage guide
+            </Link>
           </HStack>
         </Center>
         <Flex justifyContent="center">
@@ -345,7 +364,7 @@ function Home() {
           <Link
             isExternal
             color="brand.500"
-            to="https://obscure-ridge-20711.herokuapp.com/"
+            href="https://obscure-ridge-20711.herokuapp.com/"
             ml={1}
           >
             here

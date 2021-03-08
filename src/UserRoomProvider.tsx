@@ -173,7 +173,9 @@ const userRoomsReducer = (
     case 'load':
       return {
         isLoaded: true,
-        userRooms: event.payload?.data ?? state.userRooms,
+        userRooms:
+          event.payload?.data.filter((room) => room[room.roomKey]?.name) ??
+          state.userRooms,
       };
     case 'addRoom':
       return {
