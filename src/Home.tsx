@@ -41,9 +41,15 @@ function Home() {
   }, []);
   const history = useHistory();
   const requestRoom = (type: 'r' | 'i' | 'trophy-dark') => {
-    handleNewRoomRequest(type, name).then(() => {
-      history.push(`/${type}/${name}`);
-    });
+    handleNewRoomRequest(type, name)
+      .then(() => {
+        history.push(`/${type}/${name}`);
+      })
+      .catch((e) => {
+        if (e.message === 'room exists') {
+          history.push(`/new-room?name=${name}&roomExists=true`);
+        }
+      });
   };
   return (
     <Grid
@@ -303,6 +309,16 @@ function Home() {
               }}
             >
               Privacy policy
+            </Link>
+            <Link
+              as={ReactRouterLink}
+              to="/guide"
+              color="gray.600"
+              _hover={{
+                color: 'brand.500',
+              }}
+            >
+              Usage guide
             </Link>
           </HStack>
         </Center>

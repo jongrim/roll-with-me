@@ -39,17 +39,6 @@ async function deleteRoom({ id }: { id: string }) {
   });
 }
 
-async function deleteUserRoom({ id }: { id: string }) {
-  await API.graphql({
-    query: mutations.deleteUserRoom,
-    variables: {
-      input: {
-        id,
-      },
-    },
-  });
-}
-
 async function updateDice({
   id,
   customDice,
@@ -142,6 +131,7 @@ function TextRoomControls({ roomId, savedCustomDice }: TextRoomControlsProps) {
       <Divider my={2} />
       <Stack spacing={6} mt={4}>
         <ClearRollsView roomId={roomId} />
+        <DeleteRoomView roomId={roomId} />
       </Stack>
     </Box>
   );

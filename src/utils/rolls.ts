@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Die, Roll, SavedRoll } from '../types';
+import { CustomDie } from './dice';
 
 export function createDieOfNSides({
   n,
@@ -52,46 +53,132 @@ export function sumOfDice(dice: Die[]): number {
   return dice.reduce((acc, cur) => acc + (cur.result || 0), 0);
 }
 
-export function getRollFromQuickString(s: string): Roll {
-  const baseDiceReg = /\d{0,3}d\d+/gi;
-  const modifierReg = /(\+|-)\s?\d/;
-  const rollNameReg = /as (.+)/i;
-  const countReg = /\d+d/;
-  const sidesReg = /d\d+/;
+export function getRollFromQuickString(
+  s: string,
+  customDice?: CustomDie[]
+): Roll {
+  const specifiedRollName = getRollName(s);
+  const modifier = getModifier(s);
 
-  const baseDice = [...s.matchAll(baseDiceReg)];
-  if (baseDice.length === 0) {
-    throw new Error('could not parse roll');
-  }
-  const modifier = modifierReg.exec(s);
-  const rollNameGroups = s.match(rollNameReg);
-
-  const fallbackName = baseDice.map((group) => group[0]).join(', ');
-  const dice = baseDice
-    .map((group) => {
-      const count = countReg.exec(group[0])?.[0].replace('d', '');
-      const sides = sidesReg.exec(group[0])?.[0].replace('d', '');
-      return makeNDice({
-        count: Number(count),
-        sides: Number(sides),
-      });
-    })
-    .flat();
+  const maybeCustomDice = getCustomDice(s, customDice);
+  const maybeBaseDice = getBaseDice(s);
+  const dice = [...maybeBaseDice, ...maybeCustomDice];
 
   return {
     id: uuidv4(),
     createdAt: new Date().toISOString(),
-    modifier: Number(modifier?.[0].replace(' ', '') ?? 0),
-    rollName: rollNameGroups?.[1] ?? `${fallbackName} ${modifier?.[0] ?? ''}`,
+    modifier: modifier,
+    rollName: specifiedRollName ?? describeRoll({ dice, modifier }),
     rolledBy: '',
     sum: 0,
     dice,
   };
 }
 
-export function describeRoll(roll: SavedRoll): string {
-  const diceString = getCountOfDiceTypesFromRoll(roll);
-  return `(${diceString} + ${roll.modifier})`;
+export function getRollName(s: string) {
+  const rollNameReg = /as (.+)/i;
+  const rollNameGroups = s.match(rollNameReg);
+  return rollNameGroups?.[1];
+}
+
+export function getModifier(s: string) {
+  const modifierReg = /(\+|-)\s?\d/;
+  const modifier = modifierReg.exec(s);
+  return Number(modifier?.[0].replace(' ', '') ?? 0);
+}
+
+export function getCustomDice(s: string, customDice?: CustomDie[]) {
+  let customMatches: {
+    count: number;
+    sides: number;
+    name: string;
+  }[] = [];
+
+  if (customDice) {
+    customDice.forEach((die) => {
+      const dieNameReg = new RegExp(`(\\d*)\\s*(${die.name})\\b`, 'i');
+      const diceNameGroups = s.match(dieNameReg);
+      if (diceNameGroups) {
+        const dieTemplate = customDice.find((d) => d.id === die.id);
+        if (!dieTemplate) return;
+        customMatches.push({
+          count: Number(diceNameGroups[1]),
+          sides: dieTemplate.sides,
+          name: dieTemplate.name,
+        });
+      }
+    });
+  }
+
+  if (customMatches.length > 0) {
+    const dice = customMatches
+      .map((match) => {
+        return makeNDice({
+          count: match.count,
+          sides: match.sides,
+          name: match.name,
+        });
+      })
+      .flat();
+    return dice;
+  }
+  return [];
+}
+
+export function getBaseDice(s: string) {
+  const baseDiceReg = /\d{0,3}\s*d\s*\d+/gi;
+
+  const countReg = /\d+\s*d/i;
+  const sidesReg = /d\s*\d+/i;
+
+  const baseDice = [...s.matchAll(baseDiceReg)];
+  if (baseDice.length > 0) {
+    const dice = baseDice
+      .map((group) => {
+        const count = countReg
+          .exec(group[0])?.[0]
+          .toLowerCase()
+          .replace('d', '')
+          .trim();
+        const sides = sidesReg
+          .exec(group[0])?.[0]
+          .toLowerCase()
+          .replace('d', '')
+          .trim();
+        return makeNDice({
+          count: Number(count),
+          sides: Number(sides),
+        });
+      })
+      .flat();
+    return dice;
+  }
+  return [];
+}
+
+export function describeRoll({
+  dice,
+  modifier,
+}: {
+  dice: Die[];
+  modifier: number;
+}): string {
+  const diceString = getCountOfDiceTypesFromDice(dice);
+  return `${diceString} + ${modifier}`;
+}
+
+export function getCountOfDiceTypesFromDice(dice: Die[]): string {
+  let diceCountMap: Record<string, number> = {};
+  dice.forEach((d) => {
+    if (diceCountMap[d.name]) {
+      diceCountMap[d.name] += 1;
+    } else {
+      diceCountMap[d.name] = 1;
+    }
+  });
+  return Object.entries(diceCountMap)
+    .map(([key, val]) => `${val} ${key}`)
+    .join(' + ');
 }
 
 export function getCountOfDiceTypesFromRoll(roll: SavedRoll): string {
