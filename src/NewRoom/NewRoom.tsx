@@ -101,7 +101,7 @@ const NewRoom: React.FC = () => {
   const query = useQuery();
   const showRoomExists = query.get('roomExists') ?? false;
   const showNotFound = query.get('notFound') ?? false;
-  const options = ['Text', 'Visual', 'Trophy Dark', 'Heart'];
+  const options = ['Text', 'Visual', 'Trophy Dark'];
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   const [name, setName] = React.useState(query.get('name') ?? '');
