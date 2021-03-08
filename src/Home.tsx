@@ -16,6 +16,7 @@ import {
   Box,
   Center,
   HStack,
+  LightMode,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
@@ -104,14 +105,16 @@ function Home() {
                 placeholder="Loading..."
               />
             </InputGroup>
-            <Button
-              rightIcon={<RiArrowRightLine />}
-              colorScheme="brand"
-              variant="outline"
-              onClick={() => requestRoom('r')}
-            >
-              Go
-            </Button>
+            <LightMode>
+              <Button
+                rightIcon={<RiArrowRightLine />}
+                colorScheme="brand"
+                variant="outline"
+                onClick={() => requestRoom('r')}
+              >
+                Go
+              </Button>
+            </LightMode>
           </Flex>
           <Text color="gray.600" mt={2} fontSize="sm">
             This name identifies your room. Change it to whatever you like!
@@ -361,7 +364,7 @@ function Home() {
           <Link
             isExternal
             color="brand.500"
-            to="https://obscure-ridge-20711.herokuapp.com/"
+            href="https://obscure-ridge-20711.herokuapp.com/"
             ml={1}
           >
             here
