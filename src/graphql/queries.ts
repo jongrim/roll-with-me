@@ -485,6 +485,293 @@ export const interactiveRoomByName = /* GraphQL */ `
     }
   }
 `;
+export const getTrophyGoldRoom = /* GraphQL */ `
+  query GetTrophyGoldRoom($id: ID!) {
+    getTrophyGoldRoom(id: $id) {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listTrophyGoldRooms = /* GraphQL */ `
+  query ListTrophyGoldRooms(
+    $filter: ModelTrophyGoldRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyGoldRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        bestiary
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            weakPoint
+            lightDice
+            darkDice
+            occupation
+            background
+            drive
+            rituals
+            combatEquipment
+            foundEquipment
+            burdens
+            hoard
+            gold
+            tokens
+            training
+            household
+            library
+            backpack
+            conditions
+            notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        hexMapModule {
+          id
+          gridConfiguration
+          backgroundImages
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const trophyGoldRoomByName = /* GraphQL */ `
+  query TrophyGoldRoomByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTrophyGoldRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    trophyGoldRoomByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        bestiary
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+        characters {
+          items {
+            id
+            gameID
+            playerName
+            characterName
+            characterPronouns
+            characterImageUrl
+            ruin
+            weakPoint
+            lightDice
+            darkDice
+            occupation
+            background
+            drive
+            rituals
+            combatEquipment
+            foundEquipment
+            burdens
+            hoard
+            gold
+            tokens
+            training
+            household
+            library
+            backpack
+            conditions
+            notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        safetyModule {
+          id
+          xCardActive
+          linesAndVeils
+          createdAt
+          updatedAt
+        }
+        hexMapModule {
+          id
+          gridConfiguration
+          backgroundImages
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getTrophyGoldCharacter = /* GraphQL */ `
+  query GetTrophyGoldCharacter($id: ID!) {
+    getTrophyGoldCharacter(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrophyGoldCharacters = /* GraphQL */ `
+  query ListTrophyGoldCharacters(
+    $filter: ModelTrophyGoldCharacterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyGoldCharacters(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gameID
+        playerName
+        characterName
+        characterPronouns
+        characterImageUrl
+        ruin
+        weakPoint
+        lightDice
+        darkDice
+        occupation
+        background
+        drive
+        rituals
+        combatEquipment
+        foundEquipment
+        burdens
+        hoard
+        gold
+        tokens
+        training
+        household
+        library
+        backpack
+        conditions
+        notes
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getHeartRoom = /* GraphQL */ `
   query GetHeartRoom($id: ID!) {
     getHeartRoom(id: $id) {

@@ -473,6 +473,312 @@ export const deleteInteractiveRoom = /* GraphQL */ `
     }
   }
 `;
+export const createTrophyGoldRoom = /* GraphQL */ `
+  mutation CreateTrophyGoldRoom(
+    $input: CreateTrophyGoldRoomInput!
+    $condition: ModelTrophyGoldRoomConditionInput
+  ) {
+    createTrophyGoldRoom(input: $input, condition: $condition) {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateTrophyGoldRoom = /* GraphQL */ `
+  mutation UpdateTrophyGoldRoom(
+    $input: UpdateTrophyGoldRoomInput!
+    $condition: ModelTrophyGoldRoomConditionInput
+  ) {
+    updateTrophyGoldRoom(input: $input, condition: $condition) {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteTrophyGoldRoom = /* GraphQL */ `
+  mutation DeleteTrophyGoldRoom(
+    $input: DeleteTrophyGoldRoomInput!
+    $condition: ModelTrophyGoldRoomConditionInput
+  ) {
+    deleteTrophyGoldRoom(input: $input, condition: $condition) {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createTrophyGoldCharacter = /* GraphQL */ `
+  mutation CreateTrophyGoldCharacter(
+    $input: CreateTrophyGoldCharacterInput!
+    $condition: ModelTrophyGoldCharacterConditionInput
+  ) {
+    createTrophyGoldCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrophyGoldCharacter = /* GraphQL */ `
+  mutation UpdateTrophyGoldCharacter(
+    $input: UpdateTrophyGoldCharacterInput!
+    $condition: ModelTrophyGoldCharacterConditionInput
+  ) {
+    updateTrophyGoldCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrophyGoldCharacter = /* GraphQL */ `
+  mutation DeleteTrophyGoldCharacter(
+    $input: DeleteTrophyGoldCharacterInput!
+    $condition: ModelTrophyGoldCharacterConditionInput
+  ) {
+    deleteTrophyGoldCharacter(input: $input, condition: $condition) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createHeartRoom = /* GraphQL */ `
   mutation CreateHeartRoom(
     $input: CreateHeartRoomInput!

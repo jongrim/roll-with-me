@@ -59,9 +59,6 @@ function App() {
                 <Route path="/sign-in">
                   <SignIn />
                 </Route>
-                <Route path="/:type/:name">
-                  <RoomProvider />
-                </Route>
                 <Route path="/feedback">
                   <Feedback />
                 </Route>
@@ -70,6 +67,9 @@ function App() {
                 </Route>
                 <Route path="/guide">
                   <Guide />
+                </Route>
+                <Route path="/:type/:name">
+                  <RoomProvider />
                 </Route>
               </Switch>
             </Router>
