@@ -11,25 +11,11 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Center,
-  Icon,
 } from '@chakra-ui/react';
-import {
-  GiInvertedDice1,
-  GiInvertedDice2,
-  GiInvertedDice3,
-  GiInvertedDice4,
-  GiInvertedDice5,
-  GiInvertedDice6,
-  GiDiceSixFacesOne,
-  GiDiceSixFacesTwo,
-  GiDiceSixFacesThree,
-  GiDiceSixFacesFour,
-  GiDiceSixFacesFive,
-  GiDiceSixFacesSix,
-} from 'react-icons/gi';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import { getRandomNumbers } from '../functions/randomNumbers';
+import { DarkDie, LightDie } from '../TrophyShared/LightDiceDarkDice';
 
 interface TrophyDiceProps {
   lightDice: string[];
@@ -162,43 +148,6 @@ const TrophyDice = ({ lightDice, darkDice, id }: TrophyDiceProps) => {
       </Grid>
     </form>
   );
-};
-
-const LightDie = ({ result }: { result: string }) => {
-  switch (result) {
-    case '1':
-      return <Icon h={14} w={14} as={GiDiceSixFacesOne} />;
-    case '2':
-      return <Icon h={14} w={14} as={GiDiceSixFacesTwo} />;
-    case '3':
-      return <Icon h={14} w={14} as={GiDiceSixFacesThree} />;
-    case '4':
-      return <Icon h={14} w={14} as={GiDiceSixFacesFour} />;
-    case '5':
-      return <Icon h={14} w={14} as={GiDiceSixFacesFive} />;
-    case '6':
-      return <Icon h={14} w={14} as={GiDiceSixFacesSix} />;
-    default:
-      return null;
-  }
-};
-const DarkDie = ({ result }: { result: string }) => {
-  switch (result) {
-    case '1':
-      return <Icon h={14} w={14} as={GiInvertedDice1} />;
-    case '2':
-      return <Icon h={14} w={14} as={GiInvertedDice2} />;
-    case '3':
-      return <Icon h={14} w={14} as={GiInvertedDice3} />;
-    case '4':
-      return <Icon h={14} w={14} as={GiInvertedDice4} />;
-    case '5':
-      return <Icon h={14} w={14} as={GiInvertedDice5} />;
-    case '6':
-      return <Icon h={14} w={14} as={GiInvertedDice6} />;
-    default:
-      return null;
-  }
 };
 
 export default TrophyDice;

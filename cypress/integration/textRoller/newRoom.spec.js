@@ -8,9 +8,7 @@ context('guest user', () => {
   });
 
   it('is prompted for a username', () => {
-    cy.visit(
-      'http://localhost:3000/r/advice-effort-find-hollow-written-figure'
-    );
+    cy.visit('http://localhost:3000/r/cypress-testing-room');
     cy.findByTestId('username-modal').within(() => {
       cy.findByText('Set your name');
       cy.findByText('Choose a username for your rolls');

@@ -8,9 +8,7 @@ context('signed in', () => {
   });
 
   it('can add safety items to a room', () => {
-    cy.visit(
-      'http://localhost:3000/r/advice-effort-find-hollow-written-figure'
-    );
+    cy.visit('http://localhost:3000/r/cypress-testing-room');
     cy.findByText('Safety').click();
     cy.findByTestId('new-item-form').within(() => {
       cy.findByLabelText(/Item/i).type('spiders');
