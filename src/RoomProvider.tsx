@@ -5,6 +5,7 @@ import InteractiveRoom from './InteractiveRoom/InteractiveRoom';
 import { roomCodes } from './roomPaths';
 import TextRoom from './TextRoom/TextRoom';
 import TrophyDarkRoom from './TrophyDark/TrophyDarkRoom';
+import TrophyGoldRoom from './TrophyGold/TrophyGoldRoom';
 
 function RoomProvider() {
   const { name, type } = useParams<{ name: string; type: string }>();
@@ -18,6 +19,8 @@ function RoomProvider() {
       return <TrophyDarkRoom name={name} />;
     case roomCodes.heart:
       return <HeartRoom name={name} />;
+    case roomCodes.trophyGold:
+      return <TrophyGoldRoom name={name} />;
     default:
       return <Redirect path="*" to="/new-room?notFound=true" />;
   }

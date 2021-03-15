@@ -27,10 +27,18 @@ import {
   roomNames,
   roomNamesType,
 } from '../roomPaths';
+import isLocalhost from '../utils/isLocalHost';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
+
+const options = [
+  'Text',
+  'Visual',
+  'Trophy Dark',
+  ...(isLocalhost ? ['Trophy Gold', 'Heart'] : []),
+];
 
 interface RoomTypeState {
   roomShortCode: roomPathCodes;
@@ -45,6 +53,8 @@ const getRoomShortCode = (type: string) => {
       return roomCodes.visual;
     case roomNames.trophyDark:
       return roomCodes.trophyDark;
+    case roomNames.trophyGold:
+      return roomCodes.trophyGold;
     case roomNames.heart:
       return roomCodes.heart;
     default:
@@ -61,6 +71,8 @@ const getDefaultValueFromType = (type: string) => {
       return roomNames.visual;
     case 'trophy-dark':
       return roomNames.trophyDark;
+    case 'trophy-gold':
+      return roomNames.trophyGold;
     case 'heart':
       return roomNames.heart;
     default:
@@ -89,6 +101,10 @@ const roomTypeReducer = (
       return {
         roomShortCode: roomCodes.trophyDark,
       };
+    case 'Trophy Gold':
+      return {
+        roomShortCode: roomCodes.trophyGold,
+      };
     case 'Heart':
       return {
         roomShortCode: roomCodes.heart,
@@ -101,7 +117,6 @@ const NewRoom: React.FC = () => {
   const query = useQuery();
   const showRoomExists = query.get('roomExists') ?? false;
   const showNotFound = query.get('notFound') ?? false;
-  const options = ['Text', 'Visual', 'Trophy Dark'];
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   const [name, setName] = React.useState(query.get('name') ?? '');

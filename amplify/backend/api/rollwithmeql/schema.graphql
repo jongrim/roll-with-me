@@ -61,6 +61,67 @@ type TrophyDarkCharacter
   rituals: [String!]!
 }
 
+type TrophyGoldRoom
+  @model
+  @key(
+    name: "trophyGoldRoomByName"
+    fields: ["name"]
+    queryField: "trophyGoldRoomByName"
+  )
+  @auth(rules: [{ allow: public }, { allow: private }]) {
+  id: ID!
+  name: String!
+  safetyModule: SafetyModule! @connection
+  hexMapModule: HexMapModule @connection
+  bestiary: [AWSJSON!]!
+  lightDice: [AWSJSON!]!
+  darkDice: [AWSJSON!]!
+  goldDice: [AWSJSON!]!
+  diceMode: TrophyGoldDiceMode!
+  characters: [TrophyGoldCharacter]
+    @connection(keyName: "byGame", fields: ["id"])
+}
+
+enum TrophyGoldDiceMode {
+  risk
+  hunt
+  combat
+  contest
+  gold
+}
+
+type TrophyGoldCharacter
+  @model
+  @auth(rules: [{ allow: public }, { allow: private }])
+  @key(name: "byGame", fields: ["gameID"]) {
+  id: ID!
+  gameID: ID!
+  playerName: String!
+  characterName: String
+  characterPronouns: String
+  characterImageUrl: AWSURL
+  ruin: Int!
+  weakPoint: Int
+  lightDice: [AWSJSON!]
+  darkDice: [AWSJSON!]
+  occupation: String
+  background: String
+  drive: String
+  rituals: [String!]
+  combatEquipment: [AWSJSON!]
+  foundEquipment: [AWSJSON!]
+  burdens: Int!
+  hoard: Int!
+  gold: Int!
+  tokens: Int!
+  training: [String!]
+  household: AWSJSON
+  library: [AWSJSON!]
+  backpack: AWSJSON!
+  conditions: [String!]
+  notes: AWSJSON!
+}
+
 type HeartRoom
   @model
   @key(name: "heartRoomByName", fields: ["name"], queryField: "heartRoomByName")
@@ -225,6 +286,10 @@ type Subscription {
     @aws_subscribe(mutations: ["createTrophyDarkCharacter"])
   onUpdateTrophyDarkCharacterById(id: String!): TrophyDarkCharacter
     @aws_subscribe(mutations: ["updateTrophyDarkCharacter"])
+  onCreateTrophyGoldCharacterByGame(gameID: String!): TrophyGoldCharacter
+    @aws_subscribe(mutations: ["createTrophyGoldCharacter"])
+  onUpdateTrophyGoldCharacterById(id: String!): TrophyGoldCharacter
+    @aws_subscribe(mutations: ["updateTrophyGoldCharacter"])
   onCreateHeartCharacterByGame(gameID: String!): HeartCharacter
     @aws_subscribe(mutations: ["createHeartCharacter"])
   onUpdateHeartCharacterById(id: String!): HeartCharacter

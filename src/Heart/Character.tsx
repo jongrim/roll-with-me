@@ -43,7 +43,6 @@ import {
   Resource,
   skills,
 } from './HeartGameTypes';
-import debounce from 'lodash.debounce';
 import AbilityForm from './AbilityForm';
 import EquipmentForm from './EquipmentForm';
 import ResourceForm from './ResourceForm';
@@ -51,6 +50,7 @@ import BeatsForm from './BeatsForm';
 import FalloutForm from './FalloutForm';
 import BondForm from './BondForm';
 import heart from './heart.svg';
+import debouncedUpdate from '../utils/debouncedUpdate';
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
@@ -66,14 +66,6 @@ const updateCharacter = async (character: UpdateHeartCharacterInput) => {
     console.warn(e);
   }
 };
-
-const debouncedUpdate = (
-  cb: (key: string, val: any, wait?: number) => Promise<void>,
-  wait = 1000
-) =>
-  debounce((key: string, val: any) => {
-    cb(key, val);
-  }, wait);
 interface CharacterProps {
   character: Exclude<HeartCharacter, null>;
   canEdit: boolean;

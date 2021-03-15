@@ -1,3 +1,4 @@
+import { TrophyGoldDiceMode } from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export interface TextRoomDetails {
@@ -35,6 +36,54 @@ export interface TrophyDarkCharacter {
   background: string;
   drive: string;
   rituals: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RawTrophyGoldRoomDetails {
+  id: string;
+  name: string;
+  bestiary: Array<string>;
+  lightDice: Array<string>;
+  darkDice: Array<string>;
+  goldDice: Array<string>;
+  diceMode: TrophyGoldDiceMode;
+  createdAt: string;
+  updatedAt: string;
+  characters: {
+    items: RawTrophyGoldCharacter[];
+  };
+  safetyModule: RawSafetyModule;
+  hexMapModule?: RawHexMapModule;
+}
+
+export interface RawTrophyGoldCharacter {
+  id: string;
+  gameID: string;
+  playerName: string;
+  characterName?: string;
+  characterPronouns?: string;
+  characterImageUrl?: string;
+  ruin?: number;
+  weakPoint?: number;
+  lightDice?: Array<string>;
+  darkDice?: Array<string>;
+  occupation?: string;
+  background?: string;
+  drive?: string;
+  rituals?: Array<string>;
+  combatEquipment?: Array<string>;
+  foundEquipment?: Array<string>;
+  burdens?: number;
+  hoard?: number;
+  gold?: number;
+  tokens?: number;
+  training?: Array<string>;
+  household?: string;
+  library?: Array<string>;
+  backpack?: string;
+  conditions?: Array<string>;
+  notes: string;
   createdAt: string;
   updatedAt: string;
 }

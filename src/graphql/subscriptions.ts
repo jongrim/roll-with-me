@@ -270,6 +270,74 @@ export const onUpdateTrophyDarkCharacterById = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
+  subscription OnCreateTrophyGoldCharacterByGame($gameID: String!) {
+    onCreateTrophyGoldCharacterByGame(gameID: $gameID) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldCharacterById($id: String!) {
+    onUpdateTrophyGoldCharacterById(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateHeartCharacterByGame = /* GraphQL */ `
   subscription OnCreateHeartCharacterByGame($gameID: String!) {
     onCreateHeartCharacterByGame(gameID: $gameID) {
@@ -776,6 +844,294 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
         }
         nextToken
       }
+    }
+  }
+`;
+export const onCreateTrophyGoldRoom = /* GraphQL */ `
+  subscription OnCreateTrophyGoldRoom {
+    onCreateTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateTrophyGoldRoom = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldRoom {
+    onUpdateTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteTrophyGoldRoom = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldRoom {
+    onDeleteTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onCreateTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnCreateTrophyGoldCharacter {
+    onCreateTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldCharacter {
+    onUpdateTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldCharacter {
+    onDeleteTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
     }
   }
 `;

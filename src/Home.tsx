@@ -231,6 +231,26 @@ function Home() {
               {isLocalhost && (
                 <Link
                   as={ReactRouterLink}
+                  color="yellow.700"
+                  w="full"
+                  to="/new-room?type=trophy-gold"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid"
+                  borderColor="yellow.700"
+                  borderRadius="md"
+                  py={2}
+                  _hover={{
+                    backgroundColor: 'yellow.50',
+                  }}
+                >
+                  Trophy Gold
+                </Link>
+              )}
+              {isLocalhost && (
+                <Link
+                  as={ReactRouterLink}
                   color="red.700"
                   w="full"
                   to="/new-room?type=Heart"
