@@ -12,12 +12,11 @@ import {
   Text,
   Spacer,
 } from '@chakra-ui/react';
-import { TrophyDarkCharacter } from '../APITypes';
+import { RawTrophyGoldCharacter } from '../APITypes';
 import Character from './Character';
-import useCharacterSubscription from './useCharacterSubscription';
 
 interface CharacterListProps {
-  characters: TrophyDarkCharacter[];
+  characters: RawTrophyGoldCharacter[];
   characterChoice: 'GM' | string;
 }
 
@@ -60,39 +59,36 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
 };
 
 interface CharacterListItemProps {
-  character: Exclude<TrophyDarkCharacter, null>;
+  character: RawTrophyGoldCharacter;
 }
 
 const CharacterListItem = ({ character }: CharacterListItemProps) => {
-  const trackedCharacter = useCharacterSubscription(character);
   return (
     <GridItem>
       <AccordionItem>
         <AccordionButton>
           <Flex flex="1" fontFamily="Roboto Slab">
             <Text>
-              {trackedCharacter.characterName} –{' '}
-              {trackedCharacter.characterPronouns}
+              {character.characterName} – {character.characterPronouns}
             </Text>
             <Spacer />
-            <Text mr={6}>{trackedCharacter.playerName}</Text>
+            <Text mr={6}>{character.playerName}</Text>
           </Flex>
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel px={2}>
-          <Character canEdit={false} character={trackedCharacter} />
+          <Character canEdit={false} character={character} />
         </AccordionPanel>
       </AccordionItem>
     </GridItem>
   );
 };
 interface MyCharacterProps {
-  character: Exclude<TrophyDarkCharacter, null>;
+  character: RawTrophyGoldCharacter;
 }
 
 const MyCharacter = ({ character }: MyCharacterProps) => {
-  const trackedCharacter = useCharacterSubscription(character);
-  return <Character canEdit character={trackedCharacter} />;
+  return <Character canEdit character={character} />;
 };
 
 export default CharacterList;

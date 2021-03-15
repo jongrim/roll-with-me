@@ -6,12 +6,12 @@ import { useMachine } from '@xstate/react';
 import { Machine, actions, assign } from 'xstate';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import * as subscriptions from '../graphql/subscriptions';
 import CharacterChoice from './CharacterChoice';
 import TrophyGoldGameArea from './TrophyGoldGameArea';
-import { RawTrophyGoldCharacter } from '../APITypes';
 import DesignedForTrophyGold from './DesignedForTrophyGold';
 import { CreateTrophyGoldCharacterInput } from '../API';
+import useCharacterSubscription from './useCharacterSubscription';
+import { createEmptyBackpack } from './TrophyGoldGameTypes';
 
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
@@ -110,36 +110,18 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
     }
   );
   const { data } = useTrophyRoomLookup(name);
-  const [characters, setCharacters] = React.useState<RawTrophyGoldCharacter[]>(
-    []
-  );
   const [username, setUsername] = React.useState('');
 
   React.useEffect(() => {
-    if (data) {
+    if (data && state.value === 'loading') {
       send('LOAD');
-      setCharacters(data?.characters?.items ?? []);
     }
-  }, [data, send]);
+  }, [data, send, state.value]);
 
-  React.useEffect(() => {
-    if (!data?.id) return;
-    const newCharacterSubscription = API.graphql({
-      query: subscriptions.onCreateTrophyDarkCharacterByGame,
-      variables: {
-        gameID: data.id,
-      },
-      // @ts-ignore
-    }).subscribe({
-      // @ts-ignore
-      next: ({ value }) => {
-        setCharacters((cur) =>
-          cur.concat(value.data.onCreateTrophyDarkCharacterByGame)
-        );
-      },
-    });
-    return () => newCharacterSubscription.unsubscribe();
-  }, [data?.id]);
+  const trackedCharacters = useCharacterSubscription({
+    characters: data?.characters.items ?? [],
+    gameId: data?.id,
+  });
 
   switch (state.value) {
     case 'loading':
@@ -156,7 +138,7 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
         >
           <AnimateSharedLayout>
             <CharacterChoice
-              characters={data?.characters}
+              characters={trackedCharacters}
               username={username}
               setUsername={setUsername}
               controls={optionsControls}
@@ -177,6 +159,7 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
                       hoard: 0,
                       gold: 0,
                       tokens: 0,
+                      backpack: JSON.stringify(createEmptyBackpack()),
                       notes: JSON.stringify({}),
                     };
                     // @ts-ignore
@@ -231,7 +214,7 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
         <TrophyGoldGameArea
           username={username}
           setUsername={setUsername}
-          characters={characters}
+          characters={trackedCharacters}
           characterChoice={state.context.characterChoice}
           gameData={data!}
         />

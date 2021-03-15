@@ -12,20 +12,23 @@ import {
   Image,
   Icon,
   useColorModeValue,
-  UnorderedList,
-  ListItem,
 } from '@chakra-ui/react';
 import { RiCameraFill, RiPencilLine } from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import { TrophyDarkCharacter } from '../APITypes';
+import { RawTrophyGoldCharacter } from '../APITypes';
 import CharacterForm from './CharacterForm';
-import { UpdateTrophyDarkCharacterInput } from '../API';
+import { UpdateTrophyGoldCharacterInput } from '../API';
+import CharacterDrive from './CharacterDrive';
+import CharacterBackground from './CharacterBackground';
+import CharacterOccupation from './CharacterOccupation';
+import CharacterRituals from './CharacterRituals';
+import CharacterBackpack from './CharacterBackpack';
 
 const setRuin = async ({ id, ruin }: { id: string; ruin: number }) => {
   try {
     await API.graphql({
-      query: mutations.updateTrophyDarkCharacter,
+      query: mutations.updateTrophyGoldCharacter,
       variables: {
         input: {
           id,
@@ -38,10 +41,12 @@ const setRuin = async ({ id, ruin }: { id: string; ruin: number }) => {
   }
 };
 
-const updateCharacter = async (character: UpdateTrophyDarkCharacterInput) => {
+export const updateCharacter = async (
+  character: UpdateTrophyGoldCharacterInput
+) => {
   try {
     await API.graphql({
-      query: mutations.updateTrophyDarkCharacter,
+      query: mutations.updateTrophyGoldCharacter,
       variables: {
         input: {
           ...character,
@@ -54,14 +59,18 @@ const updateCharacter = async (character: UpdateTrophyDarkCharacterInput) => {
 };
 
 interface CharacterProps {
-  character: Exclude<TrophyDarkCharacter, null>;
+  character: RawTrophyGoldCharacter;
   canEdit: boolean;
 }
 
 const Character = ({ character, canEdit }: CharacterProps) => {
-  const baseRuin = character.rituals.length + 1;
+  const rituals = character.rituals || [];
+  const ruin = character.ruin || 0;
+  const baseRuin = rituals.length ?? 0 + 1;
   const disabledRuinBgColor = useColorModeValue('gray.200', 'gray.700');
   const [isEditing, setIsEditing] = React.useState(false);
+  const updateWithId = (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) =>
+    updateCharacter({ id: character.id, ...update });
   return (
     <Box fontFamily="Roboto Slab">
       {isEditing ? (
@@ -150,10 +159,10 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                       borderColor="inherit"
                       disabled={num <= baseRuin}
                       backgroundColor={
-                        num <= character.ruin ? disabledRuinBgColor : 'none'
+                        num <= ruin ? disabledRuinBgColor : 'none'
                       }
                       onClick={() => {
-                        if (num > character.ruin) {
+                        if (num > ruin) {
                           setRuin({ id: character.id, ruin: num });
                         } else {
                           setRuin({ id: character.id, ruin: num - 1 });
@@ -168,35 +177,34 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             </GridItem>
           </Grid>
           <Divider my={6} />
-          <Box>
-            <Text fontSize="sm" opacity="0.9">
-              Drive
-            </Text>
-            <Text>{character.drive}</Text>
+          <CharacterDrive
+            drive={character.drive || ''}
+            onSubmit={updateWithId}
+          />
+          <Box mt={6}>
+            <CharacterOccupation
+              occupation={character.occupation || ''}
+              onSubmit={updateWithId}
+            />
           </Box>
           <Box mt={6}>
-            <Text fontSize="sm" opacity="0.9">
-              Occupation
-            </Text>
-            <Text>{character.occupation}</Text>
+            <CharacterBackground
+              background={character.background || ''}
+              onSubmit={updateWithId}
+            />
           </Box>
           <Box mt={6}>
-            <Text fontSize="sm" opacity="0.9">
-              Background
-            </Text>
-            <Text>{character.background}</Text>
+            <CharacterRituals
+              characterId={character.id}
+              rituals={character.rituals || []}
+              onSubmit={updateWithId}
+            />
           </Box>
           <Box mt={6}>
-            <Text fontSize="sm" opacity="0.9">
-              Rituals
-            </Text>
-            <UnorderedList>
-              {character.rituals.map((ritual, i) => (
-                <ListItem key={`${character.id}-${ritual}-${i}`}>
-                  {ritual}
-                </ListItem>
-              ))}
-            </UnorderedList>
+            <CharacterBackpack
+              backpack={character.backpack || '{}'}
+              onSubmit={updateWithId}
+            />
           </Box>
         </>
       )}

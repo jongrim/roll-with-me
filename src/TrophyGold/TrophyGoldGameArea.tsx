@@ -134,10 +134,10 @@ const TrophyGoldGameArea = ({
                     pr={6}
                     pb={8}
                   >
-                    {/* <CharacterList
+                    <CharacterList
                       characters={characters}
                       characterChoice={characterChoice}
-                    /> */}
+                    />
                   </GridItem>
                 </Route>
                 {/* <Route exact path={`/trophy-gold/${name}/rules`}>
@@ -155,7 +155,7 @@ const TrophyGoldGameArea = ({
                     darkDice={gameData.darkDice}
                     goldDice={gameData.goldDice}
                     diceMode={gameData.diceMode}
-                    characters={gameData.characters}
+                    characters={characters}
                     characterChoice={characterChoice}
                     id={id}
                   />

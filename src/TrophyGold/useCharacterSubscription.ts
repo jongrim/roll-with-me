@@ -1,33 +1,70 @@
 import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
-import { TrophyDarkCharacter } from '../APITypes';
+import { RawTrophyGoldCharacter } from '../APITypes';
 
-type Character = Exclude<TrophyDarkCharacter, null>;
-
-const useCharacterSubscription = (character: Character) => {
-  const [trackedCharacter, setTrackedCharacter] = React.useState<Character>(
-    character
-  );
+const useCharacterSubscription = ({
+  characters,
+  gameId,
+}: {
+  characters: RawTrophyGoldCharacter[];
+  gameId?: string;
+}) => {
+  const [trackedCharacters, setTrackedCharacters] = React.useState<
+    RawTrophyGoldCharacter[]
+  >([]);
 
   React.useEffect(() => {
-    const characterSubscription = API.graphql({
-      query: subscriptions.onUpdateTrophyDarkCharacterById,
+    // handles first load of characters with game data
+    setTrackedCharacters(characters);
+  }, [characters]);
+
+  React.useEffect(() => {
+    if (!gameId) return;
+    const newCharacterSubscription = API.graphql({
+      query: subscriptions.onCreateTrophyGoldCharacterByGame,
       variables: {
-        id: character.id,
+        gameID: gameId,
       },
       // @ts-ignore
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        setTrackedCharacter(value.data.onUpdateTrophyDarkCharacterById);
+        setTrackedCharacters((cur) =>
+          cur.concat(value.data.onCreateTrophyGoldCharacterByGame)
+        );
       },
     });
+    return () => newCharacterSubscription.unsubscribe();
+  }, [gameId]);
 
-    return () => characterSubscription.unsubscribe();
-  }, [character.id]);
+  React.useEffect(() => {
+    const charSubscriptions = trackedCharacters.map((character) => {
+      return API.graphql({
+        query: subscriptions.onUpdateTrophyGoldCharacterById,
+        variables: {
+          id: character.id,
+        },
+        // @ts-ignore
+      }).subscribe({
+        // @ts-ignore
+        next: ({ value }) => {
+          setTrackedCharacters((cur) => {
+            return cur.map((c) => {
+              if (c.id === character.id) {
+                return value.data.onUpdateTrophyGoldCharacterById;
+              }
+              return c;
+            });
+          });
+        },
+      });
+    });
 
-  return trackedCharacter;
+    return () => charSubscriptions.forEach((sub) => sub.unsubscribe());
+  }, [trackedCharacters]);
+
+  return trackedCharacters;
 };
 
 export default useCharacterSubscription;

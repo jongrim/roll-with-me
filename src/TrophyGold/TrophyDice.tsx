@@ -32,7 +32,7 @@ import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import { getRandomNumbers } from '../functions/randomNumbers';
 import { TrophyGoldDiceMode } from '../API';
-import { RawTrophyGoldRoomDetails } from '../APITypes';
+import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from '../APITypes';
 import { DarkDie, LightDie } from '../TrophyShared/LightDiceDarkDice';
 
 interface TrophyDiceProps {
@@ -40,7 +40,7 @@ interface TrophyDiceProps {
   darkDice: RawTrophyGoldRoomDetails['darkDice'];
   goldDice: RawTrophyGoldRoomDetails['goldDice'];
   diceMode: TrophyGoldDiceMode;
-  characters: RawTrophyGoldRoomDetails['characters'];
+  characters: RawTrophyGoldCharacter[];
   characterChoice: string;
   id: string;
 }
@@ -213,10 +213,10 @@ const TrophyDice = ({
           </Grid>
           <Text>Weak points</Text>
           <HStack>
-            {characters?.items.map((char) => {
+            {characters?.map((char) => {
               if (char.weakPoint) {
                 return (
-                  <Tag variant="outline">
+                  <Tag key={`${char.id}-${char.weakPoint}`} variant="outline">
                     {char.characterName} – {char.weakPoint}
                   </Tag>
                 );

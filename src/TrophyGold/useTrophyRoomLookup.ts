@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { RawTrophyGoldRoomDetails } from '../APITypes';
-import { TrophyGoldRoomDetails } from './TrophyGoldGameTypes';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore

@@ -8,22 +8,31 @@ import {
   Center,
   Button,
   Input,
-  InputGroup,
-  InputLeftAddon,
   FormControl,
   FormLabel,
   Icon,
   Image,
 } from '@chakra-ui/react';
 import { RiCameraFill } from 'react-icons/ri';
-import { TrophyDarkCharacter } from '../APITypes';
-import { CreateTrophyDarkCharacterInput } from '../API';
+import { RawTrophyGoldCharacter } from '../APITypes';
+import { UpdateTrophyGoldCharacterInput } from '../API';
+import Library from './Library';
+import { Equipment, LibraryItem } from './TrophyGoldGameTypes';
+import listItemReducer, {
+  initReducer,
+  ListState,
+  listItemEvent,
+} from './listItemReducer';
+import EquipmentForm from './EquipmentForm';
 
 interface CharacterFormProps {
   onDone: (
-    character: Omit<CreateTrophyDarkCharacterInput, 'gameID' | 'playerName'>
+    character: Omit<
+      UpdateTrophyGoldCharacterInput,
+      'id' | 'gameID' | 'playerName'
+    >
   ) => void;
-  character?: Exclude<TrophyDarkCharacter, null>;
+  character?: RawTrophyGoldCharacter;
   submitText: string;
 }
 
@@ -41,17 +50,22 @@ const CharacterForm = ({
   const [imageUrl, setImageUrl] = React.useState(
     character?.characterImageUrl || ''
   );
-  const [drive, setDrive] = React.useState(character?.drive || '');
-  const [occupation, setOccupation] = React.useState(
-    character?.occupation || ''
-  );
-  const [background, setBackground] = React.useState(
-    character?.background || ''
-  );
   const [first, second, third] = character?.rituals ?? [];
   const [ritual1, setRitual1] = React.useState(first || '');
   const [ritual2, setRitual2] = React.useState(second || '');
   const [ritual3, setRitual3] = React.useState(third || '');
+  const [libraryItems, setLibraryItems] = React.useState<LibraryItem[]>(
+    character?.library?.map((s) => JSON.parse(s) as LibraryItem) ?? []
+  );
+  const [combatEquipment, dispatchCombatEquipment] = React.useReducer<
+    React.Reducer<ListState<Equipment>, listItemEvent<Equipment>>
+  >(
+    listItemReducer,
+    initReducer<Equipment, 'id'>(
+      character?.combatEquipment?.map((s) => JSON.parse(s)) ?? [],
+      'id'
+    )
+  );
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const rituals = [ritual1, ritual2, ritual3].filter(Boolean);
@@ -59,9 +73,6 @@ const CharacterForm = ({
     onDone({
       characterName,
       characterPronouns,
-      drive,
-      occupation,
-      background,
       rituals,
       ruin: 1 + rituals.length,
       ...input,
@@ -132,63 +143,24 @@ const CharacterForm = ({
           </GridItem>
         </Grid>
         <Divider my={6} />
-        <Box>
-          <FormControl id="drive" isRequired>
-            <FormLabel>Drive</FormLabel>
-            <Input
-              value={drive}
-              onChange={({ target }) => setDrive(target.value)}
-            />
-          </FormControl>
-        </Box>
-        <Box mt={6}>
-          <FormControl id="occupation" isRequired>
-            <FormLabel>Occupation</FormLabel>
-            <Input
-              value={occupation}
-              onChange={({ target }) => setOccupation(target.value)}
-            />
-          </FormControl>
-        </Box>
-        <Box mt={6}>
-          <FormControl id="background" isRequired>
-            <FormLabel>Background</FormLabel>
-            <Input
-              value={background}
-              onChange={({ target }) => setBackground(target.value)}
-            />
-          </FormControl>
-        </Box>
-        <Box mt={6}>
-          <FormLabel>Rituals</FormLabel>
-          <FormControl id="ritual1">
-            <InputGroup>
-              <InputLeftAddon w={20}>First</InputLeftAddon>
-              <Input
-                value={ritual1}
-                onChange={({ target }) => setRitual1(target.value)}
-              />
-            </InputGroup>
-          </FormControl>
-          <FormControl id="ritual2" mt={4}>
-            <InputGroup>
-              <InputLeftAddon w={20}>Second</InputLeftAddon>
-              <Input
-                value={ritual2}
-                onChange={({ target }) => setRitual2(target.value)}
-              />
-            </InputGroup>
-          </FormControl>
-          <FormControl id="ritual3" mt={4}>
-            <InputGroup>
-              <InputLeftAddon w={20}>Third</InputLeftAddon>
-              <Input
-                value={ritual3}
-                onChange={({ target }) => setRitual3(target.value)}
-              />
-            </InputGroup>
-          </FormControl>
-        </Box>
+
+        <Library items={libraryItems} setItems={setLibraryItems} />
+        <EquipmentForm
+          items={combatEquipment.items}
+          itemMap={combatEquipment.itemMap}
+          updateItem={(id, update) =>
+            dispatchCombatEquipment({
+              type: 'edit',
+              payload: { value: update, id },
+            })
+          }
+          addItem={(item, key) =>
+            dispatchCombatEquipment({ type: 'add', payload: { item, key } })
+          }
+          removeItem={(id) =>
+            dispatchCombatEquipment({ type: 'remove', payload: { id } })
+          }
+        />
         <Button type="submit" variant="ghost" mt={6} w="full">
           {submitText}
         </Button>

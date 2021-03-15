@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { TrophyGoldDiceMode } from '../API';
 import { ParsedHexMapModule } from '../MapModule/gridConfiguration';
 import { Die, SafetyModule } from '../types';
@@ -45,4 +46,57 @@ export interface TrophyGoldCharacter {
   notes: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Equipment {
+  id: string;
+  title: string;
+  description: string;
+  marked: boolean;
+  value?: number;
+}
+
+export interface Household {
+  name: string;
+  description: string;
+}
+
+export interface LibraryItem {
+  id: string;
+  ritual: string;
+}
+export interface BackpackItem {
+  id: string;
+  description: string;
+  uses?: number;
+}
+
+export interface Backpack {
+  [id: string]: BackpackItem;
+}
+
+function createBackpackItem() {
+  return {
+    id: uuidv4(),
+    description: '',
+  };
+}
+
+export function createEmptyBackpack(): Backpack {
+  const map = {
+    one: createBackpackItem(),
+    two: createBackpackItem(),
+    three: createBackpackItem(),
+    four: createBackpackItem(),
+    five: createBackpackItem(),
+    six: createBackpackItem(),
+  };
+  return {
+    [map.one.id]: map.one,
+    [map.two.id]: map.two,
+    [map.three.id]: map.three,
+    [map.four.id]: map.four,
+    [map.five.id]: map.five,
+    [map.six.id]: map.six,
+  };
 }

@@ -114,10 +114,10 @@ type TrophyGoldCharacter
   hoard: Int!
   gold: Int!
   tokens: Int!
-  training: [AWSJSON!]
-  household: String
-  library: [String]
-  backpack: [AWSJSON!]
+  training: [String!]
+  household: AWSJSON
+  library: [AWSJSON!]
+  backpack: AWSJSON!
   conditions: [String!]
   notes: AWSJSON!
 }

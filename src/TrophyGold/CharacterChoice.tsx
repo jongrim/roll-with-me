@@ -10,13 +10,14 @@ import {
   Stack,
   useColorModeValue,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import { AnimationControls, motion } from 'framer-motion';
-import { RawTrophyGoldRoomDetails } from '../APITypes';
+import { RawTrophyGoldCharacter } from '../APITypes';
 import { GM, NEW_CHARACTER } from './TrophyGoldRoom';
 
 interface CharacterChoiceProps {
-  characters?: RawTrophyGoldRoomDetails['characters'];
+  characters?: RawTrophyGoldCharacter[];
   controls: AnimationControls;
   username: string;
   setUsername: (val: string) => void;
@@ -75,15 +76,19 @@ const CharacterChoice = ({
             onChange={(val: string) => setCharacter(val)}
             value={character}
           >
-            <Stack direction="column">
-              {characters?.items?.map((savedChar) => (
-                <Radio
-                  isChecked={character === savedChar?.id}
-                  key={savedChar?.id}
-                  value={savedChar?.id}
-                >
-                  {savedChar?.characterName || 'Unnamed treasure hunter'}
-                </Radio>
+            <Stack direction="column" spacing={4}>
+              {characters?.map((savedChar) => (
+                <Box key={savedChar?.id}>
+                  <Radio
+                    isChecked={character === savedChar?.id}
+                    value={savedChar?.id}
+                  >
+                    {savedChar?.characterName || `Unnamed treasure hunter`}
+                  </Radio>
+                  <Text fontSize="sm" opacity="0.8">
+                    Last played by {savedChar?.playerName}
+                  </Text>
+                </Box>
               ))}
               <Radio
                 isChecked={character === NEW_CHARACTER}

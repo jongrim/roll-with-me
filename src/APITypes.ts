@@ -50,7 +50,7 @@ export interface RawTrophyGoldRoomDetails {
   diceMode: TrophyGoldDiceMode;
   createdAt: string;
   updatedAt: string;
-  characters?: {
+  characters: {
     items: RawTrophyGoldCharacter[];
   };
   safetyModule: RawSafetyModule;
@@ -81,7 +81,7 @@ export interface RawTrophyGoldCharacter {
   training?: Array<string>;
   household?: string;
   library?: Array<string>;
-  backpack?: Array<string>;
+  backpack?: string;
   conditions?: Array<string>;
   notes: string;
   createdAt: string;
