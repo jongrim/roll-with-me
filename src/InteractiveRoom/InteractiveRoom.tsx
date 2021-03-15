@@ -766,25 +766,29 @@ const VisualDice = ({
       })}
       <Center w="full" left="0%" bottom="3%" position="absolute">
         <HStack spacing={6}>
-          <IconButton
-            disabled={selectedDice.length === 0}
-            colorScheme="brand"
-            icon={<RiRestartLine />}
-            size="lg"
-            aria-label="roll dice"
-            onClick={rerollDice}
-            zIndex="2000"
-          />
-          <IconButton
-            disabled={selectedDice.length === 0}
-            colorScheme="red"
-            variant="outline"
-            icon={<RiDeleteBin4Line />}
-            size="lg"
-            aria-label="delete dice"
-            onClick={deleteDice}
-            zIndex="2000"
-          />
+          <Tooltip label="roll selected dice">
+            <IconButton
+              disabled={selectedDice.length === 0}
+              colorScheme="brand"
+              icon={<RiRestartLine />}
+              size="lg"
+              aria-label="roll selected dice"
+              onClick={rerollDice}
+              zIndex="2000"
+            />
+          </Tooltip>
+          <Tooltip label="delete selected dice">
+            <IconButton
+              disabled={selectedDice.length === 0}
+              colorScheme="red"
+              variant="outline"
+              icon={<RiDeleteBin4Line />}
+              size="lg"
+              aria-label="delete selected dice"
+              onClick={deleteDice}
+              zIndex="2000"
+            />
+          </Tooltip>
         </HStack>
       </Center>
     </>
