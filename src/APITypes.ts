@@ -170,4 +170,5 @@ export type InteractiveRoomData = {
   name: string;
   safetyModule: SafetyModule;
   backgroundImageUrl?: string;
+  rolls: Array<string>;
 };

@@ -25,6 +25,7 @@ type InteractiveRoom
   counters: [Counter] @connection(keyName: "byRoom", fields: ["id"])
   labels: [Label] @connection(keyName: "byRoom", fields: ["id"])
   backgroundImageUrl: String
+  rolls: [AWSJSON!]
 }
 
 type TrophyDarkRoom

@@ -7,7 +7,7 @@ import {
   IconButton,
   ScaleFade,
   Text,
-  useColorMode,
+  useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
 import { BsTriangle, BsSquare, BsDiamond, BsOctagon } from 'react-icons/bs';
@@ -44,7 +44,12 @@ const VDie: React.FC<{
   die: VisualDie;
   setActionInProgress: (val: boolean) => void;
   isSelected: boolean;
-  selectDie: (die: { id: string; sides: number; version: number }) => void;
+  selectDie: (die: {
+    id: string;
+    sides: number;
+    version: number;
+    type?: string;
+  }) => void;
   updateActivity: () => void;
 }> = ({ die, setActionInProgress, isSelected, selectDie, updateActivity }) => {
   const [trackedDie, setTrackedDie] = React.useState<VisualDie>(die);
@@ -62,6 +67,7 @@ const VDie: React.FC<{
           id: trackedDie.id,
           sides: trackedDie.sides,
           version: trackedDie.version,
+          type: trackedDie.type,
         });
       },
       onDragEnd: async function () {
@@ -88,6 +94,7 @@ const VDie: React.FC<{
     trackedDie.id,
     trackedDie.sides,
     trackedDie.version,
+    trackedDie.type,
     setActionInProgress,
     selectDie,
   ]);
@@ -140,11 +147,15 @@ const VDie: React.FC<{
     });
   }, [trackedDie.version, controls]);
 
-  const { colorMode } = useColorMode();
-  const buttonHighlight =
-    colorMode === 'light'
-      ? { boxShadow: 'lg', border: '1px solid', borderColor: trackedDie.color }
-      : { border: '1px solid', borderColor: trackedDie.color };
+  const borderColor = useColorModeValue('blue.200', 'blue.600');
+  const bgColor = useColorModeValue('gray.50', 'gray.700');
+  const boxShadow = 'lg';
+  const buttonHighlight = {
+    border: '3px solid',
+    borderColor,
+    bgColor,
+    boxShadow,
+  };
 
   if (trackedDie.type === 'fudge') {
     return (
@@ -195,20 +206,7 @@ const VDie: React.FC<{
                 {trackedDie.result}
               </Text>
             </Grid>
-            <DieCreator
-              sides={trackedDie.sides}
-              createdBy={trackedDie.createdBy}
-              isVisible={actionsVisible}
-            />
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     case 6:
@@ -249,20 +247,7 @@ const VDie: React.FC<{
                 {trackedDie.result}
               </Text>
             </Grid>
-            <DieCreator
-              sides={trackedDie.sides}
-              createdBy={trackedDie.createdBy}
-              isVisible={actionsVisible}
-            />
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     case 8:
@@ -312,22 +297,7 @@ const VDie: React.FC<{
                 </Text>
               </Grid>
             </VStack>
-            <Box pt={6}>
-              <DieCreator
-                sides={trackedDie.sides}
-                createdBy={trackedDie.createdBy}
-                isVisible={actionsVisible}
-              />
-            </Box>
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     case 10:
@@ -377,22 +347,7 @@ const VDie: React.FC<{
                 </Text>
               </Grid>
             </VStack>
-            <Box pt={6}>
-              <DieCreator
-                sides={trackedDie.sides}
-                createdBy={trackedDie.createdBy}
-                isVisible={actionsVisible}
-              />
-            </Box>
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     case 12:
@@ -446,20 +401,7 @@ const VDie: React.FC<{
                 </Text>
               </Grid>
             </VStack>
-            <DieCreator
-              sides={trackedDie.sides}
-              createdBy={trackedDie.createdBy}
-              isVisible={actionsVisible}
-            />
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     case 20:
@@ -500,20 +442,7 @@ const VDie: React.FC<{
                 {trackedDie.result}
               </Text>
             </Grid>
-            <DieCreator
-              sides={trackedDie.sides}
-              createdBy={trackedDie.createdBy}
-              isVisible={actionsVisible}
-            />
           </HStack>
-          <DieActions
-            isVisible={actionsVisible}
-            id={trackedDie.id}
-            sides={trackedDie.sides}
-            setActionInProgress={setActionInProgress}
-            updateActivity={updateActivity}
-            version={trackedDie.version}
-          />
         </Box>
       );
     default:
@@ -681,20 +610,7 @@ const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
               <FudgeDieResult result={trackedDie.result || 6} />
             </Box>
           </Grid>
-          <DieCreator
-            sides={trackedDie.type ?? ''}
-            createdBy={trackedDie.createdBy}
-            isVisible={actionsVisible}
-          />
         </HStack>
-        <DieActions
-          isVisible={actionsVisible}
-          id={trackedDie.id}
-          sides={trackedDie.sides}
-          setActionInProgress={setActionInProgress}
-          updateActivity={updateActivity}
-          version={trackedDie.version}
-        />
       </Box>
     );
   }
@@ -718,6 +634,19 @@ const FudgeDieResult: React.FC<{ result: number }> = ({ result }) => {
       );
     default:
       return null;
+  }
+};
+
+export const fudgeDieResult = (result: number) => {
+  switch (result) {
+    case 1:
+    case 2:
+      return '+';
+    case 3:
+    case 4:
+      return '—';
+    default:
+      return 'blank';
   }
 };
 
