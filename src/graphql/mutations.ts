@@ -266,6 +266,7 @@ export const createInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -320,6 +321,7 @@ export const createInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -338,6 +340,7 @@ export const updateInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -392,6 +395,7 @@ export const updateInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -410,6 +414,7 @@ export const deleteInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -464,6 +469,7 @@ export const deleteInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -1168,6 +1174,7 @@ export const createUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1291,6 +1298,7 @@ export const updateUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1414,6 +1422,7 @@ export const deleteUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1779,6 +1788,7 @@ export const createVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1858,6 +1868,7 @@ export const updateVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1937,6 +1948,7 @@ export const deleteVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {

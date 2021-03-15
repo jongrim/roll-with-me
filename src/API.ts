@@ -239,12 +239,14 @@ export type CreateInteractiveRoomInput = {
   id?: string | null,
   name: string,
   backgroundImageUrl?: string | null,
+  rolls?: Array< string > | null,
   interactiveRoomSafetyModuleId: string,
 };
 
 export type ModelInteractiveRoomConditionInput = {
   name?: ModelStringInput | null,
   backgroundImageUrl?: ModelStringInput | null,
+  rolls?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomConditionInput | null > | null,
   or?: Array< ModelInteractiveRoomConditionInput | null > | null,
   not?: ModelInteractiveRoomConditionInput | null,
@@ -255,6 +257,7 @@ export type InteractiveRoom = {
   id?: string,
   name?: string,
   backgroundImageUrl?: string | null,
+  rolls?: Array< string > | null,
   createdAt?: string,
   updatedAt?: string,
   safetyModule?: SafetyModule,
@@ -333,6 +336,7 @@ export type UpdateInteractiveRoomInput = {
   id: string,
   name?: string | null,
   backgroundImageUrl?: string | null,
+  rolls?: Array< string > | null,
   interactiveRoomSafetyModuleId?: string | null,
 };
 
@@ -1137,6 +1141,7 @@ export type ModelInteractiveRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   backgroundImageUrl?: ModelStringInput | null,
+  rolls?: ModelStringInput | null,
   and?: Array< ModelInteractiveRoomFilterInput | null > | null,
   or?: Array< ModelInteractiveRoomFilterInput | null > | null,
   not?: ModelInteractiveRoomFilterInput | null,
@@ -1670,6 +1675,7 @@ export type CreateInteractiveRoomMutation = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1732,6 +1738,7 @@ export type CreateInteractiveRoomMutation = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -1752,6 +1759,7 @@ export type UpdateInteractiveRoomMutation = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1814,6 +1822,7 @@ export type UpdateInteractiveRoomMutation = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -1834,6 +1843,7 @@ export type DeleteInteractiveRoomMutation = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -1896,6 +1906,7 @@ export type DeleteInteractiveRoomMutation = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -2657,6 +2668,7 @@ export type CreateUserRoomMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2796,6 +2808,7 @@ export type UpdateUserRoomMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -2935,6 +2948,7 @@ export type DeleteUserRoomMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3346,6 +3360,7 @@ export type CreateVisualDieMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3435,6 +3450,7 @@ export type UpdateVisualDieMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3524,6 +3540,7 @@ export type DeleteVisualDieMutation = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3889,6 +3906,7 @@ export type ListInteractiveRoomsQuery = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -3964,6 +3982,7 @@ export type GetInteractiveRoomQuery = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -4026,6 +4045,7 @@ export type GetInteractiveRoomQuery = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -4051,6 +4071,7 @@ export type InteractiveRoomByNameQuery = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -4816,6 +4837,7 @@ export type GetUserRoomQuery = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -4942,6 +4964,7 @@ export type ListUserRoomsQuery = {
         id: string,
         name: string,
         backgroundImageUrl?: string | null,
+        rolls?: Array< string > | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -5233,6 +5256,7 @@ export type GetVisualDieQuery = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5325,6 +5349,7 @@ export type ListVisualDiesQuery = {
         id: string,
         name: string,
         backgroundImageUrl?: string | null,
+        rolls?: Array< string > | null,
         createdAt: string,
         updatedAt: string,
         safetyModule:  {
@@ -5402,6 +5427,7 @@ export type OnCreateVisualDieByRoomSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -5490,6 +5516,7 @@ export type OnUpdateVisualDieByIdSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -6078,6 +6105,7 @@ export type OnCreateInteractiveRoomSubscription = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -6140,6 +6168,7 @@ export type OnCreateInteractiveRoomSubscription = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -6155,6 +6184,7 @@ export type OnUpdateInteractiveRoomSubscription = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -6217,6 +6247,7 @@ export type OnUpdateInteractiveRoomSubscription = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -6232,6 +6263,7 @@ export type OnDeleteInteractiveRoomSubscription = {
     id: string,
     name: string,
     backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     safetyModule:  {
@@ -6294,6 +6326,7 @@ export type OnDeleteInteractiveRoomSubscription = {
           id: string,
           name: string,
           backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
           createdAt: string,
           updatedAt: string,
         } | null,
@@ -6994,6 +7027,7 @@ export type OnCreateUserRoomSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -7132,6 +7166,7 @@ export type OnUpdateUserRoomSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -7270,6 +7305,7 @@ export type OnDeleteUserRoomSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -7610,6 +7646,7 @@ export type OnCreateVisualDieSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -7694,6 +7731,7 @@ export type OnUpdateVisualDieSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {
@@ -7778,6 +7816,7 @@ export type OnDeleteVisualDieSubscription = {
       id: string,
       name: string,
       backgroundImageUrl?: string | null,
+      rolls?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       safetyModule:  {

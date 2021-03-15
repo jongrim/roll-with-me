@@ -41,6 +41,7 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -117,6 +118,7 @@ export const onUpdateVisualDieById = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -646,6 +648,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -700,6 +703,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -715,6 +719,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -769,6 +774,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -784,6 +790,7 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -838,6 +845,7 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -1503,6 +1511,7 @@ export const onCreateUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1623,6 +1632,7 @@ export const onUpdateUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1743,6 +1753,7 @@ export const onDeleteUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -2051,6 +2062,7 @@ export const onCreateVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -2127,6 +2139,7 @@ export const onUpdateVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -2203,6 +2216,7 @@ export const onDeleteVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {

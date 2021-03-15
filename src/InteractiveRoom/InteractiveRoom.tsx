@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Box,
   Container,
   Flex,
   HStack,
@@ -21,7 +22,6 @@ import {
   ModalContent,
   Center,
   Spinner,
-  VStack,
 } from '@chakra-ui/react';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/all';
@@ -54,7 +54,7 @@ import SpinningCube from '../SpinningCube/SpinningCube';
 import { VisualCounter, VisualDie, VisualLabel } from '../types';
 import { assignResultsToDice } from '../utils/rolls';
 import { getRandomNumbers } from '../functions/randomNumbers';
-import VDie from './VisualDie';
+import VDie, { fudgeDieResult } from './VisualDie';
 import ClockModal from './ClockModal';
 import VCounter from './VisualCounter';
 import VLabel from './VisualLabel';
@@ -72,6 +72,18 @@ import InteractiveRoomControls from './InteractiveRoomControls';
 
 gsap.registerPlugin(Draggable);
 
+const emitRolls = (id: string, rolls: string[]) => {
+  API.graphql({
+    query: mutations.updateInteractiveRoom,
+    variables: {
+      input: {
+        id,
+        rolls,
+      },
+    },
+  });
+};
+
 const MIN_WIDTH = 72;
 
 type Props = {
@@ -82,6 +94,9 @@ function InteractiveRoom({ name }: Props) {
   const toast = useToast();
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
+  const lastRoll = data?.rolls
+    ? JSON.parse(data?.rolls[data?.rolls.length - 1])
+    : null;
   const { isLoaded: userSettingsIsLoaded, username, setUsername } = useUserRoom(
     {
       roomName: name,
@@ -125,7 +140,7 @@ function InteractiveRoom({ name }: Props) {
     sides: number;
     leftOffset?: number;
     type?: 'fudge';
-  }) => {
+  }): Promise<{ result: number }> => {
     if (!data?.id) {
       toast({
         status: 'warning',
@@ -134,7 +149,7 @@ function InteractiveRoom({ name }: Props) {
         isClosable: true,
         duration: 7000,
       });
-      return;
+      return { result: 0 };
     }
     setActionInProgress(true);
     try {
@@ -155,29 +170,61 @@ function InteractiveRoom({ name }: Props) {
           },
         },
       });
+      return die;
     } catch (e) {
       console.warn(e);
     } finally {
       setActionInProgress(false);
     }
+    return { result: 0 };
   };
 
   const debouncedColor = debounce((color) => setColor(color), 900);
 
+  const updateRolls = (newRoll: {
+    rolledBy: string;
+    results: { type?: string; result: number }[];
+  }) =>
+    emitRolls(
+      data?.id || '',
+      data?.rolls
+        ? data.rolls.concat(JSON.stringify(newRoll))
+        : [JSON.stringify(newRoll)]
+    );
+
   return (
     <Flex flexDirection="column" h="full" maxW="full" overflow="auto">
       <SettingsBar username={username} setUsername={setUsername} />
-      <Container maxW="6xl" flex="1" display="flex" flexDirection="column">
+      <Container
+        w="full"
+        maxW="full"
+        flex="1"
+        display="flex"
+        flexDirection="column"
+      >
         <QuickRollBar
           name={username}
           onSubmit={async (roll) => {
+            if (!data) return;
             const { dice } = roll;
             Promise.allSettled(
               dice.map((die, i) => {
                 return addDie({ sides: die.sides, leftOffset: i * MIN_WIDTH });
               })
             )
-              .then(() => {
+              .then((response) => {
+                const newRoll = {
+                  rolledBy: username,
+                  results: response
+                    .map((i) => {
+                      if (i.status === 'fulfilled') {
+                        return { result: i.value.result };
+                      }
+                      return { result: 0 };
+                    })
+                    .filter((r) => r.result !== 0),
+                };
+                updateRolls(newRoll);
                 toast({
                   status: 'success',
                   description: 'Dice added!',
@@ -355,24 +402,39 @@ function InteractiveRoom({ name }: Props) {
                     aria-label="New fudge die"
                   />
                 </Tooltip>
-                <Input
-                  aria-label="new die color"
-                  data-testid="color-picker"
-                  w={20}
-                  type="color"
-                  value={color}
-                  onChange={({ target }) => {
-                    debouncedColor(target.value);
-                  }}
-                />
+                <Tooltip
+                  label="Change the new die color. For best results, choose a color with good contrast on light
+                  and dark backgrounds"
+                >
+                  <Input
+                    aria-label="new die color"
+                    data-testid="color-picker"
+                    w={20}
+                    type="color"
+                    value={color}
+                    onChange={({ target }) => {
+                      debouncedColor(target.value);
+                    }}
+                  />
+                </Tooltip>
               </Flex>
-              <Text textAlign="right" fontSize="sm">
-                For best results, choose a color with good contrast on light and
-                dark backgrounds
-              </Text>
+              <Flex
+                justifyContent="center"
+                borderBottom="1px solid"
+                borderColor="inherit"
+                pb={2}
+              >
+                {lastRoll && (
+                  <LastRoll
+                    rolledBy={lastRoll.rolledBy}
+                    results={lastRoll.results}
+                  />
+                )}
+              </Flex>
+
               <Container
                 flex="1"
-                maxW="6xl"
+                maxW="full"
                 id={DICEBOX_ID}
                 background={
                   data?.backgroundImageUrl
@@ -387,6 +449,8 @@ function InteractiveRoom({ name }: Props) {
                       roomId={data?.id}
                       setActionInProgress={setActionInProgress}
                       updateActivity={setActivity}
+                      username={username}
+                      updateRolls={updateRolls}
                     />
                     <VisualCounters
                       startingCounters={data?.counters?.items}
@@ -511,7 +575,31 @@ function InteractiveRoom({ name }: Props) {
   );
 }
 
-type minDie = { id: string; version: number; sides: number };
+const LastRoll = ({
+  rolledBy,
+  results,
+}: {
+  rolledBy: string;
+  results: { type?: string; result: number }[];
+}) => {
+  return (
+    <Box>
+      <Text>
+        {rolledBy} got{' '}
+        {results
+          .map((res) => {
+            if (res.type === 'fudge') {
+              return fudgeDieResult(res.result);
+            }
+            return res.result;
+          })
+          .join(', ')}
+      </Text>
+    </Box>
+  );
+};
+
+type minDie = { id: string; version: number; sides: number; type?: string };
 type selectionEvent =
   | { type: 'default'; payload: { die: minDie } }
   | { type: 'clear' };
@@ -542,11 +630,18 @@ const VisualDice = ({
   roomId = '',
   setActionInProgress,
   updateActivity,
+  username,
+  updateRolls,
 }: {
   startingDice?: VisualDie[];
   roomId?: string;
   setActionInProgress: (val: boolean) => void;
   updateActivity: () => void;
+  username: string;
+  updateRolls: (newRoll: {
+    rolledBy: string;
+    results: { type?: string; result: number }[];
+  }) => void;
 }) => {
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
   const [{ selectedDice }, dispatch] = React.useReducer(selectionReducer, {
@@ -561,6 +656,11 @@ const VisualDice = ({
       dice: selectedDice,
       results,
     });
+    const newRoll = {
+      rolledBy: username,
+      results: updatedDice.map((d) => ({ type: d.type, result: d.result })),
+    };
+    updateRolls(newRoll);
     try {
       await Promise.allSettled(
         updatedDice.map((die) =>
@@ -664,9 +764,10 @@ const VisualDice = ({
           />
         );
       })}
-      {selectedDice.length > 0 && (
-        <VStack spacing={6} top="48%" position="absolute">
+      <Center w="full" left="0%" bottom="3%" position="absolute">
+        <HStack spacing={6}>
           <IconButton
+            disabled={selectedDice.length === 0}
             colorScheme="brand"
             icon={<RiRestartLine />}
             size="lg"
@@ -675,6 +776,7 @@ const VisualDice = ({
             zIndex="2000"
           />
           <IconButton
+            disabled={selectedDice.length === 0}
             colorScheme="red"
             variant="outline"
             icon={<RiDeleteBin4Line />}
@@ -683,8 +785,8 @@ const VisualDice = ({
             onClick={deleteDice}
             zIndex="2000"
           />
-        </VStack>
-      )}
+        </HStack>
+      </Center>
     </>
   );
 };
