@@ -38,6 +38,9 @@ context('guest user', () => {
       if (req.body?.query?.includes('CreateVisualDie')) {
         req.alias = 'gqlCreateVisualDie';
       }
+      if (req.body?.query?.includes('UpdateInteractiveRoom')) {
+        req.alias = 'gqlUpdateInteractiveRoom';
+      }
       if (req.body?.query?.includes('DeleteVisualDie')) {
         req.alias = 'gqlDeleteVisualDie';
       }
@@ -55,10 +58,13 @@ context('guest user', () => {
       cy.wait('@randomNumbers');
       cy.wait('@gqlCreateVisualDie');
       cy.findByLabelText(`${label} die`).click({ force: true });
-      cy.findByLabelText('roll die').click({ force: true });
+      cy.findByLabelText('roll selected dice').click({ force: true });
       cy.wait('@randomNumbers');
+      cy.wait('@gqlUpdateInteractiveRoom');
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000);
       cy.findByLabelText(`${label} die`).click({ force: true });
-      cy.findByLabelText('delete die').click({ force: true });
+      cy.findByLabelText('delete selected dice').click({ force: true });
       cy.wait('@gqlDeleteVisualDie');
     });
   });
