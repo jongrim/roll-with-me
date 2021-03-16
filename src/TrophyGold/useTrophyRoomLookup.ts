@@ -3,24 +3,24 @@ import { API } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
-import { InteractiveRoomData } from '../APITypes';
+import { RawTrophyGoldRoomDetails } from '../APITypes';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
   const { data } = await API.graphql({
-    query: queries.interactiveRoomByName,
+    query: queries.trophyGoldRoomByName,
     variables: { name },
   });
-  if (data?.interactiveRoomByName?.items.length === 0) {
+  if (data?.trophyGoldRoomByName?.items.length === 0) {
     throw new Error('room not found');
   }
-  return data?.interactiveRoomByName?.items[0]?.id;
+  return data?.trophyGoldRoomByName?.items[0]?.id;
 };
 
 const getRoomData = async (id: string) => {
   // @ts-ignore
   const { data } = await API.graphql({
-    query: queries.getInteractiveRoom,
+    query: queries.getTrophyGoldRoom,
     variables: {
       id,
     },
@@ -28,31 +28,33 @@ const getRoomData = async (id: string) => {
   return data;
 };
 
-const useRoomLookup = (name: string) => {
+const useTrophyRoomLookup = (name: string) => {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [roomData, setRoomData] = React.useState<InteractiveRoomData>();
+  const [roomData, setRoomData] = React.useState<RawTrophyGoldRoomDetails>();
   const history = useHistory();
   React.useEffect(() => {
     if (name) {
       getRoomId(name)
         .then((id) => {
           getRoomData(id).then((data) => {
-            setRoomData(data?.getInteractiveRoom);
+            setRoomData(data?.getTrophyGoldRoom);
             setIsLoading(false);
           });
         })
         .catch((e) => {
           if (e.message === 'room not found') {
-            history.push(`/new-room?type=visual&name=${name}&notFound=true`);
+            history.push(
+              `/new-room?type=trophy-gold&name=${name}&notFound=true`
+            );
           }
         });
     }
   }, [name, history]);
 
   React.useEffect(() => {
-    if (!roomData) return;
+    if (!roomData?.id) return;
     const subscription = API.graphql({
-      query: subscriptions.onUpdateInteractiveRoomById,
+      query: subscriptions.onUpdateTrophyGoldRoom,
       variables: {
         id: roomData.id,
       },
@@ -60,13 +62,13 @@ const useRoomLookup = (name: string) => {
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        setRoomData(value.data?.onUpdateInteractiveRoomById);
+        setRoomData(value.data?.onUpdateTrophyGoldRoom);
       },
     });
     return () => subscription.unsubscribe();
-  }, [roomData]);
+  }, [roomData?.id]);
 
   return { data: roomData, isLoading };
 };
 
-export default useRoomLookup;
+export default useTrophyRoomLookup;

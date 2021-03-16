@@ -41,6 +41,7 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -98,6 +99,77 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateInteractiveRoomById = /* GraphQL */ `
+  subscription OnUpdateInteractiveRoomById($id: String!) {
+    onUpdateInteractiveRoomById(id: $id) {
+      id
+      name
+      backgroundImageUrl
+      rolls
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      dice {
+        items {
+          id
+          roomId
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
+          createdAt
+          updatedAt
+          room {
+            id
+            name
+            backgroundImageUrl
+            rolls
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const onUpdateVisualDieById = /* GraphQL */ `
   subscription OnUpdateVisualDieById($id: String!) {
     onUpdateVisualDieById(id: $id) {
@@ -117,6 +189,7 @@ export const onUpdateVisualDieById = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -265,6 +338,74 @@ export const onUpdateTrophyDarkCharacterById = /* GraphQL */ `
       background
       drive
       rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
+  subscription OnCreateTrophyGoldCharacterByGame($gameID: String!) {
+    onCreateTrophyGoldCharacterByGame(gameID: $gameID) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldCharacterById($id: String!) {
+    onUpdateTrophyGoldCharacterById(id: $id) {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
       createdAt
       updatedAt
     }
@@ -578,6 +719,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -632,6 +774,7 @@ export const onCreateInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -647,6 +790,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -701,6 +845,7 @@ export const onUpdateInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
@@ -716,6 +861,7 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
       id
       name
       backgroundImageUrl
+      rolls
       createdAt
       updatedAt
       safetyModule {
@@ -770,12 +916,301 @@ export const onDeleteInteractiveRoom = /* GraphQL */ `
             id
             name
             backgroundImageUrl
+            rolls
             createdAt
             updatedAt
           }
         }
         nextToken
       }
+    }
+  }
+`;
+export const onCreateTrophyGoldRoom = /* GraphQL */ `
+  subscription OnCreateTrophyGoldRoom {
+    onCreateTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateTrophyGoldRoom = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldRoom {
+    onUpdateTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteTrophyGoldRoom = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldRoom {
+    onDeleteTrophyGoldRoom {
+      id
+      name
+      bestiary
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          combatEquipment
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onCreateTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnCreateTrophyGoldCharacter {
+    onCreateTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldCharacter {
+    onUpdateTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldCharacter {
+    onDeleteTrophyGoldCharacter {
+      id
+      gameID
+      playerName
+      characterName
+      characterPronouns
+      characterImageUrl
+      ruin
+      weakPoint
+      lightDice
+      darkDice
+      occupation
+      background
+      drive
+      rituals
+      combatEquipment
+      foundEquipment
+      burdens
+      hoard
+      gold
+      tokens
+      training
+      household
+      library
+      backpack
+      conditions
+      notes
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -1147,6 +1582,7 @@ export const onCreateUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1267,6 +1703,7 @@ export const onUpdateUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1387,6 +1824,7 @@ export const onDeleteUserRoom = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1695,6 +2133,7 @@ export const onCreateVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1771,6 +2210,7 @@ export const onUpdateVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {
@@ -1847,6 +2287,7 @@ export const onDeleteVisualDie = /* GraphQL */ `
         id
         name
         backgroundImageUrl
+        rolls
         createdAt
         updatedAt
         safetyModule {

@@ -6,6 +6,7 @@ import {
   CreateInteractiveRoomMutation,
   CreateTrophyDarkRoomMutation,
   CreateHeartRoomMutation,
+  CreateTrophyGoldRoomMutation,
 } from '../API';
 import gql from '../gql';
 import * as mutations from '../graphql/mutations';
@@ -29,6 +30,9 @@ export const handleNewRoomRequest = async (
   }
   if (type === roomCodes.heart) {
     return handleHeartRoomRequest(name);
+  }
+  if (type === roomCodes.trophyGold) {
+    return handleTrophyGoldRoomRequest(name);
   }
 };
 
@@ -168,5 +172,40 @@ async function handleHeartRoomRequest(name: string) {
     d8Dice: [],
     d10Dice: [],
     d12Dice: [],
+  });
+}
+async function handleTrophyGoldRoomRequest(name: string) {
+  const result = await API.graphql({
+    query: queries.trophyGoldRoomByName,
+    variables: {
+      name,
+    },
+  });
+  // @ts-ignore
+  const existingRoom = result?.data?.trophyGoldRoomByName?.items[0];
+  if (existingRoom) {
+    const lastUsedDate = parseISO(existingRoom?.updatedAt);
+    if (isAfter(lastUsedDate, sixMonthsAgo)) {
+      throw new Error('room exists');
+    } else {
+      await API.graphql({
+        query: mutations.deleteTrophyGoldRoom,
+        variables: {
+          input: {
+            id: existingRoom.id,
+          },
+        },
+      });
+    }
+  }
+  const newSafetyModule = await getNewSafetyModule();
+  await gql<CreateTrophyGoldRoomMutation>(mutations.createTrophyGoldRoom, {
+    name,
+    trophyGoldRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
+    bestiary: [],
+    lightDice: [],
+    darkDice: [],
+    goldDice: [],
+    diceMode: 'hunt',
   });
 }
