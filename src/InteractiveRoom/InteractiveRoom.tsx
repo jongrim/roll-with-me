@@ -73,7 +73,7 @@ import InteractiveRoomControls from './InteractiveRoomControls';
 gsap.registerPlugin(Draggable);
 
 const emitRolls = (id: string, rolls: string[]) => {
-  API.graphql({
+  return API.graphql({
     query: mutations.updateInteractiveRoom,
     variables: {
       input: {
