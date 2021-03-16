@@ -60,6 +60,10 @@ const useRoomLookup = (name: string) => {
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
+        if (value.data?.onUpdateInteractiveRoom.id !== roomData.id) {
+          console.log('other room data', value.data?.onUpdateInteractiveRoom);
+          return;
+        }
         setRoomData(value.data?.onUpdateInteractiveRoom);
       },
     });
