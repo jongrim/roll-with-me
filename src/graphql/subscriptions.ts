@@ -99,6 +99,77 @@ export const onCreateVisualDieByRoom = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateInteractiveRoomById = /* GraphQL */ `
+  subscription OnUpdateInteractiveRoomById($id: String!) {
+    onUpdateInteractiveRoomById(id: $id) {
+      id
+      name
+      backgroundImageUrl
+      rolls
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      labels {
+        items {
+          id
+          roomId
+          contents
+          x
+          y
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      counters {
+        items {
+          id
+          roomId
+          title
+          value
+          max
+          x
+          y
+          type
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      dice {
+        items {
+          id
+          roomId
+          x
+          y
+          createdBy
+          result
+          sides
+          color
+          version
+          type
+          createdAt
+          updatedAt
+          room {
+            id
+            name
+            backgroundImageUrl
+            rolls
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const onUpdateVisualDieById = /* GraphQL */ `
   subscription OnUpdateVisualDieById($id: String!) {
     onUpdateVisualDieById(id: $id) {

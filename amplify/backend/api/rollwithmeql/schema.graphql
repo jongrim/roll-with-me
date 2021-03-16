@@ -273,6 +273,8 @@ type Subscription {
     @aws_subscribe(mutations: ["updateTextRoom"])
   onCreateVisualDieByRoom(roomId: String!): VisualDie
     @aws_subscribe(mutations: ["createVisualDie"])
+  onUpdateInteractiveRoomById(id: String!): InteractiveRoom
+    @aws_subscribe(mutations: ["updateInteractiveRoom"])
   onUpdateVisualDieById(id: String!): VisualDie
     @aws_subscribe(mutations: ["updateVisualDie"])
   onCreateCounterByRoom(roomId: String!): Counter

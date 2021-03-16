@@ -52,7 +52,7 @@ const useRoomLookup = (name: string) => {
   React.useEffect(() => {
     if (!roomData) return;
     const subscription = API.graphql({
-      query: subscriptions.onUpdateInteractiveRoom,
+      query: subscriptions.onUpdateInteractiveRoomById,
       variables: {
         id: roomData.id,
       },
@@ -60,11 +60,7 @@ const useRoomLookup = (name: string) => {
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        if (value.data?.onUpdateInteractiveRoom.id !== roomData.id) {
-          console.log('other room data', value.data?.onUpdateInteractiveRoom);
-          return;
-        }
-        setRoomData(value.data?.onUpdateInteractiveRoom);
+        setRoomData(value.data?.onUpdateInteractiveRoomById);
       },
     });
     return () => subscription.unsubscribe();

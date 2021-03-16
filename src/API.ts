@@ -5492,6 +5492,89 @@ export type OnCreateVisualDieByRoomSubscription = {
   } | null,
 };
 
+export type OnUpdateInteractiveRoomByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateInteractiveRoomByIdSubscription = {
+  onUpdateInteractiveRoomById?:  {
+    __typename: "InteractiveRoom",
+    id: string,
+    name: string,
+    backgroundImageUrl?: string | null,
+    rolls?: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    labels?:  {
+      __typename: "ModelLabelConnection",
+      items?:  Array< {
+        __typename: "Label",
+        id: string,
+        roomId: string,
+        contents: string,
+        x: number,
+        y: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    counters?:  {
+      __typename: "ModelCounterConnection",
+      items?:  Array< {
+        __typename: "Counter",
+        id: string,
+        roomId: string,
+        title: string,
+        value: number,
+        max?: number | null,
+        x: number,
+        y: number,
+        type: CounterType,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    dice?:  {
+      __typename: "ModelVisualDieConnection",
+      items?:  Array< {
+        __typename: "VisualDie",
+        id: string,
+        roomId: string,
+        x: number,
+        y: number,
+        createdBy: string,
+        result: number,
+        sides: number,
+        color: string,
+        version: number,
+        type?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        room?:  {
+          __typename: "InteractiveRoom",
+          id: string,
+          name: string,
+          backgroundImageUrl?: string | null,
+          rolls?: Array< string > | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
 export type OnUpdateVisualDieByIdSubscriptionVariables = {
   id?: string,
 };
