@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Box, Text, FormControl, Input, Flex, Spacer } from '@chakra-ui/react';
-import EditableControls from './EditableControls';
+import { Box, Input, useColorModeValue } from '@chakra-ui/react';
 import { UpdateTrophyGoldCharacterInput } from '../API';
+import CharacterSectionHeading from './CharacterSectionHeading';
+import useDelayedUpdate from './useDelayedUpdate';
 
 interface CharacterOccupationProps {
   occupation: string;
@@ -12,41 +13,24 @@ function CharacterOccupation({
   occupation,
   onSubmit,
 }: CharacterOccupationProps) {
-  const [isEditing, setIsEditing] = React.useState(false);
+  const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
   const [trackedOccupation, setTrackedOccupation] = React.useState(
     occupation || ''
   );
+  const delayedUpdate = useDelayedUpdate(onSubmit);
   return (
     <Box>
-      <Flex>
-        <Text fontSize="sm" opacity="0.9">
-          Occupation
-        </Text>
-        <Spacer />
-        <EditableControls
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          onSubmit={() => {
-            onSubmit({ occupation: trackedOccupation }).then(() => {
-              setIsEditing(false);
-            });
-          }}
-        />
-      </Flex>
-      {isEditing ? (
-        <Box>
-          <FormControl id="background" isRequired>
-            <Input
-              value={trackedOccupation}
-              onChange={({ target }) => setTrackedOccupation(target.value)}
-            />
-          </FormControl>
-        </Box>
-      ) : (
-        <Box>
-          <Text>{trackedOccupation}</Text>
-        </Box>
-      )}
+      <CharacterSectionHeading>Occupation</CharacterSectionHeading>
+      <Input
+        variant="flushed"
+        borderColor={inputBorderColor}
+        value={trackedOccupation}
+        onChange={({ target }) => {
+          const nextVal = target.value;
+          setTrackedOccupation(nextVal);
+          delayedUpdate({ occupation: nextVal });
+        }}
+      />
     </Box>
   );
 }

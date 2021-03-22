@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  Box,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-} from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { LibraryItem } from './TrophyGoldGameTypes';
 

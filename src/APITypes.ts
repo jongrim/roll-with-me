@@ -72,8 +72,9 @@ export interface RawTrophyGoldCharacter {
   background?: string;
   drive?: string;
   rituals?: Array<string>;
-  combatEquipment?: Array<string>;
-  foundEquipment?: Array<string>;
+  weaponSet: string;
+  armorSet: string;
+  foundEquipment: Array<string>;
   burdens?: number;
   hoard?: number;
   gold?: number;
@@ -82,7 +83,7 @@ export interface RawTrophyGoldCharacter {
   household?: string;
   library?: Array<string>;
   backpack?: string;
-  conditions?: Array<string>;
+  conditions?: string;
   notes: string;
   createdAt: string;
   updatedAt: string;
