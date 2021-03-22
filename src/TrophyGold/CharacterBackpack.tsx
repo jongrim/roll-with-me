@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   Box,
-  Text,
   Input,
   Grid,
   NumberDecrementStepper,
@@ -13,7 +12,8 @@ import {
 } from '@chakra-ui/react';
 import { UpdateTrophyGoldCharacterInput } from '../API';
 import { Backpack } from './TrophyGoldGameTypes';
-import debounce from 'lodash.debounce';
+import CharacterSectionHeading from './CharacterSectionHeading';
+import useDelayedUpdate from './useDelayedUpdate';
 
 interface CharacterBackpackProps {
   backpack: string;
@@ -21,34 +21,33 @@ interface CharacterBackpackProps {
 }
 
 function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
-  const tableBorderColor = useColorModeValue('gray.600', 'gray.300');
-  const inputBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
 
   const [trackedBackpack, setTrackedBackpack] = React.useState<Backpack>(
     JSON.parse(backpack)
   );
 
-  const delayedUpdate = React.useCallback(
-    debounce(async (val) => {
-      await onSubmit({
-        backpack: val,
-      });
-    }, 3000),
-    [onSubmit]
-  );
+  const delayedUpdate = useDelayedUpdate(onSubmit);
 
   return (
     <Box>
-      <Text fontSize="sm" opacity="0.9">
-        Backpack
-      </Text>
       <Grid templateColumns="1fr 100px">
-        <Text borderBottom="1px solid" borderColor={tableBorderColor}>
-          Item
-        </Text>
-        <Text borderBottom="1px solid" borderColor={tableBorderColor}>
+        <CharacterSectionHeading
+          mb={0}
+          borderBottom="1px solid"
+          borderColor={tableBorderColor}
+        >
+          Backpack Item
+        </CharacterSectionHeading>
+        <CharacterSectionHeading
+          mb={0}
+          borderBottom="1px solid"
+          borderColor={tableBorderColor}
+          pl={3}
+        >
           Uses
-        </Text>
+        </CharacterSectionHeading>
         {Object.entries(trackedBackpack).map(([key, entry], i) => {
           return (
             <React.Fragment key={entry.id}>
@@ -68,14 +67,12 @@ function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
                         ...cur,
                         [entry.id]: { ...entry, description: nextVal },
                       };
-                      delayedUpdate(JSON.stringify(nextBackpack));
+                      delayedUpdate({ backpack: JSON.stringify(nextBackpack) });
                       return nextBackpack;
                     });
                   }}
-                  variant="unstyled"
-                  borderBottom="1px dashed"
+                  variant="flushed"
                   borderColor={inputBorderColor}
-                  borderRadius={0}
                 />
               </Box>
               <Box
@@ -95,7 +92,7 @@ function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
                         ...cur,
                         [entry.id]: { ...entry, uses: nextVal },
                       };
-                      delayedUpdate(JSON.stringify(nextBackpack));
+                      delayedUpdate({ backpack: JSON.stringify(nextBackpack) });
                       return nextBackpack;
                     });
                   }}

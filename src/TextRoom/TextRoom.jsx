@@ -7,17 +7,19 @@ import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 
 import TextRoomPage from './TextRoomPage';
-import { getRandomNumbers } from '../functions/randomNumbers';
 import { assignResultsToDice, sumOfDice } from '../utils/rolls';
 
 import { useToast } from '@chakra-ui/react';
 import { UserRoomContext } from '../UserRoomProvider';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 const LOCAL_STORAGE_ROLL_KEY = 'local-saved-rolls';
 
 function TextRoom({ name }) {
   const toast = useToast();
   const history = useHistory();
+
+  const { getNumbers } = React.useContext(RandomNumbersContext);
 
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
@@ -326,7 +328,7 @@ function TextRoom({ name }) {
     });
     setIsRolling(true);
     try {
-      const results = await getRandomNumbers(rollWithoutResults.dice.length);
+      const results = await getNumbers(rollWithoutResults.dice.length);
       const diceWithResults = assignResultsToDice({
         dice: rollWithoutResults.dice,
         results,

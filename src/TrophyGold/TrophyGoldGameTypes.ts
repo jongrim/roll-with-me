@@ -50,10 +50,83 @@ export interface TrophyGoldCharacter {
 
 export interface Equipment {
   id: string;
-  title: string;
+  type: 'weapon' | 'armor' | 'found';
   description: string;
+  marked?: boolean;
+}
+
+export interface Weapon extends Equipment {
+  type: 'weapon';
+}
+
+export interface WeaponSet {
+  [id: string]: Weapon;
+}
+
+export const createEmptyWeapon = (): Weapon => ({
+  id: uuidv4(),
+  type: 'weapon',
+  description: '',
+});
+
+export function createEmptyWeaponSet(): WeaponSet {
+  const map = {
+    one: createEmptyWeapon(),
+    two: createEmptyWeapon(),
+    three: createEmptyWeapon(),
+  };
+  return {
+    [map.one.id]: map.one,
+    [map.two.id]: map.two,
+    [map.three.id]: map.three,
+  };
+}
+
+export interface Armor extends Equipment {
+  type: 'armor';
   marked: boolean;
-  value?: number;
+}
+
+export interface ArmorSet {
+  [id: string]: Armor;
+}
+
+export const createEmptyArmor = (): Armor => ({
+  id: uuidv4(),
+  type: 'armor',
+  description: '',
+  marked: false,
+});
+
+export function createEmptyArmorSet(): ArmorSet {
+  const map = {
+    one: createEmptyArmor(),
+    two: createEmptyArmor(),
+    three: createEmptyArmor(),
+  };
+  return {
+    [map.one.id]: map.one,
+    [map.two.id]: map.two,
+    [map.three.id]: map.three,
+  };
+}
+
+export interface FoundEquipment extends Equipment {
+  type: 'found';
+}
+
+export const createEmptyFoundEquipment = (): FoundEquipment => ({
+  id: uuidv4(),
+  type: 'found',
+  description: '',
+});
+
+export function createEmptyFoundEquipmentList(): FoundEquipment[] {
+  let equipment = [];
+  for (let i = 0; i < 6; i++) {
+    equipment.push(createEmptyFoundEquipment());
+  }
+  return equipment;
 }
 
 export interface Household {

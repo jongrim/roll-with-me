@@ -11,6 +11,7 @@ import Privacy from './Privacy/Privacy';
 import NewRoom from './NewRoom/NewRoom';
 import UserRoomProvider from './UserRoomProvider';
 import Guide from './Guide/Guide';
+import RandomNumbersProvider from './RandomNumbersProvider';
 
 export const rollWithMeTheme = extendTheme({
   colors: {
@@ -44,36 +45,38 @@ function App() {
     <ChakraProvider theme={rollWithMeTheme} resetCSS>
       <AuthProvider>
         <UserRoomProvider>
-          <Box className="App">
-            <Router>
-              <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-                <Route path="/new-room">
-                  <NewRoom />
-                </Route>
-                <Route path="/profile">
-                  <Profile />
-                </Route>
-                <Route path="/sign-in">
-                  <SignIn />
-                </Route>
-                <Route path="/feedback">
-                  <Feedback />
-                </Route>
-                <Route path="/privacy">
-                  <Privacy />
-                </Route>
-                <Route path="/guide">
-                  <Guide />
-                </Route>
-                <Route path="/:type/:name">
-                  <RoomProvider />
-                </Route>
-              </Switch>
-            </Router>
-          </Box>
+          <RandomNumbersProvider>
+            <Box className="App">
+              <Router>
+                <Switch>
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
+                  <Route path="/new-room">
+                    <NewRoom />
+                  </Route>
+                  <Route path="/profile">
+                    <Profile />
+                  </Route>
+                  <Route path="/sign-in">
+                    <SignIn />
+                  </Route>
+                  <Route path="/feedback">
+                    <Feedback />
+                  </Route>
+                  <Route path="/privacy">
+                    <Privacy />
+                  </Route>
+                  <Route path="/guide">
+                    <Guide />
+                  </Route>
+                  <Route path="/:type/:name">
+                    <RoomProvider />
+                  </Route>
+                </Switch>
+              </Router>
+            </Box>
+          </RandomNumbersProvider>
         </UserRoomProvider>
       </AuthProvider>
     </ChakraProvider>

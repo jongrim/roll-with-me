@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Box, Text, FormControl, Input, Flex, Spacer } from '@chakra-ui/react';
-import EditableControls from './EditableControls';
+import { Box, Input, useColorModeValue } from '@chakra-ui/react';
 import { UpdateTrophyGoldCharacterInput } from '../API';
+import CharacterSectionHeading from './CharacterSectionHeading';
+import useDelayedUpdate from './useDelayedUpdate';
 
 interface CharacterDriveProps {
   drive: string;
@@ -9,39 +10,22 @@ interface CharacterDriveProps {
 }
 
 function CharacterDrive({ drive, onSubmit }: CharacterDriveProps) {
-  const [isEditing, setIsEditing] = React.useState(false);
+  const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
   const [trackedDrive, setTrackedDrive] = React.useState(drive || '');
+  const delayedUpdate = useDelayedUpdate(onSubmit);
   return (
     <Box>
-      <Flex>
-        <Text fontSize="sm" opacity="0.9">
-          Drive
-        </Text>
-        <Spacer />
-        <EditableControls
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          onSubmit={() => {
-            onSubmit({ drive: trackedDrive }).then(() => {
-              setIsEditing(false);
-            });
-          }}
-        />
-      </Flex>
-      {isEditing ? (
-        <Box>
-          <FormControl id="drive" isRequired>
-            <Input
-              value={trackedDrive}
-              onChange={({ target }) => setTrackedDrive(target.value)}
-            />
-          </FormControl>
-        </Box>
-      ) : (
-        <Box>
-          <Text>{trackedDrive}</Text>
-        </Box>
-      )}
+      <CharacterSectionHeading>Drive</CharacterSectionHeading>
+      <Input
+        variant="flushed"
+        borderColor={inputBorderColor}
+        value={trackedDrive}
+        onChange={({ target }) => {
+          const nextVal = target.value;
+          setTrackedDrive(nextVal);
+          delayedUpdate({ drive: nextVal });
+        }}
+      />
     </Box>
   );
 }

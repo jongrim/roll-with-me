@@ -510,7 +510,8 @@ export const createTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
-          combatEquipment
+          armorSet
+          weaponSet
           foundEquipment
           burdens
           hoard
@@ -575,7 +576,8 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
-          combatEquipment
+          armorSet
+          weaponSet
           foundEquipment
           burdens
           hoard
@@ -640,7 +642,8 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
-          combatEquipment
+          armorSet
+          weaponSet
           foundEquipment
           burdens
           hoard
@@ -694,7 +697,8 @@ export const createTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
-      combatEquipment
+      armorSet
+      weaponSet
       foundEquipment
       burdens
       hoard
@@ -731,7 +735,8 @@ export const updateTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
-      combatEquipment
+      armorSet
+      weaponSet
       foundEquipment
       burdens
       hoard
@@ -768,7 +773,8 @@ export const deleteTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
-      combatEquipment
+      armorSet
+      weaponSet
       foundEquipment
       burdens
       hoard
