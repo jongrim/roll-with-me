@@ -24,7 +24,7 @@ import { Draggable } from 'gsap/all';
 import * as subscriptions from '../graphql/subscriptions';
 import * as mutations from '../graphql/mutations';
 import { VisualDie } from '../types';
-import { getRandomNumbers } from '../functions/randomNumbers';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 const Heptagon = () => {
   return (
@@ -465,6 +465,7 @@ const DieActions = ({
   version: number;
   updateActivity: () => void;
 }) => {
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const deleteDie = async () => {
     setActionInProgress(true);
     updateActivity();
@@ -486,7 +487,7 @@ const DieActions = ({
   const rerollDie = async () => {
     setActionInProgress(true);
     updateActivity();
-    const results = await getRandomNumbers(1);
+    const results = await getNumbers(1);
     try {
       const finalResult = (results[0] % sides) + 1;
       API.graphql({

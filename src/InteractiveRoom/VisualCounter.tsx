@@ -198,12 +198,13 @@ const Clock: React.FC<ClockProps> = ({
   React.useEffect(() => {
     gsap.to(el.current, {
       duration: 0.25,
-      strokeDasharray: `${time} 100`,
+      strokeDasharray: time > 50 ? `${time + 0.5} 100` : `${time} 100`,
     });
   }, [time]);
 
   return (
     <Flex
+      maxW={24}
       data-testid={id}
       flexDirection="column"
       align="center"
@@ -236,6 +237,7 @@ const Clock: React.FC<ClockProps> = ({
       <Text my={1}>{`${value} / ${max}`}</Text>
       <Flex justifyContent="space-between" alignItems="center">
         <IconButton
+          size="sm"
           variant="outline"
           disabled={value === 0}
           icon={<RiArrowLeftLine />}
@@ -244,6 +246,7 @@ const Clock: React.FC<ClockProps> = ({
           mr={1}
         />
         <IconButton
+          size="sm"
           variant="ghost"
           colorScheme="red"
           icon={<RiDeleteBin4Line />}
@@ -253,6 +256,7 @@ const Clock: React.FC<ClockProps> = ({
           mr={1}
         />
         <IconButton
+          size="sm"
           variant="outline"
           disabled={value === max}
           icon={<RiArrowRightLine />}

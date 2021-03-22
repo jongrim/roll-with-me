@@ -30,10 +30,10 @@ import {
 } from 'react-icons/gi';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import { getRandomNumbers } from '../functions/randomNumbers';
 import { TrophyGoldDiceMode } from '../API';
 import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from '../APITypes';
 import { DarkDie, LightDie } from '../TrophyShared/LightDiceDarkDice';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 interface TrophyDiceProps {
   lightDice: RawTrophyGoldRoomDetails['lightDice'];
@@ -51,12 +51,14 @@ const handleSubmit = async ({
   lightDiceCount,
   darkDiceCount,
   id,
+  getNumbers,
 }: {
   lightDiceCount: number;
   darkDiceCount: number;
   id: string;
+  getNumbers: (val: number) => Promise<number[]>;
 }) => {
-  const results = await getRandomNumbers(lightDiceCount + darkDiceCount);
+  const results = await getNumbers(lightDiceCount + darkDiceCount);
   const lightDice = [];
   const darkDice = [];
   for (let i = 0; i < lightDiceCount; i++) {
@@ -101,8 +103,14 @@ function setDiceMode({
   });
 }
 
-async function setWeakPoint({ id }: { id: string }) {
-  const results = await getRandomNumbers(1);
+async function setWeakPoint({
+  id,
+  getNumbers,
+}: {
+  id: string;
+  getNumbers: (val: number) => Promise<number[]>;
+}) {
+  const results = await getNumbers(1);
   return API.graphql({
     query: mutations.updateTrophyGoldCharacter,
     variables: {
@@ -123,6 +131,7 @@ const TrophyDice = ({
   id,
 }: TrophyDiceProps) => {
   const [trackedDiceMode, setTrackedDiceMode] = React.useState(diceMode);
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   React.useEffect(() => {
     // syncing this way lets us update the view before the data in the server has updated
     setTrackedDiceMode(diceMode);
@@ -205,7 +214,11 @@ const TrophyDice = ({
         <Box>
           <Grid templateColumns="1fr 1fr" gap={4} mb={2}>
             {characterChoice !== 'GM' && (
-              <Button onClick={() => setWeakPoint({ id: characterChoice })}>
+              <Button
+                onClick={() =>
+                  setWeakPoint({ id: characterChoice, getNumbers })
+                }
+              >
                 Set your weak point
               </Button>
             )}
@@ -240,6 +253,7 @@ const TrophyDice = ({
 };
 
 const DiceForm = ({ id }: { id: string }) => {
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
   const [dark, setDark] = React.useState(0);
   const [isRolling, setIsRolling] = React.useState(false);
@@ -248,11 +262,14 @@ const DiceForm = ({ id }: { id: string }) => {
       onSubmit={(e) => {
         e.preventDefault();
         setIsRolling(true);
-        handleSubmit({ lightDiceCount: light, darkDiceCount: dark, id }).then(
-          () => {
-            setIsRolling(false);
-          }
-        );
+        handleSubmit({
+          lightDiceCount: light,
+          darkDiceCount: dark,
+          id,
+          getNumbers,
+        }).then(() => {
+          setIsRolling(false);
+        });
       }}
     >
       <Grid templateColumns="1fr 1fr" gap={8}>

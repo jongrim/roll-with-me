@@ -53,7 +53,6 @@ import { BsClock } from 'react-icons/bs';
 import SpinningCube from '../SpinningCube/SpinningCube';
 import { VisualCounter, VisualDie, VisualLabel } from '../types';
 import { assignResultsToDice } from '../utils/rolls';
-import { getRandomNumbers } from '../functions/randomNumbers';
 import VDie, { fudgeDieResult } from './VisualDie';
 import ClockModal from './ClockModal';
 import VCounter from './VisualCounter';
@@ -69,6 +68,7 @@ import { UserRoomContext } from '../UserRoomProvider';
 import useUserRoom from '../hooks/useUserRoom';
 import BackgroundImageModal from './BackgroundImageModal';
 import InteractiveRoomControls from './InteractiveRoomControls';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 gsap.registerPlugin(Draggable);
 
@@ -92,6 +92,7 @@ type Props = {
 
 function InteractiveRoom({ name }: Props) {
   const toast = useToast();
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
   const lastRoll = data?.rolls
@@ -153,7 +154,7 @@ function InteractiveRoom({ name }: Props) {
     }
     setActionInProgress(true);
     try {
-      const die = await makeNewVisualDie({ sides, leftOffset });
+      const die = await makeNewVisualDie({ sides, leftOffset, getNumbers });
       await API.graphql({
         query: mutations.createVisualDie,
         variables: {
@@ -643,6 +644,7 @@ const VisualDice = ({
     results: { type?: string; result: number }[];
   }) => void;
 }) => {
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const [dice, setDice] = React.useState<VisualDie[]>(startingDice);
   const [{ selectedDice }, dispatch] = React.useReducer(selectionReducer, {
     selectedDice: [],
@@ -651,7 +653,7 @@ const VisualDice = ({
   const rerollDice = async () => {
     setActionInProgress(true);
     updateActivity();
-    const results = await getRandomNumbers(selectedDice.length);
+    const results = await getNumbers(selectedDice.length);
     const updatedDice = assignResultsToDice<minDie>({
       dice: selectedDice,
       results,
