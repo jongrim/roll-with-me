@@ -42,6 +42,7 @@ const useTrophyRoomLookup = (name: string) => {
           });
         })
         .catch((e) => {
+          console.log(e);
           if (e.message === 'room not found') {
             history.push(
               `/new-room?type=trophy-gold&name=${name}&notFound=true`

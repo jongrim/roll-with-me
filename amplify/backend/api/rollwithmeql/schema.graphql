@@ -109,7 +109,8 @@ type TrophyGoldCharacter
   background: String
   drive: String
   rituals: [String!]
-  combatEquipment: [AWSJSON!]
+  armorSet: AWSJSON!
+  weaponSet: AWSJSON!
   foundEquipment: [AWSJSON!]
   burdens: Int!
   hoard: Int!
@@ -119,8 +120,8 @@ type TrophyGoldCharacter
   household: AWSJSON
   library: [AWSJSON!]
   backpack: AWSJSON!
-  conditions: [String!]
-  notes: AWSJSON!
+  conditions: String!
+  notes: String!
 }
 
 type HeartRoom

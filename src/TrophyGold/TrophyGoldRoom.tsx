@@ -11,7 +11,12 @@ import TrophyGoldGameArea from './TrophyGoldGameArea';
 import DesignedForTrophyGold from './DesignedForTrophyGold';
 import { CreateTrophyGoldCharacterInput } from '../API';
 import useCharacterSubscription from './useCharacterSubscription';
-import { createEmptyBackpack } from './TrophyGoldGameTypes';
+import {
+  createEmptyArmorSet,
+  createEmptyBackpack,
+  createEmptyFoundEquipmentList,
+  createEmptyWeaponSet,
+} from './TrophyGoldGameTypes';
 
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
@@ -160,7 +165,13 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
                       gold: 0,
                       tokens: 0,
                       backpack: JSON.stringify(createEmptyBackpack()),
-                      notes: JSON.stringify({}),
+                      armorSet: JSON.stringify(createEmptyArmorSet()),
+                      weaponSet: JSON.stringify(createEmptyWeaponSet()),
+                      foundEquipment: createEmptyFoundEquipmentList().map((i) =>
+                        JSON.stringify(i)
+                      ),
+                      conditions: '',
+                      notes: '',
                     };
                     // @ts-ignore
                     const { data: createdCharacter } = await API.graphql({
