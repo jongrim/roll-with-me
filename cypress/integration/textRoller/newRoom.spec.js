@@ -21,7 +21,6 @@ context('guest user', () => {
   });
 
   it('can roll using the dice icons', () => {
-    cy.intercept('/random-numbers').as('randomNumbers');
     cy.findByLabelText(/d4/i).click();
     cy.findByText(/4 sided/i);
     cy.findByLabelText(/d6/i).click();
@@ -39,7 +38,6 @@ context('guest user', () => {
       cy.findByLabelText(/Name/i).type('every die');
       cy.findByText(/Roll/).click();
     });
-    cy.wait('@randomNumbers', { timeout: 7000 });
     cy.findByTestId(/last-roll-results/).within(() => {
       const numbers = ['4', '6', '8', '10', '20'];
       numbers.forEach((n) => cy.findByText(`D${n}`));
@@ -47,23 +45,28 @@ context('guest user', () => {
   });
 
   it('can quick roll', () => {
-    cy.intercept('/random-numbers').as('randomNumbers');
+    cy.intercept('POST', '/graphql').as('roll');
     cy.findByPlaceholderText('Quick roll (ex. 2d6+1 as Resist)').type(
       '2d6 1d20 + 2 as cypress whammie{enter}'
     );
-    cy.wait('@randomNumbers', { timeout: 7000 });
+    cy.wait('@roll');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1500);
+  });
+
+  it('has info about the last roll', () => {
     cy.findByText('Last Roll');
     cy.findByText('by cypress');
     cy.findByTestId('die-0').within(() => {
-      cy.findByText('D6');
+      cy.findByText(/D6/i);
       cy.findByText(/total/i);
-      cy.findByText('Die 1');
-      cy.findByText('Die 2');
+      cy.findByText(/Die 1/i);
+      cy.findByText(/Die 2/i);
     });
     cy.findByTestId('die-1').within(() => {
-      cy.findByText('D20');
+      cy.findByText(/D20/i);
       cy.findByText(/total/i);
-      cy.findByText('Die 1');
+      cy.findByText(/Die 1/i);
     });
   });
 });
