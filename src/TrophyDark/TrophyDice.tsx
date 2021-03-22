@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import { getRandomNumbers } from '../functions/randomNumbers';
 import { DarkDie, LightDie } from '../TrophyShared/LightDiceDarkDice';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 interface TrophyDiceProps {
   lightDice: string[];
@@ -27,12 +27,14 @@ const handleSubmit = async ({
   lightDiceCount,
   darkDiceCount,
   id,
+  getNumbers,
 }: {
   lightDiceCount: number;
   darkDiceCount: number;
   id: string;
+  getNumbers: (val: number) => Promise<number[]>;
 }) => {
-  const results = await getRandomNumbers(lightDiceCount + darkDiceCount);
+  const results = await getNumbers(lightDiceCount + darkDiceCount);
   const lightDice = [];
   const darkDice = [];
   const mod6 = (x: number) => x % 6;
@@ -61,6 +63,7 @@ const handleSubmit = async ({
 };
 
 const TrophyDice = ({ lightDice, darkDice, id }: TrophyDiceProps) => {
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
   const [dark, setDark] = React.useState(0);
   const [isRolling, setIsRolling] = React.useState(false);
@@ -69,11 +72,14 @@ const TrophyDice = ({ lightDice, darkDice, id }: TrophyDiceProps) => {
       onSubmit={(e) => {
         e.preventDefault();
         setIsRolling(true);
-        handleSubmit({ lightDiceCount: light, darkDiceCount: dark, id }).then(
-          () => {
-            setIsRolling(false);
-          }
-        );
+        handleSubmit({
+          lightDiceCount: light,
+          darkDiceCount: dark,
+          id,
+          getNumbers,
+        }).then(() => {
+          setIsRolling(false);
+        });
       }}
     >
       <Grid templateColumns="1fr 1fr" gap={8}>
