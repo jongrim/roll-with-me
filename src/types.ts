@@ -3,6 +3,7 @@ export interface Die {
   sides: number;
   result?: number;
   name: string;
+  type?: 'fudge';
 }
 
 export interface VisualDie extends Die {

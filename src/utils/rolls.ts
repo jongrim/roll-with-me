@@ -17,6 +17,20 @@ export function createDieOfNSides({
   };
 }
 
+export function createFudgeDie(): Die {
+  return {
+    id: uuidv4(),
+    sides: 6,
+    result: undefined,
+    name: 'Fudge',
+    type: 'fudge',
+  };
+}
+
+export function makeNFudgeDice({ n }: { n: number }): Die[] {
+  return Array.from(new Array(n)).map(() => createFudgeDie());
+}
+
 const dieFactory = ({ n, name }: { n: number; name?: string }) => () =>
   createDieOfNSides({ n, name });
 
@@ -50,7 +64,12 @@ export function assignResultsToDice<T extends { sides: number }>({
 }
 
 export function sumOfDice(dice: Die[]): number {
-  return dice.reduce((acc, cur) => acc + (cur.result || 0), 0);
+  return dice.reduce((acc, cur) => {
+    if (cur.type === 'fudge') {
+      return acc + fudgeDieNumberResult(cur.result || 0);
+    }
+    return acc + (cur.result || 0);
+  }, 0);
 }
 
 export function getRollFromQuickString(
@@ -62,7 +81,8 @@ export function getRollFromQuickString(
 
   const maybeCustomDice = getCustomDice(s, customDice);
   const maybeBaseDice = getBaseDice(s);
-  const dice = [...maybeBaseDice, ...maybeCustomDice];
+  const maybeFudgeDice = getFudgeDice(s);
+  const dice = [...maybeBaseDice, ...maybeFudgeDice, ...maybeCustomDice];
 
   return {
     id: uuidv4(),
@@ -149,6 +169,28 @@ export function getBaseDice(s: string) {
           count: Number(count),
           sides: Number(sides),
         });
+      })
+      .flat();
+    return dice;
+  }
+  return [];
+}
+
+export function getFudgeDice(s: string) {
+  const fudgeDiceReg = /\d{0,3}\s*d\s*f\W/gi;
+
+  const countReg = /\d+\s*d/i;
+
+  const baseDice = [...s.matchAll(fudgeDiceReg)];
+  if (baseDice.length > 0) {
+    const dice = baseDice
+      .map((group) => {
+        const count = countReg
+          .exec(group[0])?.[0]
+          .toLowerCase()
+          .replace('d', '')
+          .trim();
+        return makeNFudgeDice({ n: Number(count) });
       })
       .flat();
     return dice;
@@ -244,4 +286,30 @@ export const createNewRollFromValues = ({
     newRoll.rollName = describeRoll(newRoll);
   }
   return newRoll;
+};
+
+export const fudgeDieTextResult = (result: number) => {
+  switch (result) {
+    case 1:
+    case 2:
+      return '+';
+    case 3:
+    case 4:
+      return '—';
+    default:
+      return 'blank';
+  }
+};
+
+export const fudgeDieNumberResult = (result: number) => {
+  switch (result) {
+    case 1:
+    case 2:
+      return 1;
+    case 3:
+    case 4:
+      return -1;
+    default:
+      return 0;
+  }
 };
