@@ -34,7 +34,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import { Roll, SavedRoll } from '../types';
-import { savedRollToRoll, createNewRollFromValues } from '../utils/rolls';
+import {
+  savedRollToRoll,
+  createNewRollFromValues,
+  fudgeDieTextResult,
+  fudgeDieNumberResult,
+} from '../utils/rolls';
 import { compose } from '../utils/fnTools';
 
 async function setRolls({ id, rolls }: { id: string; rolls: Roll[] }) {
@@ -160,8 +165,14 @@ const RollHistoryEntry = ({
               {roll.sum}
             </Text>
             <Text fontSize="sm" color={subtleTextColor}>
-              ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
-              {roll.modifier})
+              (
+              {roll.dice
+                .map(({ type, result = 0 }) => {
+                  if (type === 'fudge') return fudgeDieNumberResult(result);
+                  return result;
+                })
+                .join(' + ')}{' '}
+              + {roll.modifier})
             </Text>
           </HStack>
           <HStack spacing={2}>
@@ -251,7 +262,11 @@ const RollInfo = ({ roll }: { roll: Roll }) => {
           <Tr key={die.id}>
             <Td fontWeight="300">{die.name || i + 1}</Td>
             <Td fontWeight="300">{die.sides}</Td>
-            <Td fontWeight="600">{die.result}</Td>
+            <Td fontWeight="600">
+              {die.type === 'fudge'
+                ? fudgeDieTextResult(die.result || 0)
+                : die.result}
+            </Td>
           </Tr>
         ))}
       </Tbody>

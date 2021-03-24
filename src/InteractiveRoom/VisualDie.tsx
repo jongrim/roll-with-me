@@ -164,9 +164,6 @@ const VDie: React.FC<{
         trackedDie={trackedDie}
         controls={controls}
         buttonHighlight={buttonHighlight}
-        actionsVisible={actionsVisible}
-        setActionInProgress={setActionInProgress}
-        updateActivity={updateActivity}
         isSelected={isSelected}
       />
     );
@@ -555,27 +552,13 @@ const DieCreator: React.FC<{
 
 interface FudgeDieProps {
   trackedDie: VisualDie;
-  setActionInProgress: (val: boolean) => void;
   isSelected: boolean;
   buttonHighlight: Record<string, unknown>;
-  actionsVisible: boolean;
   controls: AnimationControls;
-  updateActivity: () => void;
 }
 
 const FudgeDie = React.forwardRef<HTMLDivElement, FudgeDieProps>(
-  (
-    {
-      trackedDie,
-      isSelected,
-      buttonHighlight,
-      controls,
-      actionsVisible,
-      setActionInProgress,
-      updateActivity,
-    },
-    el
-  ) => {
+  ({ trackedDie, isSelected, buttonHighlight, controls }, el) => {
     return (
       <Box
         id={trackedDie.id}
@@ -635,19 +618,6 @@ const FudgeDieResult: React.FC<{ result: number }> = ({ result }) => {
       );
     default:
       return null;
-  }
-};
-
-export const fudgeDieResult = (result: number) => {
-  switch (result) {
-    case 1:
-    case 2:
-      return '+';
-    case 3:
-    case 4:
-      return '—';
-    default:
-      return 'blank';
   }
 };
 
