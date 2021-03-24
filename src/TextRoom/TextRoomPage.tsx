@@ -310,10 +310,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                 </GridItem>
                 <GridItem order={[1, 1, 2]}>
                   {rolls[0] ? (
-                    <RollResults
-                      rolls={rolls.slice(0, 4)}
-                      isRolling={loadingStates.isRolling}
-                    />
+                    <RollResults rolls={rolls.slice(0, 4)} />
                   ) : (
                     <>
                       <Heading

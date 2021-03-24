@@ -18,10 +18,10 @@ import {
 } from '@chakra-ui/react';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 import { Die, Roll } from '../types';
+import { fudgeDieNumberResult, fudgeDieTextResult } from '../utils/rolls';
 
 interface RollResultsProps {
   rolls: Roll[];
-  isRolling: boolean;
 }
 
 interface dieResultsMap {
@@ -31,7 +31,7 @@ interface dieResultsMap {
   };
 }
 
-const RollResults = ({ rolls, isRolling }: RollResultsProps) => {
+const RollResults = ({ rolls }: RollResultsProps) => {
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
   return (
     <AnimateSharedLayout>
@@ -68,7 +68,12 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
   const diceMap: dieResultsMap = React.useMemo(() => {
     let map: dieResultsMap = {};
     roll?.dice.forEach((d) => {
-      if (map[d.name]) {
+      if (d.type === 'fudge') {
+        map.Fudge = {
+          dice: [d].concat(map.Fudge?.dice ?? []),
+          sum: fudgeDieNumberResult(d.result || 0) + (map.Fudge?.sum || 0),
+        };
+      } else if (map[d.name]) {
         map[d.name].dice.push(d);
         map[d.name].sum += d.result || 0;
       } else {
@@ -88,9 +93,11 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
       <Stat>
         <StatLabel>{roll?.rollName}</StatLabel>
         <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
-        <StatHelpText fontSize={14}>{`${groupResults.join(' + ')} + ${
-          roll?.modifier
-        }`}</StatHelpText>
+        {(groupResults.length > 1 || roll.modifier !== 0) && (
+          <StatHelpText fontSize={14}>{`${groupResults.join(' + ')}${
+            roll?.modifier ? ` + ${roll.modifier}` : ''
+          }`}</StatHelpText>
+        )}
       </Stat>
       {Object.entries(diceMap).map(([key, results], i) => {
         return (
@@ -108,7 +115,11 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
               {results.dice.map((d, i) => (
                 <GridItem key={d.id}>
                   <Stat>
-                    <StatNumber>{d.result}</StatNumber>
+                    <StatNumber>
+                      {d.type === 'fudge'
+                        ? fudgeDieTextResult(d.result || 0)
+                        : d.result}
+                    </StatNumber>
                     <StatHelpText fontSize={11}>Die {i + 1}</StatHelpText>
                   </Stat>
                 </GridItem>
@@ -159,8 +170,14 @@ const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
             maxW={60}
             isTruncated
           >
-            ({roll.dice.map(({ result }) => result).join(' + ')} +{' '}
-            {roll.modifier})
+            (
+            {roll.dice
+              .map(({ type, result = 0 }) => {
+                if (type === 'fudge') return fudgeDieNumberResult(result);
+                return result;
+              })
+              .join(' + ')}{' '}
+            + {roll.modifier})
           </Text>
         </Flex>
         <Text fontSize="sm" fontWeight="300">

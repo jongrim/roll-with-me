@@ -52,8 +52,8 @@ import {
 import { BsClock } from 'react-icons/bs';
 import SpinningCube from '../SpinningCube/SpinningCube';
 import { VisualCounter, VisualDie, VisualLabel } from '../types';
-import { assignResultsToDice } from '../utils/rolls';
-import VDie, { fudgeDieResult } from './VisualDie';
+import { assignResultsToDice, fudgeDieTextResult } from '../utils/rolls';
+import VDie from './VisualDie';
 import ClockModal from './ClockModal';
 import VCounter from './VisualCounter';
 import VLabel from './VisualLabel';
@@ -590,7 +590,7 @@ const LastRoll = ({
         {results
           .map((res) => {
             if (res.type === 'fudge') {
-              return fudgeDieResult(res.result);
+              return fudgeDieTextResult(res.result);
             }
             return res.result;
           })
