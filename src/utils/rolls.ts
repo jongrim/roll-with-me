@@ -177,7 +177,7 @@ export function getBaseDice(s: string) {
 }
 
 export function getFudgeDice(s: string) {
-  const fudgeDiceReg = /\d{0,3}\s*d\s*f\W/gi;
+  const fudgeDiceReg = /\d{0,3}\s*d\s*f\b/gi;
 
   const countReg = /\d+\s*d/i;
 
