@@ -18,6 +18,9 @@ import CharacterList from './CharacterList';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
 import XCardModal from '../XCardModal/XCardModal';
+import { updateCharacter } from './Character';
+import { UpdateTrophyGoldCharacterInput } from '../API';
+import useDelayedUpdate from './useDelayedUpdate';
 
 interface TrophyGoldGameProps {
   username: string;
@@ -40,10 +43,23 @@ const TrophyGoldGameArea = ({
     { opacity: 1, backgroundColor: 'gray.700' }
   );
   const xCardRef = React.useRef<HTMLButtonElement>(null);
+  const updateWithId = React.useCallback(
+    async (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => {
+      await updateCharacter({ id: characterChoice, ...update });
+    },
+    [characterChoice]
+  );
+  const delayedUsernameUpdate = useDelayedUpdate(updateWithId);
   return (
     <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Roboto Slab">
       <GridItem>
-        <SettingsBar username={username} setUsername={setUsername} />
+        <SettingsBar
+          username={username}
+          setUsername={(val) => {
+            setUsername(val);
+            delayedUsernameUpdate({ playerName: val });
+          }}
+        />
       </GridItem>
       <GridItem p={4}>
         <Grid

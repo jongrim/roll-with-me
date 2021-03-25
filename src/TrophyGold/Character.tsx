@@ -31,6 +31,7 @@ import CharacterConditions from './CharacterConditions';
 import CharacterSectionHeading from './CharacterSectionHeading';
 import useDelayedUpdate from './useDelayedUpdate';
 import CharacterNotes from './CharacterNotes';
+import CharacterNumberField from './CharacterNumberField';
 
 const setRuin = async ({ id, ruin }: { id: string; ruin: number }) => {
   try {
@@ -206,6 +207,40 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           </Flex>
         </GridItem>
       </Grid>
+      <HStack spacing={6} mt={6}>
+        <Box>
+          <Text>Burdens</Text>
+          <CharacterNumberField
+            field="burdens"
+            onSubmit={updateWithId}
+            initial={character.burdens || 0}
+          />
+        </Box>
+        <Box>
+          <Text>Hoard</Text>
+          <CharacterNumberField
+            field="hoard"
+            onSubmit={updateWithId}
+            initial={character.hoard || 0}
+          />
+        </Box>
+        <Box>
+          <Text>Hunt Tokens</Text>
+          <CharacterNumberField
+            field="tokens"
+            onSubmit={updateWithId}
+            initial={character.tokens || 0}
+          />
+        </Box>
+        <Box>
+          <Text>Gold</Text>
+          <CharacterNumberField
+            field="gold"
+            onSubmit={updateWithId}
+            initial={character.gold || 0}
+          />
+        </Box>
+      </HStack>
       <Divider my={6} />
       <CharacterDrive drive={character.drive || ''} onSubmit={updateWithId} />
       <Box mt={6}>
@@ -267,7 +302,10 @@ const Character = ({ character, canEdit }: CharacterProps) => {
         conditions={character.conditions || ''}
         onSubmit={updateWithId}
       />
-      <CharacterNotes notes={character.notes || ''} onSubmit={updateWithId} />
+      <Box mt={6}>
+        <CharacterNotes notes={character.notes || ''} onSubmit={updateWithId} />
+      </Box>
+
       {isSaving && <SpinningCube />}
     </Box>
   );
