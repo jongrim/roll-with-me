@@ -298,4 +298,6 @@ type Subscription {
     @aws_subscribe(mutations: ["createHeartCharacter"])
   onUpdateHeartCharacterById(id: String!): HeartCharacter
     @aws_subscribe(mutations: ["updateHeartCharacter"])
+  onUpdateSafetyModuleById(id: String!): SafetyModule
+    @aws_subscribe(mutations: ["updateSafetyModule"])
 }

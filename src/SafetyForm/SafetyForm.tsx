@@ -54,7 +54,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
     ClassifiedItem[]
   >([]);
 
-  const { data } = useSafetyModuleLookup(id);
+  const data = useSafetyModuleLookup(id);
 
   React.useEffect(() => {
     if (user) {

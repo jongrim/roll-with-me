@@ -5960,6 +5960,21 @@ export type OnUpdateHeartCharacterByIdSubscription = {
   } | null,
 };
 
+export type OnUpdateSafetyModuleByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateSafetyModuleByIdSubscription = {
+  onUpdateSafetyModuleById?:  {
+    __typename: "SafetyModule",
+    id: string,
+    xCardActive: boolean,
+    linesAndVeils: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateTrophyDarkRoomSubscription = {
   onCreateTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
