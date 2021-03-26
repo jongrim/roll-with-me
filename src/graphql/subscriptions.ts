@@ -487,6 +487,17 @@ export const onUpdateHeartCharacterById = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateSafetyModuleById = /* GraphQL */ `
+  subscription OnUpdateSafetyModuleById($id: String!) {
+    onUpdateSafetyModuleById(id: $id) {
+      id
+      xCardActive
+      linesAndVeils
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateTrophyDarkRoom = /* GraphQL */ `
   subscription OnCreateTrophyDarkRoom {
     onCreateTrophyDarkRoom {
