@@ -19,7 +19,7 @@ interface XCardModalProps {
 const XCardModal = React.forwardRef<HTMLElement, XCardModalProps>(
   ({ safetyModuleId }, quickRollRef) => {
     const [closing, setClosing] = React.useState(false);
-    const { data } = useSafetyModuleLookup(safetyModuleId);
+    const data = useSafetyModuleLookup(safetyModuleId);
     const close = async () => {
       setClosing(true);
       // Should better alert there isn't a safety module loaded

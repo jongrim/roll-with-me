@@ -21,7 +21,11 @@ const getModuleData = async (id: string) => {
 
 const useSafetyModuleLookup = (id: string) => {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [safetyModule, setSafetyModule] = React.useState<SafetyModule>();
+  const [safetyModule, setSafetyModule] = React.useState<SafetyModule>({
+    id: '',
+    xCardActive: false,
+    linesAndVeils: [],
+  });
   React.useEffect(() => {
     if (id) {
       getModuleData(id).then((data) => {
@@ -38,7 +42,7 @@ const useSafetyModuleLookup = (id: string) => {
   React.useEffect(() => {
     if (!id) return;
     const subscription = API.graphql({
-      query: subscriptions.onUpdateSafetyModule,
+      query: subscriptions.onUpdateSafetyModuleById,
       variables: {
         id,
       },
@@ -46,7 +50,7 @@ const useSafetyModuleLookup = (id: string) => {
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        const nextSafetyModule = value?.data?.onUpdateSafetyModule ?? {
+        const nextSafetyModule = value?.data?.onUpdateSafetyModuleById ?? {
           id: '',
           xCardActive: false,
           linesAndVeils: [],
@@ -60,7 +64,7 @@ const useSafetyModuleLookup = (id: string) => {
     return () => subscription.unsubscribe();
   }, [id]);
 
-  return { data: safetyModule, isLoading };
+  return { ...safetyModule, isLoading };
 };
 
 export default useSafetyModuleLookup;
