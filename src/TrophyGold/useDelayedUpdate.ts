@@ -13,5 +13,5 @@ export default function useDelayedUpdate(
     }, 3000),
     [update]
   );
-  return delayedUpdate;
+  return { delayedUpdate };
 }

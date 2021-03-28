@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Input, useColorModeValue, Grid } from '@chakra-ui/react';
+import { Input, useColorModeValue, Box } from '@chakra-ui/react';
 import { UpdateTrophyGoldCharacterInput } from '../API';
 import { FoundEquipment } from './TrophyGoldGameTypes';
 import useDelayedUpdate from './useDelayedUpdate';
@@ -7,11 +7,13 @@ import useDelayedUpdate from './useDelayedUpdate';
 interface CharacterFoundEquipmentProps {
   foundEquipment: string[];
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  canEdit: boolean;
 }
 
 function CharacterFoundEquipment({
   foundEquipment,
   onSubmit,
+  canEdit,
 }: CharacterFoundEquipmentProps) {
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
 
@@ -19,14 +21,20 @@ function CharacterFoundEquipment({
     FoundEquipment[]
   >(() => foundEquipment.map((i) => JSON.parse(i)));
 
-  const delayedUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate } = useDelayedUpdate(onSubmit);
+
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedFoundEquipment(foundEquipment.map((i) => JSON.parse(i)));
+    }
+  }, [foundEquipment, canEdit]);
 
   return (
-    <Grid templateColumns="1fr">
+    <Box pl={3}>
       {trackedFoundEquipment.map((entry) => {
         return (
           <Input
-            ml={3}
+            isReadOnly={!canEdit}
             my={3}
             key={entry.id}
             value={entry.description}
@@ -53,7 +61,7 @@ function CharacterFoundEquipment({
           />
         );
       })}
-    </Grid>
+    </Box>
   );
 }
 

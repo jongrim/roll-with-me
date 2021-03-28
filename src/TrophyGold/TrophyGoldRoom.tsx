@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Flex, Spacer, useToast } from '@chakra-ui/react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion';
 import useTrophyRoomLookup from './useTrophyRoomLookup';
 import { useMachine } from '@xstate/react';

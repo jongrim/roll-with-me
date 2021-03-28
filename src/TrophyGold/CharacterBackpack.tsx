@@ -18,9 +18,14 @@ import useDelayedUpdate from './useDelayedUpdate';
 interface CharacterBackpackProps {
   backpack: string;
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  canEdit: boolean;
 }
 
-function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
+function CharacterBackpack({
+  backpack,
+  onSubmit,
+  canEdit,
+}: CharacterBackpackProps) {
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
 
@@ -28,7 +33,12 @@ function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
     JSON.parse(backpack)
   );
 
-  const delayedUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate } = useDelayedUpdate(onSubmit);
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedBackpack(JSON.parse(backpack));
+    }
+  }, [backpack, canEdit]);
 
   return (
     <Box>
@@ -59,6 +69,7 @@ function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
                 borderColor={tableBorderColor}
               >
                 <Input
+                  isReadOnly={!canEdit}
                   value={entry.description}
                   onChange={({ target }) => {
                     const nextVal = target.value;
@@ -84,8 +95,10 @@ function CharacterBackpack({ backpack, onSubmit }: CharacterBackpackProps) {
                 <NumberInput
                   size="sm"
                   min={0}
-                  defaultValue={entry.uses}
+                  isReadOnly={!canEdit}
+                  value={entry.uses}
                   onChange={(_, val) => {
+                    if (val === entry.uses) return;
                     const nextVal = val;
                     setTrackedBackpack((cur) => {
                       const nextBackpack = {

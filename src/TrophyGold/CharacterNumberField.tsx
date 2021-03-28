@@ -10,24 +10,35 @@ import useDelayedUpdate from './useDelayedUpdate';
 import { UpdateTrophyGoldCharacterInput } from '../API';
 
 interface CharacterNumberFieldProps {
-  initial: number;
+  initial?: number;
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
   field: keyof Omit<UpdateTrophyGoldCharacterInput, 'id'>;
+  canEdit: boolean;
 }
 
 export default function CharacterNumberField({
   initial,
   onSubmit,
   field,
+  canEdit,
 }: CharacterNumberFieldProps) {
   const [trackedValue, setTrackedValue] = React.useState(initial);
-  const delayedUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate } = useDelayedUpdate(onSubmit);
+  React.useEffect(() => {
+    setTrackedValue(initial);
+  }, [initial]);
+
+  if (initial === undefined) return null;
+
   return (
     <NumberInput
+      isReadOnly={!canEdit}
+      variant={canEdit ? 'outline' : 'filled'}
       size="sm"
       min={0}
-      defaultValue={trackedValue}
+      value={trackedValue}
       onChange={(_, val) => {
+        if (val === trackedValue) return;
         setTrackedValue(val);
         delayedUpdate({ [field]: val });
       }}

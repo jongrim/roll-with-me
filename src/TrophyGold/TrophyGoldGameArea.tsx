@@ -4,14 +4,23 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Link,
   Spacer,
   Stack,
+  StackDivider,
   useColorModeValue,
+  Text,
+  IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
+import {
+  RiLayoutRowLine,
+  RiLayoutColumnLine,
+  RiExternalLinkFill,
+} from 'react-icons/ri';
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
-import RulesSummary from './RulesSummary';
 import TrophyDice from './TrophyDice';
 import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from '../APITypes';
 import CharacterList from './CharacterList';
@@ -21,6 +30,7 @@ import XCardModal from '../XCardModal/XCardModal';
 import { updateCharacter } from './Character';
 import { UpdateTrophyGoldCharacterInput } from '../API';
 import useDelayedUpdate from './useDelayedUpdate';
+import NewWindow from 'react-new-window';
 
 interface TrophyGoldGameProps {
   username: string;
@@ -29,6 +39,8 @@ interface TrophyGoldGameProps {
   characterChoice: string;
   gameData: RawTrophyGoldRoomDetails;
 }
+
+export type viewLayout = 'side' | 'top';
 
 const TrophyGoldGameArea = ({
   username,
@@ -42,6 +54,7 @@ const TrophyGoldGameArea = ({
     { opacity: 1, backgroundColor: 'gray.100' },
     { opacity: 1, backgroundColor: 'gray.700' }
   );
+  const characterLinkColor = useColorModeValue('blue.600', 'blue.400');
   const xCardRef = React.useRef<HTMLButtonElement>(null);
   const updateWithId = React.useCallback(
     async (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => {
@@ -49,7 +62,14 @@ const TrophyGoldGameArea = ({
     },
     [characterChoice]
   );
-  const delayedUsernameUpdate = useDelayedUpdate(updateWithId);
+  const { delayedUpdate: delayedUsernameUpdate } = useDelayedUpdate(
+    updateWithId
+  );
+  const [layout, setLayout] = React.useState<viewLayout>('side');
+  const [popoutDice, setPopoutDice] = React.useState(false);
+  React.useEffect(() => {
+    return () => setPopoutDice(false);
+  }, []);
   return (
     <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Roboto Slab">
       <GridItem>
@@ -61,7 +81,7 @@ const TrophyGoldGameArea = ({
           }}
         />
       </GridItem>
-      <GridItem p={4}>
+      <GridItem pl={4}>
         <Grid
           h="full"
           templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
@@ -129,53 +149,106 @@ const TrophyGoldGameArea = ({
             </Flex>
           </GridItem>
           <GridItem overflow="auto">
-            <Route
-              exact
-              path={[
-                `/trophy-gold/${name}/table`,
-                `/trophy-gold/${name}/rules`,
-              ]}
-            >
+            <Route exact path={[`/trophy-gold/${name}/table`]}>
               <Grid
                 h="full"
-                templateColumns={['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']}
-                gap={6}
+                templateColumns={
+                  layout === 'top' || popoutDice
+                    ? '1fr'
+                    : ['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']
+                }
+                templateRows={
+                  layout === 'side' ? '1fr' : 'auto minmax(0, 1fr) auto'
+                }
+                columnGap={6}
+                rowGap={1}
                 alignContent="start"
               >
-                <Route exact path={`/trophy-gold/${name}/table`}>
-                  <GridItem
-                    overflow={['unset', 'unset', 'unset', 'auto']}
-                    rowStart={[2, 2, 2, 1]}
-                    pl={[0, 0, 3]}
-                    pr={6}
-                    pb={8}
+                <GridItem colSpan={layout === 'top' ? 1 : [1, 1, 1, 2]}>
+                  <Flex
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                    px={2}
+                    py={1}
                   >
-                    <CharacterList
-                      characters={characters}
-                      characterChoice={characterChoice}
+                    <HStack spacing={8} divider={<StackDivider />}>
+                      {characters.map((c) => (
+                        <Link
+                          color={characterLinkColor}
+                          href={`#${c.characterName?.replace(' ', '')}`}
+                          key={c.id}
+                        >
+                          <Text isTruncated maxW="sm">
+                            {c.characterName}
+                          </Text>
+                        </Link>
+                      ))}
+                    </HStack>
+                    <Spacer />
+                    <IconButton
+                      variant="ghost"
+                      icon={
+                        layout === 'side' ? (
+                          <RiLayoutColumnLine />
+                        ) : (
+                          <RiLayoutRowLine />
+                        )
+                      }
+                      aria-label={
+                        layout === 'side' ? 'top layout' : 'side layout'
+                      }
+                      onClick={() => {
+                        if (layout === 'top') {
+                          setLayout('side');
+                        } else {
+                          setLayout('top');
+                        }
+                      }}
                     />
-                  </GridItem>
-                </Route>
-                {/* <Route exact path={`/trophy-gold/${name}/rules`}>
-                  <GridItem
-                    overflow={['unset', 'unset', 'unset', 'auto']}
-                    rowStart={[2, 2, 2, 1]}
-                    pr={6}
-                  >
-                    <RulesSummary />
-                  </GridItem>
-                </Route> */}
-                <GridItem rowStart={[1, 1, 1, 1]} pr={[8, 8, 8, 0]}>
-                  <TrophyDice
-                    lightDice={gameData.lightDice}
-                    darkDice={gameData.darkDice}
-                    goldDice={gameData.goldDice}
-                    diceMode={gameData.diceMode}
+                    <Tooltip label="Open dice in new window" placement="left">
+                      <IconButton
+                        variant="ghost"
+                        icon={<RiExternalLinkFill />}
+                        aria-label="open dice in new window"
+                        onClick={() => setPopoutDice(true)}
+                      />
+                    </Tooltip>
+                  </Flex>
+                </GridItem>
+                <GridItem overflow={['unset', 'unset', 'unset', 'auto']}>
+                  <CharacterList
                     characters={characters}
                     characterChoice={characterChoice}
-                    id={id}
+                    layout={layout}
                   />
                 </GridItem>
+                {popoutDice ? (
+                  <NewWindow onUnload={() => setPopoutDice(false)}>
+                    <TrophyDice
+                      layout="side"
+                      lightDice={gameData.lightDice}
+                      darkDice={gameData.darkDice}
+                      goldDice={gameData.goldDice}
+                      diceMode={gameData.diceMode}
+                      characters={characters}
+                      characterChoice={characterChoice}
+                      id={id}
+                    />
+                  </NewWindow>
+                ) : (
+                  <GridItem>
+                    <TrophyDice
+                      layout={layout}
+                      lightDice={gameData.lightDice}
+                      darkDice={gameData.darkDice}
+                      goldDice={gameData.goldDice}
+                      diceMode={gameData.diceMode}
+                      characters={characters}
+                      characterChoice={characterChoice}
+                      id={id}
+                    />
+                  </GridItem>
+                )}
               </Grid>
             </Route>
             <Route exact path={`/trophy-gold/${name}/safety`}>

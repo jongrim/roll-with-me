@@ -12,7 +12,6 @@ import {
   useToast,
   Text,
   Divider,
-  HStack,
   useRadioGroup,
   Flex,
 } from '@chakra-ui/react';
@@ -48,7 +47,7 @@ const CharacterChoice = ({
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'room type',
-    defaultValue: 'returning',
+    defaultValue: mode,
     onChange: (val: string) => {
       setMode(val);
     },
@@ -153,7 +152,7 @@ const CharacterChoice = ({
           </form>
         )}
         {mode === 'gm' && (
-          <Button variant="ghost" w="full" type="submit">
+          <Button variant="ghost" w="full" onClick={() => onDone(GM)}>
             Begin
           </Button>
         )}

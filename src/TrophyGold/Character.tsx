@@ -32,6 +32,7 @@ import CharacterSectionHeading from './CharacterSectionHeading';
 import useDelayedUpdate from './useDelayedUpdate';
 import CharacterNotes from './CharacterNotes';
 import CharacterNumberField from './CharacterNumberField';
+import { RandomNumbersContext } from '../RandomNumbersProvider';
 
 const setRuin = async ({ id, ruin }: { id: string; ruin: number }) => {
   try {
@@ -72,8 +73,9 @@ interface CharacterProps {
 }
 
 const Character = ({ character, canEdit }: CharacterProps) => {
+  const { getNumbers } = React.useContext(RandomNumbersContext);
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
-  const rituals = character.rituals || [];
+  const rituals = character.rituals?.filter(Boolean) || [];
   const baseRuin = (rituals.length ?? 0) + 1;
   const ruin = character.ruin || baseRuin;
   const disabledRuinBgColor = useColorModeValue('gray.200', 'gray.700');
@@ -95,10 +97,36 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     },
     [character.id]
   );
-  const delayedNameUpdate = useDelayedUpdate(updateWithId);
-  const delayedPronounsUpdate = useDelayedUpdate(updateWithId);
+  const { delayedUpdate: delayedNameUpdate } = useDelayedUpdate(updateWithId);
+  const { delayedUpdate: delayedPronounsUpdate } = useDelayedUpdate(
+    updateWithId
+  );
+
+  React.useEffect(() => {
+    if (!canEdit && character?.characterName) {
+      setCharacterName(character.characterName);
+    }
+  }, [character?.characterName, canEdit]);
+  React.useEffect(() => {
+    if (!canEdit && character?.characterPronouns) {
+      setCharacterPronouns(character.characterPronouns);
+    }
+  }, [character?.characterPronouns, canEdit]);
+  React.useEffect(() => {
+    if (!canEdit && character?.characterImageUrl) {
+      setImageUrl(character.characterImageUrl);
+    }
+  }, [character?.characterImageUrl, canEdit]);
+
   return (
-    <Box fontFamily="Roboto Slab">
+    <Box
+      fontFamily="Roboto Slab"
+      id={character.characterName?.replace(' ', '')}
+    >
+      <Text mb={2} fontWeight="600">
+        {character.playerName}
+        {character.characterName && ` – ${character.characterName}`}
+      </Text>
       <Grid
         templateColumns="minmax(150px, 33%) 1fr"
         gap={6}
@@ -117,7 +145,6 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <Box
               border="3px dashed"
               borderColor="inherit"
-              w="full"
               h="200px"
               rounded="sm"
             >
@@ -134,6 +161,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <Input
             aria-label="Character image URL"
             mt={2}
+            isReadOnly={!canEdit}
             type="url"
             placeholder="https://example.com"
             value={imageUrl}
@@ -153,6 +181,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <Flex direction="column" alignItems="flex-end">
             <Text fontWeight="600">Character Name</Text>
             <Input
+              isReadOnly={!canEdit}
               value={characterName}
               maxW="sm"
               onChange={({ target }) => {
@@ -165,6 +194,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               Character Pronouns
             </Text>
             <Input
+              isReadOnly={!canEdit}
               value={characterPronouns}
               maxW="sm"
               onChange={({ target }) => {
@@ -207,13 +237,41 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           </Flex>
         </GridItem>
       </Grid>
-      <HStack spacing={6} mt={6}>
+      <HStack spacing={6} mt={6} alignItems="flex-start">
+        <Flex direction="column" alignItems="center">
+          <Text fontSize="sm" fontWeight="400">
+            Weak Point
+          </Text>
+          <Text fontSize="lg">{character.weakPoint || '–'}</Text>
+          <HStack spacing={3}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                const [result] = await getNumbers(1);
+                updateWithId({ weakPoint: (result % 6) + 1 });
+              }}
+            >
+              Set
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                updateWithId({ weakPoint: null });
+              }}
+            >
+              Clear
+            </Button>
+          </HStack>
+        </Flex>
         <Box>
           <Text>Burdens</Text>
           <CharacterNumberField
             field="burdens"
             onSubmit={updateWithId}
-            initial={character.burdens || 0}
+            initial={character.burdens}
+            canEdit={canEdit}
           />
         </Box>
         <Box>
@@ -221,7 +279,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <CharacterNumberField
             field="hoard"
             onSubmit={updateWithId}
-            initial={character.hoard || 0}
+            initial={character.hoard}
+            canEdit={canEdit}
           />
         </Box>
         <Box>
@@ -229,7 +288,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <CharacterNumberField
             field="tokens"
             onSubmit={updateWithId}
-            initial={character.tokens || 0}
+            initial={character.tokens}
+            canEdit={canEdit}
           />
         </Box>
         <Box>
@@ -237,26 +297,34 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <CharacterNumberField
             field="gold"
             onSubmit={updateWithId}
-            initial={character.gold || 0}
+            initial={character.gold}
+            canEdit={canEdit}
           />
         </Box>
       </HStack>
       <Divider my={6} />
-      <CharacterDrive drive={character.drive || ''} onSubmit={updateWithId} />
+      <CharacterDrive
+        drive={character.drive || ''}
+        onSubmit={updateWithId}
+        canEdit={canEdit}
+      />
       <Box mt={6}>
         <CharacterOccupation
+          canEdit={canEdit}
           occupation={character.occupation || ''}
           onSubmit={updateWithId}
         />
       </Box>
       <Box mt={6}>
         <CharacterBackground
+          canEdit={canEdit}
           background={character.background || ''}
           onSubmit={updateWithId}
         />
       </Box>
       <Box mt={6}>
         <CharacterRituals
+          canEdit={canEdit}
           characterId={character.id}
           rituals={character.rituals || []}
           onSubmit={updateWithId}
@@ -265,6 +333,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
       <Divider my={6} />
       <Box mt={6}>
         <CharacterBackpack
+          canEdit={canEdit}
           backpack={character.backpack || '{}'}
           onSubmit={updateWithId}
         />
@@ -287,11 +356,13 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             Found Equipment
           </CharacterSectionHeading>
           <CharacterCombatEquipment
+            canEdit={canEdit}
             weaponSet={character.weaponSet}
             armorSet={character.armorSet}
             onSubmit={updateWithId}
           />
           <CharacterFoundEquipment
+            canEdit={canEdit}
             foundEquipment={character.foundEquipment}
             onSubmit={updateWithId}
           />
@@ -301,11 +372,15 @@ const Character = ({ character, canEdit }: CharacterProps) => {
       <CharacterConditions
         conditions={character.conditions || ''}
         onSubmit={updateWithId}
+        canEdit={canEdit}
       />
       <Box mt={6}>
-        <CharacterNotes notes={character.notes || ''} onSubmit={updateWithId} />
+        <CharacterNotes
+          notes={character.notes || ''}
+          onSubmit={updateWithId}
+          canEdit={canEdit}
+        />
       </Box>
-
       {isSaving && <SpinningCube />}
     </Box>
   );
