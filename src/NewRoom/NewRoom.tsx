@@ -27,7 +27,7 @@ import {
   roomNames,
   roomNamesType,
 } from '../roomPaths';
-import isLocalhost from '../utils/isLocalHost';
+import devEnabled from '../utils/devEnabled';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -37,7 +37,7 @@ const options = [
   'Text',
   'Visual',
   'Trophy Dark',
-  ...(isLocalhost ? ['Trophy Gold', 'Heart'] : []),
+  ...(devEnabled() ? ['Trophy Gold', 'Heart'] : []),
 ];
 
 interface RoomTypeState {
@@ -145,8 +145,9 @@ const NewRoom: React.FC = () => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'room type',
     defaultValue: getDefaultValueFromType(query.get('type') ?? ''),
-    onChange: (nextValue: 'Text' | 'Visual' | 'Trophy Dark' | 'Heart') =>
-      dispatch({ payload: nextValue }),
+    onChange: (
+      nextValue: 'Text' | 'Visual' | 'Trophy Dark' | 'Trophy Gold' | 'Heart'
+    ) => dispatch({ payload: nextValue }),
   });
 
   const group = getRootProps();
