@@ -76,10 +76,14 @@ const AuthProvider: React.FC = ({ children }) => {
       }
     });
 
-    getUser().then((userData) => {
-      setUser(userData);
-      setAuthState(AuthState.SignedIn);
-    });
+    getUser()
+      .then((userData) => {
+        setUser(userData);
+        setAuthState(AuthState.SignedIn);
+      })
+      .catch((e) => {
+        console.warn(e);
+      });
   }, []);
   return (
     <AuthContext.Provider value={{ user, authState }}>

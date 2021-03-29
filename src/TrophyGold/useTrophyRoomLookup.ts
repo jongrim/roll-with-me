@@ -55,7 +55,7 @@ const useTrophyRoomLookup = (name: string) => {
   React.useEffect(() => {
     if (!roomData?.id) return;
     const subscription = API.graphql({
-      query: subscriptions.onUpdateTrophyGoldRoom,
+      query: subscriptions.onUpdateTrophyGoldRoomById,
       variables: {
         id: roomData.id,
       },
@@ -63,7 +63,7 @@ const useTrophyRoomLookup = (name: string) => {
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        setRoomData(value.data?.onUpdateTrophyGoldRoom);
+        setRoomData(value.data?.onUpdateTrophyGoldRoomById);
       },
     });
     return () => subscription.unsubscribe();

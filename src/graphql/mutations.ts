@@ -188,6 +188,54 @@ export const deleteTrophyDarkCharacter = /* GraphQL */ `
     }
   }
 `;
+export const createTrophyGoldDiceModule = /* GraphQL */ `
+  mutation CreateTrophyGoldDiceModule(
+    $input: CreateTrophyGoldDiceModuleInput!
+    $condition: ModelTrophyGoldDiceModuleConditionInput
+  ) {
+    createTrophyGoldDiceModule(input: $input, condition: $condition) {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrophyGoldDiceModule = /* GraphQL */ `
+  mutation UpdateTrophyGoldDiceModule(
+    $input: UpdateTrophyGoldDiceModuleInput!
+    $condition: ModelTrophyGoldDiceModuleConditionInput
+  ) {
+    updateTrophyGoldDiceModule(input: $input, condition: $condition) {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrophyGoldDiceModule = /* GraphQL */ `
+  mutation DeleteTrophyGoldDiceModule(
+    $input: DeleteTrophyGoldDiceModuleInput!
+    $condition: ModelTrophyGoldDiceModuleConditionInput
+  ) {
+    deleteTrophyGoldDiceModule(input: $input, condition: $condition) {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createTextRoom = /* GraphQL */ `
   mutation CreateTextRoom(
     $input: CreateTextRoomInput!
@@ -487,11 +535,15 @@ export const createTrophyGoldRoom = /* GraphQL */ `
     createTrophyGoldRoom(input: $input, condition: $condition) {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -523,6 +575,26 @@ export const createTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
           createdAt
           updatedAt
         }
@@ -553,11 +625,15 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
     updateTrophyGoldRoom(input: $input, condition: $condition) {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -594,6 +670,26 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
         }
         nextToken
       }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       safetyModule {
         id
         xCardActive
@@ -619,11 +715,15 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
     deleteTrophyGoldRoom(input: $input, condition: $condition) {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -655,6 +755,26 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
           createdAt
           updatedAt
         }
@@ -786,6 +906,78 @@ export const deleteTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createTrophyGoldBeast = /* GraphQL */ `
+  mutation CreateTrophyGoldBeast(
+    $input: CreateTrophyGoldBeastInput!
+    $condition: ModelTrophyGoldBeastConditionInput
+  ) {
+    createTrophyGoldBeast(input: $input, condition: $condition) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrophyGoldBeast = /* GraphQL */ `
+  mutation UpdateTrophyGoldBeast(
+    $input: UpdateTrophyGoldBeastInput!
+    $condition: ModelTrophyGoldBeastConditionInput
+  ) {
+    updateTrophyGoldBeast(input: $input, condition: $condition) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrophyGoldBeast = /* GraphQL */ `
+  mutation DeleteTrophyGoldBeast(
+    $input: DeleteTrophyGoldBeastInput!
+    $condition: ModelTrophyGoldBeastConditionInput
+  ) {
+    deleteTrophyGoldBeast(input: $input, condition: $condition) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
       createdAt
       updatedAt
     }

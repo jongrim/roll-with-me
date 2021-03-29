@@ -173,3 +173,36 @@ export function createEmptyBackpack(): Backpack {
     [map.six.id]: map.six,
   };
 }
+
+export interface Beast {
+  id: string;
+  gameID: string;
+  endurance?: number;
+  title: string;
+  description: string;
+  habit1?: string;
+  habit2?: string;
+  habit3?: string;
+  habit4?: string;
+  habit5?: string;
+  habit6?: string;
+  defenses: string;
+  weakness: string;
+}
+
+export function makeBeast(gameID: string): Beast {
+  return {
+    id: uuidv4(),
+    gameID,
+    title: '',
+    description: '',
+    defenses: '',
+    weakness: '',
+    habit1: '',
+    habit2: '',
+    habit3: '',
+    habit4: '',
+    habit5: '',
+    habit6: '',
+  };
+}

@@ -7,16 +7,23 @@ import useDelayedUpdate from './useDelayedUpdate';
 interface CharacterNotesProps {
   notes: string;
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  canEdit: boolean;
 }
 
-function CharacterNotes({ notes, onSubmit }: CharacterNotesProps) {
+function CharacterNotes({ notes, onSubmit, canEdit }: CharacterNotesProps) {
   const [trackedNotes, setTrackedNotes] = React.useState(notes || '');
-  const delayedUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate } = useDelayedUpdate(onSubmit);
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedNotes(notes);
+    }
+  }, [notes, canEdit]);
   return (
     <Box>
       <CharacterSectionHeading>Notes</CharacterSectionHeading>
       <Textarea
-        variant="filled"
+        isReadOnly={!canEdit}
+        variant="outline"
         value={trackedNotes}
         onChange={({ target }) => {
           const nextVal = target.value;

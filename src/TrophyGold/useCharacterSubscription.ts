@@ -10,12 +10,16 @@ const useCharacterSubscription = ({
   characters: RawTrophyGoldCharacter[];
   gameId?: string;
 }) => {
+  const [trackedCharacterIds, setTrackedCharacterIds] = React.useState<
+    string[]
+  >([]);
   const [trackedCharacters, setTrackedCharacters] = React.useState<
     RawTrophyGoldCharacter[]
   >([]);
 
   React.useEffect(() => {
     // handles first load of characters with game data
+    setTrackedCharacterIds(characters.map((c) => c.id));
     setTrackedCharacters(characters);
   }, [characters]);
 
@@ -30,6 +34,9 @@ const useCharacterSubscription = ({
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
+        setTrackedCharacterIds((cur) =>
+          cur.concat(value.data.onCreateTrophyGoldCharacterByGame.id)
+        );
         setTrackedCharacters((cur) =>
           cur.concat(value.data.onCreateTrophyGoldCharacterByGame)
         );
@@ -39,11 +46,11 @@ const useCharacterSubscription = ({
   }, [gameId]);
 
   React.useEffect(() => {
-    const charSubscriptions = trackedCharacters.map((character) => {
+    const charSubscriptions = trackedCharacterIds.map((id) => {
       return API.graphql({
         query: subscriptions.onUpdateTrophyGoldCharacterById,
         variables: {
-          id: character.id,
+          id,
         },
         // @ts-ignore
       }).subscribe({
@@ -51,7 +58,7 @@ const useCharacterSubscription = ({
         next: ({ value }) => {
           setTrackedCharacters((cur) => {
             return cur.map((c) => {
-              if (c.id === character.id) {
+              if (c.id === id) {
                 return value.data.onUpdateTrophyGoldCharacterById;
               }
               return c;
@@ -61,8 +68,11 @@ const useCharacterSubscription = ({
       });
     });
 
-    return () => charSubscriptions.forEach((sub) => sub.unsubscribe());
-  }, [trackedCharacters]);
+    return () =>
+      charSubscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      });
+  }, [trackedCharacterIds]);
 
   return trackedCharacters;
 };
