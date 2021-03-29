@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { InteractiveRoomData } from '../APITypes';
+import { useToast } from '@chakra-ui/toast';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
@@ -29,6 +30,7 @@ const getRoomData = async (id: string) => {
 };
 
 const useRoomLookup = (name: string) => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
   const [roomData, setRoomData] = React.useState<InteractiveRoomData>();
   const history = useHistory();
@@ -62,9 +64,17 @@ const useRoomLookup = (name: string) => {
       next: ({ value }) => {
         setRoomData(value.data?.onUpdateInteractiveRoomById);
       },
+      error: (error: unknown) => {
+        toast({
+          status: 'error',
+          description:
+            'Lost connection to game server. Please refresh the page',
+          duration: null,
+        });
+      },
     });
     return () => subscription.unsubscribe();
-  }, [roomData]);
+  }, [roomData, toast]);
 
   return { data: roomData, isLoading };
 };

@@ -53,6 +53,14 @@ function TextRoom({ name }) {
         setCustomDice(parsedCustomDice);
         setIsRolling(false);
       },
+      error: (errors) => {
+        toast({
+          status: 'error',
+          description:
+            'Lost connection to game server. Please refresh the page',
+          duration: null,
+        });
+      },
     });
     return () => subscription.unsubscribe();
   }, [name, toast]);
