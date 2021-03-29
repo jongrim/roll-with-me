@@ -119,7 +119,7 @@ const TrophyGoldGameArea = ({
                 templateRows={
                   layout === 'side' ? '1fr' : 'auto minmax(0, 1fr) auto'
                 }
-                columnGap={6}
+                columnGap={3}
                 rowGap={1}
                 alignContent="start"
               >

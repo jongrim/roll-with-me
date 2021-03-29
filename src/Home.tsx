@@ -27,7 +27,7 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from './AuthProvider';
 import { handleNewRoomRequest } from './NewRoom/handleNewRoomRequest';
 import getNewRoomNames from './functions/randomNames';
-import isLocalhost from './utils/isLocalHost';
+import devEnabled from './utils/devEnabled';
 
 function Home() {
   const [name, setName] = React.useState<string>('');
@@ -228,7 +228,7 @@ function Home() {
               >
                 Trophy Dark
               </Link>
-              {isLocalhost && (
+              {devEnabled() && (
                 <Link
                   as={ReactRouterLink}
                   color="yellow.700"
@@ -248,7 +248,7 @@ function Home() {
                   Trophy Gold
                 </Link>
               )}
-              {isLocalhost && (
+              {devEnabled() && (
                 <Link
                   as={ReactRouterLink}
                   color="red.700"
