@@ -85,6 +85,44 @@ const handleSubmit = async ({
   }
 };
 
+const handleCharacterSubmit = async ({
+  lightDiceCount,
+  darkDiceCount,
+  id,
+  getNumbers,
+}: {
+  lightDiceCount: number;
+  darkDiceCount: number;
+  id: string;
+  getNumbers: (val: number) => Promise<number[]>;
+}) => {
+  const results = await getNumbers(lightDiceCount + darkDiceCount);
+  const lightDice = [];
+  const darkDice = [];
+  for (let i = 0; i < lightDiceCount; i++) {
+    lightDice.push(`${mod6(results.pop() ?? 1) + 1}`);
+  }
+  for (let i = 0; i < darkDiceCount; i++) {
+    darkDice.push(`${mod6(results.pop() ?? 1) + 1}`);
+  }
+  try {
+    API.graphql({
+      query: mutations.updateTrophyGoldCharacter,
+      variables: {
+        input: {
+          id,
+          lightDice,
+          darkDice,
+        },
+      },
+    });
+  } catch (e) {
+    console.warn(e);
+  } finally {
+    return;
+  }
+};
+
 const handleGoldSubmit = async ({
   goldDiceCount,
   id,
@@ -147,6 +185,7 @@ const TrophyDice = ({
     goldDice = [],
     diceMode = TrophyGoldDiceMode.hunt,
   } = useTrophyDice({ diceModule });
+  const textBgColor = useColorModeValue('white', 'grey.800');
   const [trackedDiceMode, setTrackedDiceMode] = React.useState(diceMode);
   React.useEffect(() => {
     // syncing this way lets us update the view before the data in the server has updated
@@ -163,6 +202,7 @@ const TrophyDice = ({
       position="relative"
       direction={layout === 'side' ? 'column' : 'row'}
       w="full"
+      h="full"
       {...borderStyles}
     >
       <Flex
@@ -238,10 +278,11 @@ const TrophyDice = ({
       </Flex>
       <Divider
         my={2}
+        mx={2}
         orientation={layout === 'top' ? 'vertical' : 'horizontal'}
       />
       {[TrophyGoldDiceMode.risk, TrophyGoldDiceMode.combat].includes(
-        diceMode
+        trackedDiceMode
       ) && (
         <Box>
           <Center mb={1}>
@@ -263,7 +304,7 @@ const TrophyDice = ({
               </Button>
             )}
           </Center>
-          <Flex wrap="wrap">
+          <Flex wrap="wrap" w={layout === 'side' ? 'full' : 64}>
             {characters?.map((char) => {
               if (char.weakPoint) {
                 return (
@@ -280,16 +321,13 @@ const TrophyDice = ({
           </Flex>
         </Box>
       )}
-      <Grid gridTemplateColumns="1fr" gridTemplateRows="1fr" w="full">
+      <Grid gridTemplateColumns="1fr" gridTemplateRows="1fr">
         <Box
           gridArea="1 / 1"
-          transition="all .3s .3s cubic-bezier(.5, 0, .5, 1)"
-          transitionProperty="opacity, transform"
-          _hidden={{
-            opacity: 0,
-            transform: 'scale(0.8)',
-          }}
-          hidden={[TrophyGoldDiceMode.gold].includes(diceMode)}
+          hidden={[
+            TrophyGoldDiceMode.gold,
+            TrophyGoldDiceMode.contest,
+          ].includes(trackedDiceMode)}
         >
           <DiceForm
             layout={layout}
@@ -300,12 +338,6 @@ const TrophyDice = ({
         </Box>
         <Box
           gridArea="1 / 1"
-          transition="all .3s .3s cubic-bezier(.5, 0, .5, 1)"
-          transitionProperty="opacity, transform"
-          _hidden={{
-            opacity: 0,
-            transform: 'scale(0.8)',
-          }}
           hidden={[
             TrophyGoldDiceMode.hunt,
             TrophyGoldDiceMode.risk,
@@ -315,6 +347,90 @@ const TrophyDice = ({
         >
           <GoldDiceForm id={id} goldDice={goldDice} layout={layout} />
         </Box>
+        <Box
+          gridArea="1 / 1"
+          hidden={[
+            TrophyGoldDiceMode.hunt,
+            TrophyGoldDiceMode.risk,
+            TrophyGoldDiceMode.combat,
+            TrophyGoldDiceMode.gold,
+          ].includes(trackedDiceMode)}
+        >
+          <DiceForm
+            layout={layout}
+            id={id}
+            characterId={characterChoice}
+            lightDice={
+              characters.find(({ id }) => id === characterChoice)?.lightDice
+            }
+            darkDice={
+              characters.find(({ id }) => id === characterChoice)?.darkDice
+            }
+          />
+        </Box>
+      </Grid>
+      <Grid
+        templateColumns={layout === 'side' ? '1fr 1fr' : '1fr 1fr 1fr 1fr'}
+        columnGap={3}
+        mt={2}
+        hidden={[
+          TrophyGoldDiceMode.hunt,
+          TrophyGoldDiceMode.risk,
+          TrophyGoldDiceMode.combat,
+          TrophyGoldDiceMode.gold,
+        ].includes(trackedDiceMode)}
+      >
+        {characters
+          .filter(({ id }) => id !== characterChoice)
+          .map(({ lightDice, darkDice, id, characterName }) => {
+            return (
+              <Box key={id}>
+                <Text fontWeight="500" mb={2}>
+                  {characterName}
+                </Text>
+                <Box
+                  position="relative"
+                  minH={8}
+                  border="1px solid"
+                  borderColor="inherit"
+                  mb={2}
+                >
+                  <Text
+                    fontSize="xs"
+                    position="absolute"
+                    top="-8px"
+                    left="4px"
+                    bgColor={textBgColor}
+                  >
+                    Light Dice
+                  </Text>
+                  <Text mt={2} pl={1} fontWeight="400">
+                    {lightDice?.join(', ')}
+                  </Text>
+                </Box>
+                <Box
+                  position="relative"
+                  minH={8}
+                  border="1px solid"
+                  borderColor="inherit"
+                  mb={2}
+                >
+                  <Text
+                    fontSize="xs"
+                    position="absolute"
+                    top="-8px"
+                    left="4px"
+                    bgColor={textBgColor}
+                  >
+                    Dark Dice
+                  </Text>
+                  <Text mt={2} pl={1} fontWeight="400">
+                    {darkDice?.join(', ')}
+                  </Text>
+                </Box>
+              </Box>
+            );
+          })}
       </Grid>
     </Flex>
   );
@@ -325,8 +441,10 @@ const DiceForm = ({
   lightDice,
   darkDice,
   layout,
+  characterId,
 }: {
   id: string;
+  characterId?: string;
   lightDice: TrophyGoldDiceModule['lightDice'];
   darkDice: TrophyGoldDiceModule['darkDice'];
   layout: viewLayout;
@@ -343,25 +461,33 @@ const DiceForm = ({
           "bottomLeft center darkDice"
           `,
           alignItems: 'center',
-          templateColumns: '1fr 100px 1fr',
+          templateColumns: '150px 100px 300px',
         }
       : { templateColumns: '1fr 1fr' };
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         setIsRolling(true);
-        handleSubmit({
-          lightDiceCount: light,
-          darkDiceCount: dark,
-          id,
-          getNumbers,
-        }).then(() => {
-          setIsRolling(false);
-        });
+        if (characterId) {
+          await handleCharacterSubmit({
+            lightDiceCount: light,
+            darkDiceCount: dark,
+            id: characterId,
+            getNumbers,
+          });
+        } else {
+          await handleSubmit({
+            lightDiceCount: light,
+            darkDiceCount: dark,
+            id,
+            getNumbers,
+          });
+        }
+        setIsRolling(false);
       }}
     >
-      <Grid {...containerLayout} gap={8} w="full">
+      <Grid {...containerLayout} gap={8}>
         <GridItem gridArea={layout === 'top' ? 'topLeft' : ''}>
           <FormControl id="light-dice">
             <FormLabel
@@ -429,6 +555,7 @@ const DiceForm = ({
               fontFamily="Faith Collapsing"
               fontSize="3xl"
               opacity="0.9"
+              w="full"
               py={6}
               isLoading={isRolling}
             >

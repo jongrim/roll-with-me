@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { RawTrophyGoldRoomDetails } from '../APITypes';
+import { useToast } from '@chakra-ui/toast';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
@@ -29,6 +30,7 @@ const getRoomData = async (id: string) => {
 };
 
 const useTrophyRoomLookup = (name: string) => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
   const [roomData, setRoomData] = React.useState<RawTrophyGoldRoomDetails>();
   const history = useHistory();
@@ -65,9 +67,17 @@ const useTrophyRoomLookup = (name: string) => {
       next: ({ value }) => {
         setRoomData(value.data?.onUpdateTrophyGoldRoomById);
       },
+      error: (error: unknown) => {
+        toast({
+          status: 'error',
+          description:
+            'Lost connection to game server. Please refresh the page',
+          duration: null,
+        });
+      },
     });
     return () => subscription.unsubscribe();
-  }, [roomData?.id]);
+  }, [roomData?.id, toast]);
 
   return { data: roomData, isLoading };
 };
