@@ -33,22 +33,7 @@ import useDelayedUpdate from './useDelayedUpdate';
 import CharacterNotes from './CharacterNotes';
 import CharacterNumberField from './CharacterNumberField';
 import { RandomNumbersContext } from '../RandomNumbersProvider';
-
-const setRuin = async ({ id, ruin }: { id: string; ruin: number }) => {
-  try {
-    await API.graphql({
-      query: mutations.updateTrophyGoldCharacter,
-      variables: {
-        input: {
-          id,
-          ruin,
-        },
-      },
-    });
-  } catch (e) {
-    console.warn(e);
-  }
-};
+import RuinBoxes from './RuinBoxes';
 
 export const updateCharacter = async (
   character: UpdateTrophyGoldCharacterInput
@@ -78,7 +63,6 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const rituals = character.rituals?.filter(Boolean) || [];
   const baseRuin = (rituals.length ?? 0) + 1;
   const ruin = character.ruin || baseRuin;
-  const disabledRuinBgColor = useColorModeValue('gray.200', 'gray.700');
   const [characterName, setCharacterName] = React.useState(
     character?.characterName || ''
   );
@@ -92,8 +76,9 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const updateWithId = React.useCallback(
     async (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => {
       setIsSaving(true);
-      await updateCharacter({ id: character.id, ...update });
-      setIsSaving(false);
+      updateCharacter({ id: character.id, ...update }).then(() =>
+        setIsSaving(false)
+      );
     },
     [character.id]
   );
@@ -122,6 +107,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     <Box
       fontFamily="Roboto Slab"
       id={character.characterName?.replace(' ', '')}
+      pr={3}
     >
       <Text mb={2} fontWeight="600">
         {character.playerName}
@@ -206,34 +192,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <Text fontWeight="600" mt={4}>
               Ruin
             </Text>
-            <HStack spacing={3} mt={2}>
-              {[1, 2, 3, 4, 5, 6].map((num) => (
-                <Button
-                  key={`ruin-${num}`}
-                  h="32px"
-                  w="32px"
-                  p={0}
-                  minW={0}
-                  variant="ghost"
-                  rounded="sm"
-                  border="1px solid"
-                  borderColor="inherit"
-                  disabled={num <= baseRuin}
-                  backgroundColor={
-                    num <= ruin ? disabledRuinBgColor : 'transparent'
-                  }
-                  onClick={() => {
-                    if (num > ruin) {
-                      setRuin({ id: character.id, ruin: num });
-                    } else {
-                      setRuin({ id: character.id, ruin: num - 1 });
-                    }
-                  }}
-                >
-                  <Center h="full">{num}</Center>
-                </Button>
-              ))}
-            </HStack>
+            <RuinBoxes ruin={ruin} id={character.id} baseRuin={baseRuin} />
           </Flex>
         </GridItem>
       </Grid>

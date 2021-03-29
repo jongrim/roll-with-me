@@ -26,7 +26,7 @@ const CharacterList = ({
       pl={1}
       h="full"
       templateColumns={
-        layout === 'top' ? `repeat(${characters.length}, 600px)` : '1fr'
+        layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
       }
       gap={8}
     >

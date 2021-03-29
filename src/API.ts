@@ -191,6 +191,61 @@ export type DeleteTrophyDarkCharacterInput = {
   id?: string | null,
 };
 
+export type CreateTrophyGoldDiceModuleInput = {
+  id?: string | null,
+  lightDice: Array< string >,
+  darkDice: Array< string >,
+  goldDice: Array< string >,
+  diceMode: TrophyGoldDiceMode,
+};
+
+export enum TrophyGoldDiceMode {
+  risk = "risk",
+  hunt = "hunt",
+  combat = "combat",
+  contest = "contest",
+  gold = "gold",
+}
+
+
+export type ModelTrophyGoldDiceModuleConditionInput = {
+  lightDice?: ModelStringInput | null,
+  darkDice?: ModelStringInput | null,
+  goldDice?: ModelStringInput | null,
+  diceMode?: ModelTrophyGoldDiceModeInput | null,
+  and?: Array< ModelTrophyGoldDiceModuleConditionInput | null > | null,
+  or?: Array< ModelTrophyGoldDiceModuleConditionInput | null > | null,
+  not?: ModelTrophyGoldDiceModuleConditionInput | null,
+};
+
+export type ModelTrophyGoldDiceModeInput = {
+  eq?: TrophyGoldDiceMode | null,
+  ne?: TrophyGoldDiceMode | null,
+};
+
+export type TrophyGoldDiceModule = {
+  __typename: "TrophyGoldDiceModule",
+  id?: string,
+  lightDice?: Array< string >,
+  darkDice?: Array< string >,
+  goldDice?: Array< string >,
+  diceMode?: TrophyGoldDiceMode,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateTrophyGoldDiceModuleInput = {
+  id: string,
+  lightDice?: Array< string > | null,
+  darkDice?: Array< string > | null,
+  goldDice?: Array< string > | null,
+  diceMode?: TrophyGoldDiceMode | null,
+};
+
+export type DeleteTrophyGoldDiceModuleInput = {
+  id?: string | null,
+};
+
 export type CreateTextRoomInput = {
   id?: string | null,
   name: string,
@@ -347,53 +402,27 @@ export type DeleteInteractiveRoomInput = {
 export type CreateTrophyGoldRoomInput = {
   id?: string | null,
   name: string,
-  bestiary: Array< string >,
-  lightDice: Array< string >,
-  darkDice: Array< string >,
-  goldDice: Array< string >,
-  diceMode: TrophyGoldDiceMode,
   trophyGoldRoomSafetyModuleId: string,
   trophyGoldRoomHexMapModuleId?: string | null,
+  trophyGoldRoomDiceModuleId: string,
 };
-
-export enum TrophyGoldDiceMode {
-  risk = "risk",
-  hunt = "hunt",
-  combat = "combat",
-  contest = "contest",
-  gold = "gold",
-}
-
 
 export type ModelTrophyGoldRoomConditionInput = {
   name?: ModelStringInput | null,
-  bestiary?: ModelStringInput | null,
-  lightDice?: ModelStringInput | null,
-  darkDice?: ModelStringInput | null,
-  goldDice?: ModelStringInput | null,
-  diceMode?: ModelTrophyGoldDiceModeInput | null,
   and?: Array< ModelTrophyGoldRoomConditionInput | null > | null,
   or?: Array< ModelTrophyGoldRoomConditionInput | null > | null,
   not?: ModelTrophyGoldRoomConditionInput | null,
-};
-
-export type ModelTrophyGoldDiceModeInput = {
-  eq?: TrophyGoldDiceMode | null,
-  ne?: TrophyGoldDiceMode | null,
 };
 
 export type TrophyGoldRoom = {
   __typename: "TrophyGoldRoom",
   id?: string,
   name?: string,
-  bestiary?: Array< string >,
-  lightDice?: Array< string >,
-  darkDice?: Array< string >,
-  goldDice?: Array< string >,
-  diceMode?: TrophyGoldDiceMode,
+  diceModule?: TrophyGoldDiceModule,
   createdAt?: string,
   updatedAt?: string,
   characters?: ModelTrophyGoldCharacterConnection,
+  bestiary?: ModelTrophyGoldBeastConnection,
   safetyModule?: SafetyModule,
   hexMapModule?: HexMapModule,
 };
@@ -437,6 +466,31 @@ export type TrophyGoldCharacter = {
   updatedAt?: string,
 };
 
+export type ModelTrophyGoldBeastConnection = {
+  __typename: "ModelTrophyGoldBeastConnection",
+  items?:  Array<TrophyGoldBeast | null > | null,
+  nextToken?: string | null,
+};
+
+export type TrophyGoldBeast = {
+  __typename: "TrophyGoldBeast",
+  id?: string,
+  gameID?: string,
+  endurance?: string | null,
+  title?: string | null,
+  description?: string | null,
+  habit1?: string | null,
+  habit2?: string | null,
+  habit3?: string | null,
+  habit4?: string | null,
+  habit5?: string | null,
+  habit6?: string | null,
+  defenses?: string | null,
+  weakness?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
 export type HexMapModule = {
   __typename: "HexMapModule",
   id?: string,
@@ -449,13 +503,9 @@ export type HexMapModule = {
 export type UpdateTrophyGoldRoomInput = {
   id: string,
   name?: string | null,
-  bestiary?: Array< string > | null,
-  lightDice?: Array< string > | null,
-  darkDice?: Array< string > | null,
-  goldDice?: Array< string > | null,
-  diceMode?: TrophyGoldDiceMode | null,
   trophyGoldRoomSafetyModuleId?: string | null,
   trophyGoldRoomHexMapModuleId?: string | null,
+  trophyGoldRoomDiceModuleId?: string | null,
 };
 
 export type DeleteTrophyGoldRoomInput = {
@@ -555,6 +605,60 @@ export type UpdateTrophyGoldCharacterInput = {
 };
 
 export type DeleteTrophyGoldCharacterInput = {
+  id?: string | null,
+};
+
+export type CreateTrophyGoldBeastInput = {
+  id?: string | null,
+  gameID: string,
+  endurance?: string | null,
+  title?: string | null,
+  description?: string | null,
+  habit1?: string | null,
+  habit2?: string | null,
+  habit3?: string | null,
+  habit4?: string | null,
+  habit5?: string | null,
+  habit6?: string | null,
+  defenses?: string | null,
+  weakness?: string | null,
+};
+
+export type ModelTrophyGoldBeastConditionInput = {
+  gameID?: ModelIDInput | null,
+  endurance?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  habit1?: ModelStringInput | null,
+  habit2?: ModelStringInput | null,
+  habit3?: ModelStringInput | null,
+  habit4?: ModelStringInput | null,
+  habit5?: ModelStringInput | null,
+  habit6?: ModelStringInput | null,
+  defenses?: ModelStringInput | null,
+  weakness?: ModelStringInput | null,
+  and?: Array< ModelTrophyGoldBeastConditionInput | null > | null,
+  or?: Array< ModelTrophyGoldBeastConditionInput | null > | null,
+  not?: ModelTrophyGoldBeastConditionInput | null,
+};
+
+export type UpdateTrophyGoldBeastInput = {
+  id: string,
+  gameID?: string | null,
+  endurance?: string | null,
+  title?: string | null,
+  description?: string | null,
+  habit1?: string | null,
+  habit2?: string | null,
+  habit3?: string | null,
+  habit4?: string | null,
+  habit5?: string | null,
+  habit6?: string | null,
+  defenses?: string | null,
+  weakness?: string | null,
+};
+
+export type DeleteTrophyGoldBeastInput = {
   id?: string | null,
 };
 
@@ -1118,6 +1222,23 @@ export type ModelTrophyDarkCharacterFilterInput = {
   not?: ModelTrophyDarkCharacterFilterInput | null,
 };
 
+export type ModelTrophyGoldDiceModuleFilterInput = {
+  id?: ModelIDInput | null,
+  lightDice?: ModelStringInput | null,
+  darkDice?: ModelStringInput | null,
+  goldDice?: ModelStringInput | null,
+  diceMode?: ModelTrophyGoldDiceModeInput | null,
+  and?: Array< ModelTrophyGoldDiceModuleFilterInput | null > | null,
+  or?: Array< ModelTrophyGoldDiceModuleFilterInput | null > | null,
+  not?: ModelTrophyGoldDiceModuleFilterInput | null,
+};
+
+export type ModelTrophyGoldDiceModuleConnection = {
+  __typename: "ModelTrophyGoldDiceModuleConnection",
+  items?:  Array<TrophyGoldDiceModule | null > | null,
+  nextToken?: string | null,
+};
+
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -1160,11 +1281,6 @@ export type ModelInteractiveRoomConnection = {
 export type ModelTrophyGoldRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  bestiary?: ModelStringInput | null,
-  lightDice?: ModelStringInput | null,
-  darkDice?: ModelStringInput | null,
-  goldDice?: ModelStringInput | null,
-  diceMode?: ModelTrophyGoldDiceModeInput | null,
   and?: Array< ModelTrophyGoldRoomFilterInput | null > | null,
   or?: Array< ModelTrophyGoldRoomFilterInput | null > | null,
   not?: ModelTrophyGoldRoomFilterInput | null,
@@ -1207,6 +1323,25 @@ export type ModelTrophyGoldCharacterFilterInput = {
   and?: Array< ModelTrophyGoldCharacterFilterInput | null > | null,
   or?: Array< ModelTrophyGoldCharacterFilterInput | null > | null,
   not?: ModelTrophyGoldCharacterFilterInput | null,
+};
+
+export type ModelTrophyGoldBeastFilterInput = {
+  id?: ModelIDInput | null,
+  gameID?: ModelIDInput | null,
+  endurance?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  habit1?: ModelStringInput | null,
+  habit2?: ModelStringInput | null,
+  habit3?: ModelStringInput | null,
+  habit4?: ModelStringInput | null,
+  habit5?: ModelStringInput | null,
+  habit6?: ModelStringInput | null,
+  defenses?: ModelStringInput | null,
+  weakness?: ModelStringInput | null,
+  and?: Array< ModelTrophyGoldBeastFilterInput | null > | null,
+  or?: Array< ModelTrophyGoldBeastFilterInput | null > | null,
+  not?: ModelTrophyGoldBeastFilterInput | null,
 };
 
 export type ModelHeartRoomFilterInput = {
@@ -1591,6 +1726,60 @@ export type DeleteTrophyDarkCharacterMutation = {
   } | null,
 };
 
+export type CreateTrophyGoldDiceModuleMutationVariables = {
+  input?: CreateTrophyGoldDiceModuleInput,
+  condition?: ModelTrophyGoldDiceModuleConditionInput | null,
+};
+
+export type CreateTrophyGoldDiceModuleMutation = {
+  createTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTrophyGoldDiceModuleMutationVariables = {
+  input?: UpdateTrophyGoldDiceModuleInput,
+  condition?: ModelTrophyGoldDiceModuleConditionInput | null,
+};
+
+export type UpdateTrophyGoldDiceModuleMutation = {
+  updateTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTrophyGoldDiceModuleMutationVariables = {
+  input?: DeleteTrophyGoldDiceModuleInput,
+  condition?: ModelTrophyGoldDiceModuleConditionInput | null,
+};
+
+export type DeleteTrophyGoldDiceModuleMutation = {
+  deleteTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateTextRoomMutationVariables = {
   input?: CreateTextRoomInput,
   condition?: ModelTextRoomConditionInput | null,
@@ -1931,11 +2120,16 @@ export type CreateTrophyGoldRoomMutation = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -1969,6 +2163,28 @@ export type CreateTrophyGoldRoomMutation = {
         backpack: string,
         conditions: string,
         notes: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2003,11 +2219,16 @@ export type UpdateTrophyGoldRoomMutation = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -2046,6 +2267,28 @@ export type UpdateTrophyGoldRoomMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -2075,11 +2318,16 @@ export type DeleteTrophyGoldRoomMutation = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -2113,6 +2361,28 @@ export type DeleteTrophyGoldRoomMutation = {
         backpack: string,
         conditions: string,
         notes: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2252,6 +2522,84 @@ export type DeleteTrophyGoldCharacterMutation = {
     backpack: string,
     conditions: string,
     notes: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTrophyGoldBeastMutationVariables = {
+  input?: CreateTrophyGoldBeastInput,
+  condition?: ModelTrophyGoldBeastConditionInput | null,
+};
+
+export type CreateTrophyGoldBeastMutation = {
+  createTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTrophyGoldBeastMutationVariables = {
+  input?: UpdateTrophyGoldBeastInput,
+  condition?: ModelTrophyGoldBeastConditionInput | null,
+};
+
+export type UpdateTrophyGoldBeastMutation = {
+  updateTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTrophyGoldBeastMutationVariables = {
+  input?: DeleteTrophyGoldBeastInput,
+  condition?: ModelTrophyGoldBeastConditionInput | null,
+};
+
+export type DeleteTrophyGoldBeastMutation = {
+  deleteTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3762,6 +4110,46 @@ export type ListTrophyDarkCharactersQuery = {
   } | null,
 };
 
+export type GetTrophyGoldDiceModuleQueryVariables = {
+  id?: string,
+};
+
+export type GetTrophyGoldDiceModuleQuery = {
+  getTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTrophyGoldDiceModulesQueryVariables = {
+  filter?: ModelTrophyGoldDiceModuleFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTrophyGoldDiceModulesQuery = {
+  listTrophyGoldDiceModules?:  {
+    __typename: "ModelTrophyGoldDiceModuleConnection",
+    items?:  Array< {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type TrophyDarkRoomByNameQueryVariables = {
   name?: string | null,
   sortDirection?: ModelSortDirection | null,
@@ -4157,11 +4545,16 @@ export type GetTrophyGoldRoomQuery = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -4200,6 +4593,28 @@ export type GetTrophyGoldRoomQuery = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -4232,11 +4647,16 @@ export type ListTrophyGoldRoomsQuery = {
       __typename: "TrophyGoldRoom",
       id: string,
       name: string,
-      bestiary: Array< string >,
-      lightDice: Array< string >,
-      darkDice: Array< string >,
-      goldDice: Array< string >,
-      diceMode: TrophyGoldDiceMode,
+      diceModule:  {
+        __typename: "TrophyGoldDiceModule",
+        id: string,
+        lightDice: Array< string >,
+        darkDice: Array< string >,
+        goldDice: Array< string >,
+        diceMode: TrophyGoldDiceMode,
+        createdAt: string,
+        updatedAt: string,
+      },
       createdAt: string,
       updatedAt: string,
       characters?:  {
@@ -4270,6 +4690,28 @@ export type ListTrophyGoldRoomsQuery = {
           backpack: string,
           conditions: string,
           notes: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken?: string | null,
+      } | null,
+      bestiary?:  {
+        __typename: "ModelTrophyGoldBeastConnection",
+        items?:  Array< {
+          __typename: "TrophyGoldBeast",
+          id: string,
+          gameID: string,
+          endurance?: string | null,
+          title?: string | null,
+          description?: string | null,
+          habit1?: string | null,
+          habit2?: string | null,
+          habit3?: string | null,
+          habit4?: string | null,
+          habit5?: string | null,
+          habit6?: string | null,
+          defenses?: string | null,
+          weakness?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -4311,11 +4753,16 @@ export type TrophyGoldRoomByNameQuery = {
       __typename: "TrophyGoldRoom",
       id: string,
       name: string,
-      bestiary: Array< string >,
-      lightDice: Array< string >,
-      darkDice: Array< string >,
-      goldDice: Array< string >,
-      diceMode: TrophyGoldDiceMode,
+      diceModule:  {
+        __typename: "TrophyGoldDiceModule",
+        id: string,
+        lightDice: Array< string >,
+        darkDice: Array< string >,
+        goldDice: Array< string >,
+        diceMode: TrophyGoldDiceMode,
+        createdAt: string,
+        updatedAt: string,
+      },
       createdAt: string,
       updatedAt: string,
       characters?:  {
@@ -4349,6 +4796,28 @@ export type TrophyGoldRoomByNameQuery = {
           backpack: string,
           conditions: string,
           notes: string,
+          createdAt: string,
+          updatedAt: string,
+        } | null > | null,
+        nextToken?: string | null,
+      } | null,
+      bestiary?:  {
+        __typename: "ModelTrophyGoldBeastConnection",
+        items?:  Array< {
+          __typename: "TrophyGoldBeast",
+          id: string,
+          gameID: string,
+          endurance?: string | null,
+          title?: string | null,
+          description?: string | null,
+          habit1?: string | null,
+          habit2?: string | null,
+          habit3?: string | null,
+          habit4?: string | null,
+          habit5?: string | null,
+          habit6?: string | null,
+          defenses?: string | null,
+          weakness?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -4452,6 +4921,62 @@ export type ListTrophyGoldCharactersQuery = {
       backpack: string,
       conditions: string,
       notes: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTrophyGoldBeastQueryVariables = {
+  id?: string,
+};
+
+export type GetTrophyGoldBeastQuery = {
+  getTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTrophyGoldBeastsQueryVariables = {
+  filter?: ModelTrophyGoldBeastFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTrophyGoldBeastsQuery = {
+  listTrophyGoldBeasts?:  {
+    __typename: "ModelTrophyGoldBeastConnection",
+    items?:  Array< {
+      __typename: "TrophyGoldBeast",
+      id: string,
+      gameID: string,
+      endurance?: string | null,
+      title?: string | null,
+      description?: string | null,
+      habit1?: string | null,
+      habit2?: string | null,
+      habit3?: string | null,
+      habit4?: string | null,
+      habit5?: string | null,
+      habit6?: string | null,
+      defenses?: string | null,
+      weakness?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -5800,6 +6325,50 @@ export type OnUpdateTrophyDarkCharacterByIdSubscription = {
   } | null,
 };
 
+export type OnUpdateTrophyDarkRoomByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateTrophyDarkRoomByIdSubscription = {
+  onUpdateTrophyDarkRoomById?:  {
+    __typename: "TrophyDarkRoom",
+    id: string,
+    name: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    characters?:  {
+      __typename: "ModelTrophyDarkCharacterConnection",
+      items?:  Array< {
+        __typename: "TrophyDarkCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName: string,
+        characterPronouns: string,
+        characterImageUrl?: string | null,
+        ruin: number,
+        occupation: string,
+        background: string,
+        drive: string,
+        rituals: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
 export type OnCreateTrophyGoldCharacterByGameSubscriptionVariables = {
   gameID?: string,
 };
@@ -5839,6 +6408,121 @@ export type OnCreateTrophyGoldCharacterByGameSubscription = {
   } | null,
 };
 
+export type OnUpdateTrophyGoldRoomByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateTrophyGoldRoomByIdSubscription = {
+  onUpdateTrophyGoldRoomById?:  {
+    __typename: "TrophyGoldRoom",
+    id: string,
+    name: string,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+    characters?:  {
+      __typename: "ModelTrophyGoldCharacterConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldCharacter",
+        id: string,
+        gameID: string,
+        playerName: string,
+        characterName?: string | null,
+        characterPronouns?: string | null,
+        characterImageUrl?: string | null,
+        ruin: number,
+        weakPoint?: number | null,
+        lightDice?: Array< string > | null,
+        darkDice?: Array< string > | null,
+        occupation?: string | null,
+        background?: string | null,
+        drive?: string | null,
+        rituals?: Array< string > | null,
+        armorSet: string,
+        weaponSet: string,
+        foundEquipment?: Array< string > | null,
+        burdens: number,
+        hoard: number,
+        gold: number,
+        tokens: number,
+        training?: Array< string > | null,
+        household?: string | null,
+        library?: Array< string > | null,
+        backpack: string,
+        conditions: string,
+        notes: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    safetyModule:  {
+      __typename: "SafetyModule",
+      id: string,
+      xCardActive: boolean,
+      linesAndVeils: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    },
+    hexMapModule?:  {
+      __typename: "HexMapModule",
+      id: string,
+      gridConfiguration: string,
+      backgroundImages: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateTrophyGoldDiceModuleByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateTrophyGoldDiceModuleByIdSubscription = {
+  onUpdateTrophyGoldDiceModuleById?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnUpdateTrophyGoldCharacterByIdSubscriptionVariables = {
   id?: string,
 };
@@ -5873,6 +6557,56 @@ export type OnUpdateTrophyGoldCharacterByIdSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTrophyGoldBeastByGameSubscriptionVariables = {
+  gameID?: string,
+};
+
+export type OnCreateTrophyGoldBeastByGameSubscription = {
+  onCreateTrophyGoldBeastByGame?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTrophyGoldBeastByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateTrophyGoldBeastByIdSubscription = {
+  onUpdateTrophyGoldBeastById?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -6147,6 +6881,45 @@ export type OnDeleteTrophyDarkCharacterSubscription = {
     background: string,
     drive: string,
     rituals: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTrophyGoldDiceModuleSubscription = {
+  onCreateTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTrophyGoldDiceModuleSubscription = {
+  onUpdateTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTrophyGoldDiceModuleSubscription = {
+  onDeleteTrophyGoldDiceModule?:  {
+    __typename: "TrophyGoldDiceModule",
+    id: string,
+    lightDice: Array< string >,
+    darkDice: Array< string >,
+    goldDice: Array< string >,
+    diceMode: TrophyGoldDiceMode,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -6457,11 +7230,16 @@ export type OnCreateTrophyGoldRoomSubscription = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -6495,6 +7273,28 @@ export type OnCreateTrophyGoldRoomSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -6524,11 +7324,16 @@ export type OnUpdateTrophyGoldRoomSubscription = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -6567,6 +7372,28 @@ export type OnUpdateTrophyGoldRoomSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     safetyModule:  {
       __typename: "SafetyModule",
       id: string,
@@ -6591,11 +7418,16 @@ export type OnDeleteTrophyGoldRoomSubscription = {
     __typename: "TrophyGoldRoom",
     id: string,
     name: string,
-    bestiary: Array< string >,
-    lightDice: Array< string >,
-    darkDice: Array< string >,
-    goldDice: Array< string >,
-    diceMode: TrophyGoldDiceMode,
+    diceModule:  {
+      __typename: "TrophyGoldDiceModule",
+      id: string,
+      lightDice: Array< string >,
+      darkDice: Array< string >,
+      goldDice: Array< string >,
+      diceMode: TrophyGoldDiceMode,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -6629,6 +7461,28 @@ export type OnDeleteTrophyGoldRoomSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    bestiary?:  {
+      __typename: "ModelTrophyGoldBeastConnection",
+      items?:  Array< {
+        __typename: "TrophyGoldBeast",
+        id: string,
+        gameID: string,
+        endurance?: string | null,
+        title?: string | null,
+        description?: string | null,
+        habit1?: string | null,
+        habit2?: string | null,
+        habit3?: string | null,
+        habit4?: string | null,
+        habit5?: string | null,
+        habit6?: string | null,
+        defenses?: string | null,
+        weakness?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -6753,6 +7607,69 @@ export type OnDeleteTrophyGoldCharacterSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTrophyGoldBeastSubscription = {
+  onCreateTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTrophyGoldBeastSubscription = {
+  onUpdateTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTrophyGoldBeastSubscription = {
+  onDeleteTrophyGoldBeast?:  {
+    __typename: "TrophyGoldBeast",
+    id: string,
+    gameID: string,
+    endurance?: string | null,
+    title?: string | null,
+    description?: string | null,
+    habit1?: string | null,
+    habit2?: string | null,
+    habit3?: string | null,
+    habit4?: string | null,
+    habit5?: string | null,
+    habit6?: string | null,
+    defenses?: string | null,
+    weakness?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

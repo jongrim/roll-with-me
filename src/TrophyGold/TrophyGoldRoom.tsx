@@ -17,6 +17,7 @@ import {
   createEmptyFoundEquipmentList,
   createEmptyWeaponSet,
 } from './TrophyGoldGameTypes';
+import useBeastSubscription from './useBeastSubscription';
 
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
@@ -132,6 +133,10 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
     characters: data?.characters.items ?? [],
     gameId: data?.id,
   });
+  const trackedBeasts = useBeastSubscription({
+    beasts: data?.bestiary.items ?? [],
+    gameID: data?.id,
+  });
 
   switch (state.value) {
     case 'loading':
@@ -231,6 +236,7 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
         <TrophyGoldGameArea
           username={username}
           setUsername={setUsername}
+          beasts={trackedBeasts}
           characters={trackedCharacters}
           characterChoice={state.context.characterChoice}
           gameData={data!}

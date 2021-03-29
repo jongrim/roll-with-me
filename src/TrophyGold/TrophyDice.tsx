@@ -30,22 +30,19 @@ import {
 } from 'react-icons/gi';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import { TrophyGoldDiceMode } from '../API';
-import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from '../APITypes';
+import { TrophyGoldDiceMode, TrophyGoldDiceModule } from '../API';
+import { RawTrophyGoldCharacter } from '../APITypes';
 import { DarkDie, LightDie } from '../TrophyShared/LightDiceDarkDice';
 import { RandomNumbersContext } from '../RandomNumbersProvider';
 import { viewLayout } from './TrophyGoldGameArea';
 import { updateCharacter } from './Character';
+import useTrophyDice from './useTrophyDice';
 
 interface TrophyDiceProps {
   layout: viewLayout;
-  lightDice: RawTrophyGoldRoomDetails['lightDice'];
-  darkDice: RawTrophyGoldRoomDetails['darkDice'];
-  goldDice: RawTrophyGoldRoomDetails['goldDice'];
-  diceMode: TrophyGoldDiceMode;
   characters: RawTrophyGoldCharacter[];
   characterChoice: string;
-  id: string;
+  diceModule: TrophyGoldDiceModule;
 }
 
 const mod6 = (x: number) => x % 6;
@@ -72,7 +69,7 @@ const handleSubmit = async ({
   }
   try {
     API.graphql({
-      query: mutations.updateTrophyGoldRoom,
+      query: mutations.updateTrophyGoldDiceModule,
       variables: {
         input: {
           id,
@@ -104,7 +101,7 @@ const handleGoldSubmit = async ({
   }
   try {
     API.graphql({
-      query: mutations.updateTrophyGoldRoom,
+      query: mutations.updateTrophyGoldDiceModule,
       variables: {
         input: {
           id,
@@ -127,7 +124,7 @@ function setDiceMode({
   diceMode: TrophyGoldDiceMode;
 }) {
   API.graphql({
-    query: mutations.updateTrophyGoldRoom,
+    query: mutations.updateTrophyGoldDiceModule,
     variables: {
       input: {
         id,
@@ -140,13 +137,16 @@ function setDiceMode({
 const TrophyDice = ({
   characters,
   characterChoice,
-  diceMode,
-  lightDice,
-  darkDice,
-  goldDice,
   layout,
-  id,
+  diceModule,
 }: TrophyDiceProps) => {
+  const {
+    id = '',
+    lightDice = [],
+    darkDice = [],
+    goldDice = [],
+    diceMode = TrophyGoldDiceMode.hunt,
+  } = useTrophyDice({ diceModule });
   const [trackedDiceMode, setTrackedDiceMode] = React.useState(diceMode);
   React.useEffect(() => {
     // syncing this way lets us update the view before the data in the server has updated
@@ -241,7 +241,7 @@ const TrophyDice = ({
         orientation={layout === 'top' ? 'vertical' : 'horizontal'}
       />
       {[TrophyGoldDiceMode.risk, TrophyGoldDiceMode.combat].includes(
-        trackedDiceMode
+        diceMode
       ) && (
         <Box>
           <Center mb={1}>
@@ -289,7 +289,7 @@ const TrophyDice = ({
             opacity: 0,
             transform: 'scale(0.8)',
           }}
-          hidden={[TrophyGoldDiceMode.gold].includes(trackedDiceMode)}
+          hidden={[TrophyGoldDiceMode.gold].includes(diceMode)}
         >
           <DiceForm
             layout={layout}
@@ -327,8 +327,8 @@ const DiceForm = ({
   layout,
 }: {
   id: string;
-  lightDice: RawTrophyGoldRoomDetails['lightDice'];
-  darkDice: RawTrophyGoldRoomDetails['darkDice'];
+  lightDice: TrophyGoldDiceModule['lightDice'];
+  darkDice: TrophyGoldDiceModule['darkDice'];
   layout: viewLayout;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
@@ -437,12 +437,12 @@ const DiceForm = ({
           </Center>
         </GridItem>
         <GridItem gridArea={layout === 'top' ? 'lightDice' : ''}>
-          {lightDice.map((result, i) => (
+          {lightDice?.map((result, i) => (
             <LightDie key={`light-die-${i}`} result={result} />
           ))}
         </GridItem>
         <GridItem gridArea={layout === 'top' ? 'darkDice' : ''}>
-          {darkDice.map((result, i) => (
+          {darkDice?.map((result, i) => (
             <DarkDie key={`dark-die-${i}`} result={result} />
           ))}
         </GridItem>
@@ -457,7 +457,7 @@ const GoldDiceForm = ({
   layout,
 }: {
   id: string;
-  goldDice: RawTrophyGoldRoomDetails['goldDice'];
+  goldDice: TrophyGoldDiceModule['goldDice'];
   layout: viewLayout;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
@@ -524,7 +524,7 @@ const GoldDiceForm = ({
           </Center>
         </GridItem>
         <GridItem>
-          {goldDice.map((result, i) => (
+          {goldDice?.map((result, i) => (
             <GoldDie key={`gold-die-${i}`} result={result} />
           ))}
         </GridItem>

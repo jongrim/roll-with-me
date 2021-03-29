@@ -52,9 +52,16 @@ function CharacterCombatEquipment({
     }
   }, [armorSet, canEdit]);
 
+  const weapons = React.useMemo(() => Object.values(trackedWeaponSet), [
+    trackedWeaponSet,
+  ]);
+  const armor = React.useMemo(() => Object.values(trackedArmorSet), [
+    trackedArmorSet,
+  ]);
+
   return (
     <Box>
-      {Object.entries(trackedWeaponSet).map(([key, entry], i) => {
+      {weapons.map((entry) => {
         return (
           <React.Fragment key={entry.id}>
             <Box
@@ -90,7 +97,7 @@ function CharacterCombatEquipment({
           </React.Fragment>
         );
       })}
-      {Object.entries(trackedArmorSet).map(([key, entry]) => {
+      {armor.map((entry) => {
         return (
           <Flex
             py={3}

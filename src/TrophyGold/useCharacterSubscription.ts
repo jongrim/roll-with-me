@@ -56,7 +56,6 @@ const useCharacterSubscription = ({
       }).subscribe({
         // @ts-ignore
         next: ({ value }) => {
-          console.log(value);
           setTrackedCharacters((cur) => {
             return cur.map((c) => {
               if (c.id === id) {
@@ -71,7 +70,6 @@ const useCharacterSubscription = ({
 
     return () =>
       charSubscriptions.forEach((sub) => {
-        console.log('unsubscribe');
         sub.unsubscribe();
       });
   }, [trackedCharacterIds]);
