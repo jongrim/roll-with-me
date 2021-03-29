@@ -8,18 +8,29 @@ interface CharacterRitualsProps {
   characterId: string;
   rituals: string[];
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  canEdit: boolean;
 }
 
-function CharacterRituals({ rituals, onSubmit }: CharacterRitualsProps) {
+function CharacterRituals({
+  rituals,
+  onSubmit,
+  canEdit,
+}: CharacterRitualsProps) {
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
   const [trackedRituals, setTrackedRituals] = React.useState(rituals);
   const [first = '', second = '', third = ''] = trackedRituals;
-  const delayedUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate } = useDelayedUpdate(onSubmit);
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedRituals(rituals);
+    }
+  }, [rituals, canEdit]);
   return (
     <Box>
       <CharacterSectionHeading>Rituals</CharacterSectionHeading>
       <VStack spacing={3}>
         <Input
+          isReadOnly={!canEdit}
           variant="flushed"
           borderColor={inputBorderColor}
           value={first}
@@ -31,6 +42,7 @@ function CharacterRituals({ rituals, onSubmit }: CharacterRitualsProps) {
           }}
         />
         <Input
+          isReadOnly={!canEdit}
           variant="flushed"
           borderColor={inputBorderColor}
           value={second}
@@ -42,6 +54,7 @@ function CharacterRituals({ rituals, onSubmit }: CharacterRitualsProps) {
           }}
         />
         <Input
+          isReadOnly={!canEdit}
           variant="flushed"
           borderColor={inputBorderColor}
           value={third}

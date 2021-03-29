@@ -1,4 +1,4 @@
-import { TrophyGoldDiceMode } from './API';
+import { TrophyGoldBeast, TrophyGoldDiceModule } from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export interface TextRoomDetails {
@@ -43,11 +43,10 @@ export interface TrophyDarkCharacter {
 export interface RawTrophyGoldRoomDetails {
   id: string;
   name: string;
-  bestiary: Array<string>;
-  lightDice: Array<string>;
-  darkDice: Array<string>;
-  goldDice: Array<string>;
-  diceMode: TrophyGoldDiceMode;
+  bestiary: {
+    items: TrophyGoldBeast[];
+  };
+  diceModule: TrophyGoldDiceModule;
   createdAt: string;
   updatedAt: string;
   characters: {

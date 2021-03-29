@@ -18,12 +18,14 @@ interface CharacterCombatEquipmentProps {
   weaponSet: string;
   armorSet: string;
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  canEdit: boolean;
 }
 
 function CharacterCombatEquipment({
   weaponSet,
   armorSet,
   onSubmit,
+  canEdit,
 }: CharacterCombatEquipmentProps) {
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
@@ -35,12 +37,31 @@ function CharacterCombatEquipment({
     JSON.parse(armorSet)
   );
 
-  const delayedWeaponsUpdate = useDelayedUpdate(onSubmit);
-  const delayedArmorUpdate = useDelayedUpdate(onSubmit);
+  const { delayedUpdate: delayedWeaponsUpdate } = useDelayedUpdate(onSubmit);
+  const { delayedUpdate: delayedArmorUpdate } = useDelayedUpdate(onSubmit);
+
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedWeaponSet(JSON.parse(weaponSet));
+    }
+  }, [weaponSet, canEdit]);
+
+  React.useEffect(() => {
+    if (!canEdit) {
+      setTrackedArmorSet(JSON.parse(armorSet));
+    }
+  }, [armorSet, canEdit]);
+
+  const weapons = React.useMemo(() => Object.values(trackedWeaponSet), [
+    trackedWeaponSet,
+  ]);
+  const armor = React.useMemo(() => Object.values(trackedArmorSet), [
+    trackedArmorSet,
+  ]);
 
   return (
     <Box>
-      {Object.entries(trackedWeaponSet).map(([key, entry], i) => {
+      {weapons.map((entry) => {
         return (
           <React.Fragment key={entry.id}>
             <Box
@@ -54,6 +75,7 @@ function CharacterCombatEquipment({
                   <Icon as={GiBroadsword} h={6} w={6} />
                 </InputLeftAddon>
                 <Input
+                  isReadOnly={!canEdit}
                   pl={2}
                   value={entry.description}
                   onChange={({ target }) => {
@@ -75,7 +97,7 @@ function CharacterCombatEquipment({
           </React.Fragment>
         );
       })}
-      {Object.entries(trackedArmorSet).map(([key, entry]) => {
+      {armor.map((entry) => {
         return (
           <Flex
             py={3}
@@ -89,6 +111,7 @@ function CharacterCombatEquipment({
                 <Icon as={GiShield} h={6} w={6} />
               </InputLeftAddon>
               <Input
+                isReadOnly={!canEdit}
                 flex="1"
                 pl={2}
                 value={entry.description}
@@ -109,6 +132,7 @@ function CharacterCombatEquipment({
             </InputGroup>
             <Box flex="0" px={2}>
               <Checkbox
+                isReadOnly={!canEdit}
                 isChecked={entry.marked}
                 onChange={({ target }) => {
                   setTrackedArmorSet((cur) => {

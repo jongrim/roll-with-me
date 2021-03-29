@@ -132,6 +132,43 @@ export const listTrophyDarkCharacters = /* GraphQL */ `
     }
   }
 `;
+export const getTrophyGoldDiceModule = /* GraphQL */ `
+  query GetTrophyGoldDiceModule($id: ID!) {
+    getTrophyGoldDiceModule(id: $id) {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrophyGoldDiceModules = /* GraphQL */ `
+  query ListTrophyGoldDiceModules(
+    $filter: ModelTrophyGoldDiceModuleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyGoldDiceModules(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const trophyDarkRoomByName = /* GraphQL */ `
   query TrophyDarkRoomByName(
     $name: String
@@ -494,11 +531,15 @@ export const getTrophyGoldRoom = /* GraphQL */ `
     getTrophyGoldRoom(id: $id) {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -535,6 +576,26 @@ export const getTrophyGoldRoom = /* GraphQL */ `
         }
         nextToken
       }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       safetyModule {
         id
         xCardActive
@@ -562,11 +623,15 @@ export const listTrophyGoldRooms = /* GraphQL */ `
       items {
         id
         name
-        bestiary
-        lightDice
-        darkDice
-        goldDice
-        diceMode
+        diceModule {
+          id
+          lightDice
+          darkDice
+          goldDice
+          diceMode
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
         characters {
@@ -598,6 +663,26 @@ export const listTrophyGoldRooms = /* GraphQL */ `
             backpack
             conditions
             notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        bestiary {
+          items {
+            id
+            gameID
+            endurance
+            title
+            description
+            habit1
+            habit2
+            habit3
+            habit4
+            habit5
+            habit6
+            defenses
+            weakness
             createdAt
             updatedAt
           }
@@ -640,11 +725,15 @@ export const trophyGoldRoomByName = /* GraphQL */ `
       items {
         id
         name
-        bestiary
-        lightDice
-        darkDice
-        goldDice
-        diceMode
+        diceModule {
+          id
+          lightDice
+          darkDice
+          goldDice
+          diceMode
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
         characters {
@@ -676,6 +765,26 @@ export const trophyGoldRoomByName = /* GraphQL */ `
             backpack
             conditions
             notes
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        bestiary {
+          items {
+            id
+            gameID
+            endurance
+            title
+            description
+            habit1
+            habit2
+            habit3
+            habit4
+            habit5
+            habit6
+            defenses
+            weakness
             createdAt
             updatedAt
           }
@@ -774,6 +883,59 @@ export const listTrophyGoldCharacters = /* GraphQL */ `
         backpack
         conditions
         notes
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getTrophyGoldBeast = /* GraphQL */ `
+  query GetTrophyGoldBeast($id: ID!) {
+    getTrophyGoldBeast(id: $id) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrophyGoldBeasts = /* GraphQL */ `
+  query ListTrophyGoldBeasts(
+    $filter: ModelTrophyGoldBeastFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyGoldBeasts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gameID
+        endurance
+        title
+        description
+        habit1
+        habit2
+        habit3
+        habit4
+        habit5
+        habit6
+        defenses
+        weakness
         createdAt
         updatedAt
       }

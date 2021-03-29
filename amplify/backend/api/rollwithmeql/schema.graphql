@@ -74,11 +74,8 @@ type TrophyGoldRoom
   name: String!
   safetyModule: SafetyModule! @connection
   hexMapModule: HexMapModule @connection
-  bestiary: [AWSJSON!]!
-  lightDice: [AWSJSON!]!
-  darkDice: [AWSJSON!]!
-  goldDice: [AWSJSON!]!
-  diceMode: TrophyGoldDiceMode!
+  diceModule: TrophyGoldDiceModule! @connection
+  bestiary: [TrophyGoldBeast] @connection(keyName: "byGame", fields: ["id"])
   characters: [TrophyGoldCharacter]
     @connection(keyName: "byGame", fields: ["id"])
 }
@@ -89,6 +86,14 @@ enum TrophyGoldDiceMode {
   combat
   contest
   gold
+}
+
+type TrophyGoldDiceModule @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  lightDice: [AWSJSON!]!
+  darkDice: [AWSJSON!]!
+  goldDice: [AWSJSON!]!
+  diceMode: TrophyGoldDiceMode!
 }
 
 type TrophyGoldCharacter
@@ -122,6 +127,25 @@ type TrophyGoldCharacter
   backpack: AWSJSON!
   conditions: String!
   notes: String!
+}
+
+type TrophyGoldBeast
+  @model
+  @auth(rules: [{ allow: public }, { allow: private }])
+  @key(name: "byGame", fields: ["gameID"]) {
+  id: ID!
+  gameID: ID!
+  endurance: String
+  title: String
+  description: String
+  habit1: String
+  habit2: String
+  habit3: String
+  habit4: String
+  habit5: String
+  habit6: String
+  defenses: String
+  weakness: String
 }
 
 type HeartRoom
@@ -290,10 +314,20 @@ type Subscription {
     @aws_subscribe(mutations: ["createTrophyDarkCharacter"])
   onUpdateTrophyDarkCharacterById(id: String!): TrophyDarkCharacter
     @aws_subscribe(mutations: ["updateTrophyDarkCharacter"])
+  onUpdateTrophyDarkRoomById(id: String!): TrophyDarkRoom
+    @aws_subscribe(mutations: ["updateTrophyDarkRoom"])
   onCreateTrophyGoldCharacterByGame(gameID: String!): TrophyGoldCharacter
     @aws_subscribe(mutations: ["createTrophyGoldCharacter"])
+  onUpdateTrophyGoldRoomById(id: String!): TrophyGoldRoom
+    @aws_subscribe(mutations: ["updateTrophyGoldRoom"])
+  onUpdateTrophyGoldDiceModuleById(id: String!): TrophyGoldDiceModule
+    @aws_subscribe(mutations: ["updateTrophyGoldDiceModule"])
   onUpdateTrophyGoldCharacterById(id: String!): TrophyGoldCharacter
     @aws_subscribe(mutations: ["updateTrophyGoldCharacter"])
+  onCreateTrophyGoldBeastByGame(gameID: String!): TrophyGoldBeast
+    @aws_subscribe(mutations: ["createTrophyGoldBeast"])
+  onUpdateTrophyGoldBeastById(id: String!): TrophyGoldBeast
+    @aws_subscribe(mutations: ["updateTrophyGoldBeast"])
   onCreateHeartCharacterByGame(gameID: String!): HeartCharacter
     @aws_subscribe(mutations: ["createHeartCharacter"])
   onUpdateHeartCharacterById(id: String!): HeartCharacter

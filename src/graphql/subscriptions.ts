@@ -343,6 +343,43 @@ export const onUpdateTrophyDarkCharacterById = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateTrophyDarkRoomById = /* GraphQL */ `
+  subscription OnUpdateTrophyDarkRoomById($id: String!) {
+    onUpdateTrophyDarkRoomById(id: $id) {
+      id
+      name
+      lightDice
+      darkDice
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          occupation
+          background
+          drive
+          rituals
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
   subscription OnCreateTrophyGoldCharacterByGame($gameID: String!) {
     onCreateTrophyGoldCharacterByGame(gameID: $gameID) {
@@ -378,6 +415,106 @@ export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateTrophyGoldRoomById = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldRoomById($id: String!) {
+    onUpdateTrophyGoldRoomById(id: $id) {
+      id
+      name
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      characters {
+        items {
+          id
+          gameID
+          playerName
+          characterName
+          characterPronouns
+          characterImageUrl
+          ruin
+          weakPoint
+          lightDice
+          darkDice
+          occupation
+          background
+          drive
+          rituals
+          armorSet
+          weaponSet
+          foundEquipment
+          burdens
+          hoard
+          gold
+          tokens
+          training
+          household
+          library
+          backpack
+          conditions
+          notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      safetyModule {
+        id
+        xCardActive
+        linesAndVeils
+        createdAt
+        updatedAt
+      }
+      hexMapModule {
+        id
+        gridConfiguration
+        backgroundImages
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateTrophyGoldDiceModuleById = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldDiceModuleById($id: String!) {
+    onUpdateTrophyGoldDiceModuleById(id: $id) {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
   subscription OnUpdateTrophyGoldCharacterById($id: String!) {
     onUpdateTrophyGoldCharacterById(id: $id) {
@@ -408,6 +545,48 @@ export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
       backpack
       conditions
       notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTrophyGoldBeastByGame = /* GraphQL */ `
+  subscription OnCreateTrophyGoldBeastByGame($gameID: String!) {
+    onCreateTrophyGoldBeastByGame(gameID: $gameID) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldBeastById = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldBeastById($id: String!) {
+    onUpdateTrophyGoldBeastById(id: $id) {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
       createdAt
       updatedAt
     }
@@ -661,6 +840,45 @@ export const onDeleteTrophyDarkCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTrophyGoldDiceModule = /* GraphQL */ `
+  subscription OnCreateTrophyGoldDiceModule {
+    onCreateTrophyGoldDiceModule {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldDiceModule = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldDiceModule {
+    onUpdateTrophyGoldDiceModule {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrophyGoldDiceModule = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldDiceModule {
+    onDeleteTrophyGoldDiceModule {
+      id
+      lightDice
+      darkDice
+      goldDice
+      diceMode
       createdAt
       updatedAt
     }
@@ -944,11 +1162,15 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
     onCreateTrophyGoldRoom {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -980,6 +1202,26 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
           createdAt
           updatedAt
         }
@@ -1007,11 +1249,15 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
     onUpdateTrophyGoldRoom {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -1048,6 +1294,26 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
         }
         nextToken
       }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       safetyModule {
         id
         xCardActive
@@ -1070,11 +1336,15 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
     onDeleteTrophyGoldRoom {
       id
       name
-      bestiary
-      lightDice
-      darkDice
-      goldDice
-      diceMode
+      diceModule {
+        id
+        lightDice
+        darkDice
+        goldDice
+        diceMode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       characters {
@@ -1106,6 +1376,26 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      bestiary {
+        items {
+          id
+          gameID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
           createdAt
           updatedAt
         }
@@ -1228,6 +1518,69 @@ export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTrophyGoldBeast = /* GraphQL */ `
+  subscription OnCreateTrophyGoldBeast {
+    onCreateTrophyGoldBeast {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrophyGoldBeast = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldBeast {
+    onUpdateTrophyGoldBeast {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrophyGoldBeast = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldBeast {
+    onDeleteTrophyGoldBeast {
+      id
+      gameID
+      endurance
+      title
+      description
+      habit1
+      habit2
+      habit3
+      habit4
+      habit5
+      habit6
+      defenses
+      weakness
       createdAt
       updatedAt
     }
