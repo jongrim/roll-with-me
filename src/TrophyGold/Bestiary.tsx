@@ -29,14 +29,16 @@ import { makeBeast } from './TrophyGoldGameTypes';
 import DragonSvg from './DragonSvg';
 import SpinningCube from '../SpinningCube/SpinningCube';
 
-export const createBeast = async (gameID: string) => {
+export const createBeast = async (gameID: { [key: string]: string }) => {
   try {
-    await API.graphql({
+    // @ts-ignore
+    const { data } = await API.graphql({
       query: mutations.createTrophyGoldBeast,
       variables: {
         input: makeBeast(gameID),
       },
     });
+    return data?.createTrophyGoldBeast;
   } catch (e) {
     console.warn(e);
   }
@@ -44,20 +46,22 @@ export const createBeast = async (gameID: string) => {
 
 interface BestiaryProps {
   beasts: TrophyGoldBeast[];
-  gameID: string;
+  gameID: { [key: string]: string };
+  onCreate?: (val: TrophyGoldBeast) => void;
 }
 
-export default function Bestiary({ beasts, gameID }: BestiaryProps) {
+export default function Bestiary({ beasts, gameID, onCreate }: BestiaryProps) {
   const [isSaving, setIsSaving] = React.useState(false);
   return (
     <Box py={3}>
       {beasts.length > 0 && (
-        <Flex justifyContent="flex-end" mb={-3} pr={8}>
+        <Flex justifyContent="flex-end" mb={-3}>
           <Button
             variant="outline"
             onClick={async () => {
               setIsSaving(true);
-              await createBeast(gameID);
+              const beast = await createBeast(gameID);
+              if (onCreate) onCreate(beast);
               setIsSaving(false);
             }}
           >
@@ -209,13 +213,13 @@ function Beast({ beast, setBusy }: BeastProps) {
   );
 
   return (
-    <Box position="relative" zIndex={1} px={8} py={6}>
+    <Box position="relative" zIndex={1} pl={3} py={6}>
       <Box
         position="absolute"
         w={16}
         h={16}
         top="8px"
-        left="8px"
+        left="-8px"
         zIndex={2}
         borderRadius="50%"
         border="5px double"

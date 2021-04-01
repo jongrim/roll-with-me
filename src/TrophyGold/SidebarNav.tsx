@@ -1,18 +1,23 @@
 import * as React from 'react';
-import { Flex, Link, Spacer, Stack, useColorModeValue } from '@chakra-ui/react';
+import {
+  Flex,
+  Link,
+  LinkProps,
+  Spacer,
+  Stack,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { NavLink as ReactRouterLink } from 'react-router-dom';
 
 export default function SidebarNav({
+  children = null,
   name,
   xCardButton,
 }: {
+  children?: React.ReactNode;
   name: string;
   xCardButton: React.ReactNode;
 }) {
-  const activeLink = useColorModeValue(
-    { opacity: 1, backgroundColor: 'gray.100' },
-    { opacity: 1, backgroundColor: 'gray.700' }
-  );
   return (
     <Flex direction={['row', 'row', 'column']} h="full">
       <Stack
@@ -21,57 +26,55 @@ export default function SidebarNav({
         ml={-3}
         alignItems={['center', 'center', 'stretch']}
       >
-        <Link
-          rounded="md"
-          px={3}
-          py={2}
-          opacity="0.8"
-          _activeLink={activeLink}
-          as={ReactRouterLink}
-          to={`/trophy-gold/${name}/table`}
-        >
+        <SidebarLink name={name} destination="table">
           Table
-        </Link>
-        <Link
-          rounded="md"
-          px={3}
-          py={2}
-          opacity="0.8"
-          _activeLink={activeLink}
-          as={ReactRouterLink}
-          to={`/trophy-gold/${name}/bestiary`}
-        >
+        </SidebarLink>
+        <SidebarLink name={name} destination="bestiary">
           Bestiary
-        </Link>
-        <Link
-          rounded="md"
-          px={3}
-          py={2}
-          opacity="0.8"
-          _activeLink={activeLink}
-          as={ReactRouterLink}
-          to={`/trophy-gold/${name}/safety`}
-        >
+        </SidebarLink>
+        <SidebarLink name={name} destination="safety">
           Safety
-        </Link>
+        </SidebarLink>
+        {children}
         {xCardButton}
       </Stack>
       <Spacer />
-      <Link
-        rounded="md"
-        ml={-3}
-        px={3}
-        py={2}
-        opacity="0.8"
-        _activeLink={activeLink}
-        as={ReactRouterLink}
-        to={`/trophy-gold/${name}/credits`}
-      >
+      <SidebarLink name={name} destination="credits" ml={-3}>
         Credits
-      </Link>
+      </SidebarLink>
       <Link isExternal href="https://trophyrpg.com/" justifySelf="end">
         Get Trophy
       </Link>
     </Flex>
+  );
+}
+
+export function SidebarLink({
+  children,
+  name,
+  destination,
+  ...rest
+}: {
+  children: React.ReactNode;
+  name: string;
+  destination: string;
+} & LinkProps) {
+  const activeLink = useColorModeValue(
+    { opacity: 1, backgroundColor: 'gray.100' },
+    { opacity: 1, backgroundColor: 'gray.700' }
+  );
+  return (
+    <Link
+      rounded="md"
+      px={3}
+      py={2}
+      opacity="0.8"
+      _activeLink={activeLink}
+      as={ReactRouterLink}
+      to={`/trophy-gold/${name}/${destination}`}
+      {...rest}
+    >
+      {children}
+    </Link>
   );
 }

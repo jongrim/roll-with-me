@@ -469,6 +469,7 @@ export const onUpdateTrophyGoldRoomById = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -555,6 +556,7 @@ export const onCreateTrophyGoldBeastByGame = /* GraphQL */ `
     onCreateTrophyGoldBeastByGame(gameID: $gameID) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -576,6 +578,7 @@ export const onUpdateTrophyGoldBeastById = /* GraphQL */ `
     onUpdateTrophyGoldBeastById(id: $id) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -1211,6 +1214,7 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -1298,6 +1302,7 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -1385,6 +1390,7 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -1414,6 +1420,105 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
         backgroundImages
         createdAt
         updatedAt
+      }
+    }
+  }
+`;
+export const onCreateTrophyGoldGmModule = /* GraphQL */ `
+  subscription OnCreateTrophyGoldGmModule($owner: String!) {
+    onCreateTrophyGoldGMModule(owner: $owner) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateTrophyGoldGmModule = /* GraphQL */ `
+  subscription OnUpdateTrophyGoldGmModule($owner: String!) {
+    onUpdateTrophyGoldGMModule(owner: $owner) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteTrophyGoldGmModule = /* GraphQL */ `
+  subscription OnDeleteTrophyGoldGmModule($owner: String!) {
+    onDeleteTrophyGoldGMModule(owner: $owner) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
     }
   }
@@ -1528,6 +1633,7 @@ export const onCreateTrophyGoldBeast = /* GraphQL */ `
     onCreateTrophyGoldBeast {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -1549,6 +1655,7 @@ export const onUpdateTrophyGoldBeast = /* GraphQL */ `
     onUpdateTrophyGoldBeast {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -1570,6 +1677,7 @@ export const onDeleteTrophyGoldBeast = /* GraphQL */ `
     onDeleteTrophyGoldBeast {
       id
       gameID
+      gmModuleID
       endurance
       title
       description

@@ -324,6 +324,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            formId="standard"
             layout={layout}
             id={id}
             lightDice={lightDice}
@@ -351,6 +352,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            formId="contest"
             layout={layout}
             id={id}
             characterId={characterChoice}
@@ -436,12 +438,14 @@ const DiceForm = ({
   darkDice,
   layout,
   characterId,
+  formId,
 }: {
   id: string;
   characterId?: string;
   lightDice: TrophyGoldDiceModule['lightDice'];
   darkDice: TrophyGoldDiceModule['darkDice'];
   layout: viewLayout;
+  formId: string;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
@@ -483,7 +487,7 @@ const DiceForm = ({
     >
       <Grid {...containerLayout} gap={8}>
         <GridItem gridArea={layout === 'top' ? 'topLeft' : ''}>
-          <FormControl id="light-dice">
+          <FormControl id={`light-dice-${formId}`}>
             <FormLabel
               fontFamily="Faith Collapsing"
               fontSize={layout === 'top' ? '2xl' : '4xl'}
@@ -511,7 +515,7 @@ const DiceForm = ({
           </FormControl>
         </GridItem>
         <GridItem gridArea={layout === 'top' ? 'bottomLeft' : ''}>
-          <FormControl id="dark-dice">
+          <FormControl id={`dark-dice-${formId}`}>
             <FormLabel
               fontFamily="Faith Collapsing"
               fontSize={layout === 'top' ? '2xl' : '4xl'}
