@@ -37,6 +37,7 @@ import { RandomNumbersContext } from '../RandomNumbersProvider';
 import { viewLayout } from './TrophyGoldGameArea';
 import { updateCharacter } from './Character';
 import useTrophyDice from './useTrophyDice';
+import WeakPoints from './WeakPoints';
 
 interface TrophyDiceProps {
   layout: viewLayout;
@@ -281,46 +282,39 @@ const TrophyDice = ({
         mx={2}
         orientation={layout === 'top' ? 'vertical' : 'horizontal'}
       />
-      {[TrophyGoldDiceMode.risk, TrophyGoldDiceMode.combat].includes(
-        trackedDiceMode
-      ) && (
-        <Box>
-          <Center mb={1}>
-            <Text fontSize="sm" fontWeight="300" textAlign="center">
-              Weak points
-            </Text>
-            {characterChoice === 'GM' && (
-              <Button
-                variant="ghost"
-                size="sm"
-                ml={2}
-                onClick={() => {
-                  characters.forEach(async (c) => {
-                    updateCharacter({ id: c.id, weakPoint: null });
-                  });
-                }}
-              >
-                Clear
-              </Button>
-            )}
-          </Center>
-          <Flex wrap="wrap" w={layout === 'side' ? 'full' : 64}>
-            {characters?.map((char) => {
-              if (char.weakPoint) {
-                return (
-                  <React.Fragment key={`${char.id}-${char.weakPoint}`}>
-                    <Tag variant="outline" mb={2}>
-                      {char.characterName} – {char.weakPoint}
-                    </Tag>
-                    <Spacer />
-                  </React.Fragment>
-                );
-              }
-              return null;
-            })}
-          </Flex>
-        </Box>
-      )}
+      <Box
+        hidden={[
+          TrophyGoldDiceMode.hunt,
+          TrophyGoldDiceMode.contest,
+          TrophyGoldDiceMode.gold,
+        ].includes(trackedDiceMode)}
+      >
+        <Center mb={1}>
+          <Text fontSize="sm" fontWeight="300" textAlign="center">
+            Weak points
+          </Text>
+          {characterChoice === 'GM' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              ml={2}
+              onClick={() => {
+                characters.forEach(async (c) => {
+                  updateCharacter({ id: c.id, weakPoint: null });
+                });
+              }}
+            >
+              Clear
+            </Button>
+          )}
+        </Center>
+        <WeakPoints
+          characters={characters}
+          darkDice={darkDice}
+          diceMode={trackedDiceMode}
+          layout={layout}
+        />
+      </Box>
       <Grid gridTemplateColumns="1fr" gridTemplateRows="1fr">
         <Box
           gridArea="1 / 1"
@@ -330,6 +324,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            formId="standard"
             layout={layout}
             id={id}
             lightDice={lightDice}
@@ -357,6 +352,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            formId="contest"
             layout={layout}
             id={id}
             characterId={characterChoice}
@@ -442,12 +438,14 @@ const DiceForm = ({
   darkDice,
   layout,
   characterId,
+  formId,
 }: {
   id: string;
   characterId?: string;
   lightDice: TrophyGoldDiceModule['lightDice'];
   darkDice: TrophyGoldDiceModule['darkDice'];
   layout: viewLayout;
+  formId: string;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
@@ -489,7 +487,7 @@ const DiceForm = ({
     >
       <Grid {...containerLayout} gap={8}>
         <GridItem gridArea={layout === 'top' ? 'topLeft' : ''}>
-          <FormControl id="light-dice">
+          <FormControl id={`light-dice-${formId}`}>
             <FormLabel
               fontFamily="Faith Collapsing"
               fontSize={layout === 'top' ? '2xl' : '4xl'}
@@ -517,7 +515,7 @@ const DiceForm = ({
           </FormControl>
         </GridItem>
         <GridItem gridArea={layout === 'top' ? 'bottomLeft' : ''}>
-          <FormControl id="dark-dice">
+          <FormControl id={`dark-dice-${formId}`}>
             <FormLabel
               fontFamily="Faith Collapsing"
               fontSize={layout === 'top' ? '2xl' : '4xl'}

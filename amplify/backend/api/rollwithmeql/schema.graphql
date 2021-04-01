@@ -80,6 +80,16 @@ type TrophyGoldRoom
     @connection(keyName: "byGame", fields: ["id"])
 }
 
+type TrophyGoldGMModule
+  @model
+  @auth(rules: [{ allow: owner, provider: userPools }])
+  @key(name: "byGameID", fields: ["gameID"], queryField: "goldGMByGameID") {
+  id: ID!
+  gameID: ID!
+  notes: AWSJSON
+  bestiary: [TrophyGoldBeast] @connection(keyName: "byGMModule", fields: ["id"])
+}
+
 enum TrophyGoldDiceMode {
   risk
   hunt
@@ -132,9 +142,11 @@ type TrophyGoldCharacter
 type TrophyGoldBeast
   @model
   @auth(rules: [{ allow: public }, { allow: private }])
+  @key(name: "byGMModule", fields: ["gmModuleID"])
   @key(name: "byGame", fields: ["gameID"]) {
   id: ID!
-  gameID: ID!
+  gameID: ID
+  gmModuleID: ID
   endurance: String
   title: String
   description: String

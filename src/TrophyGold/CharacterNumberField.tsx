@@ -14,6 +14,7 @@ interface CharacterNumberFieldProps {
   onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
   field: keyof Omit<UpdateTrophyGoldCharacterInput, 'id'>;
   canEdit: boolean;
+  min?: number;
 }
 
 export default function CharacterNumberField({
@@ -21,19 +22,22 @@ export default function CharacterNumberField({
   onSubmit,
   field,
   canEdit,
+  min,
 }: CharacterNumberFieldProps) {
   const [trackedValue, setTrackedValue] = React.useState(initial);
   const { delayedUpdate } = useDelayedUpdate(onSubmit);
-  const previous = React.useRef(delayedUpdate);
-  if (!Object.is(previous.current, delayedUpdate)) {
-    console.log(
-      `delayedUpdate changed. Old: ${previous.current.toString()}, New: ${delayedUpdate.toString()} `
-    );
-    previous.current = delayedUpdate;
-  }
+
   React.useEffect(() => {
     setTrackedValue(initial);
   }, [initial]);
+
+  React.useEffect(() => {
+    if (min === undefined || trackedValue === undefined) return;
+    if (min > trackedValue) {
+      setTrackedValue(min);
+      delayedUpdate({ [field]: min });
+    }
+  }, [min, trackedValue, delayedUpdate, field]);
 
   const handleChange = React.useCallback(
     (_, val) => {
@@ -51,7 +55,7 @@ export default function CharacterNumberField({
       isReadOnly={!canEdit}
       variant={canEdit ? 'outline' : 'filled'}
       size="sm"
-      min={0}
+      min={min || 0}
       value={trackedValue}
       onChange={handleChange}
     >

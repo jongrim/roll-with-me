@@ -580,6 +580,7 @@ export const getTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -672,6 +673,7 @@ export const listTrophyGoldRooms = /* GraphQL */ `
           items {
             id
             gameID
+            gmModuleID
             endurance
             title
             description
@@ -774,6 +776,7 @@ export const trophyGoldRoomByName = /* GraphQL */ `
           items {
             id
             gameID
+            gmModuleID
             endurance
             title
             description
@@ -803,6 +806,131 @@ export const trophyGoldRoomByName = /* GraphQL */ `
           backgroundImages
           createdAt
           updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getTrophyGoldGmModule = /* GraphQL */ `
+  query GetTrophyGoldGmModule($id: ID!) {
+    getTrophyGoldGMModule(id: $id) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listTrophyGoldGmModules = /* GraphQL */ `
+  query ListTrophyGoldGmModules(
+    $filter: ModelTrophyGoldGMModuleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrophyGoldGMModules(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gameID
+        notes
+        createdAt
+        updatedAt
+        owner
+        bestiary {
+          items {
+            id
+            gameID
+            gmModuleID
+            endurance
+            title
+            description
+            habit1
+            habit2
+            habit3
+            habit4
+            habit5
+            habit6
+            defenses
+            weakness
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const goldGmByGameId = /* GraphQL */ `
+  query GoldGmByGameId(
+    $gameID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelTrophyGoldGMModuleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    goldGMByGameID(
+      gameID: $gameID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gameID
+        notes
+        createdAt
+        updatedAt
+        owner
+        bestiary {
+          items {
+            id
+            gameID
+            gmModuleID
+            endurance
+            title
+            description
+            habit1
+            habit2
+            habit3
+            habit4
+            habit5
+            habit6
+            defenses
+            weakness
+            createdAt
+            updatedAt
+          }
+          nextToken
         }
       }
       nextToken
@@ -895,6 +1023,7 @@ export const getTrophyGoldBeast = /* GraphQL */ `
     getTrophyGoldBeast(id: $id) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -925,6 +1054,7 @@ export const listTrophyGoldBeasts = /* GraphQL */ `
       items {
         id
         gameID
+        gmModuleID
         endurance
         title
         description

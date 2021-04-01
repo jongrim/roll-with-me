@@ -176,7 +176,8 @@ export function createEmptyBackpack(): Backpack {
 
 export interface Beast {
   id: string;
-  gameID: string;
+  gameID?: string;
+  gmModuleID?: string;
   endurance?: number;
   title: string;
   description: string;
@@ -190,10 +191,10 @@ export interface Beast {
   weakness: string;
 }
 
-export function makeBeast(gameID: string): Beast {
+export function makeBeast(gameID: { [key: string]: string }): Beast {
   return {
     id: uuidv4(),
-    gameID,
+    ...gameID,
     title: '',
     description: '',
     defenses: '',
