@@ -30,9 +30,11 @@ import { updateCharacter } from './Character';
 import { TrophyGoldBeast, UpdateTrophyGoldCharacterInput } from '../API';
 import useDelayedUpdate from './useDelayedUpdate';
 import NewWindow from 'react-new-window';
-import SidebarNav from './SidebarNav';
+import SidebarNav, { SidebarLink } from './SidebarNav';
 import Bestiary from './Bestiary';
 import Credits from './Credits';
+import { GM } from './TrophyGoldRoom';
+import GameFacilitator from './GameFacilitator';
 
 interface TrophyGoldGameProps {
   username: string;
@@ -105,9 +107,15 @@ const TrophyGoldGameArea = ({
                   x-card
                 </Button>
               }
-            />
+            >
+              {characterChoice === GM && (
+                <SidebarLink name={name} destination="facilitator">
+                  Game Facilitator
+                </SidebarLink>
+              )}
+            </SidebarNav>
           </GridItem>
-          <GridItem overflow="auto">
+          <GridItem overflow="auto" px={2} pr={4}>
             <Route exact path={[`/trophy-gold/${name}/table`]}>
               <Grid
                 h="full"
@@ -138,7 +146,7 @@ const TrophyGoldGameArea = ({
                           key={c.id}
                         >
                           <Text isTruncated maxW="sm">
-                            {c.characterName}
+                            {c.characterName || 'Unnamed treasure hunter'}
                           </Text>
                         </Link>
                       ))}
@@ -203,7 +211,7 @@ const TrophyGoldGameArea = ({
               </Grid>
             </Route>
             <Route exact path={`/trophy-gold/${name}/bestiary`}>
-              <Bestiary beasts={beasts} gameID={id} />
+              <Bestiary beasts={beasts} gameID={{ gameID: id }} />
             </Route>
             <Route exact path={`/trophy-gold/${name}/safety`}>
               <SafetyForm
@@ -213,6 +221,11 @@ const TrophyGoldGameArea = ({
                 }}
               />
             </Route>
+            {characterChoice === GM && (
+              <Route exact path={`/trophy-gold/${name}/facilitator`}>
+                <GameFacilitator gameID={id} />
+              </Route>
+            )}
             <Route exact path={`/trophy-gold/${name}/credits`}>
               <Credits />
             </Route>

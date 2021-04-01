@@ -34,6 +34,7 @@ import CharacterNotes from './CharacterNotes';
 import CharacterNumberField from './CharacterNumberField';
 import { RandomNumbersContext } from '../RandomNumbersProvider';
 import RuinBoxes from './RuinBoxes';
+import { ArmorSet, WeaponSet } from './TrophyGoldGameTypes';
 
 export const updateCharacter = async (
   character: UpdateTrophyGoldCharacterInput
@@ -62,6 +63,24 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
   const rituals = character.rituals?.filter(Boolean) || [];
   const baseRuin = (rituals.length ?? 0) + 1;
+  const weaponSet: WeaponSet = React.useMemo(
+    () => JSON.parse(character.weaponSet),
+    [character.weaponSet]
+  );
+  const armorSet: ArmorSet = React.useMemo(
+    () => JSON.parse(character.armorSet),
+    [character.armorSet]
+  );
+  const baseBurdens = React.useMemo(() => {
+    return (
+      Object.values(armorSet).filter(
+        ({ description }) => description.trim() !== ''
+      ).length +
+      Object.values(weaponSet).filter(
+        ({ description }) => description.trim() !== ''
+      ).length
+    );
+  }, [weaponSet, armorSet]);
   const ruin = character.ruin || baseRuin;
   const [characterName, setCharacterName] = React.useState(
     character?.characterName || ''
@@ -125,7 +144,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               alt={`Portrait of ${character.characterName}`}
               rounded="sm"
               boxShadow="lg"
-              maxH="md"
+              maxH={96}
             />
           ) : (
             <Box
@@ -231,6 +250,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             onSubmit={updateWithId}
             initial={character.burdens}
             canEdit={canEdit}
+            min={baseBurdens}
           />
         </Box>
         <Box>

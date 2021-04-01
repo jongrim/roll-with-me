@@ -69,7 +69,7 @@ const gameLoadMachine = Machine<{
         GM: {
           target: 'PLAYING',
           actions: assign({
-            characterChoice: () => 'GM',
+            characterChoice: () => GM,
           }),
         },
         CHOOSE: {

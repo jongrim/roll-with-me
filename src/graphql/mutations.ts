@@ -584,6 +584,7 @@ export const createTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -674,6 +675,7 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -764,6 +766,7 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
         items {
           id
           gameID
+          gmModuleID
           endurance
           title
           description
@@ -793,6 +796,114 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
         backgroundImages
         createdAt
         updatedAt
+      }
+    }
+  }
+`;
+export const createTrophyGoldGmModule = /* GraphQL */ `
+  mutation CreateTrophyGoldGmModule(
+    $input: CreateTrophyGoldGMModuleInput!
+    $condition: ModelTrophyGoldGMModuleConditionInput
+  ) {
+    createTrophyGoldGMModule(input: $input, condition: $condition) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateTrophyGoldGmModule = /* GraphQL */ `
+  mutation UpdateTrophyGoldGmModule(
+    $input: UpdateTrophyGoldGMModuleInput!
+    $condition: ModelTrophyGoldGMModuleConditionInput
+  ) {
+    updateTrophyGoldGMModule(input: $input, condition: $condition) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteTrophyGoldGmModule = /* GraphQL */ `
+  mutation DeleteTrophyGoldGmModule(
+    $input: DeleteTrophyGoldGMModuleInput!
+    $condition: ModelTrophyGoldGMModuleConditionInput
+  ) {
+    deleteTrophyGoldGMModule(input: $input, condition: $condition) {
+      id
+      gameID
+      notes
+      createdAt
+      updatedAt
+      owner
+      bestiary {
+        items {
+          id
+          gameID
+          gmModuleID
+          endurance
+          title
+          description
+          habit1
+          habit2
+          habit3
+          habit4
+          habit5
+          habit6
+          defenses
+          weakness
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
     }
   }
@@ -919,6 +1030,7 @@ export const createTrophyGoldBeast = /* GraphQL */ `
     createTrophyGoldBeast(input: $input, condition: $condition) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -943,6 +1055,7 @@ export const updateTrophyGoldBeast = /* GraphQL */ `
     updateTrophyGoldBeast(input: $input, condition: $condition) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
@@ -967,6 +1080,7 @@ export const deleteTrophyGoldBeast = /* GraphQL */ `
     deleteTrophyGoldBeast(input: $input, condition: $condition) {
       id
       gameID
+      gmModuleID
       endurance
       title
       description
