@@ -203,7 +203,6 @@ const SafetyItems = () => {
                 <option value="line">Line</option>
                 <option value="veil">Veil</option>
                 <option value="ask">Ask First</option>
-                <option value="consent">Enthusiatic Consent</option>
               </Select>
             </FormControl>
             <FormControl id="note" mt={4}>

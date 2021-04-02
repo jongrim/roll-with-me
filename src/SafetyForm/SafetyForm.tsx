@@ -15,6 +15,7 @@ import {
   Select,
   Spacer,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { ClassifiedItem } from '../types';
@@ -46,6 +47,7 @@ const createItem = ({
 });
 
 const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
+  const linkColor = useColorModeValue('brand.400', 'brand.200');
   const { user } = React.useContext(AuthContext);
   const [newLabel, setNewLabel] = React.useState('');
   const [newClass, setNewClass] = React.useState('');
@@ -162,6 +164,14 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
     return;
   }
 
+  const sortedSafetyItems = React.useMemo(() => {
+    return data?.linesAndVeils?.sort((a, b) => {
+      if (a.classification === 'line') return -1;
+      if (b.classification === 'line') return 1;
+      return 0;
+    });
+  }, [data.linesAndVeils]);
+
   return (
     <>
       <Heading>Safety Tools</Heading>
@@ -179,7 +189,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
         For more about safety tools, and other options to consider for your
         games, consult the{' '}
         <Link
-          color="brand.400"
+          color={linkColor}
           isExternal
           href="https://drive.google.com/drive/folders/114jRmhzBpdqkAlhmveis0nmW73qkAZCj"
         >
@@ -187,13 +197,13 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
           TTRPG safety toolkit{' '}
         </Link>{' '}
         by{' '}
-        <Link color="brand.400" isExternal href="https://twitter.com/KiennaS">
+        <Link color={linkColor} isExternal href="https://twitter.com/KiennaS">
           {' '}
           Kienna Shaw{' '}
         </Link>{' '}
         and{' '}
         <Link
-          color="brand.400"
+          color={linkColor}
           isExternal
           href="https://twitter.com/jl_nicegirl"
         >
@@ -215,9 +225,6 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
               <Badge color="gray.800" p={1} rounded="md" bg="cyan.100">
                 Ask First
               </Badge>
-              <Badge color="gray.800" p={1} rounded="md" bg="green.100">
-                Enthusiastic Consent
-              </Badge>
             </HStack>
             <Spacer />
             {userSafetyItems.length > 0 && (
@@ -232,7 +239,7 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
             )}
           </Flex>
         </GridItem>
-        {data?.linesAndVeils?.map((item) => {
+        {sortedSafetyItems?.map((item) => {
           return (
             <SafetyItem
               key={item.id}
@@ -281,7 +288,6 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
               <option value="line">Line</option>
               <option value="veil">Veil</option>
               <option value="ask">Ask First</option>
-              <option value="consent">Enthusiatic Consent</option>
             </Select>
           </FormControl>
         </Flex>

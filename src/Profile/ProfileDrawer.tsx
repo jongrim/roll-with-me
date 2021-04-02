@@ -17,6 +17,7 @@ import {
   Box,
   Text,
   HStack,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
@@ -32,6 +33,7 @@ interface ProfileDrawerProps {
 const ProfileDrawer = React.forwardRef<HTMLButtonElement, ProfileDrawerProps>(
   ({ isOpen, onClose, username, setUsername }, btnRef) => {
     const { user } = React.useContext(AuthContext);
+    const linkColor = useColorModeValue('brand.400', 'brand.200');
     return (
       <>
         <Drawer
@@ -63,14 +65,14 @@ const ProfileDrawer = React.forwardRef<HTMLButtonElement, ProfileDrawerProps>(
                       <EditableInput />
                     </Editable>
                   </Box>
-                  <Link as={ReactRouterLink} to="/feedback" color="brand.500">
+                  <Link as={ReactRouterLink} to="/feedback" color={linkColor}>
                     Provide feedback
                   </Link>
                   {user ? (
                     <Link
                       as={ReactRouterLink}
                       to="/profile/settings"
-                      color="brand.500"
+                      color={linkColor}
                     >
                       Manage profile
                     </Link>
