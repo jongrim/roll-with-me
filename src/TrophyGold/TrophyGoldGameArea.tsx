@@ -142,7 +142,11 @@ const TrophyGoldGameArea = ({
                       {characters.map((c) => (
                         <Link
                           color={characterLinkColor}
-                          href={`#${c.characterName?.replace(' ', '')}`}
+                          href={
+                            c.characterName
+                              ? `#${c.characterName.replace(' ', '')}`
+                              : `#${c.id}`
+                          }
                           key={c.id}
                         >
                           <Text isTruncated maxW="sm">

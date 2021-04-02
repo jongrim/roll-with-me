@@ -16,6 +16,10 @@ const CharacterList = ({
 }: CharacterListProps) => {
   const playerCharacter = characters.find((c) => c?.id === characterChoice);
   const isGM = characterChoice === 'GM';
+  const characterItemBorder =
+    layout === 'side'
+      ? { borderBottom: '1px solid', borderColor: 'inherit', paddingBottom: 4 }
+      : { borderRight: '1px solid', borderColor: 'inherit', paddingRight: 4 };
 
   const charactersWithoutPC = characters.filter(
     (c) => c?.id !== playerCharacter?.id
@@ -28,35 +32,31 @@ const CharacterList = ({
       templateColumns={
         layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
       }
-      gap={8}
+      gap={6}
     >
       {playerCharacter && (
-        <GridItem mb={8}>
+        <GridItem {...characterItemBorder}>
           <Character canEdit character={playerCharacter} />
         </GridItem>
       )}
       {isGM
         ? characters.map((c) => {
             if (!c) return null;
-            return <CharacterListItem key={c.id} character={c} />;
+            return (
+              <GridItem key={c.id} {...characterItemBorder}>
+                <Character canEdit={false} character={c} />
+              </GridItem>
+            );
           })
         : charactersWithoutPC.map((c) => {
             if (!c) return null;
-            return <CharacterListItem key={c.id} character={c} />;
+            return (
+              <GridItem key={c.id} {...characterItemBorder}>
+                <Character canEdit={false} character={c} />
+              </GridItem>
+            );
           })}
     </Grid>
-  );
-};
-
-interface CharacterListItemProps {
-  character: RawTrophyGoldCharacter;
-}
-
-const CharacterListItem = ({ character }: CharacterListItemProps) => {
-  return (
-    <GridItem>
-      <Character canEdit={false} character={character} />
-    </GridItem>
   );
 };
 
