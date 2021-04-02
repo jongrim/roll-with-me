@@ -92,7 +92,6 @@ const SafetyItem = ({
             <option value="line">Line</option>
             <option value="veil">Veil</option>
             <option value="ask">Ask First</option>
-            <option value="consent">Enthusiatic Consent</option>
           </Select>
         </Box>
         <HStack position="absolute" top="0" right="0" spacing={3}>
@@ -194,7 +193,8 @@ const Note = ({
       <Box minH="48px">
         <Button
           variant="link"
-          colorScheme="gray"
+          color="gray.700"
+          fontSize="md"
           mt={2}
           onClick={() => setIsEditing(true)}
           leftIcon={<RiAddLine />}
