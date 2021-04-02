@@ -572,6 +572,10 @@ const DiceForm = ({
           ))}
         </GridItem>
       </Grid>
+      <Box position="absolute" bottom="-50px" right="-50px" hidden>
+        <LightDie result="1" />
+        <DarkDie result="1" />
+      </Box>
     </form>
   );
 };
@@ -641,6 +645,7 @@ const GoldDiceForm = ({
               fontFamily="Faith Collapsing"
               fontSize="3xl"
               opacity="0.9"
+              w="full"
               py={6}
               isLoading={isRolling}
             >
@@ -654,6 +659,9 @@ const GoldDiceForm = ({
           ))}
         </GridItem>
       </Grid>
+      <Box position="absolute" bottom="-50px" right="-50px" hidden>
+        <GoldDie result="1" />
+      </Box>
     </form>
   );
 };
