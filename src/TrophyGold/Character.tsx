@@ -60,6 +60,7 @@ interface CharacterProps {
 
 const Character = ({ character, canEdit }: CharacterProps) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
+  const bgColor = useColorModeValue('white', 'gray.800');
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
   const rituals = character.rituals?.filter(Boolean) || [];
   const baseRuin = (rituals.length ?? 0) + 1;
@@ -125,17 +126,33 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   return (
     <Box
       fontFamily="Roboto Slab"
-      id={character.characterName?.replace(' ', '')}
+      id={
+        character.characterName
+          ? character.characterName.replace(' ', '')
+          : character.id
+      }
       pr={3}
     >
-      <Text mb={2} fontWeight="600">
-        {character.playerName}
-        {character.characterName && ` – ${character.characterName}`}
-      </Text>
+      <Box
+        p={1}
+        position="sticky"
+        top="0px"
+        bg={bgColor}
+        boxShadow="sm"
+        borderRadius="sm"
+        zIndex="1"
+      >
+        <Text fontWeight="400" fontSize="lg">
+          {character.playerName}
+          {character.characterName &&
+            ` – ${character.characterName} | ${character.characterPronouns}`}
+        </Text>
+      </Box>
       <Grid
         templateColumns="minmax(150px, 33%) 1fr"
         gap={6}
         alignItems="center"
+        h="md"
       >
         <GridItem>
           {character.characterImageUrl ? (
@@ -150,7 +167,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <Box
               border="3px dashed"
               borderColor="inherit"
-              h="200px"
+              h="280px"
               rounded="sm"
             >
               <Center h="full">
@@ -309,8 +326,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           onSubmit={updateWithId}
         />
       </Box>
-      <Divider my={6} />
-      <Box mt={6}>
+      <Box mt={10}>
         <CharacterBackpack
           canEdit={canEdit}
           backpack={character.backpack || '{}'}
