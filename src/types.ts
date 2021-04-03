@@ -3,7 +3,7 @@ export interface Die {
   sides: number;
   result?: number;
   name: string;
-  type?: 'fudge';
+  type?: 'fudge' | 'd6Pip';
 }
 
 export interface VisualDie extends Die {
@@ -12,7 +12,12 @@ export interface VisualDie extends Die {
   color: string;
   version: number;
   createdBy: string;
-  type?: 'fudge';
+  type?: 'fudge' | 'd6Pip';
+}
+
+export interface D6Pip extends VisualDie {
+  type: 'd6Pip';
+  sides: 6;
 }
 
 export interface SavedDie {

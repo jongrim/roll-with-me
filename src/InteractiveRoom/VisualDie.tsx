@@ -25,6 +25,7 @@ import * as subscriptions from '../graphql/subscriptions';
 import * as mutations from '../graphql/mutations';
 import { VisualDie } from '../types';
 import { RandomNumbersContext } from '../RandomNumbersProvider';
+import { LightDie } from '../TrophyShared/LightDiceDarkDice';
 
 const Heptagon = () => {
   return (
@@ -235,14 +236,26 @@ const VDie: React.FC<{
                     width="72px"
                     height="72px"
                     icon={
-                      <Icon p={3} width="72px" height="72px" as={BsSquare} />
+                      trackedDie.type === 'd6Pip' ? (
+                        <LightDie
+                          result={trackedDie.result?.toString() || ''}
+                        />
+                      ) : (
+                        <Icon p={3} width="72px" height="72px" as={BsSquare} />
+                      )
                     }
                   />
                 </motion.div>
               </Box>
-              <Text gridArea="1 / 1" zIndex={2} _hover={{ cursor: 'pointer' }}>
-                {trackedDie.result}
-              </Text>
+              {trackedDie.type !== 'd6Pip' && (
+                <Text
+                  gridArea="1 / 1"
+                  zIndex={2}
+                  _hover={{ cursor: 'pointer' }}
+                >
+                  {trackedDie.result}
+                </Text>
+              )}
             </Grid>
           </HStack>
         </Box>

@@ -48,6 +48,7 @@ import {
   GiD10,
   GiD12,
   GiDiceTwentyFacesTwenty,
+  GiDiceSixFacesSix,
 } from 'react-icons/gi';
 import { BsClock } from 'react-icons/bs';
 import SpinningCube from '../SpinningCube/SpinningCube';
@@ -93,6 +94,8 @@ type Props = {
 function InteractiveRoom({ name }: Props) {
   const toast = useToast();
   const { getNumbers } = React.useContext(RandomNumbersContext);
+
+  const [d6Type, setd6Type] = React.useState<undefined | 'd6Pip'>(undefined);
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const { data, isLoading } = useRoomLookup(name);
   const lastRoll = data?.rolls
@@ -140,7 +143,7 @@ function InteractiveRoom({ name }: Props) {
   }: {
     sides: number;
     leftOffset?: number;
-    type?: 'fudge';
+    type?: 'fudge' | 'd6Pip';
   }): Promise<{ result: number }> => {
     if (!data?.id) {
       toast({
@@ -210,7 +213,14 @@ function InteractiveRoom({ name }: Props) {
             const { dice } = roll;
             Promise.allSettled(
               dice.map((die, i) => {
-                return addDie({ sides: die.sides, leftOffset: i * MIN_WIDTH });
+                if (die.sides === 6) {
+                  die.type = d6Type;
+                }
+                return addDie({
+                  sides: die.sides,
+                  leftOffset: i * MIN_WIDTH,
+                  type: die.type,
+                });
               })
             )
               .then((response) => {
@@ -296,27 +306,57 @@ function InteractiveRoom({ name }: Props) {
                     aria-label="New 4 sided die"
                   />
                 </Tooltip>
-                <Tooltip
-                  openDelay={500}
-                  label="Add a 6 sided die"
-                  aria-label="Add a 6 sided die"
-                >
-                  <IconButton
-                    variant="ghost"
-                    h={20}
-                    w={20}
-                    icon={
-                      <Icon
-                        h={12}
-                        w={12}
+                <Flex>
+                  <Tooltip
+                    openDelay={500}
+                    label="Add a 6 sided die"
+                    aria-label="Add a 6 sided die"
+                  >
+                    <IconButton
+                      variant="ghost"
+                      h={20}
+                      w={20}
+                      icon={
+                        <Icon
+                          h={12}
+                          w={12}
+                          color={color}
+                          as={GiPerspectiveDiceSixFacesSix}
+                        />
+                      }
+                      onClick={() => addDie({ sides: 6, type: d6Type })}
+                      aria-label="New 6 sided die"
+                    />
+                  </Tooltip>
+                  <Flex direction="column" justifyContent="space-around" ml={1}>
+                    <Tooltip
+                      label="Display new die result as digits"
+                      aria-label="Display new die result as digits"
+                    >
+                      <Button
+                        onClick={() => setd6Type(undefined)}
+                        variant={d6Type === undefined ? 'solid' : 'ghost'}
                         color={color}
-                        as={GiPerspectiveDiceSixFacesSix}
+                        size="sm"
+                      >
+                        6
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      label="Display new die result as pips"
+                      aria-label="Display new die result as pips"
+                    >
+                      <IconButton
+                        onClick={() => setd6Type('d6Pip')}
+                        variant={d6Type === 'd6Pip' ? 'solid' : 'ghost'}
+                        color={color}
+                        size="md"
+                        icon={<Icon as={GiDiceSixFacesSix} />}
+                        aria-label="Display as pips"
                       />
-                    }
-                    onClick={() => addDie({ sides: 6 })}
-                    aria-label="New 6 sided die"
-                  />
-                </Tooltip>
+                    </Tooltip>
+                  </Flex>
+                </Flex>
                 <Tooltip
                   openDelay={500}
                   label="Add a 8 sided die"
