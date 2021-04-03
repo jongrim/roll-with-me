@@ -29,7 +29,6 @@ const [
   productionRedirectSignIn,
   mainDeployRedirectSignIn,
   devDeployRedirectSignIn,
-  nextDeployRedirectSignIn,
 ] = awsConfig.oauth.redirectSignIn.split(',');
 
 const [
@@ -37,7 +36,6 @@ const [
   productionRedirectSignOut,
   mainDeployRedirectSignOut,
   devDeployRedirectSignOut,
-  nextDeployRedirectSignOut,
 ] = awsConfig.oauth.redirectSignOut.split(',');
 
 const redirectSignIn = isLocalhost
