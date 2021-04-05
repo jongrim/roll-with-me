@@ -462,6 +462,7 @@ export type TrophyGoldCharacter = {
   backpack?: string,
   conditions?: string,
   notes?: string,
+  hidden?: boolean | null,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -576,6 +577,7 @@ export type CreateTrophyGoldCharacterInput = {
   backpack: string,
   conditions: string,
   notes: string,
+  hidden?: boolean | null,
 };
 
 export type ModelTrophyGoldCharacterConditionInput = {
@@ -605,9 +607,17 @@ export type ModelTrophyGoldCharacterConditionInput = {
   backpack?: ModelStringInput | null,
   conditions?: ModelStringInput | null,
   notes?: ModelStringInput | null,
+  hidden?: ModelBooleanInput | null,
   and?: Array< ModelTrophyGoldCharacterConditionInput | null > | null,
   or?: Array< ModelTrophyGoldCharacterConditionInput | null > | null,
   not?: ModelTrophyGoldCharacterConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateTrophyGoldCharacterInput = {
@@ -638,6 +648,7 @@ export type UpdateTrophyGoldCharacterInput = {
   backpack?: string | null,
   conditions?: string | null,
   notes?: string | null,
+  hidden?: boolean | null,
 };
 
 export type DeleteTrophyGoldCharacterInput = {
@@ -1056,13 +1067,6 @@ export type ModelSafetyModuleConditionInput = {
   not?: ModelSafetyModuleConditionInput | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type UpdateSafetyModuleInput = {
   id: string,
   xCardActive?: boolean | null,
@@ -1374,6 +1378,7 @@ export type ModelTrophyGoldCharacterFilterInput = {
   backpack?: ModelStringInput | null,
   conditions?: ModelStringInput | null,
   notes?: ModelStringInput | null,
+  hidden?: ModelBooleanInput | null,
   and?: Array< ModelTrophyGoldCharacterFilterInput | null > | null,
   or?: Array< ModelTrophyGoldCharacterFilterInput | null > | null,
   not?: ModelTrophyGoldCharacterFilterInput | null,
@@ -2218,6 +2223,7 @@ export type CreateTrophyGoldRoomMutation = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2318,6 +2324,7 @@ export type UpdateTrophyGoldRoomMutation = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2418,6 +2425,7 @@ export type DeleteTrophyGoldRoomMutation = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -2620,6 +2628,7 @@ export type CreateTrophyGoldCharacterMutation = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2660,6 +2669,7 @@ export type UpdateTrophyGoldCharacterMutation = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2700,6 +2710,7 @@ export type DeleteTrophyGoldCharacterMutation = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4769,6 +4780,7 @@ export type GetTrophyGoldRoomQuery = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -4872,6 +4884,7 @@ export type ListTrophyGoldRoomsQuery = {
           backpack: string,
           conditions: string,
           notes: string,
+          hidden?: boolean | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -4979,6 +4992,7 @@ export type TrophyGoldRoomByNameQuery = {
           backpack: string,
           conditions: string,
           notes: string,
+          hidden?: boolean | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -5193,6 +5207,7 @@ export type GetTrophyGoldCharacterQuery = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5236,6 +5251,7 @@ export type ListTrophyGoldCharactersQuery = {
       backpack: string,
       conditions: string,
       notes: string,
+      hidden?: boolean | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -6720,6 +6736,7 @@ export type OnCreateTrophyGoldCharacterByGameSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -6777,6 +6794,7 @@ export type OnUpdateTrophyGoldRoomByIdSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -6875,6 +6893,7 @@ export type OnUpdateTrophyGoldCharacterByIdSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -7593,6 +7612,7 @@ export type OnCreateTrophyGoldRoomSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -7688,6 +7708,7 @@ export type OnUpdateTrophyGoldRoomSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -7783,6 +7804,7 @@ export type OnDeleteTrophyGoldRoomSubscription = {
         backpack: string,
         conditions: string,
         notes: string,
+        hidden?: boolean | null,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
@@ -7977,6 +7999,7 @@ export type OnCreateTrophyGoldCharacterSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -8012,6 +8035,7 @@ export type OnUpdateTrophyGoldCharacterSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -8047,6 +8071,7 @@ export type OnDeleteTrophyGoldCharacterSubscription = {
     backpack: string,
     conditions: string,
     notes: string,
+    hidden?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,

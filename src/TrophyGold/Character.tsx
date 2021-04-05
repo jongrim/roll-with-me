@@ -79,7 +79,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
       ).length +
       Object.values(weaponSet).filter(
         ({ description }) => description.trim() !== ''
-      ).length
+      ).length +
+      1
     );
   }, [weaponSet, armorSet]);
   const ruin = character.ruin || baseRuin;
@@ -108,18 +109,18 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   );
 
   React.useEffect(() => {
-    if (!canEdit && character?.characterName) {
-      setCharacterName(character.characterName);
+    if (!canEdit) {
+      setCharacterName(character?.characterName || '');
     }
   }, [character?.characterName, canEdit]);
   React.useEffect(() => {
-    if (!canEdit && character?.characterPronouns) {
-      setCharacterPronouns(character.characterPronouns);
+    if (!canEdit) {
+      setCharacterPronouns(character.characterPronouns || '');
     }
   }, [character?.characterPronouns, canEdit]);
   React.useEffect(() => {
-    if (!canEdit && character?.characterImageUrl) {
-      setImageUrl(character.characterImageUrl);
+    if (!canEdit) {
+      setImageUrl(character.characterImageUrl || '');
     }
   }, [character?.characterImageUrl, canEdit]);
 

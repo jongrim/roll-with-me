@@ -4,8 +4,6 @@ import App, { rollWithMeTheme } from './App';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import reportWebVitals from './reportWebVitals';
-import './fonts/QuiteMagicalRegular.ttf';
-import './fonts/FaithCollapsing.ttf';
 import './index.css';
 import { ColorModeScript } from '@chakra-ui/react';
 

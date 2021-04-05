@@ -4,11 +4,13 @@
 @font-face {
   font-family: 'QuiteMagicalRegular';
   src: url('./fonts/QuiteMagicalRegular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Faith Collapsing';
   src: url('./fonts/FaithCollapsing.ttf') format('truetype');
+  font-display: swap;
 }
 
 html,

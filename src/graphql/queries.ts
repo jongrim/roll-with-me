@@ -571,6 +571,7 @@ export const getTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          hidden
           createdAt
           updatedAt
         }
@@ -664,6 +665,7 @@ export const listTrophyGoldRooms = /* GraphQL */ `
             backpack
             conditions
             notes
+            hidden
             createdAt
             updatedAt
           }
@@ -767,6 +769,7 @@ export const trophyGoldRoomByName = /* GraphQL */ `
             backpack
             conditions
             notes
+            hidden
             createdAt
             updatedAt
           }
@@ -967,6 +970,7 @@ export const getTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
@@ -1011,6 +1015,7 @@ export const listTrophyGoldCharacters = /* GraphQL */ `
         backpack
         conditions
         notes
+        hidden
         createdAt
         updatedAt
       }

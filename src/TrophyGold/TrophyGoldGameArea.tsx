@@ -72,6 +72,10 @@ const TrophyGoldGameArea = ({
   React.useEffect(() => {
     return () => setPopoutDice(false);
   }, []);
+  const visibleCharacters = React.useMemo(
+    () => characters.filter((c) => c.hidden !== true),
+    [characters]
+  );
   return (
     <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Roboto Slab">
       <GridItem>
@@ -139,7 +143,7 @@ const TrophyGoldGameArea = ({
                     py={1}
                   >
                     <HStack spacing={8} divider={<StackDivider />}>
-                      {characters.map((c) => (
+                      {visibleCharacters.map((c) => (
                         <Link
                           color={characterLinkColor}
                           href={
@@ -188,7 +192,7 @@ const TrophyGoldGameArea = ({
                 </GridItem>
                 <GridItem overflow={['unset', 'unset', 'unset', 'auto']}>
                   <CharacterList
-                    characters={characters}
+                    characters={visibleCharacters}
                     characterChoice={characterChoice}
                     layout={layout}
                   />
@@ -197,7 +201,7 @@ const TrophyGoldGameArea = ({
                   <NewWindow onUnload={() => setPopoutDice(false)}>
                     <TrophyDice
                       layout="side"
-                      characters={characters}
+                      characters={visibleCharacters}
                       characterChoice={characterChoice}
                       diceModule={diceModule}
                     />
@@ -206,7 +210,7 @@ const TrophyGoldGameArea = ({
                   <GridItem>
                     <TrophyDice
                       layout={layout}
-                      characters={characters}
+                      characters={visibleCharacters}
                       characterChoice={characterChoice}
                       diceModule={diceModule}
                     />
@@ -227,7 +231,7 @@ const TrophyGoldGameArea = ({
             </Route>
             {characterChoice === GM && (
               <Route exact path={`/trophy-gold/${name}/facilitator`}>
-                <GameFacilitator gameID={id} />
+                <GameFacilitator gameID={id} characters={characters} />
               </Route>
             )}
             <Route exact path={`/trophy-gold/${name}/credits`}>

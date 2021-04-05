@@ -410,6 +410,7 @@ export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
@@ -460,6 +461,7 @@ export const onUpdateTrophyGoldRoomById = /* GraphQL */ `
           backpack
           conditions
           notes
+          hidden
           createdAt
           updatedAt
         }
@@ -546,6 +548,7 @@ export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
@@ -1205,6 +1208,7 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          hidden
           createdAt
           updatedAt
         }
@@ -1293,6 +1297,7 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          hidden
           createdAt
           updatedAt
         }
@@ -1381,6 +1386,7 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
           backpack
           conditions
           notes
+          hidden
           createdAt
           updatedAt
         }
@@ -1553,6 +1559,7 @@ export const onCreateTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
@@ -1588,6 +1595,7 @@ export const onUpdateTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
@@ -1623,6 +1631,7 @@ export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
       backpack
       conditions
       notes
+      hidden
       createdAt
       updatedAt
     }
