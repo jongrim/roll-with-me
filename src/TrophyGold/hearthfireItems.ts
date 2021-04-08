@@ -3,6 +3,16 @@ interface HearthfireItem {
   checked: boolean;
 }
 
+export interface CharacterHearthfire {
+  firstHoard: HearthfireItem[];
+  laterHoard: HearthfireItem[];
+  carousing: HearthfireItem[];
+  housing: HearthfireItem[];
+  firstEquipment: HearthfireItem[];
+  laterEquipment: HearthfireItem[];
+  healing: HearthfireItem[];
+}
+
 const stringToItem = (item: string) => ({ label: item, checked: false });
 
 export const firstHoard: HearthfireItem[] = [
@@ -41,11 +51,11 @@ export const housing: HearthfireItem[] = [
   'Ask the other players: Which memento from our journeys together can be found in my Household? Note the answers on the lines below.',
 ].map(stringToItem);
 
-export const equipment: HearthfireItem[] = [
+export const firstEquipment: HearthfireItem[] = [
   'Name the shopkeeper and work with the gm to define their secret. The secret can be anything—a magical item they have in their possession, a lucrative opportunity they’re aware of, an estranged family member they want to find—so long as it’s something you might be interested in. Write the secret on the line below.',
 ].map(stringToItem);
 
-export const equipmentLater: HearthfireItem[] = [
+export const laterEquipment: HearthfireItem[] = [
   'First',
   'Second',
   'Third',
@@ -58,3 +68,13 @@ export const healing: HearthfireItem[] = [
   'Narrate a scene showing a private side of you few others see.',
   'Narrate a scene showing a truly beautiful place in or near town.',
 ].map(stringToItem);
+
+export const initial: CharacterHearthfire = {
+  firstHoard,
+  laterHoard,
+  firstEquipment,
+  laterEquipment,
+  carousing,
+  housing,
+  healing,
+};

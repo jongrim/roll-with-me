@@ -397,6 +397,7 @@ export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -404,9 +405,7 @@ export const onCreateTrophyGoldCharacterByGame = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -448,6 +447,7 @@ export const onUpdateTrophyGoldRoomById = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -455,9 +455,7 @@ export const onUpdateTrophyGoldRoomById = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -535,6 +533,7 @@ export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -542,9 +541,7 @@ export const onUpdateTrophyGoldCharacterById = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -1195,6 +1192,7 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -1202,9 +1200,7 @@ export const onCreateTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -1284,6 +1280,7 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -1291,9 +1288,7 @@ export const onUpdateTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -1373,6 +1368,7 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -1380,9 +1376,7 @@ export const onDeleteTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -1546,6 +1540,7 @@ export const onCreateTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -1553,9 +1548,7 @@ export const onCreateTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -1582,6 +1575,7 @@ export const onUpdateTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -1589,9 +1583,7 @@ export const onUpdateTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -1618,6 +1610,7 @@ export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -1625,9 +1618,7 @@ export const onDeleteTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes

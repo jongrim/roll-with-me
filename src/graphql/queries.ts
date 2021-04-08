@@ -558,6 +558,7 @@ export const getTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -565,9 +566,7 @@ export const getTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -652,6 +651,7 @@ export const listTrophyGoldRooms = /* GraphQL */ `
             background
             drive
             rituals
+            skills
             armorSet
             weaponSet
             foundEquipment
@@ -659,9 +659,7 @@ export const listTrophyGoldRooms = /* GraphQL */ `
             hoard
             gold
             tokens
-            training
-            household
-            library
+            hearthfire
             backpack
             conditions
             notes
@@ -756,6 +754,7 @@ export const trophyGoldRoomByName = /* GraphQL */ `
             background
             drive
             rituals
+            skills
             armorSet
             weaponSet
             foundEquipment
@@ -763,9 +762,7 @@ export const trophyGoldRoomByName = /* GraphQL */ `
             hoard
             gold
             tokens
-            training
-            household
-            library
+            hearthfire
             backpack
             conditions
             notes
@@ -957,6 +954,7 @@ export const getTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -964,9 +962,7 @@ export const getTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -1002,6 +998,7 @@ export const listTrophyGoldCharacters = /* GraphQL */ `
         background
         drive
         rituals
+        skills
         armorSet
         weaponSet
         foundEquipment
@@ -1009,9 +1006,7 @@ export const listTrophyGoldCharacters = /* GraphQL */ `
         hoard
         gold
         tokens
-        training
-        household
-        library
+        hearthfire
         backpack
         conditions
         notes

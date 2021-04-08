@@ -124,6 +124,7 @@ type TrophyGoldCharacter
   background: String
   drive: String
   rituals: [String!]
+  skills: String
   armorSet: AWSJSON!
   weaponSet: AWSJSON!
   foundEquipment: [AWSJSON!]
@@ -131,9 +132,7 @@ type TrophyGoldCharacter
   hoard: Int!
   gold: Int!
   tokens: Int!
-  training: [String!]
-  household: AWSJSON
-  library: [AWSJSON!]
+  hearthfire: AWSJSON
   backpack: AWSJSON!
   conditions: String!
   notes: String!

@@ -562,6 +562,7 @@ export const createTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -569,9 +570,7 @@ export const createTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -654,6 +653,7 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -661,9 +661,7 @@ export const updateTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -746,6 +744,7 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
           background
           drive
           rituals
+          skills
           armorSet
           weaponSet
           foundEquipment
@@ -753,9 +752,7 @@ export const deleteTrophyGoldRoom = /* GraphQL */ `
           hoard
           gold
           tokens
-          training
-          household
-          library
+          hearthfire
           backpack
           conditions
           notes
@@ -931,6 +928,7 @@ export const createTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -938,9 +936,7 @@ export const createTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -970,6 +966,7 @@ export const updateTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -977,9 +974,7 @@ export const updateTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes
@@ -1009,6 +1004,7 @@ export const deleteTrophyGoldCharacter = /* GraphQL */ `
       background
       drive
       rituals
+      skills
       armorSet
       weaponSet
       foundEquipment
@@ -1016,9 +1012,7 @@ export const deleteTrophyGoldCharacter = /* GraphQL */ `
       hoard
       gold
       tokens
-      training
-      household
-      library
+      hearthfire
       backpack
       conditions
       notes

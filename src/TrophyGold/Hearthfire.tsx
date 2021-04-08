@@ -10,28 +10,53 @@ import {
   ListItem,
   UnorderedList,
 } from '@chakra-ui/react';
+import merge from 'lodash.merge';
 import { RiArrowLeftLine } from 'react-icons/ri';
-import {
-  carousing,
-  equipment,
-  equipmentLater,
-  firstHoard,
-  healing,
-  housing,
-  laterHoard,
-} from './hearthfireItems';
+import { CharacterHearthfire, initial } from './hearthfireItems';
+import { UpdateTrophyGoldCharacterInput } from '../API';
 
 interface HearthfireProps {
   onClose: () => void;
+  characterHearthfire?: string | null;
+  updateWithId: (
+    update: Omit<UpdateTrophyGoldCharacterInput, 'id'>
+  ) => Promise<void>;
 }
 
-function Hearthfire({ onClose }: HearthfireProps) {
+function Hearthfire({
+  characterHearthfire,
+  onClose,
+  updateWithId,
+}: HearthfireProps) {
+  const [hearth, setHearth] = React.useState(
+    merge(
+      {},
+      initial,
+      JSON.parse(characterHearthfire || '{}') as CharacterHearthfire,
+      { dirty: false }
+    )
+  );
+
+  const {
+    firstHoard,
+    laterHoard,
+    firstEquipment,
+    laterEquipment,
+    carousing,
+    housing,
+    healing,
+  } = hearth;
+
   React.useEffect(() => {
-    document.getElementById('character-scroll')?.scrollTo({ top: 0 });
-  }, []);
+    if (hearth.dirty) {
+      const { dirty, ...nextHearth } = hearth;
+      updateWithId({ hearthfire: JSON.stringify(nextHearth) });
+      setHearth(Object.assign(hearth, { dirty: false }));
+    }
+  }, [hearth, updateWithId]);
 
   return (
-    <Box>
+    <Box mt={2}>
       <Button
         variant="link"
         leftIcon={<RiArrowLeftLine />}
@@ -45,7 +70,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Hoard
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           Stash Gold in your Hoard to get closer to achieving your Drive and
@@ -53,7 +78,22 @@ function Hearthfire({ onClose }: HearthfireProps) {
         </Text>
         <Stack mt={1} direction="column" spacing={3}>
           {firstHoard.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  firstHoard: firstHoard.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -64,7 +104,22 @@ function Hearthfire({ onClose }: HearthfireProps) {
         </Text>
         <Stack mt={1} direction="column" spacing={3}>
           {laterHoard.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  laterHoard: laterHoard.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -75,7 +130,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Carousing
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           Spend 1 Gold in town to get access to useful information before
@@ -85,7 +140,22 @@ function Hearthfire({ onClose }: HearthfireProps) {
         </Text>
         <Stack mt={1} direction="column" spacing={3}>
           {carousing.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  carousing: carousing.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -96,7 +166,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Library
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           You have acquired a few small spellbooks you can carry with you on
@@ -112,14 +182,16 @@ function Hearthfire({ onClose }: HearthfireProps) {
             appearance.
           </ListItem>
         </UnorderedList>
-        <Button>Add a ritual slot to your character sheet</Button>
+        <Text fontStyle="italic" size="sm" mt={1}>
+          Add rituals from your character sheet
+        </Text>
       </Box>
       <Box mb={4}>
         <Flex alignItems="center">
           <Text mt={1} mr={1} fontWeight="600">
             Household
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           Access to a higher quality of life automatically heals you of 1 Ruin
@@ -129,7 +201,22 @@ function Hearthfire({ onClose }: HearthfireProps) {
         </Text>
         <Stack mt={1} direction="column" spacing={3}>
           {housing.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  housing: housing.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -140,15 +227,30 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Equipment
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           Spend 1 Gold in town to open crossed-out slots in your backpack. The
           first time you do so:
         </Text>
         <Stack mt={1} direction="column">
-          {equipment.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+          {firstEquipment.map((item) => (
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  firstEquipment: firstEquipment.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -158,8 +260,23 @@ function Hearthfire({ onClose }: HearthfireProps) {
           gm will present a side quest related to the shopkeeper’s secret.
         </Text>
         <Stack mt={1} direction="row" spacing={4}>
-          {equipmentLater.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+          {laterEquipment.map((item) => (
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  laterEquipment: laterEquipment.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -170,7 +287,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Training
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           You have a mentor training you in a new Skill. Each Skill you acquire
@@ -196,7 +313,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Healing
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           Spend 1 Gold in town to heal yourself of 1 Ruin. Alternatively, you
@@ -207,7 +324,22 @@ function Hearthfire({ onClose }: HearthfireProps) {
         </Text>
         <Stack mt={1} direction="column" spacing={2}>
           {healing.map((item) => (
-            <Checkbox key={item.label} isChecked={item.checked}>
+            <Checkbox
+              key={item.label}
+              isChecked={item.checked}
+              onChange={({ target }) => {
+                setHearth({
+                  ...hearth,
+                  dirty: true,
+                  healing: healing.map((i) => {
+                    if (i.label === item.label) {
+                      return { ...item, checked: target.checked };
+                    }
+                    return i;
+                  }),
+                });
+              }}
+            >
               {item.label}
             </Checkbox>
           ))}
@@ -218,7 +350,7 @@ function Hearthfire({ onClose }: HearthfireProps) {
           <Text mt={1} mr={1} fontWeight="600">
             Funeral
           </Text>
-          <Divider opacity="1" borderColor="gray.400" />
+          <Divider opacity="1" borderColor="gray.400" pt={2} />
         </Flex>
         <Text mt={1} fontStyle="italic">
           If a treasure-hunter is killed on an incursion, any player with a

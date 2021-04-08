@@ -37,6 +37,7 @@ import { RandomNumbersContext } from '../RandomNumbersProvider';
 import RuinBoxes from './RuinBoxes';
 import { ArmorSet, WeaponSet } from './TrophyGoldGameTypes';
 import Hearthfire from './Hearthfire';
+import { DelayedTextarea } from '../Common/DelayedInputs';
 
 export const updateCharacter = async (
   character: UpdateTrophyGoldCharacterInput
@@ -69,8 +70,9 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   } = useDisclosure();
   const bgColor = useColorModeValue('white', 'gray.800');
   const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
-  const rituals = character.rituals?.filter(Boolean) || [];
-  const baseRuin = (rituals.length ?? 0) + 1;
+  const rituals = character.rituals || [];
+  const [first = '', second = '', third = ''] = rituals;
+  const baseRuin = ([first, second, third].filter(Boolean).length ?? 0) + 1;
   const weaponSet: WeaponSet = React.useMemo(
     () => JSON.parse(character.weaponSet),
     [character.weaponSet]
@@ -141,25 +143,29 @@ const Character = ({ character, canEdit }: CharacterProps) => {
       }
       pr={3}
     >
+      <Box
+        p={1}
+        position="sticky"
+        top="0px"
+        bg={bgColor}
+        boxShadow="sm"
+        borderRadius="sm"
+        zIndex="1"
+      >
+        <Text fontWeight="400" fontSize="lg">
+          {character.playerName}
+          {character.characterName &&
+            ` – ${character.characterName} | ${character.characterPronouns}`}
+        </Text>
+      </Box>
       {hearthfireOpen ? (
-        <Hearthfire onClose={onHearthfireClose} />
+        <Hearthfire
+          onClose={onHearthfireClose}
+          characterHearthfire={character.hearthfire}
+          updateWithId={updateWithId}
+        />
       ) : (
         <Box>
-          <Box
-            p={1}
-            position="sticky"
-            top="0px"
-            bg={bgColor}
-            boxShadow="sm"
-            borderRadius="sm"
-            zIndex="1"
-          >
-            <Text fontWeight="400" fontSize="lg">
-              {character.playerName}
-              {character.characterName &&
-                ` – ${character.characterName} | ${character.characterPronouns}`}
-            </Text>
-          </Box>
           <Grid
             templateColumns="minmax(150px, 33%) 1fr"
             gap={6}
@@ -244,17 +250,15 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                   Ruin
                 </Text>
                 <RuinBoxes ruin={ruin} id={character.id} baseRuin={baseRuin} />
-                {canEdit && (
-                  <Button
-                    onClick={onHearthfireOpen}
-                    mt={12}
-                    rightIcon={<RiArrowRightLine />}
-                    variant="link"
-                    colorScheme="blue"
-                  >
-                    Hearthfire and Character Expansion
-                  </Button>
-                )}
+                <Button
+                  onClick={onHearthfireOpen}
+                  mt={12}
+                  rightIcon={<RiArrowRightLine />}
+                  variant="link"
+                  colorScheme="blue"
+                >
+                  Hearthfire and Character Expansion
+                </Button>
               </Flex>
             </GridItem>
           </Grid>
@@ -345,10 +349,20 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             />
           </Box>
           <Box mt={6}>
+            <CharacterSectionHeading>Skills</CharacterSectionHeading>
+            <DelayedTextarea
+              isReadOnly={!canEdit}
+              initialValue={character.skills || ''}
+              onUpdate={(val) => {
+                updateWithId({ skills: val });
+              }}
+            />
+          </Box>
+          <Box mt={6}>
             <CharacterRituals
               canEdit={canEdit}
               characterId={character.id}
-              rituals={character.rituals || []}
+              rituals={rituals}
               onSubmit={updateWithId}
             />
           </Box>
