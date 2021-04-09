@@ -33,11 +33,11 @@ export default function CharacterNumberField({
 
   React.useEffect(() => {
     if (min === undefined || trackedValue === undefined) return;
-    if (min > trackedValue) {
+    if (min > trackedValue && canEdit) {
       setTrackedValue(min);
       delayedUpdate({ [field]: min });
     }
-  }, [min, trackedValue, delayedUpdate, field]);
+  }, [min, trackedValue, delayedUpdate, field, canEdit]);
 
   const handleChange = React.useCallback(
     (_, val) => {

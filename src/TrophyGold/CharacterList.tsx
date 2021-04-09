@@ -33,6 +33,7 @@ const CharacterList = ({
         layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
       }
       gap={6}
+      id="character-scroll"
     >
       {playerCharacter && (
         <GridItem {...characterItemBorder}>

@@ -153,7 +153,7 @@ function Home() {
               Come back to it later and pick up where you left off
             </Text>
           </Box>
-          <Img w="40" src={logo} alt="Person holding cup of coffee" />
+          <Img w={40} src={logo} alt="Person holding cup of coffee" />
         </Flex>
       </GridItem>
       <GridItem pt={14} pb={8} colSpan={6} px={[2, 2, 5]} bg="white">
@@ -163,7 +163,7 @@ function Home() {
           bg="white"
         >
           <GridItem>
-            <Heading as="h3" size="md" color="black">
+            <Heading as="h2" size="md" color="black">
               Dice Apps
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -206,7 +206,7 @@ function Home() {
             </Stack>
           </GridItem>
           <GridItem>
-            <Heading as="h3" size="md" color="black">
+            <Heading as="h2" size="md" color="black">
               Game Rooms
             </Heading>
             <Stack spacing={3} mt={3}>
@@ -380,15 +380,17 @@ function Home() {
           </Link>
         </Flex>
         <Text color="gray.600" mt={4} fontSize="sm" textAlign="center">
-          Prefer the old version? You can find it
+          Prefer the
           <Link
             isExternal
             color="brand.500"
             href="https://obscure-ridge-20711.herokuapp.com/"
             ml={1}
+            mr={1}
           >
-            here
+            the old version?
           </Link>
+          Follow that link!
         </Text>
       </GridItem>
     </Grid>

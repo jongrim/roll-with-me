@@ -1,4 +1,8 @@
-import { TrophyGoldBeast, TrophyGoldDiceModule } from './API';
+import {
+  TrophyGoldBeast,
+  TrophyGoldCharacter,
+  TrophyGoldDiceModule,
+} from './API';
 import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
 
 export interface TextRoomDetails {
@@ -56,7 +60,7 @@ export interface RawTrophyGoldRoomDetails {
   hexMapModule?: RawHexMapModule;
 }
 
-export interface RawTrophyGoldCharacter {
+export interface RawTrophyGoldCharacter extends TrophyGoldCharacter {
   id: string;
   gameID: string;
   playerName: string;

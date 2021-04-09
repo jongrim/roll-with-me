@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { Button, Box, Text, Spinner, Flex } from '@chakra-ui/react';
+import {
+  Button,
+  Box,
+  Text,
+  Spinner,
+  Flex,
+  Heading,
+  Spacer,
+  VStack,
+  Divider,
+} from '@chakra-ui/react';
 import { API, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -8,6 +18,8 @@ import { AuthContext } from '../AuthProvider';
 import Bestiary from './Bestiary';
 import { TrophyGoldBeast } from '../API';
 import SpinningCube from '../SpinningCube/SpinningCube';
+import { RawTrophyGoldCharacter } from '../APITypes';
+import { updateCharacter } from './Character';
 
 async function createGMModule(gameID: string) {
   try {
@@ -65,7 +77,15 @@ async function getGMModule(gameID: string) {
   }
 }
 
-export default function GameFacilitator({ gameID }: { gameID: string }) {
+interface GameFacilitatorProps {
+  characters: RawTrophyGoldCharacter[];
+  gameID: string;
+}
+
+export default function GameFacilitator({
+  gameID,
+  characters,
+}: GameFacilitatorProps) {
   const { user } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
@@ -98,6 +118,42 @@ export default function GameFacilitator({ gameID }: { gameID: string }) {
 
   return (
     <Box>
+      <Box>
+        <Heading as="h2" fontFamily="Roboto Slab">
+          Characters
+        </Heading>
+        <Text borderBottom="1px solid" borderColor="inherit">
+          Hide characters from view
+        </Text>
+        <VStack spacing={3} alignItems="stretch" mt={3}>
+          {characters.map((c) => (
+            <Flex key={c.id}>
+              <Text>
+                {c.characterName} – {c.playerName}
+              </Text>
+              <Spacer />
+              <Button
+                colorScheme="teal"
+                mr={2}
+                onClick={async () => {
+                  setIsSaving(true);
+                  await updateCharacter({
+                    id: c.id,
+                    hidden: c.hidden ? false : true,
+                  });
+                  setIsSaving(false);
+                }}
+              >
+                {c.hidden ? 'Show' : 'Hide'}
+              </Button>
+              {/* <Button colorScheme="red" variant="outline">
+                Delete
+              </Button> */}
+            </Flex>
+          ))}
+        </VStack>
+      </Box>
+      <Divider my={3} />
       {!moduleData && (
         <Box>
           <Flex direction="column" alignItems="center">
