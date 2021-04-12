@@ -23,7 +23,7 @@ export default function SidebarNav({
       <Stack
         direction={['row', 'row', 'column']}
         spacing={4}
-        ml={-3}
+        ml={[0, 0, 0, -3]}
         alignItems={['center', 'center', 'stretch']}
       >
         <SidebarLink name={name} destination="table">
@@ -39,10 +39,15 @@ export default function SidebarNav({
         {xCardButton}
       </Stack>
       <Spacer />
-      <SidebarLink name={name} destination="credits" ml={-3}>
+      <SidebarLink name={name} destination="credits" ml={[0, 0, 0, -3]}>
         Credits
       </SidebarLink>
-      <Link isExternal href="https://trophyrpg.com/" justifySelf="end">
+      <Link
+        isExternal
+        href="https://trophyrpg.com/"
+        justifySelf="end"
+        my="auto"
+      >
         Get Trophy
       </Link>
     </Flex>

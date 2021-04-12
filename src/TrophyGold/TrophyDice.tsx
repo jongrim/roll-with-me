@@ -17,8 +17,6 @@ import {
   Flex,
   Text,
   Divider,
-  Tag,
-  Spacer,
 } from '@chakra-ui/react';
 import {
   GiDiceSixFacesOne,
@@ -38,6 +36,7 @@ import { viewLayout } from './TrophyGoldGameArea';
 import { updateCharacter } from './Character';
 import useTrophyDice from './useTrophyDice';
 import WeakPoints from './WeakPoints';
+import getRollOutcome from './trophyDiceResults';
 
 interface TrophyDiceProps {
   layout: viewLayout;
@@ -186,25 +185,23 @@ const TrophyDice = ({
     goldDice = [],
     diceMode = TrophyGoldDiceMode.hunt,
   } = useTrophyDice({ diceModule });
-  const textBgColor = useColorModeValue('white', 'grey.800');
+  const textBgColor = useColorModeValue('white', 'gray.800');
   const [trackedDiceMode, setTrackedDiceMode] = React.useState(diceMode);
   React.useEffect(() => {
     // syncing this way lets us update the view before the data in the server has updated
     setTrackedDiceMode(diceMode);
   }, [diceMode]);
 
-  const borderStyles =
-    layout === 'side' ? {} : { borderTop: '1px solid', borderColor: 'inherit' };
-
   return (
     <Flex
-      px={2}
-      py={1}
+      px={layout === 'side' ? 2 : 0}
+      py={[4, 4, 4, 1]}
       position="relative"
       direction={layout === 'side' ? 'column' : 'row'}
-      w="full"
-      h="full"
-      {...borderStyles}
+      height="full"
+      width="full"
+      borderTopStyle="solid"
+      borderTopWidth={layout === 'top' ? '1px' : ['1px', '1px', '1px', '0px']}
     >
       <Flex
         justifyContent="space-between"
@@ -213,6 +210,7 @@ const TrophyDice = ({
       >
         <Button
           size="sm"
+          fontFamily="Roboto Slab"
           variant={
             trackedDiceMode === TrophyGoldDiceMode.hunt ? 'solid' : 'ghost'
           }
@@ -226,6 +224,7 @@ const TrophyDice = ({
         </Button>
         <Button
           size="sm"
+          fontFamily="Roboto Slab"
           variant={
             trackedDiceMode === TrophyGoldDiceMode.risk ? 'solid' : 'ghost'
           }
@@ -239,6 +238,7 @@ const TrophyDice = ({
         </Button>
         <Button
           size="sm"
+          fontFamily="Roboto Slab"
           variant={
             trackedDiceMode === TrophyGoldDiceMode.combat ? 'solid' : 'ghost'
           }
@@ -252,6 +252,7 @@ const TrophyDice = ({
         </Button>
         <Button
           size="sm"
+          fontFamily="Roboto Slab"
           variant={
             trackedDiceMode === TrophyGoldDiceMode.contest ? 'solid' : 'ghost'
           }
@@ -265,6 +266,7 @@ const TrophyDice = ({
         </Button>
         <Button
           size="sm"
+          fontFamily="Roboto Slab"
           variant={
             trackedDiceMode === TrophyGoldDiceMode.gold ? 'solid' : 'ghost'
           }
@@ -281,6 +283,7 @@ const TrophyDice = ({
         my={2}
         mx={2}
         orientation={layout === 'top' ? 'vertical' : 'horizontal'}
+        height="full"
       />
       <Box
         hidden={[
@@ -315,7 +318,10 @@ const TrophyDice = ({
           layout={layout}
         />
       </Box>
-      <Grid gridTemplateColumns="1fr" gridTemplateRows="1fr">
+      <Grid
+        gridTemplateColumns="1fr"
+        gridTemplateRows={layout === 'top' ? '200px' : '1fr'}
+      >
         <Box
           gridArea="1 / 1"
           hidden={[
@@ -324,6 +330,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            mode={trackedDiceMode}
             formId="standard"
             layout={layout}
             id={id}
@@ -352,6 +359,7 @@ const TrophyDice = ({
           ].includes(trackedDiceMode)}
         >
           <DiceForm
+            mode={trackedDiceMode}
             formId="contest"
             layout={layout}
             id={id}
@@ -366,9 +374,14 @@ const TrophyDice = ({
         </Box>
       </Grid>
       <Grid
-        templateColumns={layout === 'side' ? '1fr 1fr' : '1fr 1fr 1fr 1fr'}
+        templateColumns={
+          layout === 'side'
+            ? '1fr 1fr'
+            : `repeat(${characters.length}, minmax(100px, 1fr))`
+        }
+        width="full"
         columnGap={3}
-        mt={2}
+        mt={layout === 'top' ? 0 : 2}
         hidden={[
           TrophyGoldDiceMode.hunt,
           TrophyGoldDiceMode.risk,
@@ -434,11 +447,12 @@ const TrophyDice = ({
 
 const DiceForm = ({
   id,
-  lightDice,
-  darkDice,
+  lightDice = [],
+  darkDice = [],
   layout,
   characterId,
   formId,
+  mode,
 }: {
   id: string;
   characterId?: string;
@@ -446,22 +460,38 @@ const DiceForm = ({
   darkDice: TrophyGoldDiceModule['darkDice'];
   layout: viewLayout;
   formId: string;
+  mode: TrophyGoldDiceMode;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
   const [dark, setDark] = React.useState(0);
   const [isRolling, setIsRolling] = React.useState(false);
+  React.useEffect(() => {
+    // reset the dice counts when the mode changes
+    setLight(0);
+    setDark(0);
+  }, [mode]);
   const containerLayout =
     layout === 'top'
       ? {
-          templateAreas: `
-          "topLeft center lightDice"
-          "bottomLeft center darkDice"
-          `,
           alignItems: 'center',
-          templateColumns: '150px 100px 300px',
+          justifyItems: 'center',
+          templateColumns:
+            mode === TrophyGoldDiceMode.contest
+              ? '100px 100px'
+              : '100px 100px minmax(90px, 1fr) minmax(90px, 1fr)',
+          templateRows: '180px',
         }
-      : { templateColumns: '1fr 1fr' };
+      : {
+          alignItems: 'center',
+          justifyItems: 'center',
+          templateAreas: `
+          "diceForm"
+          "center"
+          "diceResults"
+          "textResults"
+      `,
+        };
   return (
     <form
       onSubmit={async (e) => {
@@ -484,68 +514,87 @@ const DiceForm = ({
         }
         setIsRolling(false);
       }}
+      style={{ height: '100%', width: '100%' }}
     >
-      <Grid {...containerLayout} gap={8}>
-        <GridItem gridArea={layout === 'top' ? 'topLeft' : ''}>
-          <FormControl id={`light-dice-${formId}`}>
-            <FormLabel
-              fontFamily="Faith Collapsing"
-              fontSize={layout === 'top' ? '2xl' : '4xl'}
-            >
-              Light Dice
-            </FormLabel>
-            <NumberInput
-              variant="flushed"
-              fontFamily="Faith Collapsing"
-              size="lg"
-              onChange={(_, val) => setLight(val)}
-              min={0}
-              value={light}
-            >
-              <NumberInputField
-                fontSize={layout === 'top' ? 'xl' : '2xl'}
-                fontWeight="600"
-                opacity="0.9"
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
+      <Grid {...containerLayout} h="full">
+        <GridItem>
+          <Flex direction={layout === 'top' ? 'column' : 'row'}>
+            {[
+              TrophyGoldDiceMode.hunt,
+              TrophyGoldDiceMode.risk,
+              TrophyGoldDiceMode.contest,
+            ].includes(mode) && (
+              <FormControl id={`light-dice-${formId}`}>
+                <FormLabel
+                  fontFamily="Faith Collapsing"
+                  fontSize={layout === 'top' ? 'xl' : '4xl'}
+                >
+                  Light Dice
+                </FormLabel>
+                <NumberInput
+                  variant="flushed"
+                  fontFamily="Faith Collapsing"
+                  size="lg"
+                  onChange={(_, val) => setLight(val)}
+                  min={0}
+                  value={light}
+                >
+                  <NumberInputField
+                    fontSize={layout === 'top' ? 'lg' : '2xl'}
+                    fontWeight="600"
+                    opacity="0.9"
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            )}
+            <Box
+              w={8}
+              h={2}
+              hidden={[
+                TrophyGoldDiceMode.hunt,
+                TrophyGoldDiceMode.combat,
+                TrophyGoldDiceMode.gold,
+              ].includes(mode)}
+            />
+            {[
+              TrophyGoldDiceMode.risk,
+              TrophyGoldDiceMode.combat,
+              TrophyGoldDiceMode.contest,
+            ].includes(mode) && (
+              <FormControl id={`dark-dice-${formId}`}>
+                <FormLabel
+                  fontFamily="Faith Collapsing"
+                  fontSize={layout === 'top' ? 'xl' : '4xl'}
+                >
+                  Dark Dice
+                </FormLabel>
+                <NumberInput
+                  variant="flushed"
+                  fontFamily="Faith Collapsing"
+                  size="lg"
+                  onChange={(_, val) => setDark(val)}
+                  min={0}
+                  value={dark}
+                >
+                  <NumberInputField
+                    fontSize={layout === 'top' ? 'lg' : '2xl'}
+                    fontWeight="600"
+                    opacity="0.9"
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            )}
+          </Flex>
         </GridItem>
-        <GridItem gridArea={layout === 'top' ? 'bottomLeft' : ''}>
-          <FormControl id={`dark-dice-${formId}`}>
-            <FormLabel
-              fontFamily="Faith Collapsing"
-              fontSize={layout === 'top' ? '2xl' : '4xl'}
-            >
-              Dark Dice
-            </FormLabel>
-            <NumberInput
-              variant="flushed"
-              fontFamily="Faith Collapsing"
-              size="lg"
-              onChange={(_, val) => setDark(val)}
-              min={0}
-              value={dark}
-            >
-              <NumberInputField
-                fontSize={layout === 'top' ? 'xl' : '2xl'}
-                fontWeight="600"
-                opacity="0.9"
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-        </GridItem>
-        <GridItem
-          colSpan={layout === 'side' ? 2 : 1}
-          gridArea={layout === 'top' ? 'center' : ''}
-        >
+        <GridItem py={4} px={2}>
           <Center>
             <Button
               type="submit"
@@ -561,16 +610,31 @@ const DiceForm = ({
             </Button>
           </Center>
         </GridItem>
-        <GridItem gridArea={layout === 'top' ? 'lightDice' : ''}>
-          {lightDice?.map((result, i) => (
-            <LightDie key={`light-die-${i}`} result={result} />
-          ))}
-        </GridItem>
-        <GridItem gridArea={layout === 'top' ? 'darkDice' : ''}>
-          {darkDice?.map((result, i) => (
-            <DarkDie key={`dark-die-${i}`} result={result} />
-          ))}
-        </GridItem>
+        {mode !== TrophyGoldDiceMode.contest && (
+          <GridItem py={2} overflow="auto">
+            <Flex direction={layout === 'top' ? 'row' : 'row'} wrap="wrap">
+              {lightDice?.map((result, i) => (
+                <LightDie key={`light-die-${i}`} result={result} />
+              ))}
+              {darkDice?.map((result, i) => (
+                <DarkDie key={`dark-die-${i}`} result={result} />
+              ))}
+            </Flex>
+          </GridItem>
+        )}
+        {mode !== TrophyGoldDiceMode.contest && (
+          <GridItem overflow="auto">
+            <Center w="full">
+              <Text
+                textAlign="center"
+                whiteSpace="pre-wrap"
+                fontFamily="Roboto Slab"
+              >
+                {getRollOutcome({ mode, lightDice, darkDice, goldDice: [] })}
+              </Text>
+            </Center>
+          </GridItem>
+        )}
       </Grid>
       <Box position="absolute" bottom="-50px" right="-50px" hidden>
         <LightDie result="1" />
@@ -657,6 +721,17 @@ const GoldDiceForm = ({
           {goldDice?.map((result, i) => (
             <GoldDie key={`gold-die-${i}`} result={result} />
           ))}
+        </GridItem>
+        <GridItem
+          colSpan={layout === 'side' ? 2 : 1}
+          gridArea={layout === 'top' ? 'results' : ''}
+        >
+          <Text textAlign="center" fontFamily="Roboto Slab">
+            {getRollOutcome({
+              mode: TrophyGoldDiceMode.gold,
+              goldDice: goldDice ?? [],
+            })}
+          </Text>
         </GridItem>
       </Grid>
       <Box position="absolute" bottom="-50px" right="-50px" hidden>

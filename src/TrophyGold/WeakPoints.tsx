@@ -17,7 +17,12 @@ export default function WeakPoints({
   layout,
 }: WeakPointsProps) {
   return (
-    <Flex wrap="wrap" w={layout === 'side' ? 'full' : 64}>
+    <Flex
+      wrap="wrap"
+      w={layout === 'side' ? 'full' : 40}
+      overflow="auto"
+      mx={layout === 'top' ? 2 : 0}
+    >
       {characters?.map((char) => {
         if (char.weakPoint) {
           return (

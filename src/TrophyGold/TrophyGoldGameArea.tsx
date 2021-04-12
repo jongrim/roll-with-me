@@ -17,6 +17,8 @@ import {
   RiLayoutRowLine,
   RiLayoutColumnLine,
   RiExternalLinkFill,
+  RiEyeLine,
+  RiEyeOffLine,
 } from 'react-icons/ri';
 import SettingsBar from '../SettingsBar';
 import { Route, Redirect } from 'react-router-dom';
@@ -72,6 +74,7 @@ const TrophyGoldGameArea = ({
   React.useEffect(() => {
     return () => setPopoutDice(false);
   }, []);
+  const [diceMinimized, setDiceMinimized] = React.useState(false);
   const visibleCharacters = React.useMemo(
     () => characters.filter((c) => c.hidden !== true),
     [characters]
@@ -119,20 +122,22 @@ const TrophyGoldGameArea = ({
               )}
             </SidebarNav>
           </GridItem>
-          <GridItem overflow="auto" px={2} pr={4}>
+          <GridItem overflow="auto" px={[0, 0, 0, 2]} pr={4}>
             <Route exact path={[`/trophy-gold/${name}/table`]}>
               <Grid
                 h="full"
                 templateColumns={
                   layout === 'top' || popoutDice
                     ? '1fr'
-                    : ['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']
+                    : [
+                        '1fr',
+                        '1fr',
+                        '1fr',
+                        `minmax(0, 1fr) ${diceMinimized ? '' : '400px'}`,
+                      ]
                 }
-                templateRows={
-                  layout === 'side' ? '1fr' : 'auto minmax(0, 1fr) auto'
-                }
+                templateRows={'auto minmax(0, 1fr) auto'}
                 columnGap={3}
-                rowGap={1}
                 alignContent="start"
               >
                 <GridItem colSpan={layout === 'top' ? 1 : [1, 1, 1, 2]}>
@@ -141,6 +146,7 @@ const TrophyGoldGameArea = ({
                     borderColor="inherit"
                     px={2}
                     py={1}
+                    wrap="wrap"
                   >
                     <HStack spacing={8} divider={<StackDivider />}>
                       {visibleCharacters.map((c) => (
@@ -160,26 +166,29 @@ const TrophyGoldGameArea = ({
                       ))}
                     </HStack>
                     <Spacer />
-                    <IconButton
-                      variant="ghost"
-                      icon={
-                        layout === 'side' ? (
-                          <RiLayoutColumnLine />
-                        ) : (
-                          <RiLayoutRowLine />
-                        )
-                      }
-                      aria-label={
-                        layout === 'side' ? 'top layout' : 'side layout'
-                      }
-                      onClick={() => {
-                        if (layout === 'top') {
-                          setLayout('side');
-                        } else {
-                          setLayout('top');
+                    <Tooltip
+                      label="Change character sheet layout"
+                      placement="left"
+                    >
+                      <IconButton
+                        variant="ghost"
+                        icon={
+                          layout === 'side' ? (
+                            <RiLayoutColumnLine />
+                          ) : (
+                            <RiLayoutRowLine />
+                          )
                         }
-                      }}
-                    />
+                        aria-label="Change character sheet layout"
+                        onClick={() => {
+                          if (layout === 'top') {
+                            setLayout('side');
+                          } else {
+                            setLayout('top');
+                          }
+                        }}
+                      />
+                    </Tooltip>
                     <Tooltip label="Open dice in new window" placement="left">
                       <IconButton
                         variant="ghost"
@@ -188,9 +197,21 @@ const TrophyGoldGameArea = ({
                         onClick={() => setPopoutDice(true)}
                       />
                     </Tooltip>
+                    {!popoutDice && (
+                      <Tooltip label="Hide dice area" placement="left">
+                        <IconButton
+                          variant="ghost"
+                          icon={
+                            diceMinimized ? <RiEyeOffLine /> : <RiEyeLine />
+                          }
+                          aria-label="Hide dice area"
+                          onClick={() => setDiceMinimized((cur) => !cur)}
+                        />
+                      </Tooltip>
+                    )}
                   </Flex>
                 </GridItem>
-                <GridItem overflow={['unset', 'unset', 'unset', 'auto']}>
+                <GridItem overflow="auto">
                   <CharacterList
                     characters={visibleCharacters}
                     characterChoice={characterChoice}
@@ -207,14 +228,16 @@ const TrophyGoldGameArea = ({
                     />
                   </NewWindow>
                 ) : (
-                  <GridItem>
-                    <TrophyDice
-                      layout={layout}
-                      characters={visibleCharacters}
-                      characterChoice={characterChoice}
-                      diceModule={diceModule}
-                    />
-                  </GridItem>
+                  !diceMinimized && (
+                    <GridItem w="full">
+                      <TrophyDice
+                        layout={layout}
+                        characters={visibleCharacters}
+                        characterChoice={characterChoice}
+                        diceModule={diceModule}
+                      />
+                    </GridItem>
+                  )
                 )}
               </Grid>
             </Route>
