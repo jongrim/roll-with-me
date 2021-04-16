@@ -87,17 +87,17 @@ const TrophyGoldGameArea = ({
           }}
         />
       </GridItem>
-      <GridItem pl={4}>
+      <GridItem>
         <Grid
           h="full"
           templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
           templateRows={[
-            'auto minmax(0, 1fr)',
-            'auto minmax(0, 1fr)',
+            'auto auto minmax(0, 1fr)',
+            'auto auto minmax(0, 1fr)',
             'minmax(0, 1fr)',
           ]}
         >
-          <GridItem pr={3} pb={3} h="full">
+          <GridItem h="full">
             <SidebarNav
               name={name}
               xCardButton={
@@ -119,28 +119,21 @@ const TrophyGoldGameArea = ({
               )}
             </SidebarNav>
           </GridItem>
-          <GridItem overflow="auto" px={2} pr={4}>
-            <Route exact path={[`/trophy-gold/${name}/table`]}>
+          <GridItem overflow="auto" px={[0, 0, 0, 2]} pr={4}>
+            <Route exact path={[`/trophy-gold/${name}/characters`]}>
               <Grid
                 h="full"
-                templateColumns={
-                  layout === 'top' || popoutDice
-                    ? '1fr'
-                    : ['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']
-                }
-                templateRows={
-                  layout === 'side' ? '1fr' : 'auto minmax(0, 1fr) auto'
-                }
-                columnGap={3}
-                rowGap={1}
+                templateColumns="1fr"
+                templateRows={'auto minmax(0, 1fr) auto'}
                 alignContent="start"
               >
-                <GridItem colSpan={layout === 'top' ? 1 : [1, 1, 1, 2]}>
+                <GridItem>
                   <Flex
                     borderBottom="1px solid"
                     borderColor="inherit"
                     px={2}
                     py={1}
+                    wrap="wrap"
                   >
                     <HStack spacing={8} divider={<StackDivider />}>
                       {visibleCharacters.map((c) => (
@@ -160,63 +153,75 @@ const TrophyGoldGameArea = ({
                       ))}
                     </HStack>
                     <Spacer />
-                    <IconButton
-                      variant="ghost"
-                      icon={
-                        layout === 'side' ? (
-                          <RiLayoutColumnLine />
-                        ) : (
-                          <RiLayoutRowLine />
-                        )
-                      }
-                      aria-label={
-                        layout === 'side' ? 'top layout' : 'side layout'
-                      }
-                      onClick={() => {
-                        if (layout === 'top') {
-                          setLayout('side');
-                        } else {
-                          setLayout('top');
-                        }
-                      }}
-                    />
-                    <Tooltip label="Open dice in new window" placement="left">
+                    <Tooltip
+                      label="Change character sheet layout"
+                      placement="left"
+                    >
                       <IconButton
                         variant="ghost"
-                        icon={<RiExternalLinkFill />}
-                        aria-label="open dice in new window"
-                        onClick={() => setPopoutDice(true)}
+                        icon={
+                          layout === 'side' ? (
+                            <RiLayoutColumnLine />
+                          ) : (
+                            <RiLayoutRowLine />
+                          )
+                        }
+                        aria-label="Change character sheet layout"
+                        onClick={() => {
+                          if (layout === 'top') {
+                            setLayout('side');
+                          } else {
+                            setLayout('top');
+                          }
+                        }}
                       />
                     </Tooltip>
                   </Flex>
                 </GridItem>
-                <GridItem overflow={['unset', 'unset', 'unset', 'auto']}>
+                <GridItem overflow="auto">
                   <CharacterList
                     characters={visibleCharacters}
                     characterChoice={characterChoice}
                     layout={layout}
                   />
                 </GridItem>
-                {popoutDice ? (
-                  <NewWindow onUnload={() => setPopoutDice(false)}>
-                    <TrophyDice
-                      layout="side"
-                      characters={visibleCharacters}
-                      characterChoice={characterChoice}
-                      diceModule={diceModule}
-                    />
-                  </NewWindow>
-                ) : (
-                  <GridItem>
-                    <TrophyDice
-                      layout={layout}
-                      characters={visibleCharacters}
-                      characterChoice={characterChoice}
-                      diceModule={diceModule}
-                    />
-                  </GridItem>
-                )}
               </Grid>
+            </Route>
+            <Route exact path={`/trophy-gold/${name}/dice`}>
+              <Flex
+                borderBottom="1px solid"
+                borderColor="inherit"
+                px={2}
+                py={1}
+                wrap="wrap"
+              >
+                <Spacer />
+                <Tooltip label="Open dice in new window" placement="left">
+                  <IconButton
+                    variant="ghost"
+                    icon={<RiExternalLinkFill />}
+                    aria-label="open dice in new window"
+                    onClick={() => setPopoutDice(true)}
+                  />
+                </Tooltip>
+              </Flex>
+              {popoutDice ? (
+                <NewWindow onUnload={() => setPopoutDice(false)}>
+                  <TrophyDice
+                    characters={visibleCharacters}
+                    characterChoice={characterChoice}
+                    diceModule={diceModule}
+                  />
+                </NewWindow>
+              ) : (
+                <GridItem w="full">
+                  <TrophyDice
+                    characters={visibleCharacters}
+                    characterChoice={characterChoice}
+                    diceModule={diceModule}
+                  />
+                </GridItem>
+              )}
             </Route>
             <Route exact path={`/trophy-gold/${name}/bestiary`}>
               <Bestiary beasts={beasts} gameID={{ gameID: id }} />
@@ -237,7 +242,7 @@ const TrophyGoldGameArea = ({
             <Route exact path={`/trophy-gold/${name}/credits`}>
               <Credits />
             </Route>
-            <Redirect path="*" to={`/trophy-gold/${name}/table`} />
+            <Redirect path="*" to={`/trophy-gold/${name}/characters`} />
           </GridItem>
         </Grid>
       </GridItem>
