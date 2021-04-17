@@ -325,6 +325,22 @@ const TrophyDice = ({
             id={id}
             lightDice={lightDice}
             darkDice={darkDice}
+            rollOutcome={
+              <Center w="full">
+                <Text
+                  textAlign="center"
+                  whiteSpace="pre-wrap"
+                  fontFamily="Roboto Slab"
+                >
+                  {getRollOutcome({
+                    mode: trackedDiceMode,
+                    lightDice,
+                    darkDice,
+                    goldDice: [],
+                  })}
+                </Text>
+              </Center>
+            }
           />
         </Box>
         <Box
@@ -358,6 +374,7 @@ const TrophyDice = ({
             darkDice={
               characters.find(({ id }) => id === characterChoice)?.darkDice
             }
+            rollOutcome={null}
           />
         </Box>
       </Grid>
@@ -435,6 +452,7 @@ const DiceForm = ({
   characterId,
   formId,
   mode,
+  rollOutcome,
 }: {
   id: string;
   characterId?: string;
@@ -442,6 +460,7 @@ const DiceForm = ({
   darkDice: TrophyGoldDiceModule['darkDice'];
   formId: string;
   mode: TrophyGoldDiceMode;
+  rollOutcome: React.ReactNode;
 }) => {
   const { getNumbers } = React.useContext(RandomNumbersContext);
   const [light, setLight] = React.useState(0);
@@ -590,19 +609,7 @@ const DiceForm = ({
             </Flex>
           </GridItem>
         )}
-        {mode !== TrophyGoldDiceMode.contest && (
-          <GridItem overflow="auto">
-            <Center w="full">
-              <Text
-                textAlign="center"
-                whiteSpace="pre-wrap"
-                fontFamily="Roboto Slab"
-              >
-                {getRollOutcome({ mode, lightDice, darkDice, goldDice: [] })}
-              </Text>
-            </Center>
-          </GridItem>
-        )}
+        <GridItem overflow="auto">{rollOutcome}</GridItem>
       </Grid>
       <Box position="absolute" bottom="-50px" right="-50px" hidden>
         <LightDie result="1" />
