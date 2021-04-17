@@ -11,6 +11,7 @@ function getHighestDie(dice: string[]) {
 }
 
 function getHuntRollResult({ lightDice }: { lightDice: string[] }) {
+  if (lightDice.length === 0) return '';
   const highest = getHighestDie(lightDice);
   if (highest === 6) {
     return 'You receive a token';
@@ -31,6 +32,7 @@ function getRiskRollResult({
   lightDice: string[];
   darkDice?: string[];
 }) {
+  if (lightDice.length === 0) return '';
   const highestLight = getHighestDie(lightDice);
   const highestDark = getHighestDie(darkDice);
   const highest = Math.max(highestDark, highestLight);
@@ -56,6 +58,7 @@ function getRiskRollResult({
 }
 
 function getCombatRollResult({ darkDice }: { darkDice: string[] }) {
+  if (darkDice.length === 0) return '';
   const sum = darkDice.reduce((acc, cur) => {
     return acc + Number(cur);
   }, 0);
@@ -63,6 +66,7 @@ function getCombatRollResult({ darkDice }: { darkDice: string[] }) {
 }
 
 function getGoldRollResult({ goldDice }: { goldDice: string[] }) {
+  if (goldDice.length === 0) return '';
   const numberOfSixes = goldDice.reduce((acc, cur) => {
     if (cur === '6') {
       return acc + 1;

@@ -598,7 +598,12 @@ const DiceForm = ({
                 whiteSpace="pre-wrap"
                 fontFamily="Roboto Slab"
               >
-                {getRollOutcome({ mode, lightDice, darkDice, goldDice: [] })}
+                {getRollOutcome({
+                  mode,
+                  lightDice: lightDice || [],
+                  darkDice: darkDice || [],
+                  goldDice: [],
+                })}
               </Text>
             </Center>
           </GridItem>
