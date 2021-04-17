@@ -148,12 +148,11 @@ const VDie: React.FC<{
     });
   }, [trackedDie.version, controls]);
 
-  const borderColor = useColorModeValue('blue.200', 'blue.600');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const boxShadow = 'lg';
   const buttonHighlight = {
     border: '3px solid',
-    borderColor,
+    borderColor: trackedDie.color,
     bgColor,
     boxShadow,
   };
