@@ -2,18 +2,21 @@ import { v4 as uuidv4 } from 'uuid';
 
 let roomName = uuidv4();
 
-context('guest user', () => {
+context('new visual room', () => {
+  beforeEach(() => {
+    window.localStorage.setItem('desktop-notifications-declined', 'true');
+  });
+
   it('can create a new visual room', () => {
     cy.intercept('POST', '/graphql', (req) => {
       if (req.body?.query?.includes('CreateInteractiveRoom')) {
         req.alias = 'gqlCreateInteractiveRoom';
       }
     });
-    cy.intercept('/random-room-name').as('newRoom');
+    cy.intercept('*/random-room-name?*').as('newRoom');
     cy.visit('http://localhost:3000');
     cy.wait('@newRoom', { timeout: 7000 });
     cy.findByText(/Visual Dice Table/i).click();
-    cy.wait('@newRoom', { timeout: 7000 });
     cy.findByTestId('room-name').clear().type(roomName);
     cy.findByTestId('go-to-new-room').click();
     cy.wait('@gqlCreateInteractiveRoom');
