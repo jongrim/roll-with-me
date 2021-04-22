@@ -17,6 +17,7 @@ context('new visual room', () => {
     cy.visit('http://localhost:3000');
     cy.wait('@newRoom', { timeout: 7000 });
     cy.findByText(/Visual Dice Table/i).click();
+    cy.wait(3000);
     cy.findByTestId('room-name').clear().type(roomName);
     cy.findByTestId('go-to-new-room').click();
     cy.wait('@gqlCreateInteractiveRoom');
