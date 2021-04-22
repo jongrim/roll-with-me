@@ -1,8 +1,8 @@
 context('Notification prompt present', () => {
   beforeEach(() => {
     window.localStorage.removeItem('desktop-notifications-declined');
-    cy.intercept('POST', '/graphql', { data: {} });
   });
+
   it('Requests permission', () => {
     cy.visit('http://localhost:3000/r/cypress-testing-room', {
       onBeforeLoad(win) {
@@ -34,7 +34,6 @@ context('Notification prompt present', () => {
 
 context('Notifications prompt dismissed', () => {
   it('stays dismissed', () => {
-    cy.intercept('POST', '/graphql', { data: {} });
     window.localStorage.setItem('desktop-notifications-declined', 'true');
     cy.visit('http://localhost:3000/r/cypress-testing-room');
     cy.findByTestId('username-modal').within(() => {
