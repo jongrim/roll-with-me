@@ -210,6 +210,10 @@ const UserRoomProvider: React.FC = ({ children }) => {
   React.useEffect(() => {
     dispatch({ type: 'loading' });
 
+    if (!user) {
+      return dispatch({ type: 'load' });
+    }
+
     lookupUserRooms()
       .then((rooms) => {
         dispatch({

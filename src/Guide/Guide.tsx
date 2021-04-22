@@ -194,16 +194,16 @@ function Guide() {
                 </Text>
                 <Text mt={3}>
                   Here are some examples of quick rolls that will work:
-                  <UnorderedList>
-                    <ListItem>2d6 + 2</ListItem>
-                    <ListItem>2D6 1D10 as Challenge Roll</ListItem>
-                    <ListItem>6 d 6 + 2</ListItem>
-                    <ListItem>
-                      2 Light 1 Dark — where 'Light' and 'Dark' are custom dice
-                      that have been created in the room
-                    </ListItem>
-                  </UnorderedList>
                 </Text>
+                <UnorderedList>
+                  <ListItem>2d6 + 2</ListItem>
+                  <ListItem>2D6 1D10 as Challenge Roll</ListItem>
+                  <ListItem>6 d 6 + 2</ListItem>
+                  <ListItem>
+                    2 Light 1 Dark — where 'Light' and 'Dark' are custom dice
+                    that have been created in the room
+                  </ListItem>
+                </UnorderedList>
               </Box>
             </Stack>
             <GuideStickyHeading>Visual Dice Table</GuideStickyHeading>
