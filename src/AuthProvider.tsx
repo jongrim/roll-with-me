@@ -37,10 +37,14 @@ const AuthProvider: React.FC = ({ children }) => {
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
-          getUser().then((userData) => {
-            setUser(userData);
-            setAuthState(AuthState.SignedIn);
-          });
+          getUser()
+            .then((userData) => {
+              setUser(userData);
+              setAuthState(AuthState.SignedIn);
+            })
+            .catch((e) => {
+              console.warn(e);
+            });
           break;
         case 'signOut':
           setUser(undefined);
