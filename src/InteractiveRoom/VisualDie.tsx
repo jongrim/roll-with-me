@@ -54,7 +54,6 @@ const VDie: React.FC<{
   updateActivity: () => void;
 }> = ({ die, setActionInProgress, isSelected, selectDie, updateActivity }) => {
   const [trackedDie, setTrackedDie] = React.useState<VisualDie>(die);
-  const [actionsVisible, setActionsVisible] = React.useState(false);
   const el = React.useRef(null);
 
   React.useEffect(() => {
@@ -63,7 +62,6 @@ const VDie: React.FC<{
       type: 'x,y',
       bounds: document.getElementById('dice-box'),
       onClick: function () {
-        setActionsVisible((cur) => !cur);
         selectDie({
           id: trackedDie.id,
           sides: trackedDie.sides,
@@ -138,7 +136,6 @@ const VDie: React.FC<{
 
   const controls = useAnimation();
   React.useEffect(() => {
-    setActionsVisible(false);
     controls.start({
       rotateX: 360,
       transition: {
@@ -148,12 +145,11 @@ const VDie: React.FC<{
     });
   }, [trackedDie.version, controls]);
 
-  const borderColor = useColorModeValue('blue.200', 'blue.600');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const boxShadow = 'lg';
   const buttonHighlight = {
     border: '3px solid',
-    borderColor,
+    borderColor: trackedDie.color,
     bgColor,
     boxShadow,
   };

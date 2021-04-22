@@ -24,6 +24,7 @@ function TextRoom({ name }) {
   const [roomId, setRoomId] = React.useState();
   const [rolls, setRolls] = React.useState([]);
   const [customDice, setCustomDice] = React.useState([]);
+  const [counters, setCounters] = React.useState([]);
 
   const [safetyModule, setSafetyModule] = React.useState({});
 
@@ -72,17 +73,18 @@ function TextRoom({ name }) {
           query: queries.textRoomByName,
           variables: { name },
         });
-        const currentRoomId = result.data?.textRoomByName?.items[0]?.id;
-        setRoomId(currentRoomId);
-        const { data } = await API.graphql({
-          query: queries.getTextRoom,
-          variables: { id: currentRoomId },
-        });
-        const rolls = data?.getTextRoom?.rolls ?? [];
+        const data = result.data?.textRoomByName?.items[0];
+        if (!data) {
+          history.push(`/new-room?type=text&name=${name}&notFound=true`);
+        }
+        setRoomId(data.id);
+        const rolls = data?.rolls ?? [];
         setRolls(rolls.map((roll) => JSON.parse(roll)));
-        const customDice = data?.getTextRoom?.customDice ?? [];
+        const customDice = data?.customDice ?? [];
         setCustomDice(customDice.map((die) => JSON.parse(die)));
-        const safety = data?.getTextRoom?.safetyModule ?? {};
+        const roomCounters = data?.counters ?? [];
+        setCounters(roomCounters.map((counter) => JSON.parse(counter)));
+        const safety = data?.safetyModule ?? {};
         safety.linesAndVeils = safety.linesAndVeils.map((i) => JSON.parse(i));
         setSafetyModule(safety);
       } catch (e) {

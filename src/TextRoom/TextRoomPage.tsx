@@ -49,6 +49,7 @@ interface TextRoomPageProps {
   onSubmit: (roll: Roll) => void;
   rolls: Roll[];
   customDice: CustomDie[];
+  counters: unknown[];
   savedRolls: SavedRoll[];
   createRoll: (roll: SavedRoll) => void;
   deleteRoll: (roll: SavedRoll) => void;
@@ -69,6 +70,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   onSubmit,
   rolls,
   customDice,
+  counters,
   savedRolls,
   createRoll,
   deleteRoll,
@@ -209,6 +211,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           variant="unstyled"
           display="flex"
           flexDirection={['column', 'column', 'column', 'row']}
+          isLazy
         >
           <TabList
             flexDirection={['row', 'row', 'row', 'column']}
@@ -271,7 +274,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                 gap={8}
               >
                 <GridItem order={[2, 2, 1]}>
-                  <Tabs variant="line" size="sm" isFitted>
+                  <Tabs variant="line" size="sm" isFitted isLazy>
                     <TabList>
                       <Tab>Build a Roll</Tab>
                       <Tab>Saved Rolls</Tab>
@@ -303,7 +306,11 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                         />
                       </TabPanel>
                       <TabPanel>
-                        <RoomCounters roomName={roomName} roomId={roomId} />
+                        <RoomCounters
+                          roomName={roomName}
+                          roomId={roomId}
+                          counters={counters}
+                        />
                       </TabPanel>
                     </TabPanels>
                   </Tabs>

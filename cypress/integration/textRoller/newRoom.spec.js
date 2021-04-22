@@ -1,6 +1,10 @@
 context('guest user', () => {
+  beforeEach(() => {
+    window.localStorage.setItem('desktop-notifications-declined', 'true');
+  });
+
   it('can create a new text roller', () => {
-    cy.intercept('/random-room-name').as('newRoom');
+    cy.intercept('*/random-room-name?*').as('newRoom');
     cy.visit('http://localhost:3000');
     cy.wait('@newRoom', { timeout: 7000 });
     cy.findByText('Go').click();

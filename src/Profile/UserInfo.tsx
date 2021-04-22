@@ -30,6 +30,9 @@ import { AuthContext } from '../AuthProvider';
 const UserInfo = () => {
   const { user } = React.useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
+  const hasDeclinedNotifications = window.localStorage.getItem(
+    'desktop-notifications-declined'
+  );
 
   return (
     <Box>
@@ -62,6 +65,22 @@ const UserInfo = () => {
                 <Text>Dark mode</Text>
               </HStack>
             </Box>
+            {hasDeclinedNotifications && (
+              <Box>
+                <Text fontWeight="600">Desktop notifications</Text>
+                <Text>Clear your saved dismissal?</Text>
+                <Button
+                  mt={2}
+                  onClick={() =>
+                    window.localStorage.removeItem(
+                      'desktop-notifications-declined'
+                    )
+                  }
+                >
+                  Clear
+                </Button>
+              </Box>
+            )}
             {!user?.attributes.identities && <Password />}
             <Box>
               <Link
