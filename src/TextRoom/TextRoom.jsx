@@ -74,6 +74,9 @@ function TextRoom({ name }) {
           variables: { name },
         });
         const data = result.data?.textRoomByName?.items[0];
+        if (!data) {
+          history.push(`/new-room?type=text&name=${name}&notFound=true`);
+        }
         setRoomId(data.id);
         const rolls = data?.rolls ?? [];
         setRolls(rolls.map((roll) => JSON.parse(roll)));

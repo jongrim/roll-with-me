@@ -4,7 +4,11 @@ context('Notification prompt present', () => {
     cy.intercept('POST', '/graphql', { data: {} });
   });
   it('Requests permission', () => {
-    cy.visit('http://localhost:3000/r/cypress-testing-room');
+    cy.visit('http://localhost:3000/r/cypress-testing-room', {
+      onBeforeLoad(win) {
+        cy.stub(win.Notification, 'permission', 'default');
+      },
+    });
     cy.findByTestId('username-modal').within(() => {
       cy.findByLabelText(/Choose a username for your rolls/i).type('cypress');
       cy.findByText('Close').click();
@@ -14,7 +18,11 @@ context('Notification prompt present', () => {
   });
 
   it('can be dismissed', () => {
-    cy.visit('http://localhost:3000/r/cypress-testing-room');
+    cy.visit('http://localhost:3000/r/cypress-testing-room', {
+      onBeforeLoad(win) {
+        cy.stub(win.Notification, 'permission', 'default');
+      },
+    });
     cy.findByTestId('username-modal').within(() => {
       cy.findByLabelText(/Choose a username for your rolls/i).type('cypress');
       cy.findByText('Close').click();
