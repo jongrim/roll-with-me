@@ -28,8 +28,8 @@ export default function NotificationsPrompt() {
       >
         <Text fontWeight="bold">Enable desktop notifications?</Text>
         <Text fontSize="sm">
-          Displays a desktop notification when the x-card is played. Note, these
-          do not function in Firefox.
+          Allows displaying a desktop notification when the x-card is played.
+          Note, this feature does not function in Firefox.
         </Text>
         <Flex justifyContent="space-between" mt={4}>
           <Button
