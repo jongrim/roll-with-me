@@ -33,16 +33,21 @@ import { Counter } from '../types';
 interface RoomCountersProps {
   roomId: string;
   roomName: string;
+  counters: unknown[];
 }
 
-const RoomCounters: React.FC<RoomCountersProps> = ({ roomId, roomName }) => {
+const RoomCounters: React.FC<RoomCountersProps> = ({
+  roomId,
+  roomName,
+  counters: initialCounters,
+}) => {
   const {
     counters,
     createCounter,
     updateCounter,
     deleteCounter,
     isLoading,
-  } = useRoomCounters({ name: roomName, roomId });
+  } = useRoomCounters({ name: roomName, roomId, initialCounters });
 
   const [newCounterTitle, setNewCounterTitle] = React.useState('');
   const [

@@ -22,7 +22,6 @@ context('room not found', () => {
 
   it('redirects to the new room page for visual', () => {
     cy.visit('http://localhost:3000/i/cypress-rolls-best');
-    cy.wait('@roomNames', { timeout: 7000 });
     cy.findByText(/That room doesn't exist/i, { timeout: 7000 });
     cy.findByTestId('room-name').should('have.value', 'cypress-rolls-best');
     cy.findByText(/Visual/i).should('have.attr', 'data-checked');
@@ -32,7 +31,6 @@ context('room not found', () => {
 
   it('redirects to the new room page for text', () => {
     cy.visit('http://localhost:3000/r/cypress-rolls-best');
-    cy.wait('@roomNames', { timeout: 7000 });
     cy.findByText(/That room doesn't exist/i, { timeout: 7000 });
     cy.findByTestId('room-name').should('have.value', 'cypress-rolls-best');
     cy.findByText(/Text/i).should('have.attr', 'data-checked');
@@ -42,7 +40,6 @@ context('room not found', () => {
 
   it('redirects to the new room page for trophy-dark', () => {
     cy.visit('http://localhost:3000/trophy-dark/cypress-rolls-best');
-    cy.wait('@roomNames', { timeout: 7000 });
     cy.findByText(/That room doesn't exist/i, { timeout: 7000 });
     cy.findByTestId('room-name').should('have.value', 'cypress-rolls-best');
     cy.findByText(/Trophy Dark/i).should('have.attr', 'data-checked');

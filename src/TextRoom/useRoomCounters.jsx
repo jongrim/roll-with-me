@@ -3,11 +3,10 @@ import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
 import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
 import { useToast } from '@chakra-ui/react';
 
-export function useRoomCounters({ name, roomId }) {
-  const [counters, setCounters] = React.useState([]);
+export function useRoomCounters({ name, roomId, initialCounters }) {
+  const [counters, setCounters] = React.useState(initialCounters);
   const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
 
@@ -26,25 +25,6 @@ export function useRoomCounters({ name, roomId }) {
       },
     });
     return () => subscription.unsubscribe();
-  }, [name]);
-
-  React.useEffect(() => {
-    async function getRoomData() {
-      setIsLoading(true);
-      try {
-        const result = await API.graphql({
-          query: queries.textRoomByName,
-          variables: { name },
-        });
-        const counters = result.data?.textRoomByName?.items[0]?.counters ?? [];
-        setCounters(counters.map((counter) => JSON.parse(counter)));
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getRoomData();
   }, [name]);
 
   async function updateAmplify(updatedCounters) {
