@@ -7,6 +7,8 @@ import {
   IconButton,
   Center,
   Grid,
+  HStack,
+  Tooltip,
 } from '@chakra-ui/react';
 import {
   RiImageAddFill,
@@ -18,6 +20,7 @@ import {
   RiArrowDropLeftLine,
   RiArrowDropRightLine,
   RiArrowDropUpLine,
+  RiFocus3Line,
 } from 'react-icons/ri';
 import { AnimatePresence, motion } from 'framer-motion';
 import { makeViewBox, ViewBox } from './viewBox';
@@ -140,25 +143,8 @@ const HexGrid = ({
     >
       <GridContext.Provider value={{ viewBox, updateViewBox: setViewBox }}>
         <Center>
-          <Grid
-            gap={3}
-            my={3}
-            templateColumns={[
-              '1fr 1fr 1fr',
-              '1fr 1fr 1fr',
-              '1fr 1fr 1fr 1fr 1fr 1fr',
-            ]}
-          >
+          <HStack my={3} spacing={2}>
             <IconButton
-              order={1}
-              icon={<RiZoomOutLine />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="zoom out"
-              onClick={() => setViewBox(viewBox.zoomOut())}
-            />
-            <IconButton
-              order={[4, 4, 'unset']}
               icon={<Icon as={RiArrowDropLeftLine} w={8} h={8} />}
               variant="ghost"
               rounded="lg"
@@ -166,7 +152,6 @@ const HexGrid = ({
               onClick={() => setViewBox(viewBox.panLeft())}
             />
             <IconButton
-              order={[2, 2, 'unset']}
               icon={<Icon as={RiArrowDropUpLine} w={8} h={8} />}
               variant="ghost"
               rounded="lg"
@@ -174,7 +159,6 @@ const HexGrid = ({
               onClick={() => setViewBox(viewBox.panUp())}
             />
             <IconButton
-              order={[5, 5, 'unset']}
               icon={<Icon as={RiArrowDropDownLine} w={8} h={8} />}
               variant="ghost"
               rounded="lg"
@@ -182,7 +166,6 @@ const HexGrid = ({
               onClick={() => setViewBox(viewBox.panDown())}
             />
             <IconButton
-              order={[6, 6, 'unset']}
               icon={<Icon as={RiArrowDropRightLine} w={8} h={8} />}
               variant="ghost"
               rounded="lg"
@@ -190,7 +173,6 @@ const HexGrid = ({
               onClick={() => setViewBox(viewBox.panRight())}
             />
             <IconButton
-              order={[3, 3, 6]}
               icon={<RiZoomInLine />}
               variant="ghost"
               rounded="lg"
@@ -199,7 +181,35 @@ const HexGrid = ({
                 setViewBox(viewBox.zoomIn());
               }}
             />
-          </Grid>
+            <IconButton
+              icon={<RiZoomOutLine />}
+              variant="ghost"
+              rounded="lg"
+              aria-label="zoom out"
+              onClick={() => setViewBox(viewBox.zoomOut())}
+            />
+            <Tooltip
+              label="Reset zoom and center"
+              aria-label="reset zoom and center"
+            >
+              <IconButton
+                icon={<RiFocus3Line />}
+                variant="ghost"
+                rounded="lg"
+                aria-label="reset zoom and center"
+                onClick={() => {
+                  setViewBox(
+                    viewBox.centerOnPoint({
+                      centerX: 75,
+                      centerY: 50,
+                      newWidth: 150,
+                      newHeight: 100,
+                    })
+                  );
+                }}
+              />
+            </Tooltip>
+          </HStack>
         </Center>
         <Center>
           <motion.svg

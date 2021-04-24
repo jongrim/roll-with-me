@@ -346,4 +346,6 @@ type Subscription {
     @aws_subscribe(mutations: ["updateHeartCharacter"])
   onUpdateSafetyModuleById(id: String!): SafetyModule
     @aws_subscribe(mutations: ["updateSafetyModule"])
+  onUpdateHexMapModuleById(id: String!): HexMapModule
+    @aws_subscribe(mutations: ["updateHexMapModule"])
 }

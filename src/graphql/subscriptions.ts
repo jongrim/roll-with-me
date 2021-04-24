@@ -680,6 +680,17 @@ export const onUpdateSafetyModuleById = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateHexMapModuleById = /* GraphQL */ `
+  subscription OnUpdateHexMapModuleById($id: String!) {
+    onUpdateHexMapModuleById(id: $id) {
+      id
+      gridConfiguration
+      backgroundImages
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateTrophyDarkRoom = /* GraphQL */ `
   subscription OnCreateTrophyDarkRoom {
     onCreateTrophyDarkRoom {

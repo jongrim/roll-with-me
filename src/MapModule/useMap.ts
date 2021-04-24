@@ -59,7 +59,7 @@ export default function useMap({
 
   React.useEffect(() => {
     const subscription = API.graphql({
-      query: subscriptions.onUpdateHexMapModule,
+      query: subscriptions.onUpdateHexMapModuleById,
       variables: {
         id: map.id,
       },
@@ -67,7 +67,9 @@ export default function useMap({
     }).subscribe({
       // @ts-ignore
       next: ({ value }) => {
-        const nextModule = parseMapConfig(value?.data?.onUpdateHexMapModule);
+        const nextModule = parseMapConfig(
+          value?.data?.onUpdateHexMapModuleById
+        );
         setModule(nextModule);
       },
     });

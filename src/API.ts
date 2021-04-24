@@ -7029,6 +7029,21 @@ export type OnUpdateSafetyModuleByIdSubscription = {
   } | null,
 };
 
+export type OnUpdateHexMapModuleByIdSubscriptionVariables = {
+  id?: string,
+};
+
+export type OnUpdateHexMapModuleByIdSubscription = {
+  onUpdateHexMapModuleById?:  {
+    __typename: "HexMapModule",
+    id: string,
+    gridConfiguration: string,
+    backgroundImages: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateTrophyDarkRoomSubscription = {
   onCreateTrophyDarkRoom?:  {
     __typename: "TrophyDarkRoom",
