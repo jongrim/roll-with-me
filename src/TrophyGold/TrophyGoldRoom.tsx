@@ -6,7 +6,7 @@ import { useMachine } from '@xstate/react';
 import { Machine, actions, assign } from 'xstate';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import CharacterChoice from './CharacterChoice';
+import CharacterChoice from '../Common/CharacterChoice/CharacterChoiceCard';
 import TrophyGoldGameArea from './TrophyGoldGameArea';
 import DesignedForTrophyGold from './DesignedForTrophyGold';
 import { CreateTrophyGoldCharacterInput } from '../API';
@@ -123,6 +123,21 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
   const { data } = useTrophyRoomLookup(name);
   const [username, setUsername] = React.useState('');
 
+  const updateUsername = (name: string) => {
+    try {
+      API.graphql({
+        query: mutations.updateTrophyGoldCharacter,
+        variables: {
+          id: state.context.characterChoice,
+          playerName: name,
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    setUsername(name);
+  };
+
   React.useEffect(() => {
     if (data && state.value === 'loading') {
       send('LOAD');
@@ -235,7 +250,7 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
       return (
         <TrophyGoldGameArea
           username={username}
-          setUsername={setUsername}
+          setUsername={updateUsername}
           beasts={trackedBeasts}
           characters={trackedCharacters}
           characterChoice={state.context.characterChoice}
