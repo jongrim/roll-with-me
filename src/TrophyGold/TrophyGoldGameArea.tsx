@@ -67,7 +67,7 @@ const TrophyGoldGameArea = ({
   const { delayedUpdate: delayedUsernameUpdate } = useDelayedUpdate(
     updateWithId
   );
-  const [layout, setLayout] = React.useState<viewLayout>('side');
+  const [layout, setLayout] = React.useState<viewLayout>('top');
   const [popoutDice, setPopoutDice] = React.useState(false);
   React.useEffect(() => {
     return () => setPopoutDice(false);

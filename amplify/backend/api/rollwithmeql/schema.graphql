@@ -201,9 +201,8 @@ type HeartCharacter
   mindStress: Int!
   supplyProtection: Int!
   supplyStress: Int!
-  skills: [String!]!
-  domains: [String!]!
-  knacks: [String!]!
+  skills: AWSJSON!
+  domains: AWSJSON!
   abilities: [AWSJSON!]!
   equipment: [AWSJSON!]!
   resources: [AWSJSON!]!
@@ -346,4 +345,6 @@ type Subscription {
     @aws_subscribe(mutations: ["updateHeartCharacter"])
   onUpdateSafetyModuleById(id: String!): SafetyModule
     @aws_subscribe(mutations: ["updateSafetyModule"])
+  onUpdateHexMapModuleById(id: String!): HexMapModule
+    @aws_subscribe(mutations: ["updateHexMapModule"])
 }

@@ -90,7 +90,6 @@ function MapSpaceSettingsDrawer({
                 updateMapConfiguration({
                   id: mapModule.id,
                   gridConfiguration: {},
-                  backgroundImages: heartBackgroundImages,
                 });
               }}
             >

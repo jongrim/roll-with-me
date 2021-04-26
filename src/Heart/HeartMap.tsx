@@ -55,7 +55,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
         >
           {drawerMode === 'background' && (
             <MapSpaceBackgroundDrawer
-              fontFamily="Alegreya"
+              fontFamily="Roboto Slab"
               backgroundImages={hexMap.backgroundImages}
               clickedHex={clickedHex}
               updateClickedHex={setClickedHex}
@@ -64,7 +64,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
           )}
           {drawerMode === 'notes' && (
             <MapNotesDrawer
-              fontFamily="Alegreya"
+              fontFamily="Roboto Slab"
               clickedHex={clickedHex}
               updateClickedHex={setClickedHex}
               mapModule={hexMap}
@@ -75,7 +75,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
               clickedHex={clickedHex}
               updateClickedHex={setClickedHex}
               mapModule={hexMap}
-              fontFamily="Alegreya"
+              fontFamily="Roboto Slab"
             />
           )}
         </MapDrawer>

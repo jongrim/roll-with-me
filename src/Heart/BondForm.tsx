@@ -38,9 +38,9 @@ const BondForm = ({ isOpen, onDone }: BondFormProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onDone}>
+    <Modal isOpen={isOpen} onClose={onDone} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>New Bond</ModalHeader>
           <ModalCloseButton />
@@ -69,7 +69,14 @@ const BondForm = ({ isOpen, onDone }: BondFormProps) => {
             <Button colorScheme="teal" type="submit" mr={2}>
               Add
             </Button>
-            <Button variant="ghost" onClick={() => onDone()}>
+            <Button
+              variant="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                onDone();
+              }}
+              type="button"
+            >
               Cancel
             </Button>
           </ModalFooter>

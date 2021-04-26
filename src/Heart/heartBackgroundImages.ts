@@ -92,4 +92,5 @@ const heartBackgroundImages: BackgroundImage[] = [
     alt: 'Wild space',
   },
 ];
+
 export default heartBackgroundImages;

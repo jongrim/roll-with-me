@@ -7,6 +7,11 @@ export const resistances: Resistance[] = [
   'Supply',
 ];
 
+export type trainableArea = {
+  trained: boolean;
+  knack: boolean;
+};
+
 export type Skill =
   | 'Compel'
   | 'Delve'
@@ -29,6 +34,49 @@ export const skills: Skill[] = [
   'Sneak',
 ];
 
+export type SkillMap = {
+  [key in Skill]: trainableArea;
+};
+
+export const skillMap: SkillMap = {
+  Compel: {
+    trained: false,
+    knack: false,
+  },
+  Delve: {
+    trained: false,
+    knack: false,
+  },
+  Discern: {
+    trained: false,
+    knack: false,
+  },
+  Endure: {
+    trained: false,
+    knack: false,
+  },
+  Evade: {
+    trained: false,
+    knack: false,
+  },
+  Hunt: {
+    trained: false,
+    knack: false,
+  },
+  Kill: {
+    trained: false,
+    knack: false,
+  },
+  Mend: {
+    trained: false,
+    knack: false,
+  },
+  Sneak: {
+    trained: false,
+    knack: false,
+  },
+};
+
 export type Domain =
   | 'Cursed'
   | 'Desolate'
@@ -48,6 +96,45 @@ export const domains: Domain[] = [
   'Warren',
   'Wild',
 ];
+
+export type DomainMap = {
+  [key in Domain]: trainableArea;
+};
+
+export const domainMap: DomainMap = {
+  Cursed: {
+    trained: false,
+    knack: false,
+  },
+  Desolate: {
+    trained: false,
+    knack: false,
+  },
+  Haven: {
+    trained: false,
+    knack: false,
+  },
+  Occult: {
+    trained: false,
+    knack: false,
+  },
+  Religion: {
+    trained: false,
+    knack: false,
+  },
+  Technology: {
+    trained: false,
+    knack: false,
+  },
+  Warren: {
+    trained: false,
+    knack: false,
+  },
+  Wild: {
+    trained: false,
+    knack: false,
+  },
+};
 
 export type ResourceValue = 'D4' | 'D6' | 'D8' | 'D10' | 'D12';
 export interface Resource {

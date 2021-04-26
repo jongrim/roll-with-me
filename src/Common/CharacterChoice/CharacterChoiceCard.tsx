@@ -16,19 +16,20 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { AnimationControls, motion } from 'framer-motion';
-import { RawTrophyGoldCharacter } from '../APITypes';
-import { GM, NEW_CHARACTER } from './TrophyGoldRoom';
 import CharacterChoiceRadioCard from './CharacterChoiceRadioCard';
 
+export const NEW_CHARACTER = 'NEW';
+export const GM = 'GM';
+
 interface CharacterChoiceProps {
-  characters?: RawTrophyGoldCharacter[];
+  characters?: { id?: string; characterName?: string; playerName?: string }[];
   controls: AnimationControls;
   username: string;
   setUsername: (val: string) => void;
   onDone: (val: string) => void;
 }
 
-const CharacterChoice = ({
+const CharacterChoiceCard = ({
   characters,
   controls,
   username,
@@ -161,4 +162,4 @@ const CharacterChoice = ({
   );
 };
 
-export default CharacterChoice;
+export default CharacterChoiceCard;

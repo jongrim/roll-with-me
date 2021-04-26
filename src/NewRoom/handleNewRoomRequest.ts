@@ -8,11 +8,14 @@ import {
   CreateHeartRoomMutation,
   CreateTrophyGoldRoomMutation,
   CreateTrophyGoldDiceModuleMutation,
+  CreateHexMapModuleMutation,
 } from '../API';
 import gql from '../gql';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import { roomCodes, roomPathCodes } from '../roomPaths';
+import heartBackgroundImages from '../Heart/heartBackgroundImages';
+import { BackgroundImage } from '../MapModule/gridConfiguration';
 
 const sixMonthsAgo = add(new Date(), { months: -6 });
 
@@ -36,6 +39,19 @@ export const handleNewRoomRequest = async (
     return handleTrophyGoldRoomRequest(name);
   }
 };
+
+async function getNewMapModule({
+  startingBackgroundImages = [],
+}: {
+  startingBackgroundImages: BackgroundImage[];
+}) {
+  return gql<CreateHexMapModuleMutation>(mutations.createHexMapModule, {
+    gridConfiguration: '{}',
+    backgroundImages: startingBackgroundImages.map((img) =>
+      JSON.stringify(img)
+    ),
+  });
+}
 
 async function getNewSafetyModule() {
   return gql<CreateSafetyModuleMutation>(mutations.createSafetyModule, {
@@ -165,9 +181,13 @@ async function handleHeartRoomRequest(name: string) {
     }
   }
   const newSafetyModule = await getNewSafetyModule();
+  const newHeartMapModule = await getNewMapModule({
+    startingBackgroundImages: heartBackgroundImages,
+  });
   await gql<CreateHeartRoomMutation>(mutations.createHeartRoom, {
     name,
     heartRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
+    heartRoomHexMapModuleId: newHeartMapModule.data?.createHexMapModule?.id,
     d4Dice: [],
     d6Dice: [],
     d8Dice: [],

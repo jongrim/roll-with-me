@@ -11,8 +11,13 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Select,
-  Divider,
+  Box,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+  Heading,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Beat, BeatType } from './HeartGameTypes';
@@ -42,49 +47,142 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
     ]);
   };
 
+  const handleTypeChange = (typeSetter: (type: BeatType) => void) => (
+    val: number
+  ) => {
+    switch (val) {
+      case 0:
+        typeSetter('minor');
+        break;
+      case 1:
+        typeSetter('major');
+        break;
+      case 2:
+        typeSetter('zenith');
+        break;
+    }
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onDone}>
+    <Modal isOpen={isOpen} onClose={onDone} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>Adjust Beats</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Heading as="h3" size="md" fontFamily="Roboto Slab" mb={3}>
+              First Beat
+            </Heading>
             <FormControl id="beat-1-name">
-              <FormLabel>Beat Type</FormLabel>
-              <Select
-                defaultValue={type1}
-                onChange={({ target }) => setType1(target.value as BeatType)}
-              >
-                <option value="minor">Minor</option>
-                <option value="major">Major</option>
-                <option value="zenith">Zenith</option>
-              </Select>
+              <Box w="full" h={16} px={6}>
+                <Box position="relative" h={8}>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="0%"
+                  >
+                    Minor
+                  </Text>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="50%"
+                  >
+                    Major
+                  </Text>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="100%"
+                  >
+                    Zenith
+                  </Text>
+                </Box>
+                <Slider
+                  defaultValue={0}
+                  min={0}
+                  max={2}
+                  step={1}
+                  onChange={handleTypeChange(setType1)}
+                >
+                  <SliderTrack bg="red.100">
+                    <Box position="relative" right={10} />
+                    <SliderFilledTrack bg="tomato" />
+                  </SliderTrack>
+                  <SliderThumb
+                    boxSize={6}
+                    borderColor="gray.200"
+                    border="1px solid"
+                  />
+                </Slider>
+              </Box>
             </FormControl>
             <FormControl id="beat-1-description" mt={4}>
               <FormLabel>Description</FormLabel>
               <Textarea
-                variant="flushed"
+                variant="outline"
                 value={description1}
                 onChange={({ target }) => setDescription1(target.value)}
               />
             </FormControl>
-            <Divider my={6} />
+            <Heading as="h3" size="md" fontFamily="Roboto Slab" mt={8} mb={3}>
+              Second Beat
+            </Heading>
             <FormControl id="beat-2-name">
-              <FormLabel>Beat Type</FormLabel>
-              <Select
-                defaultValue={type2}
-                onChange={({ target }) => setType2(target.value as BeatType)}
-              >
-                <option value="minor">Minor</option>
-                <option value="major">Major</option>
-                <option value="zenith">Zenith</option>
-              </Select>
+              <Box w="full" h={16} px={6}>
+                <Box position="relative" h={8}>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="0%"
+                  >
+                    Minor
+                  </Text>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="50%"
+                  >
+                    Major
+                  </Text>
+                  <Text
+                    transform="translateX(-50%)"
+                    display="inline-block"
+                    pos="absolute"
+                    left="100%"
+                  >
+                    Zenith
+                  </Text>
+                </Box>
+                <Slider
+                  defaultValue={0}
+                  min={0}
+                  max={2}
+                  step={1}
+                  onChange={handleTypeChange(setType2)}
+                >
+                  <SliderTrack bg="red.100">
+                    <Box position="relative" right={10} />
+                    <SliderFilledTrack bg="tomato" />
+                  </SliderTrack>
+                  <SliderThumb
+                    boxSize={6}
+                    borderColor="gray.200"
+                    border="1px solid"
+                  />
+                </Slider>
+              </Box>
             </FormControl>
             <FormControl id="beat-2-description" mt={4}>
               <FormLabel>Description</FormLabel>
               <Textarea
-                variant="flushed"
+                variant="outline"
                 value={description2}
                 onChange={({ target }) => setDescription2(target.value)}
               />
@@ -92,9 +190,16 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="teal" type="submit" mr={2}>
-              Add
+              Save
             </Button>
-            <Button variant="ghost" onClick={() => onDone()}>
+            <Button
+              variant="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                onDone();
+              }}
+              type="button"
+            >
               Cancel
             </Button>
           </ModalFooter>

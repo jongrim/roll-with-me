@@ -1110,7 +1110,6 @@ export const getHeartRoom = /* GraphQL */ `
           supplyStress
           skills
           domains
-          knacks
           abilities
           equipment
           resources
@@ -1180,7 +1179,6 @@ export const listHeartRooms = /* GraphQL */ `
             supplyStress
             skills
             domains
-            knacks
             abilities
             equipment
             resources
@@ -1260,7 +1258,6 @@ export const heartRoomByName = /* GraphQL */ `
             supplyStress
             skills
             domains
-            knacks
             abilities
             equipment
             resources
@@ -1316,7 +1313,6 @@ export const getHeartCharacter = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources
@@ -1358,7 +1354,6 @@ export const listHeartCharacters = /* GraphQL */ `
         supplyStress
         skills
         domains
-        knacks
         abilities
         equipment
         resources
