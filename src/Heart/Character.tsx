@@ -12,13 +12,7 @@ import {
   Image,
   Icon,
   useColorModeValue,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Stack,
-  Checkbox,
   FormLabel,
   Textarea,
   Spacer,
@@ -29,18 +23,19 @@ import {
 import { RiCameraFill, RiPencilLine, RiDeleteBin4Line } from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import { HeartCharacter } from '../APITypes';
 import CharacterForm from './CharacterForm';
-import { UpdateHeartCharacterInput } from '../API';
+import { HeartCharacter, UpdateHeartCharacterInput } from '../API';
 import {
   Ability,
   Beat,
   Bond,
+  DomainMap,
   domains,
   Equipment,
   Fallout,
   resistances,
   Resource,
+  SkillMap,
   skills,
 } from './HeartGameTypes';
 import AbilityForm from './AbilityForm';
@@ -51,6 +46,7 @@ import FalloutForm from './FalloutForm';
 import BondForm from './BondForm';
 import heart from './heart.svg';
 import debouncedUpdate from '../utils/debouncedUpdate';
+import DelayedNumberInput, { DelayedCheckbox } from '../Common/DelayedInputs';
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
@@ -81,24 +77,35 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const [equipmentFormOpen, setEquipmentFormOpen] = React.useState(false);
   const [resourceFormOpen, setResourceFormOpen] = React.useState(false);
   const [bondFormOpen, setBondFormOpen] = React.useState(false);
-  const beats: Beat[] = character.beats.map((b) => JSON.parse(b));
-  const fallout: Fallout[] = character.fallout.map((f) => JSON.parse(f));
-  const abilities: Ability[] = character.abilities.map((a) => JSON.parse(a));
-  const equipment: Equipment[] = character.equipment.map((e) => JSON.parse(e));
-  const resources: Resource[] = character.resources.map((r) => JSON.parse(r));
-  const bonds: Bond[] = character.bonds.map((b) => JSON.parse(b));
+  const beats: Beat[] = character?.beats?.map((b) => JSON.parse(b)) ?? [];
+  const fallout: Fallout[] =
+    character?.fallout?.map((f) => JSON.parse(f)) ?? [];
+  const abilities: Ability[] =
+    character?.abilities?.map((a) => JSON.parse(a)) ?? [];
+  const equipment: Equipment[] =
+    character?.equipment?.map((e) => JSON.parse(e)) ?? [];
+  const resources: Resource[] =
+    character?.resources?.map((r) => JSON.parse(r)) ?? [];
+  const bonds: Bond[] = character?.bonds?.map((b) => JSON.parse(b)) ?? [];
 
-  const handleDelayedChange = (wait?: number) =>
-    debouncedUpdate(async (key, val) => {
+  const characterSkills: SkillMap = JSON.parse(character.skills || '');
+  const characterDomains: DomainMap = JSON.parse(character.domains || '');
+
+  const handleUpdate = React.useCallback(
+    async (key, val) => {
       setSaving(true);
       await updateCharacter({
-        id: character.id,
+        id: character.id || '',
         [key]: val,
       });
       setSaving(false);
-    }, wait);
+    },
+    [setSaving, character.id]
+  );
 
-  const delayedNumberUpdate = handleDelayedChange(1000);
+  const handleDelayedChange = (wait?: number) =>
+    debouncedUpdate(handleUpdate, wait);
+
   const delayedTextUpdate = handleDelayedChange(2000);
 
   return (
@@ -124,7 +131,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           onDone={(char) =>
             updateCharacter({
               ...char,
-              id: character.id,
+              id: character.id || '',
               gameID: character.gameID,
               playerName: character.playerName,
             }).then(() => {
@@ -223,7 +230,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                   const stringified = beats.map((b) => JSON.stringify(b));
                   setSaving(true);
                   await updateCharacter({
-                    id: character.id,
+                    id: character.id || '',
                     beats: stringified,
                   });
                   setSaving(false);
@@ -261,7 +268,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             .map((f) => JSON.stringify(f));
                           setSaving(true);
                           await updateCharacter({
-                            id: character.id,
+                            id: character.id || '',
                             fallout: filteredFallout,
                           });
                           setSaving(false);
@@ -292,8 +299,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                   const stringified = JSON.stringify(fallout);
                   setSaving(true);
                   await updateCharacter({
-                    id: character.id,
-                    fallout: character.fallout.concat(stringified),
+                    id: character.id || '',
+                    fallout: character.fallout?.concat(stringified),
                   });
                   setSaving(false);
                 }
@@ -322,43 +329,28 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     </Text>
                     <Flex alignItems="center">
                       <Text w={24}>Stress</Text>
-                      <NumberInput
+                      <DelayedNumberInput
                         w={24}
-                        size="sm"
                         variant="flushed"
-                        //@ts-ignore
-                        defaultValue={character[stressKey]}
+                        // @ts-ignore
+                        initial={character[stressKey]}
                         min={0}
-                        onChange={(_, val) =>
-                          delayedNumberUpdate(stressKey, val)
-                        }
-                      >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
+                        canEdit
+                        onUpdate={(val) => handleUpdate(stressKey, val)}
+                      />
                     </Flex>
                     <Flex alignItems="center">
                       <Text w={24}>Protection</Text>
-                      <NumberInput
+                      <DelayedNumberInput
                         w={24}
                         size="sm"
                         variant="flushed"
                         // @ts-ignore
-                        defaultValue={character[protectionKey]}
+                        initial={character[protectionKey]}
                         min={0}
-                        onChange={(_, val) =>
-                          delayedNumberUpdate(protectionKey, val)
-                        }
-                      >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
+                        canEdit
+                        onUpdate={(val) => handleUpdate(protectionKey, val)}
+                      />
                     </Flex>
                   </Flex>
                 </GridItem>
@@ -379,36 +371,49 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               {skills.map((skill) => {
                 return (
                   <HStack key={skill} spacing={3}>
-                    <Checkbox
+                    <DelayedCheckbox
+                      delay={100}
                       w={32}
                       value={skill}
-                      defaultChecked={character.skills.includes(skill)}
-                      onChange={async ({ target }) => {
-                        const newSkills = target.checked
-                          ? character.skills.concat(skill)
-                          : character.skills.filter((s) => s !== skill);
+                      defaultChecked={characterSkills[skill].trained}
+                      onUpdate={async (nextVal) => {
+                        const newSkills = nextVal
+                          ? {
+                              ...characterSkills,
+                              [skill]: { trained: true, knack: false },
+                            }
+                          : {
+                              ...characterSkills,
+                              [skill]: { trained: false, knack: false },
+                            };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id,
-                          skills: newSkills,
+                          id: character.id || '',
+                          skills: JSON.stringify(newSkills),
                         });
                         setSaving(false);
                       }}
                     >
                       {skill}
-                    </Checkbox>
-                    <Checkbox
-                      isDisabled={!character.skills.includes(skill)}
+                    </DelayedCheckbox>
+                    <DelayedCheckbox
+                      delay={100}
                       value={skill}
-                      defaultChecked={character.knacks.includes(skill)}
-                      onChange={async ({ target }) => {
-                        const newKnacks = target.checked
-                          ? character.knacks.concat(skill)
-                          : character.knacks.filter((k) => k !== skill);
+                      defaultChecked={characterSkills[skill].knack}
+                      onUpdate={async (nextVal) => {
+                        const newKnacks = nextVal
+                          ? {
+                              ...characterSkills,
+                              [skill]: { trained: true, knack: true },
+                            }
+                          : {
+                              ...characterSkills,
+                              [skill]: { trained: true, knack: false },
+                            };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id,
-                          knacks: newKnacks,
+                          id: character.id || '',
+                          skills: JSON.stringify(newKnacks),
                         });
                         setSaving(false);
                       }}
@@ -429,36 +434,49 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               {domains.map((domain) => {
                 return (
                   <HStack key={domain} spacing={3}>
-                    <Checkbox
+                    <DelayedCheckbox
+                      delay={100}
                       w={32}
                       value={domain}
-                      defaultChecked={character.domains.includes(domain)}
-                      onChange={async ({ target }) => {
-                        const newDomains = target.checked
-                          ? character.domains.concat(domain)
-                          : character.domains.filter((d) => d !== domain);
+                      defaultChecked={characterDomains[domain].trained}
+                      onUpdate={async (nextVal) => {
+                        const newDomains = nextVal
+                          ? {
+                              ...characterDomains,
+                              [domain]: { trained: true, knack: false },
+                            }
+                          : {
+                              ...characterDomains,
+                              [domain]: { trained: false, knack: false },
+                            };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id,
-                          domains: newDomains,
+                          id: character.id || '',
+                          domains: JSON.stringify(newDomains),
                         });
                         setSaving(false);
                       }}
                     >
                       {domain}
-                    </Checkbox>
-                    <Checkbox
-                      isDisabled={!character.domains.includes(domain)}
+                    </DelayedCheckbox>
+                    <DelayedCheckbox
+                      delay={100}
                       value={domain}
-                      defaultChecked={character.knacks.includes(domain)}
-                      onChange={async ({ target }) => {
-                        const newKnacks = target.checked
-                          ? character.knacks.concat(domain)
-                          : character.knacks.filter((k) => k !== domain);
+                      defaultChecked={characterDomains[domain].trained}
+                      onUpdate={async (nextVal) => {
+                        const newKnacks = nextVal
+                          ? {
+                              ...characterDomains,
+                              [domain]: { trained: true, knack: true },
+                            }
+                          : {
+                              ...characterDomains,
+                              [domain]: { trained: true, knack: false },
+                            };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id,
-                          knacks: newKnacks,
+                          id: character.id || '',
+                          domains: JSON.stringify(newKnacks),
                         });
                         setSaving(false);
                       }}
@@ -497,7 +515,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((a) => JSON.stringify(a));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id,
+                              id: character.id || '',
                               abilities: filtered,
                             });
                             setSaving(false);
@@ -528,8 +546,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(ability);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id,
-                      abilities: character.abilities.concat(stringified),
+                      id: character.id || '',
+                      abilities: character.abilities?.concat(stringified),
                     });
                     setSaving(false);
                   }
@@ -580,7 +598,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((a) => JSON.stringify(a));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id,
+                              id: character.id || '',
                               equipment: filtered,
                             });
                             setSaving(false);
@@ -608,8 +626,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(equipment);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id,
-                      equipment: character.equipment.concat(stringified),
+                      id: character.id || '',
+                      equipment: character.equipment?.concat(stringified),
                     });
                     setSaving(false);
                   }
@@ -656,7 +674,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((r) => JSON.stringify(r));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id,
+                              id: character.id || '',
                               resources: filtered,
                             });
                             setSaving(false);
@@ -684,8 +702,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(resource);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id,
-                      resources: character.resources.concat(stringified),
+                      id: character.id || '',
+                      resources: character.resources?.concat(stringified),
                     });
                     setSaving(false);
                   }
@@ -717,7 +735,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             .map((b) => JSON.stringify(b));
                           setSaving(true);
                           await updateCharacter({
-                            id: character.id,
+                            id: character.id || '',
                             bonds: filtered,
                           });
                           setSaving(false);
@@ -760,8 +778,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(bond);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id,
-                      bonds: character.bonds.concat(stringified),
+                      id: character.id || '',
+                      bonds: character.bonds?.concat(stringified),
                     });
                     setSaving(false);
                   }
@@ -774,6 +792,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               <Divider my={6} />
               <FormLabel>Notes</FormLabel>
               <Textarea
+                mb={40}
                 defaultValue={character.notes}
                 onChange={({ target }) =>
                   delayedTextUpdate('notes', target.value)

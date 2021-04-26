@@ -175,6 +175,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
                   switch (character) {
                     case GM:
                       send('GM');
+                      setUsername('Game Facilitator');
                       break;
                     case NEW_CHARACTER:
                       send('NEW');

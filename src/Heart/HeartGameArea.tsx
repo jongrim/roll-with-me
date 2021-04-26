@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Box,
   Button,
   Flex,
   Grid,
@@ -12,7 +13,7 @@ import {
 import SettingsBar from '../SettingsBar';
 import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
 import HeartDiceForm from './HeartDiceForm';
-import { HeartCharacter, RawHexMapModule } from '../APITypes';
+import { RawHexMapModule } from '../APITypes';
 import CharacterList from './CharacterList';
 import SafetyForm from '../SafetyForm/SafetyForm';
 import setXCard from '../SafetyForm/xCard';
@@ -20,6 +21,7 @@ import XCardModal from '../XCardModal/XCardModal';
 import HeartDiceDisplay from './HeartDiceDisplay';
 import HeartMap from './HeartMap';
 import useMap from '../MapModule/useMap';
+import { HeartCharacter } from '../API';
 
 interface HeartGameProps {
   name: string;
@@ -169,8 +171,10 @@ const HeartGameArea = ({
               />
             </Route>
             <Route exact path={`/heart/${name}/dice`}>
-              <HeartDiceForm id={id} username={username} />
-              <HeartDiceDisplay {...dice} />
+              <Box pr={3}>
+                <HeartDiceForm id={id} username={username} />
+                <HeartDiceDisplay {...dice} />
+              </Box>
             </Route>
             <Route exact path={`/heart/${name}/safety`}>
               <SafetyForm

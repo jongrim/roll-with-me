@@ -13,9 +13,8 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { RiLayoutRowLine, RiLayoutColumnLine } from 'react-icons/ri';
-import { HeartCharacter } from '../APITypes';
 import Character from './Character';
-import useCharacterSubscription from './useCharacterSubscription';
+import { HeartCharacter } from '../API';
 
 export type viewLayout = 'side' | 'top';
 
@@ -25,8 +24,9 @@ interface CharacterListProps {
 }
 
 const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
+  const bgColor = useColorModeValue('white', 'gray.800');
   const characterLinkColor = useColorModeValue('blue.600', 'blue.400');
-  const [layout, setLayout] = React.useState<viewLayout>('side');
+  const [layout, setLayout] = React.useState<viewLayout>('top');
   const playerCharacter = characters.find((c) => c?.id === characterChoice);
   const characterItemBorder =
     layout === 'side'
@@ -39,13 +39,17 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
   );
 
   return (
-    <>
+    <Grid templateRows="auto 1fr" overflow="auto" h="full">
       <Flex
         borderBottom="1px solid"
         borderColor="inherit"
         pr={3}
         py={1}
         wrap="wrap"
+        position="sticky"
+        top="0px"
+        bgColor={bgColor}
+        zIndex={1}
       >
         <HStack spacing={8} divider={<StackDivider />}>
           {characters.map((c) => (
@@ -88,7 +92,6 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
           layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
         }
         gap={6}
-        overflow="auto"
         pr={3}
       >
         {playerCharacter && (
@@ -100,7 +103,7 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
           ? characters.map((c) => {
               if (!c) return null;
               return (
-                <GridItem {...characterItemBorder}>
+                <GridItem {...characterItemBorder} key={c.id}>
                   <Character canEdit={false} character={c} />
                 </GridItem>
               );
@@ -108,13 +111,13 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
           : charactersWithoutPC.map((c) => {
               if (!c) return null;
               return (
-                <GridItem {...characterItemBorder}>
+                <GridItem {...characterItemBorder} key={c.id}>
                   <Character canEdit={false} character={c} />
                 </GridItem>
               );
             })}
       </Grid>
-    </>
+    </Grid>
   );
 };
 

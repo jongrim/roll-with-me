@@ -621,7 +621,6 @@ export const onCreateHeartCharacterByGame = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources
@@ -658,7 +657,6 @@ export const onUpdateHeartCharacterById = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources
@@ -1742,7 +1740,6 @@ export const onCreateHeartRoom = /* GraphQL */ `
           supplyStress
           skills
           domains
-          knacks
           abilities
           equipment
           resources
@@ -1807,7 +1804,6 @@ export const onUpdateHeartRoom = /* GraphQL */ `
           supplyStress
           skills
           domains
-          knacks
           abilities
           equipment
           resources
@@ -1872,7 +1868,6 @@ export const onDeleteHeartRoom = /* GraphQL */ `
           supplyStress
           skills
           domains
-          knacks
           abilities
           equipment
           resources
@@ -1926,7 +1921,6 @@ export const onCreateHeartCharacter = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources
@@ -1963,7 +1957,6 @@ export const onUpdateHeartCharacter = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources
@@ -2000,7 +1993,6 @@ export const onDeleteHeartCharacter = /* GraphQL */ `
       supplyStress
       skills
       domains
-      knacks
       abilities
       equipment
       resources

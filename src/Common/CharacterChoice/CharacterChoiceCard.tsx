@@ -22,7 +22,7 @@ export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
 
 interface CharacterChoiceProps {
-  characters?: { id: string; characterName?: string; playerName?: string }[];
+  characters?: { id?: string; characterName?: string; playerName?: string }[];
   controls: AnimationControls;
   username: string;
   setUsername: (val: string) => void;

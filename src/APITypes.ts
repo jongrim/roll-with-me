@@ -1,4 +1,5 @@
 import {
+  HeartCharacter,
   TrophyGoldBeast,
   TrophyGoldCharacter,
   TrophyGoldDiceModule,
@@ -106,40 +107,6 @@ export interface HeartRoomDetails {
   };
   safetyModule: RawSafetyModule;
   hexMapModule: RawHexMapModule;
-}
-
-export interface HeartCharacter {
-  id: string;
-  gameID: string;
-  playerName: string;
-  characterName: string;
-  characterPronouns: string;
-  characterImageUrl?: string | null;
-  ancestry: string;
-  calling: string;
-  class: string;
-  beats: Array<string>;
-  fallout: Array<string>;
-  bloodProtection: number;
-  bloodStress: number;
-  echoProtection: number;
-  echoStress: number;
-  fortuneProtection: number;
-  fortuneStress: number;
-  mindProtection: number;
-  mindStress: number;
-  supplyProtection: number;
-  supplyStress: number;
-  skills: Array<string>;
-  domains: Array<string>;
-  knacks: Array<string>;
-  abilities: Array<string>;
-  equipment: Array<string>;
-  resources: Array<string>;
-  bonds: Array<string>;
-  notes: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface RawSafetyModule {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
-import { HeartCharacter } from '../APITypes';
+import { HeartCharacter } from '../API';
 
 const useHeartCharacterSubscription = ({
   characters,
@@ -19,7 +19,7 @@ const useHeartCharacterSubscription = ({
 
   React.useEffect(() => {
     // handles first load of characters with game data
-    setTrackedCharacterIds(characters.map((c) => c.id));
+    setTrackedCharacterIds(characters.map((c) => c.id || ''));
     setTrackedCharacters(characters);
   }, [characters]);
 
