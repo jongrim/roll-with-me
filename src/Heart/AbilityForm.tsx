@@ -63,14 +63,14 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onDone}>
+    <Modal isOpen={isOpen} onClose={onDone} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>New Ability</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box w="full" h={24} px={3}>
+            <Box w="full" h={24} px={4}>
               <Box position="relative" h={8}>
                 <Text
                   transform="translateX(-50%)"
@@ -144,7 +144,14 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
             <Button colorScheme="teal" type="submit" mr={2}>
               Add
             </Button>
-            <Button variant="ghost" onClick={() => onDone()}>
+            <Button
+              variant="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                onDone();
+              }}
+              type="button"
+            >
               Cancel
             </Button>
           </ModalFooter>

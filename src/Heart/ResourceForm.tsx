@@ -90,9 +90,9 @@ const ResourceForm = ({ isOpen, onDone }: ResourceFormProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => onDone()}>
+    <Modal isOpen={isOpen} onClose={() => onDone()} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>New Resource</ModalHeader>
           <ModalCloseButton />
@@ -111,7 +111,7 @@ const ResourceForm = ({ isOpen, onDone }: ResourceFormProps) => {
                   transform="translateX(-50%)"
                   display="inline-block"
                   pos="absolute"
-                  left="33.67%"
+                  left="25%"
                 >
                   D6
                 </Text>
@@ -119,7 +119,7 @@ const ResourceForm = ({ isOpen, onDone }: ResourceFormProps) => {
                   transform="translateX(-50%)"
                   display="inline-block"
                   pos="absolute"
-                  left="66.67%"
+                  left="50%"
                 >
                   D8
                 </Text>
@@ -127,7 +127,7 @@ const ResourceForm = ({ isOpen, onDone }: ResourceFormProps) => {
                   transform="translateX(-50%)"
                   display="inline-block"
                   pos="absolute"
-                  left="100%"
+                  left="75%"
                 >
                   D10
                 </Text>
@@ -143,7 +143,7 @@ const ResourceForm = ({ isOpen, onDone }: ResourceFormProps) => {
               <Slider
                 defaultValue={0}
                 min={0}
-                max={3}
+                max={4}
                 step={1}
                 onChange={handleValueChange}
               >

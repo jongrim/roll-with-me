@@ -6,13 +6,12 @@ import { useMachine } from '@xstate/react';
 import { Machine, actions, assign } from 'xstate';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
-import * as subscriptions from '../graphql/subscriptions';
-import CharacterChoice from './CharacterChoice';
+import CharacterChoiceCard from '../Common/CharacterChoice/CharacterChoiceCard';
 import HeartGameArea from './HeartGameArea';
 import CharacterForm from './CharacterForm';
-import { HeartCharacter } from '../APITypes';
 import heart from './heart.svg';
 import './heart.css';
+import useHeartCharacterSubscription from './useHeartCharacterSubscription';
 
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
@@ -122,32 +121,35 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
     }
   );
   const { data } = useHeartRoomLookup(name);
-  const [characters, setCharacters] = React.useState<HeartCharacter[]>([]);
+
+  React.useEffect(() => {
+    if (data && state.value === 'loading') {
+      send('LOAD');
+    }
+  }, [data, send, state.value]);
+
+  const trackedCharacters = useHeartCharacterSubscription({
+    characters: data?.characters.items ?? [],
+    gameId: data?.id,
+  });
   const [username, setUsername] = React.useState('');
 
-  React.useEffect(() => {
-    if (data) {
-      send('LOAD');
-      setCharacters(data?.characters?.items ?? []);
+  const updateUsername = (name: string) => {
+    try {
+      API.graphql({
+        query: mutations.updateHeartCharacter,
+        variables: {
+          input: {
+            id: state.context.characterChoice,
+            playerName: name,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
     }
-  }, [data, send]);
-
-  React.useEffect(() => {
-    if (!data?.id) return;
-    const newCharacterSubscription = API.graphql({
-      query: subscriptions.onCreateHeartCharacter,
-      variables: {
-        gameID: data.id,
-      },
-      // @ts-ignore
-    }).subscribe({
-      // @ts-ignore
-      next: ({ value }) => {
-        setCharacters((cur) => cur.concat(value.data.onCreateHeartCharacter));
-      },
-    });
-    return () => newCharacterSubscription.unsubscribe();
-  }, [data?.id]);
+    setUsername(name);
+  };
 
   switch (state.value) {
     case 'loading':
@@ -157,45 +159,39 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
       return (
         <Flex
           direction="column"
-          fontFamily="Alegreya"
+          fontFamily="Roboto Slab"
           alignItems="center"
           justifyContent="center"
           minH="full"
         >
           <AnimateSharedLayout>
-            <CharacterChoice
-              characters={data?.characters}
-              username={username}
-              setUsername={setUsername}
-              controls={optionsControls}
-              onDone={(character: string) => {
-                switch (character) {
-                  case GM:
-                    send('GM');
-                    break;
-                  case NEW_CHARACTER:
-                    send('NEW');
-                    break;
-                  default:
-                    try {
-                      API.graphql({
-                        query: mutations.updateHeartCharacter,
-                        variables: {
-                          input: {
-                            id: character,
-                            playerName: username,
-                          },
-                        },
+            {state.value !== 'loading' && (
+              <CharacterChoiceCard
+                characters={trackedCharacters}
+                username={username}
+                setUsername={setUsername}
+                controls={optionsControls}
+                onDone={(character: string) => {
+                  switch (character) {
+                    case GM:
+                      send('GM');
+                      setUsername('Game Facilitator');
+                      break;
+                    case NEW_CHARACTER:
+                      send('NEW');
+                      break;
+                    default:
+                      const playerName = trackedCharacters.find(
+                        (c) => c.id === character
+                      )?.playerName;
+                      setUsername(playerName || 'Unable to load username');
+                      send('CHOOSE', {
+                        value: character,
                       });
-                    } catch (e) {
-                      console.warn(e);
-                    }
-                    send('CHOOSE', {
-                      value: character,
-                    });
-                }
-              }}
-            />
+                  }
+                }}
+              />
+            )}
             <motion.div
               layout
               initial={{ opacity: 0 }}
@@ -213,7 +209,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
       return (
         <Flex
           direction="column"
-          fontFamily="Alegreya"
+          fontFamily="Roboto Slab"
           alignItems="center"
           justifyContent="center"
           minH="full"
@@ -268,8 +264,8 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
         <HeartGameArea
           name={name}
           username={username}
-          setUsername={setUsername}
-          characters={characters}
+          setUsername={updateUsername}
+          characters={trackedCharacters}
           characterChoice={state.context.characterChoice}
           id={data?.id ?? ''}
           safetyModuleId={data?.safetyModule?.id ?? ''}

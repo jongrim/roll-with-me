@@ -96,9 +96,9 @@ const EquipmentForm = ({ isOpen, onDone }: EquipmentFormProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => onDone()}>
+    <Modal isOpen={isOpen} onClose={onDone} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>New Equipment</ModalHeader>
           <ModalCloseButton />

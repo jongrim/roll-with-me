@@ -389,6 +389,7 @@ function TextRoom({ name }) {
       roomName={name}
       onSubmit={onSubmit}
       rolls={rolls}
+      counters={counters}
       customDice={customDice}
       savedRolls={savedRolls}
       createRoll={saveRoll}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import HeartRoom from './Heart/HeartRoom';
+import HeartEntry from './Heart/HeartEntry';
 import InteractiveRoom from './InteractiveRoom/InteractiveRoom';
 import { roomCodes } from './roomPaths';
 import TextRoom from './TextRoom/TextRoom';
@@ -18,7 +18,7 @@ function RoomProvider() {
     case roomCodes.trophyDark:
       return <TrophyDarkRoom name={name} />;
     case roomCodes.heart:
-      return <HeartRoom name={name} />;
+      return <HeartEntry name={name} />;
     case roomCodes.trophyGold:
       return <TrophyGoldRoom name={name} />;
     default:

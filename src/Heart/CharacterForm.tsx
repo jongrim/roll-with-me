@@ -16,9 +16,14 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { RiCameraFill } from 'react-icons/ri';
-import { HeartCharacter } from '../APITypes';
-import { CreateHeartCharacterInput } from '../API';
-import { ancestries, callings, classes } from './HeartGameTypes';
+import { CreateHeartCharacterInput, HeartCharacter } from '../API';
+import {
+  ancestries,
+  callings,
+  classes,
+  domainMap,
+  skillMap,
+} from './HeartGameTypes';
 
 interface CharacterFormProps {
   onDone: (
@@ -68,9 +73,8 @@ const CharacterForm = ({
       fortuneStress: 0,
       supplyProtection: 0,
       supplyStress: 0,
-      skills: [],
-      domains: [],
-      knacks: [],
+      skills: JSON.stringify(skillMap),
+      domains: JSON.stringify(domainMap),
       equipment: [],
       resources: [],
       bonds: [],
