@@ -32,12 +32,11 @@ import CharacterConditions from './CharacterConditions';
 import CharacterSectionHeading from './CharacterSectionHeading';
 import useDelayedUpdate from './useDelayedUpdate';
 import CharacterNotes from './CharacterNotes';
-import CharacterNumberField from './CharacterNumberField';
 import { RandomNumbersContext } from '../RandomNumbersProvider';
 import RuinBoxes from './RuinBoxes';
 import { ArmorSet, WeaponSet } from './TrophyGoldGameTypes';
 import Hearthfire from './Hearthfire';
-import { DelayedTextarea } from '../Common/DelayedInputs';
+import { DelayedNumberInput, DelayedTextarea } from '../Common/DelayedInputs';
 
 export const updateCharacter = async (
   character: UpdateTrophyGoldCharacterInput
@@ -292,9 +291,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             </Flex>
             <Box>
               <Text>Burdens</Text>
-              <CharacterNumberField
-                field="burdens"
-                onSubmit={updateWithId}
+              <DelayedNumberInput
+                onUpdate={(val) => updateWithId({ burdens: val })}
                 initial={character.burdens}
                 canEdit={canEdit}
                 min={baseBurdens}
@@ -302,27 +300,24 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             </Box>
             <Box>
               <Text>Hoard</Text>
-              <CharacterNumberField
-                field="hoard"
-                onSubmit={updateWithId}
+              <DelayedNumberInput
+                onUpdate={(val) => updateWithId({ hoard: val })}
                 initial={character.hoard}
                 canEdit={canEdit}
               />
             </Box>
             <Box>
               <Text>Hunt Tokens</Text>
-              <CharacterNumberField
-                field="tokens"
-                onSubmit={updateWithId}
+              <DelayedNumberInput
+                onUpdate={(val) => updateWithId({ tokens: val })}
                 initial={character.tokens}
                 canEdit={canEdit}
               />
             </Box>
             <Box>
               <Text>Gold</Text>
-              <CharacterNumberField
-                field="gold"
-                onSubmit={updateWithId}
+              <DelayedNumberInput
+                onUpdate={(val) => updateWithId({ gold: val })}
                 initial={character.gold}
                 canEdit={canEdit}
               />
@@ -409,7 +404,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             onSubmit={updateWithId}
             canEdit={canEdit}
           />
-          <Box mt={6}>
+          <Box mt={6} mb={40}>
             <CharacterNotes
               notes={character.notes || ''}
               onSubmit={updateWithId}

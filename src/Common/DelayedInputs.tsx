@@ -75,7 +75,7 @@ interface DelayedNumberInputProps {
   delay?: number;
 }
 
-export default function DelayedNumberInput({
+export function DelayedNumberInput({
   initial,
   onUpdate,
   canEdit,

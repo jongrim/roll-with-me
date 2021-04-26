@@ -46,7 +46,7 @@ import FalloutForm from './FalloutForm';
 import BondForm from './BondForm';
 import heart from './heart.svg';
 import debouncedUpdate from '../utils/debouncedUpdate';
-import DelayedNumberInput, { DelayedCheckbox } from '../Common/DelayedInputs';
+import { DelayedNumberInput, DelayedCheckbox } from '../Common/DelayedInputs';
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
