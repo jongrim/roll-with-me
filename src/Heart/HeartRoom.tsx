@@ -159,7 +159,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
       return (
         <Flex
           direction="column"
-          fontFamily="Alegreya"
+          fontFamily="Roboto Slab"
           alignItems="center"
           justifyContent="center"
           minH="full"
@@ -209,7 +209,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
       return (
         <Flex
           direction="column"
-          fontFamily="Alegreya"
+          fontFamily="Roboto Slab"
           alignItems="center"
           justifyContent="center"
           minH="full"

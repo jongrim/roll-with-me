@@ -24,6 +24,7 @@ import {
   useRadio,
   UseRadioProps,
   useColorModeValue,
+  Flex,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -82,14 +83,14 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onDone}>
+    <Modal isOpen={isOpen} onClose={onDone} size="lg">
       <ModalOverlay />
-      <ModalContent fontFamily="Alegreya">
+      <ModalContent fontFamily="Roboto Slab">
         <form onSubmit={handleSubmit}>
           <ModalHeader>Add Fallout</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box w="full" h={16} px={3}>
+            <Box w="full" h={16} px={5}>
               <Box position="relative" h={8}>
                 <Text
                   transform="translateX(-50%)"
@@ -150,28 +151,29 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
                 onChange={({ target }) => setDescription(target.value)}
               />
             </FormControl>
-            <Grid
-              mt={6}
-              gap={4}
-              templateColumns="repeat(5, 1fr)"
-              templateRows="auto"
-              justifyItems="center"
-              {...group}
-            >
+            <Flex mt={6} justifyContent="space-between" {...group}>
               {resistances.map((resistance) => (
-                <GridItem key={resistance}>
-                  <ResistanceButton {...getRadioProps({ value: resistance })}>
-                    {resistance}
-                  </ResistanceButton>
-                </GridItem>
+                <ResistanceButton
+                  key={resistance}
+                  {...getRadioProps({ value: resistance })}
+                >
+                  {resistance}
+                </ResistanceButton>
               ))}
-            </Grid>
+            </Flex>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="teal" type="submit" mr={2}>
               Add
             </Button>
-            <Button variant="ghost" onClick={() => onDone()}>
+            <Button
+              variant="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                onDone();
+              }}
+              type="button"
+            >
               Cancel
             </Button>
           </ModalFooter>

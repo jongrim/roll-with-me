@@ -109,8 +109,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const delayedTextUpdate = handleDelayedChange(2000);
 
   return (
-    <Box fontFamily="Alegreya" id={character.characterName || character.id}>
-      <Flex flex="1" fontFamily="Alegreya" fontSize="lg" mb={2}>
+    <Box fontFamily="Roboto Slab" id={character.characterName || character.id}>
+      <Flex flex="1" fontFamily="Roboto Slab" fontSize="lg" mb={2}>
         <HStack spacing={3}>
           <Text fontWeight="500">
             {character.characterName} – {character.characterPronouns}
@@ -204,9 +204,9 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               Beats
             </Text>
             <Stack direction="column" spacing={6}>
-              {beats.map((beat) => {
+              {beats.map((beat, i) => {
                 return (
-                  <Box key={beat.description}>
+                  <Box key={`${beat.description} - ${i}`}>
                     <Text>{beat.description}</Text>
                     <Text opacity="0.8">{beat.type}</Text>
                   </Box>
@@ -225,6 +225,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <BeatsForm
               isOpen={beatsFormOpen}
               onDone={async (beats?: Beat[]) => {
+                console.log(beats);
                 setBeatsFormOpen(false);
                 if (beats) {
                   const stringified = beats.map((b) => JSON.stringify(b));
@@ -364,7 +365,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                 <Text w={32} fontSize="lg" color={redTextColor}>
                   SKILLS
                 </Text>
-                <Text w={16} fontSize="lg" color={redTextColor} opacity="0.8">
+                <Text w={20} fontSize="lg" color={redTextColor} opacity="0.8">
                   KNACK
                 </Text>
               </HStack>
@@ -427,7 +428,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                 <Text w={32} fontSize="lg" color={redTextColor}>
                   DOMAINS
                 </Text>
-                <Text w={16} fontSize="lg" color={redTextColor} opacity="0.8">
+                <Text w={20} fontSize="lg" color={redTextColor} opacity="0.8">
                   KNACK
                 </Text>
               </HStack>

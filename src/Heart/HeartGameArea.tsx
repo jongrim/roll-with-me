@@ -62,7 +62,7 @@ const HeartGameArea = ({
     <Grid
       h="full"
       templateRows="auto minmax(0, 1fr)"
-      fontFamily="Alegreya"
+      fontFamily="Roboto Slab"
       overflow="auto"
     >
       <GridItem position="sticky" top={0}>
