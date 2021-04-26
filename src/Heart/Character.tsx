@@ -102,7 +102,21 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const delayedTextUpdate = handleDelayedChange(2000);
 
   return (
-    <Box fontFamily="Alegreya">
+    <Box fontFamily="Alegreya" id={character.characterName || character.id}>
+      <Flex flex="1" fontFamily="Alegreya" fontSize="lg" mb={2}>
+        <HStack spacing={3}>
+          <Text fontWeight="500">
+            {character.characterName} – {character.characterPronouns}
+          </Text>
+          <Text opacity="0.8">
+            {[character.ancestry, character.class, character.calling].join(
+              ', '
+            )}
+          </Text>
+        </HStack>
+        <Spacer />
+        <Text>{character.playerName}</Text>
+      </Flex>
       {isEditing ? (
         <CharacterForm
           character={character}

@@ -57,11 +57,16 @@ const HeartGameArea = ({
   const ref = React.useRef<HTMLButtonElement>(null);
   const mapModule = useMap({ map: hexMap });
   return (
-    <Grid h="full" templateRows="auto minmax(0, 1fr)" fontFamily="Alegreya">
-      <GridItem>
+    <Grid
+      h="full"
+      templateRows="auto minmax(0, 1fr)"
+      fontFamily="Alegreya"
+      overflow="auto"
+    >
+      <GridItem position="sticky" top={0}>
         <SettingsBar username={username} setUsername={setUsername} />
       </GridItem>
-      <GridItem p={4}>
+      <GridItem>
         <Grid
           h="full"
           templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
@@ -71,7 +76,7 @@ const HeartGameArea = ({
             'minmax(0, 1fr)',
           ]}
         >
-          <GridItem pr={3} pb={3} h="full">
+          <GridItem px={4} pt={1} pb={3} h="full">
             <Flex direction={['row', 'row', 'column']} h="full">
               <Stack
                 direction={['row', 'row', 'column']}
@@ -86,9 +91,20 @@ const HeartGameArea = ({
                   opacity="0.8"
                   _activeLink={activeLink}
                   as={ReactRouterLink}
-                  to={`/heart/${name}/table`}
+                  to={`/heart/${name}/characters`}
                 >
-                  Table
+                  Characters
+                </Link>
+                <Link
+                  rounded="md"
+                  px={3}
+                  py={2}
+                  opacity="0.8"
+                  _activeLink={activeLink}
+                  as={ReactRouterLink}
+                  to={`/heart/${name}/dice`}
+                >
+                  Dice
                 </Link>
                 <Link
                   rounded="md"
@@ -124,6 +140,18 @@ const HeartGameArea = ({
               </Stack>
               <Spacer />
               <Link
+                rounded="md"
+                ml={-3}
+                px={3}
+                py={2}
+                opacity="0.8"
+                _activeLink={activeLink}
+                as={ReactRouterLink}
+                to={`/heart/${name}/credits`}
+              >
+                Credits
+              </Link>
+              <Link
                 isExternal
                 href="https://rowanrookanddecard.com/product/heart-the-city-beneath-rpg/"
                 justifySelf="end"
@@ -133,43 +161,16 @@ const HeartGameArea = ({
               </Link>
             </Flex>
           </GridItem>
-          <GridItem overflow="auto">
-            <Route exact path={`/heart/${name}/table`}>
-              <Grid
-                h="full"
-                templateColumns={['1fr', '1fr', '1fr', 'minmax(0, 1fr) 400px']}
-                templateRows={[
-                  'auto minmax(0, 1fr)',
-                  'auto minmax(0, 1fr)',
-                  'auto minmax(0, 1fr)',
-                  'minmax(0, 1fr)',
-                ]}
-                gap={6}
-                alignContent="start"
-              >
-                <Route exact path={`/heart/${name}/table`}>
-                  <GridItem
-                    overflow={['unset', 'unset', 'unset', 'auto']}
-                    rowStart={[2, 2, 2, 1]}
-                    pl={[0, 0, 3]}
-                    pr={6}
-                    pb={8}
-                  >
-                    <CharacterList
-                      characters={characters}
-                      characterChoice={characterChoice}
-                    />
-                  </GridItem>
-                </Route>
-                <GridItem
-                  rowStart={[1, 1, 1, 1]}
-                  pr={[8, 8, 8, 0]}
-                  pl={[0, 0, 3]}
-                >
-                  <HeartDiceForm id={id} username={username} />
-                  <HeartDiceDisplay {...dice} />
-                </GridItem>
-              </Grid>
+          <GridItem>
+            <Route exact path={`/heart/${name}/characters`}>
+              <CharacterList
+                characters={characters}
+                characterChoice={characterChoice}
+              />
+            </Route>
+            <Route exact path={`/heart/${name}/dice`}>
+              <HeartDiceForm id={id} username={username} />
+              <HeartDiceDisplay {...dice} />
             </Route>
             <Route exact path={`/heart/${name}/safety`}>
               <SafetyForm
@@ -182,7 +183,7 @@ const HeartGameArea = ({
             <Route exact path={`/heart/${name}/map`}>
               <HeartMap hexMap={mapModule} />
             </Route>
-            <Redirect path="*" to={`/heart/${name}/table`} />
+            <Redirect path="*" to={`/heart/${name}/characters`} />
           </GridItem>
         </Grid>
       </GridItem>
