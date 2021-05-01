@@ -304,6 +304,14 @@ type VisualDie
   type: String
 }
 
+type RollableTable
+  @model
+  @auth(rules: [{ allow: public }, { allow: private }]) {
+  id: ID!
+  title: String!
+  items: [AWSJSON!]!
+}
+
 type Subscription {
   onUpdateTextRoomByName(name: String!): TextRoom
     @aws_subscribe(mutations: ["updateTextRoom"])

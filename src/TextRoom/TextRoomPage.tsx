@@ -42,6 +42,7 @@ import QuickRollBar from '../QuickRollBar/QuickRollBar';
 import useUserRoom from '../hooks/useUserRoom';
 import TextRoomControls from './TextRoomControls';
 import { CustomDie } from '../utils/dice';
+import RollableTables from './RollableTables';
 
 interface TextRoomPageProps {
   roomId: string;
@@ -206,7 +207,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           </Flex>
         </VStack>
       </Container>
-      <Container maxW="6xl" mt={6} h="100%">
+      <Container maxW="6xl" mt={6}>
         <Tabs
           variant="unstyled"
           display="flex"
@@ -252,6 +253,17 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
               flex={[1, 1, 1, 0]}
             >
               Roll History
+            </Tab>
+            <Tab
+              _selected={{
+                opacity: 1,
+                borderBottom: '1px solid',
+                borderBottomColor: 'brand.300',
+              }}
+              opacity="0.6"
+              flex={[1, 1, 1, 0]}
+            >
+              Rollable Tables
             </Tab>
             <Tab
               _selected={{
