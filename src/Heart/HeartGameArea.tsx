@@ -22,6 +22,7 @@ import HeartDiceDisplay from './HeartDiceDisplay';
 import HeartMap from './HeartMap';
 import useMap from '../MapModule/useMap';
 import { HeartCharacter } from '../API';
+import HeartFacilitator from './HeartFacilitator';
 
 interface HeartGameProps {
   name: string;
@@ -126,6 +127,17 @@ const HeartGameArea = ({
                   opacity="0.8"
                   _activeLink={activeLink}
                   as={ReactRouterLink}
+                  to={`/heart/${name}/facilitator`}
+                >
+                  Facilitator
+                </Link>
+                <Link
+                  rounded="md"
+                  px={3}
+                  py={2}
+                  opacity="0.8"
+                  _activeLink={activeLink}
+                  as={ReactRouterLink}
                   to={`/heart/${name}/safety`}
                 >
                   Safety
@@ -163,7 +175,7 @@ const HeartGameArea = ({
               </Link>
             </Flex>
           </GridItem>
-          <GridItem>
+          <GridItem overflow="auto">
             <Route exact path={`/heart/${name}/characters`}>
               <CharacterList
                 characters={characters}
@@ -186,6 +198,9 @@ const HeartGameArea = ({
             </Route>
             <Route exact path={`/heart/${name}/map`}>
               <HeartMap hexMap={mapModule} />
+            </Route>
+            <Route exact path={`/heart/${name}/facilitator`}>
+              <HeartFacilitator />
             </Route>
             <Redirect path="*" to={`/heart/${name}/characters`} />
           </GridItem>

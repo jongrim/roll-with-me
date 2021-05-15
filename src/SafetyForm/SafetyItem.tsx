@@ -56,6 +56,10 @@ const SafetyItem = ({
   removeSafetyItem: removeSafetyItemFn;
   createSafetyItem?: createSafetyItemFn;
 }) => {
+  const [trackedClass, setTrackedClass] = React.useState(item.classification);
+  React.useEffect(() => {
+    setTrackedClass(item.classification);
+  }, [item.classification]);
   const toast = useToast();
   return (
     <GridItem
@@ -84,10 +88,11 @@ const SafetyItem = ({
             onChange={({ target }) =>
               updateSafetyItem({
                 ...item,
-                classification: target.value as ClassifiedItem['classification'],
+                classification:
+                  target.value as ClassifiedItem['classification'],
               })
             }
-            defaultValue={item.classification}
+            value={trackedClass}
           >
             <option value="line">Line</option>
             <option value="veil">Veil</option>
