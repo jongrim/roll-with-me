@@ -13,7 +13,7 @@ import {
 import { API, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
-import QuillEditor from '../QuillEditor/QuillEditor';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 import { AuthContext } from '../AuthProvider';
 import Bestiary from './Bestiary';
 import { TrophyGoldBeast } from '../API';
@@ -89,11 +89,12 @@ export default function GameFacilitator({
   const { user } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
-  const [moduleData, setModuleData] = React.useState<{
-    id: string;
-    bestiary: { items: TrophyGoldBeast[] };
-    notes: string | null;
-  }>();
+  const [moduleData, setModuleData] =
+    React.useState<{
+      id: string;
+      bestiary: { items: TrophyGoldBeast[] };
+      notes: string | null;
+    }>();
 
   React.useEffect(() => {
     if (!user) {

@@ -9,8 +9,8 @@ import {
   InputRightAddon,
   Flex,
 } from '@chakra-ui/react';
-import RollableTable from '../Common/RollableTable/RollableTable';
-import { RollableTableI } from '../Common/RollableTable/RollableTableTypes';
+import RollableTable from '../RollableTable/RollableTable';
+import { RollableTableI } from '../RollableTable/RollableTableTypes';
 const fakeTableItems1 = [
   { id: '1', title: "You grandma's famous cookie recipe" },
   { id: '2', title: 'Old photos you care not to rediscover' },
@@ -23,7 +23,12 @@ const fakeTableItems1 = [
 const fakeTable1 = {
   id: 'table-1',
   title: 'Things in the attic',
-  items: fakeTableItems1,
+  columns: [
+    {
+      id: 'table-1-col-1',
+      items: fakeTableItems1,
+    },
+  ],
 };
 const fakeTableItems2 = [
   { id: '2-1', title: 'A hundred year old squid that remembers' },
@@ -50,20 +55,30 @@ const fakeTableItems2 = [
 const fakeTable2 = {
   id: 'table-2',
   title: 'Things under the sea',
-  items: fakeTableItems2,
+  columns: [
+    {
+      id: 'table-2-col-1',
+      items: fakeTableItems1,
+    },
+  ],
 };
 
 function makeNewTable(title: string): RollableTableI {
   return {
     id: uuidv4(),
     title,
-    items: [],
+    columns: [
+      {
+        id: uuidv4(),
+        items: [],
+      },
+    ],
   };
 }
 
 export default function RollableTables() {
   const [newTableTitle, setNewTableTitle] = React.useState('');
-  const [tables, setTables] = React.useState([fakeTable1, fakeTable2]);
+  const [tables, setTables] = React.useState([fakeTable2]);
   return (
     <Box h="full" w="full">
       <Flex w="full" justifyContent="center">
@@ -97,19 +112,13 @@ export default function RollableTables() {
           </form>
         </Box>
       </Flex>
-      <Grid
-        gridTemplateColumns={`repeat(${tables.length}, 460px)`}
-        alignItems="start"
-        gap={3}
-        maxW="100%"
-        height="full"
-        overflow="auto"
-      >
+      <Box>
         {tables.map((table) => (
           <RollableTable
             key={table.id}
             table={table}
             onUpdate={(nextTable) => {
+              console.log(nextTable);
               setTables((cur) =>
                 cur.map((t) => {
                   if (t.id === nextTable.id) {
@@ -121,7 +130,7 @@ export default function RollableTables() {
             }}
           />
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

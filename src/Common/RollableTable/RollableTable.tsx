@@ -1,49 +1,50 @@
 import * as React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
   Button,
   IconButton,
-  Heading,
-  Text,
-  Input,
   useToast,
   useColorModeValue,
-  VStack,
   Flex,
-  LightMode,
-  InputGroup,
-  InputRightAddon,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Grid,
+  Heading,
 } from '@chakra-ui/react';
-import { RiDeleteBin4Fill, RiMoreFill } from 'react-icons/ri';
+import { RiMoreFill } from 'react-icons/ri';
 import { GiDiceSixFacesSix } from 'react-icons/gi';
 import { RollableTableI } from './RollableTableTypes';
 import { motion } from 'framer-motion';
 import { useRandomNumberContext } from '../../RandomNumbersProvider';
+import Column from './Column';
 
 interface RollableTableProps {
   table: RollableTableI;
-  onUpdate: (nextTable: RollableTableI) => void;
+  onUpdate?: (nextTable: RollableTableI) => void;
   editable?: boolean;
 }
 
 export default function RollableTable({
   table,
   onUpdate,
-  editable,
+  editable = false,
 }: RollableTableProps) {
   const toast = useToast();
-  const [nextItem, setNextItem] = React.useState('');
-  const [trackedItems, setTrackedItems] = React.useState(table.items);
+
+  const [columns, setColumns] = React.useState(table.columns);
+  const maxLength = React.useMemo(() => {
+    return columns.reduce(
+      (acc, cur) => (cur.items.length > acc ? cur.items.length : acc),
+      0
+    );
+  }, [columns]);
   const [trackedTitle, setTrackedTitle] = React.useState(table.title);
   const listBgColor = useColorModeValue('gray.200', 'gray.900');
-  const specialText = useColorModeValue('brand.500', 'brand.200');
-  const itemBgColor = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.700', 'gray.200');
 
   const randomNumbers = useRandomNumberContext();
   const [randomItemIndex, setRandomItemIndex] = React.useState<number>();
@@ -54,7 +55,6 @@ export default function RollableTable({
         px={4}
         pt={3}
         pb={2}
-        w="sm"
         backgroundColor={listBgColor}
         borderTopRadius="md"
         maxH="full"
@@ -65,9 +65,30 @@ export default function RollableTable({
           position="relative"
           zIndex={2}
         >
-          <Heading as="h3" fontSize="md">
-            {table.title}
-          </Heading>
+          {editable && onUpdate ? (
+            <Editable
+              defaultValue={trackedTitle}
+              as="h3"
+              fontSize="lg"
+              fontWeight="bold"
+              onChange={(nextValue) => {
+                setTrackedTitle(nextValue);
+                onUpdate({ id: table.id, title: nextValue, columns });
+              }}
+            >
+              <EditablePreview />
+              <EditableInput />
+            </Editable>
+          ) : (
+            <Heading
+              as="h3"
+              fontSize="lg"
+              fontWeight="bold"
+              fontFamily="inherit"
+            >
+              {trackedTitle}
+            </Heading>
+          )}
           {editable && (
             <Menu>
               <MenuButton
@@ -77,6 +98,7 @@ export default function RollableTable({
                 variant="ghost"
               />
               <MenuList>
+                <MenuItem>Add a column</MenuItem>
                 <MenuItem>Create a Copy</MenuItem>
                 <MenuItem>Delete</MenuItem>
               </MenuList>
@@ -86,14 +108,14 @@ export default function RollableTable({
         <Button
           onClick={async () => {
             const [randomNumber] = await randomNumbers.getNumbers(1);
-            const index = randomNumber % trackedItems.length;
-            toast({
-              status: 'info',
-              isClosable: true,
-              title: `Result for ${trackedTitle}`,
-              description: trackedItems[index].title,
-              duration: null,
-            });
+            const index = (randomNumber % maxLength) + 1;
+            // toast({
+            //   status: 'info',
+            //   isClosable: true,
+            //   title: `Result for ${trackedTitle}`,
+            //   description: trackedItems[index].title,
+            //   duration: null,
+            // });
             setRandomItemIndex(index);
           }}
           variant="outline"
@@ -104,98 +126,46 @@ export default function RollableTable({
         >
           Roll on table
         </Button>
-        {editable && (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const next = [
-                {
-                  id: uuidv4(),
-                  title: nextItem,
-                },
-              ].concat(trackedItems);
-              setTrackedItems(next);
-              onUpdate({ id: table.id, title: trackedTitle, items: next });
-              setNextItem('');
-            }}
-          >
-            <InputGroup mt={3}>
-              <Input
-                variant="filled"
-                placeholder="Add new item"
-                value={nextItem}
-                onChange={({ target }) => setNextItem(target.value)}
-              />
-              <InputRightAddon p={0}>
-                <Button
-                  variant="ghost"
-                  colorScheme="teal"
-                  w="full"
-                  type="submit"
-                  isDisabled={!Boolean(nextItem)}
-                >
-                  Add
-                </Button>
-              </InputRightAddon>
-            </InputGroup>
-          </form>
-        )}
       </Box>
-      <motion.div layout>
-        <Box
+      <motion.div layout style={{ height: '100%' }}>
+        <Flex
+          flexDirection="column"
           px={4}
           pt={1}
           pb={3}
-          w="sm"
+          overflow="auto"
           backgroundColor={listBgColor}
           borderBottomRadius="md"
-          maxH="full"
         >
-          <VStack spacing={3} as="ol" alignItems="flex-end">
-            {trackedItems.map((item, i) => (
-              <motion.div
-                layout
-                key={item.id}
-                style={{
-                  width: i === randomItemIndex ? '90%' : '100%',
+          <Grid
+            gap={2}
+            templateColumns="repeat(auto-fit, minmax(300px, 1fr))"
+            w="full"
+          >
+            {columns.map((col) => (
+              <Column
+                key={col.id}
+                column={col}
+                updateColumn={(newCol) => {
+                  const nextColumns = columns.map((c) =>
+                    c.id === col.id ? newCol : c
+                  );
+                  setColumns(nextColumns);
+                  if (onUpdate) {
+                    onUpdate({
+                      id: table.id,
+                      title: trackedTitle,
+                      columns: nextColumns,
+                    });
+                  }
                 }}
-              >
-                <Flex
-                  w="full"
-                  borderRadius="md"
-                  alignItems="stretch"
-                  backgroundColor={itemBgColor}
-                >
-                  <Box px={3} py={3} w="full">
-                    <Text
-                      color={i === randomItemIndex ? specialText : textColor}
-                    >
-                      {item.title}
-                    </Text>
-                  </Box>
-                  {editable && (
-                    <LightMode>
-                      <IconButton
-                        height="unset"
-                        borderRadius="md"
-                        borderTopLeftRadius={0}
-                        borderBottomLeftRadius={0}
-                        colorScheme="red"
-                        icon={<RiDeleteBin4Fill />}
-                        aria-label="remove item"
-                        onClick={() => {
-                          setTrackedItems(
-                            trackedItems.filter((i) => i.id !== item.id)
-                          );
-                        }}
-                      />
-                    </LightMode>
-                  )}
-                </Flex>
-              </motion.div>
+                editable={editable}
+                randomItemIndex={randomItemIndex}
+                maxCount={maxLength}
+              />
             ))}
-          </VStack>
-        </Box>
+          </Grid>
+        </Flex>
       </motion.div>
     </Flex>
   );
