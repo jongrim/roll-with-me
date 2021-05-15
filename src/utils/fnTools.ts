@@ -1,9 +1,11 @@
 export function compose(...fns: Function[]) {
   let nextResult: any;
-  return function compute(k: any): any {
-    nextResult = k;
+  return function compute(...args: any[]): any {
+    nextResult = args;
     fns.reverse().forEach((fn) => {
-      nextResult = fn(nextResult);
+      nextResult = Array.isArray(nextResult)
+        ? fn(...nextResult)
+        : fn(nextResult);
     });
     return nextResult;
   };

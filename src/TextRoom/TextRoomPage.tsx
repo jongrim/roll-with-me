@@ -80,13 +80,15 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   updateXCard,
   xCardChanging,
 }) => {
-  const { username, setUsername, isLoaded: userSettingsIsLoaded } = useUserRoom(
-    {
-      roomName,
-      roomId,
-      roomKey: 'textRoom',
-    }
-  );
+  const {
+    username,
+    setUsername,
+    isLoaded: userSettingsIsLoaded,
+  } = useUserRoom({
+    roomName,
+    roomId,
+    roomKey: 'textRoom',
+  });
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const quickRollRef = React.useRef<HTMLInputElement>(null!);
   React.useEffect(() => {
@@ -206,7 +208,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           </Flex>
         </VStack>
       </Container>
-      <Container maxW="6xl" mt={6} h="100%">
+      <Container maxW="6xl" mt={6}>
         <Tabs
           variant="unstyled"
           display="flex"

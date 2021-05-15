@@ -11,6 +11,9 @@ export const RandomNumbersContext = React.createContext<RandomNumbers>({
   getNumbers: (val) => Promise.resolve([]),
 });
 
+export const useRandomNumberContext = () =>
+  React.useContext(RandomNumbersContext);
+
 function RandomNumbersProvider({ children }: { children: React.ReactNode }) {
   const [randomNumbers, setRandomNumbers] = React.useState<number[]>([]);
 
