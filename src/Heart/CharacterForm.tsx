@@ -12,23 +12,14 @@ import {
   FormLabel,
   Icon,
   Image,
-  Text,
   Select,
 } from '@chakra-ui/react';
 import { RiCameraFill } from 'react-icons/ri';
-import { CreateHeartCharacterInput, HeartCharacter } from '../API';
-import {
-  ancestries,
-  callings,
-  classes,
-  domainMap,
-  skillMap,
-} from './HeartGameTypes';
+import { HeartCharacter, UpdateHeartCharacterInput } from '../API';
+import { ancestries, callings, classes } from './HeartGameTypes';
 
 interface CharacterFormProps {
-  onDone: (
-    character: Omit<CreateHeartCharacterInput, 'gameID' | 'playerName'>
-  ) => void;
+  onDone: (character: Omit<UpdateHeartCharacterInput, 'id'>) => void;
   character?: Exclude<HeartCharacter, null>;
   submitText: string;
 }
@@ -60,25 +51,6 @@ const CharacterForm = ({
       ancestry,
       calling,
       class: charClass,
-      abilities: [],
-      beats: [],
-      fallout: [],
-      bloodProtection: 0,
-      bloodStress: 0,
-      mindProtection: 0,
-      mindStress: 0,
-      echoProtection: 0,
-      echoStress: 0,
-      fortuneProtection: 0,
-      fortuneStress: 0,
-      supplyProtection: 0,
-      supplyStress: 0,
-      skills: JSON.stringify(skillMap),
-      domains: JSON.stringify(domainMap),
-      equipment: [],
-      resources: [],
-      bonds: [],
-      notes: '',
       ...input,
     });
   };
@@ -195,10 +167,7 @@ const CharacterForm = ({
             </Select>
           </FormControl>
         </Box>
-        <Text textAlign="center" mt={6}>
-          That's all for now. You can add more in the next part.
-        </Text>
-        <Button type="submit" variant="ghost" mt={6} w="full">
+        <Button type="submit" variant="outline" mt={6} w="full">
           {submitText}
         </Button>
       </form>

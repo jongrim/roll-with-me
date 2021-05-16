@@ -12,7 +12,6 @@ import { updateMapConfiguration } from './useMap';
 import { HexSpaceConfig, ParsedHexMapModule } from './gridConfiguration';
 import { ViewBox } from './viewBox';
 import { GridContext } from './HexGrid';
-import heartBackgroundImages from '../Heart/heartBackgroundImages';
 
 interface MapSpaceSettingsDrawerProps {
   clickedHex: HexSpaceConfig;

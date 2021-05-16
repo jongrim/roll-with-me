@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import RollableTable from '../Common/RollableTable/RollableTable';
 import { RollableTableI } from '../Common/RollableTable/RollableTableTypes';
 import QuillEditor from '../Common/QuillEditor/QuillEditor';
