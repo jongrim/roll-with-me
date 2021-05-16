@@ -1713,6 +1713,7 @@ export const onCreateHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -1777,6 +1778,7 @@ export const onUpdateHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -1841,6 +1843,7 @@ export const onDeleteHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -2825,6 +2828,39 @@ export const onDeleteVisualDie = /* GraphQL */ `
           nextToken
         }
       }
+    }
+  }
+`;
+export const onCreateRollableTable = /* GraphQL */ `
+  subscription OnCreateRollableTable {
+    onCreateRollableTable {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateRollableTable = /* GraphQL */ `
+  subscription OnUpdateRollableTable {
+    onUpdateRollableTable {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteRollableTable = /* GraphQL */ `
+  subscription OnDeleteRollableTable {
+    onDeleteRollableTable {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
     }
   }
 `;

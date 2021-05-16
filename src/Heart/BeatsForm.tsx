@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   FormControl,
   FormLabel,
-  Textarea,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -21,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Beat, BeatType } from './HeartGameTypes';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 interface BeatsFormProps {
   beats: Beat[];
@@ -47,19 +47,29 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
     ]);
   };
 
-  const handleTypeChange = (typeSetter: (type: BeatType) => void) => (
-    val: number
-  ) => {
-    switch (val) {
-      case 0:
-        typeSetter('minor');
-        break;
-      case 1:
-        typeSetter('major');
-        break;
-      case 2:
-        typeSetter('zenith');
-        break;
+  const handleTypeChange =
+    (typeSetter: (type: BeatType) => void) => (val: number) => {
+      switch (val) {
+        case 0:
+          typeSetter('minor');
+          break;
+        case 1:
+          typeSetter('major');
+          break;
+        case 2:
+          typeSetter('zenith');
+          break;
+      }
+    };
+
+  const beatTypeToNumber = (type: BeatType) => {
+    switch (type) {
+      case 'minor':
+        return 0;
+      case 'major':
+        return 1;
+      case 'zenith':
+        return 2;
     }
   };
 
@@ -103,7 +113,7 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
                   </Text>
                 </Box>
                 <Slider
-                  defaultValue={0}
+                  defaultValue={beatTypeToNumber(type1)}
                   min={0}
                   max={2}
                   step={1}
@@ -123,11 +133,17 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
             </FormControl>
             <FormControl id="beat-1-description" mt={4}>
               <FormLabel>Description</FormLabel>
-              <Textarea
-                variant="outline"
-                value={description1}
-                onChange={({ target }) => setDescription1(target.value)}
-              />
+              <Box border="1px solid" borderColor="inherit" borderRadius="md">
+                <QuillEditor
+                  placeholder="Enter beat description. Supports rich text formats."
+                  editorId="beat-1"
+                  initial={description1}
+                  save={setDescription1}
+                  saveDelay={0}
+                  height="24"
+                  toolbar={false}
+                />
+              </Box>
             </FormControl>
             <Heading as="h3" size="md" fontFamily="Roboto Slab" mt={8} mb={3}>
               Second Beat
@@ -161,7 +177,7 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
                   </Text>
                 </Box>
                 <Slider
-                  defaultValue={0}
+                  defaultValue={beatTypeToNumber(type2)}
                   min={0}
                   max={2}
                   step={1}
@@ -181,11 +197,17 @@ const BeatsForm = ({ isOpen, onDone, beats }: BeatsFormProps) => {
             </FormControl>
             <FormControl id="beat-2-description" mt={4}>
               <FormLabel>Description</FormLabel>
-              <Textarea
-                variant="outline"
-                value={description2}
-                onChange={({ target }) => setDescription2(target.value)}
-              />
+              <Box border="1px solid" borderColor="inherit" borderRadius="md">
+                <QuillEditor
+                  placeholder="Enter beat description. Supports rich text formats."
+                  editorId="beat-2"
+                  initial={description2}
+                  save={setDescription2}
+                  saveDelay={0}
+                  height="24"
+                  toolbar={false}
+                />
+              </Box>
             </FormControl>
           </ModalBody>
           <ModalFooter>

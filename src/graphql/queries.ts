@@ -1083,6 +1083,7 @@ export const getHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -1152,6 +1153,7 @@ export const listHeartRooms = /* GraphQL */ `
         d8Dice
         d10Dice
         d12Dice
+        facilitatorNotes
         createdAt
         updatedAt
         characters {
@@ -1231,6 +1233,7 @@ export const heartRoomByName = /* GraphQL */ `
         d8Dice
         d10Dice
         d12Dice
+        facilitatorNotes
         createdAt
         updatedAt
         characters {
@@ -1882,6 +1885,35 @@ export const listVisualDies = /* GraphQL */ `
             nextToken
           }
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const getRollableTable = /* GraphQL */ `
+  query GetRollableTable($id: ID!) {
+    getRollableTable(id: $id) {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRollableTables = /* GraphQL */ `
+  query ListRollableTables(
+    $filter: ModelRollableTableFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRollableTables(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        columns
+        createdAt
+        updatedAt
       }
       nextToken
     }

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Box, Flex, useToast } from '@chakra-ui/react';
-import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion';
+import { Box, Flex, Spinner, useToast } from '@chakra-ui/react';
+import { useAnimation } from 'framer-motion';
 import useTrophyRoomLookup from './useTrophyRoomLookup';
 import { useMachine } from '@xstate/react';
-import { Machine, actions, assign } from 'xstate';
+import { Machine, assign } from 'xstate';
 import { API } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import CharacterChoice from '../Common/CharacterChoice/CharacterChoiceCard';
@@ -22,46 +22,19 @@ import useBeastSubscription from './useBeastSubscription';
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
 
-const { send } = actions;
-
-const sendLoadAfter1Second = send('LOAD', { delay: 1000 });
-
-const delayPassed = (context: { initTime: number; delay: number }) => {
-  return Date.now() > context.initTime + context.delay;
-};
-
 // @ts-ignore
 const gameLoadMachine = Machine<{
-  initTime: number;
-  delay: number;
   characterChoice: string;
 }>({
   id: 'trophyGoldGameLoad',
   initial: 'loading',
   context: {
-    initTime: 0,
-    delay: 6000,
     characterChoice: 'unset',
   },
   states: {
     loading: {
       on: {
-        LOAD: [{ target: 'moving', cond: delayPassed }, { target: 'delayed' }],
-      },
-    },
-    delayed: {
-      // @ts-ignore
-      entry: sendLoadAfter1Second,
-      on: {
-        LOAD: [{ target: 'moving', cond: delayPassed }, { target: 'delayed' }],
-      },
-    },
-    moving: {
-      invoke: {
-        src: 'transition',
-        onDone: {
-          target: 'choosing',
-        },
+        LOAD: { target: 'choosing' },
       },
     },
     choosing: {
@@ -92,33 +65,10 @@ interface TGoldProps {
 
 const TrophyGoldRoom = ({ name }: TGoldProps) => {
   const toast = useToast();
-  const optionsControls = useAnimation();
-  const spacerControls = useAnimation();
   const [state, send] = useMachine(
     gameLoadMachine.withContext({
-      initTime: Date.now(),
-      delay: 2000,
       characterChoice: 'unset',
-    }),
-    {
-      services: {
-        transition: async () => {
-          spacerControls.start({
-            flex: 1,
-            transition: { duration: 1.5 },
-          });
-          await optionsControls.start({
-            height: 'auto',
-            transition: { duration: 1.5 },
-          });
-          await optionsControls.start({
-            opacity: 1,
-            transition: { duration: 1.5 },
-          });
-          return;
-        },
-      },
-    }
+    })
   );
   const { data } = useTrophyRoomLookup(name);
   const [username, setUsername] = React.useState('');
@@ -144,10 +94,15 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
     }
   }, [data, send, state.value]);
 
+  const characters = React.useMemo(() => {
+    return data?.characters.items ?? [];
+  }, [data?.characters?.items]);
+
   const trackedCharacters = useCharacterSubscription({
-    characters: data?.characters.items ?? [],
+    characters,
     gameId: data?.id,
   });
+
   const trackedBeasts = useBeastSubscription({
     beasts: data?.bestiary.items ?? [],
     gameID: data?.id,
@@ -155,6 +110,17 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
 
   switch (state.value) {
     case 'loading':
+      return (
+        <Flex
+          direction="column"
+          fontFamily="Roboto Slab"
+          alignItems="center"
+          justifyContent="center"
+          minH="full"
+        >
+          <Spinner />
+        </Flex>
+      );
     case 'delayed':
     case 'moving':
     case 'choosing':
@@ -166,84 +132,65 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
           justifyContent="center"
           minH="full"
         >
-          <AnimateSharedLayout>
-            {state.value !== 'loading' && (
-              <CharacterChoice
-                characters={trackedCharacters}
-                username={username}
-                setUsername={setUsername}
-                controls={optionsControls}
-                onDone={async (character: string) => {
-                  switch (character) {
-                    case GM:
-                      send('GM');
-                      break;
-                    case NEW_CHARACTER:
-                      if (!data?.id) {
-                        throw new Error('no game loaded');
-                      }
-                      const newCharacter: CreateTrophyGoldCharacterInput = {
-                        gameID: data.id,
-                        playerName: username,
-                        ruin: 0,
-                        burdens: 0,
-                        hoard: 0,
-                        gold: 0,
-                        tokens: 0,
-                        backpack: JSON.stringify(createEmptyBackpack()),
-                        armorSet: JSON.stringify(createEmptyArmorSet()),
-                        weaponSet: JSON.stringify(createEmptyWeaponSet()),
-                        foundEquipment: createEmptyFoundEquipmentList().map(
-                          (i) => JSON.stringify(i)
-                        ),
-                        conditions: '',
-                        notes: '',
-                      };
-                      // @ts-ignore
-                      const { data: createdCharacter } = await API.graphql({
-                        query: mutations.createTrophyGoldCharacter,
-                        variables: {
-                          input: newCharacter,
-                        },
-                      });
-                      toast({
-                        status: 'success',
-                        title: 'Character created',
-                        isClosable: true,
-                        duration: 3000,
-                      });
-                      send('CHOOSE', {
-                        value: createdCharacter?.createTrophyGoldCharacter?.id,
-                      });
-                      break;
-                    default:
-                      const playerName = trackedCharacters.find(
-                        (c) => c.id === character
-                      )?.playerName;
-                      setUsername(playerName || 'Unable to load username');
-                      send('CHOOSE', {
-                        value: character,
-                      });
+          <CharacterChoice
+            characters={trackedCharacters}
+            username={username}
+            setUsername={setUsername}
+            onDone={async (character: string) => {
+              switch (character) {
+                case GM:
+                  send('GM');
+                  break;
+                case NEW_CHARACTER:
+                  if (!data?.id) {
+                    throw new Error('no game loaded');
                   }
-                }}
-              />
-            )}
-            <motion.div
-              layout
-              initial={{ flex: 0 }}
-              animate={spacerControls}
-            ></motion.div>
-            <motion.div
-              layout
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: 1,
-                transition: { duration: 1 },
-              }}
-            >
-              <DesignedForTrophyGold />
-            </motion.div>
-          </AnimateSharedLayout>
+                  const newCharacter: CreateTrophyGoldCharacterInput = {
+                    gameID: data.id,
+                    playerName: username,
+                    ruin: 0,
+                    burdens: 0,
+                    hoard: 0,
+                    gold: 0,
+                    tokens: 0,
+                    backpack: JSON.stringify(createEmptyBackpack()),
+                    armorSet: JSON.stringify(createEmptyArmorSet()),
+                    weaponSet: JSON.stringify(createEmptyWeaponSet()),
+                    foundEquipment: createEmptyFoundEquipmentList().map((i) =>
+                      JSON.stringify(i)
+                    ),
+                    conditions: '',
+                    notes: '',
+                  };
+                  // @ts-ignore
+                  const { data: createdCharacter } = await API.graphql({
+                    query: mutations.createTrophyGoldCharacter,
+                    variables: {
+                      input: newCharacter,
+                    },
+                  });
+                  toast({
+                    status: 'success',
+                    title: 'Character created',
+                    isClosable: true,
+                    duration: 3000,
+                  });
+                  send('CHOOSE', {
+                    value: createdCharacter?.createTrophyGoldCharacter?.id,
+                  });
+                  break;
+                default:
+                  const playerName = trackedCharacters.find(
+                    (c) => c.id === character
+                  )?.playerName;
+                  setUsername(playerName || 'Unable to load username');
+                  send('CHOOSE', {
+                    value: character,
+                  });
+              }
+            }}
+          />
+          <DesignedForTrophyGold />
         </Flex>
       );
     case 'PLAYING':

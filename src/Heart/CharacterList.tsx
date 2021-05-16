@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Box,
   Grid,
   GridItem,
   Flex,
@@ -39,7 +40,7 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
   );
 
   return (
-    <Grid templateRows="auto 1fr" overflow="auto" h="full">
+    <Box>
       <Flex
         borderBottom="1px solid"
         borderColor="inherit"
@@ -86,38 +87,40 @@ const CharacterList = ({ characters, characterChoice }: CharacterListProps) => {
           />
         </Tooltip>
       </Flex>
-      <Grid
-        h="full"
-        templateColumns={
-          layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
-        }
-        gap={6}
-        pr={3}
-      >
-        {playerCharacter && (
-          <GridItem {...characterItemBorder} mb={8}>
-            <Character canEdit character={playerCharacter} />
-          </GridItem>
-        )}
-        {isGM
-          ? characters.map((c) => {
-              if (!c) return null;
-              return (
-                <GridItem {...characterItemBorder} key={c.id}>
-                  <Character canEdit={false} character={c} />
-                </GridItem>
-              );
-            })
-          : charactersWithoutPC.map((c) => {
-              if (!c) return null;
-              return (
-                <GridItem {...characterItemBorder} key={c.id}>
-                  <Character canEdit={false} character={c} />
-                </GridItem>
-              );
-            })}
+      <Grid templateRows="auto 1fr" overflow="auto" h="full">
+        <Grid
+          h="full"
+          templateColumns={
+            layout === 'top' ? `repeat(${characters.length}, 650px)` : '1fr'
+          }
+          gap={6}
+          pr={3}
+        >
+          {playerCharacter && (
+            <GridItem {...characterItemBorder} mb={8}>
+              <Character canEdit character={playerCharacter} />
+            </GridItem>
+          )}
+          {isGM
+            ? characters.map((c) => {
+                if (!c) return null;
+                return (
+                  <GridItem {...characterItemBorder} key={c.id}>
+                    <Character canEdit={false} character={c} />
+                  </GridItem>
+                );
+              })
+            : charactersWithoutPC.map((c) => {
+                if (!c) return null;
+                return (
+                  <GridItem {...characterItemBorder} key={c.id}>
+                    <Character canEdit={false} character={c} />
+                  </GridItem>
+                );
+              })}
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

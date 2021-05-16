@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   Box,
   Flex,
-  Switch,
   useColorMode,
   Spacer,
   IconButton,
@@ -16,6 +15,8 @@ import {
   RiHomeHeartLine,
   RiUserSmileLine,
   RiFileCopyLine,
+  RiMoonFill,
+  RiSunLine,
 } from 'react-icons/ri';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import ProfileDrawer from '../Profile/ProfileDrawer';
@@ -55,12 +56,13 @@ const SettingsBar: React.FC<SettingsBarProps> = ({ username, setUsername }) => {
         </Link>
       </Box>
       <Spacer />
-      <HStack spacing={1} align="center">
-        <Switch
-          colorScheme="purple"
-          isChecked={colorMode === 'dark'}
-          onChange={toggleColorMode}
-          mr={3}
+      <HStack spacing={2} align="center">
+        <IconButton
+          aria-label="toggle color mode"
+          icon={colorMode === 'dark' ? <RiSunLine /> : <RiMoonFill />}
+          onClick={toggleColorMode}
+          variant="ghost"
+          fontSize="24px"
         />
         <IconButton
           aria-label="copy URL"
@@ -68,7 +70,6 @@ const SettingsBar: React.FC<SettingsBarProps> = ({ username, setUsername }) => {
           fontSize="28px"
           variant="ghost"
           onClick={onCopy}
-          mr={3}
         />
         <IconButton
           aria-label="log in or sign up"
