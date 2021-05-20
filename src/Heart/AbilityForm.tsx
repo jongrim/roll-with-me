@@ -9,7 +9,6 @@ import {
   SliderFilledTrack,
   Box,
   Text,
-  Textarea,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,9 +17,12 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  useColorModeValue,
+  FormHelperText,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Ability, AbilityType } from './HeartGameTypes';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 interface AbilityFormProps {
   isOpen: boolean;
@@ -31,6 +33,8 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
   const [type, setType] = React.useState<AbilityType>('core');
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [descriptionError, setDescriptionError] = React.useState('');
+  const errorColor = useColorModeValue('red.600', 'red.300');
 
   const handleTypeChange = (val: number) => {
     switch (val) {
@@ -51,6 +55,10 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!description) {
+      setDescriptionError('Please provide a description');
+      return;
+    }
     onDone({
       id: uuidv4(),
       name,
@@ -60,6 +68,7 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
     setType('core');
     setName('');
     setDescription('');
+    setDescriptionError('');
   };
 
   return (
@@ -133,11 +142,24 @@ const AbilityForm = ({ isOpen, onDone }: AbilityFormProps) => {
             </FormControl>
             <FormControl id="ability-description" isRequired mt={4}>
               <FormLabel>Description</FormLabel>
-              <Textarea
-                variant="flushed"
-                value={description}
-                onChange={({ target }) => setDescription(target.value)}
-              />
+              <Box border="1px solid" borderColor="inherit" borderRadius="md">
+                <QuillEditor
+                  initial={null}
+                  save={(val) => {
+                    setDescription(val);
+                  }}
+                  saveDelay={0}
+                  height="32"
+                  placeholder="Ability description. Supports rich text formatting."
+                  editorId="abilityEditor"
+                  toolbar={false}
+                />
+              </Box>
+              {descriptionError && (
+                <FormHelperText color={errorColor}>
+                  {descriptionError}
+                </FormHelperText>
+              )}
             </FormControl>
           </ModalBody>
           <ModalFooter>

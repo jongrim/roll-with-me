@@ -189,12 +189,14 @@ const HeartGameArea = ({
               </Box>
             </Route>
             <Route exact path={`/heart/${name}/safety`}>
-              <SafetyForm
-                id={safetyModuleId}
-                setActionInProgress={(val) => {
-                  // TODO: show in progress indicator
-                }}
-              />
+              <Box pr={3}>
+                <SafetyForm
+                  id={safetyModuleId}
+                  setActionInProgress={(val) => {
+                    // TODO: show in progress indicator
+                  }}
+                />
+              </Box>
             </Route>
             <Route exact path={`/heart/${name}/map`}>
               <HeartMap hexMap={mapModule} />

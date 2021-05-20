@@ -93,6 +93,7 @@ const EquipmentForm = ({ isOpen, onDone }: EquipmentFormProps) => {
       rank,
       tags: tagsList.concat(tags),
     });
+    setTagsList([]);
   };
 
   return (
@@ -208,6 +209,7 @@ const EquipmentForm = ({ isOpen, onDone }: EquipmentFormProps) => {
                 />
                 <InputRightElement width="2.5rem">
                   <IconButton
+                    type="button"
                     icon={<RiAddLine />}
                     h="1.75rem"
                     size="sm"

@@ -1110,6 +1110,7 @@ export const createHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -1177,6 +1178,7 @@ export const updateHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -1244,6 +1246,7 @@ export const deleteHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      facilitatorNotes
       createdAt
       updatedAt
       characters {
@@ -2309,6 +2312,48 @@ export const deleteVisualDie = /* GraphQL */ `
           nextToken
         }
       }
+    }
+  }
+`;
+export const createRollableTable = /* GraphQL */ `
+  mutation CreateRollableTable(
+    $input: CreateRollableTableInput!
+    $condition: ModelRollableTableConditionInput
+  ) {
+    createRollableTable(input: $input, condition: $condition) {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateRollableTable = /* GraphQL */ `
+  mutation UpdateRollableTable(
+    $input: UpdateRollableTableInput!
+    $condition: ModelRollableTableConditionInput
+  ) {
+    updateRollableTable(input: $input, condition: $condition) {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteRollableTable = /* GraphQL */ `
+  mutation DeleteRollableTable(
+    $input: DeleteRollableTableInput!
+    $condition: ModelRollableTableConditionInput
+  ) {
+    deleteRollableTable(input: $input, condition: $condition) {
+      id
+      title
+      columns
+      createdAt
+      updatedAt
     }
   }
 `;

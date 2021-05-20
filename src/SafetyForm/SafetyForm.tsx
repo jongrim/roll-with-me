@@ -182,8 +182,8 @@ const SafetyForm: React.FC<SafetyFormProps> = ({ id, setActionInProgress }) => {
       </Text>
       <Text mt={2}>
         There is also an x-card feature which can be played by clicking the
-        x-card button in the top area. This will prompt everyone to stop and
-        reflect before continuing.
+        x-card button. This will trigger a full screen prompt for everyone so
+        that they know the x-card has been played.
       </Text>
       <Text mt={2}>
         For more about safety tools, and other options to consider for your

@@ -14,7 +14,6 @@ import {
   useColorModeValue,
   Stack,
   FormLabel,
-  Textarea,
   Spacer,
   IconButton,
   Tag,
@@ -45,8 +44,8 @@ import BeatsForm from './BeatsForm';
 import FalloutForm from './FalloutForm';
 import BondForm from './BondForm';
 import heart from './heart.svg';
-import debouncedUpdate from '../utils/debouncedUpdate';
 import { DelayedNumberInput, DelayedCheckbox } from '../Common/DelayedInputs';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
@@ -103,13 +102,12 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     [setSaving, character.id]
   );
 
-  const handleDelayedChange = (wait?: number) =>
-    debouncedUpdate(handleUpdate, wait);
-
-  const delayedTextUpdate = handleDelayedChange(2000);
-
   return (
-    <Box fontFamily="Roboto Slab" id={character.characterName || character.id}>
+    <Box
+      fontFamily="Roboto Slab"
+      id={character.characterName || character.id}
+      whiteSpace="pre-wrap"
+    >
       <Flex flex="1" fontFamily="Roboto Slab" fontSize="lg" mb={2}>
         <HStack spacing={3}>
           <Text fontWeight="500">
@@ -132,8 +130,6 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             updateCharacter({
               ...char,
               id: character.id || '',
-              gameID: character.gameID,
-              playerName: character.playerName,
             }).then(() => {
               setIsEditing(false);
             })
@@ -207,7 +203,16 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               {beats.map((beat, i) => {
                 return (
                   <Box key={`${beat.description} - ${i}`}>
-                    <Text>{beat.description}</Text>
+                    <QuillEditor
+                      readOnly
+                      updateOnChange
+                      placeholder="Click Edit Beats to update"
+                      toolbar={false}
+                      height="auto"
+                      save={() => {}}
+                      initial={beat.description}
+                      editorId={`beat-${i}-${character.id}`}
+                    />
                     <Text opacity="0.8">{beat.type}</Text>
                   </Box>
                 );
@@ -225,7 +230,6 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <BeatsForm
               isOpen={beatsFormOpen}
               onDone={async (beats?: Beat[]) => {
-                console.log(beats);
                 setBeatsFormOpen(false);
                 if (beats) {
                   const stringified = beats.map((b) => JSON.stringify(b));
@@ -276,9 +280,17 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         }}
                       />
                     </Flex>
-                    <Text fontSize="lg" mt={2}>
-                      {cur.description}
-                    </Text>
+                    <Box mt={2}>
+                      <QuillEditor
+                        readOnly
+                        updateOnChange
+                        toolbar={false}
+                        height="24"
+                        save={() => {}}
+                        initial={cur.description}
+                        editorId={`fallout-${cur.id}`}
+                      />
+                    </Box>
                   </Box>
                 );
               })}
@@ -463,7 +475,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     <DelayedCheckbox
                       delay={100}
                       value={domain}
-                      defaultChecked={characterDomains[domain].trained}
+                      defaultChecked={characterDomains[domain].knack}
                       onUpdate={async (nextVal) => {
                         const newKnacks = nextVal
                           ? {
@@ -523,7 +535,15 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                           }}
                         />
                       </Flex>
-                      <Text>{cur.description}</Text>
+                      <QuillEditor
+                        initial={cur.description}
+                        save={() => {}}
+                        readOnly
+                        updateOnChange
+                        toolbar={false}
+                        height="auto"
+                        editorId={`ability-${cur.id}`}
+                      />
                     </Box>
                   );
                 })}
@@ -743,22 +763,46 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         }}
                       />
                     </Flex>
-                    <Textarea
-                      defaultValue={cur.notes}
-                      onChange={({ target }) => {
-                        const updatedBond: Bond = {
-                          ...cur,
-                          notes: target.value,
-                        };
-                        const updatedBonds = bonds.map((b) => {
-                          if (b.id === cur.id) {
-                            return JSON.stringify(updatedBond);
-                          }
-                          return JSON.stringify(b);
-                        });
-                        delayedTextUpdate('bonds', updatedBonds);
-                      }}
-                    />
+
+                    {canEdit ? (
+                      <Box
+                        border="1px solid"
+                        borderColor="inherit"
+                        borderRadius="md"
+                      >
+                        <QuillEditor
+                          placeholder=""
+                          initial={cur.notes}
+                          save={(val) => {
+                            const updatedBond: Bond = {
+                              ...cur,
+                              notes: val,
+                            };
+                            const updatedBonds = bonds.map((b) => {
+                              if (b.id === cur.id) {
+                                return JSON.stringify(updatedBond);
+                              }
+                              return JSON.stringify(b);
+                            });
+                            handleUpdate('bonds', updatedBonds);
+                          }}
+                          height="32"
+                          editorId={`bond-${cur.id}`}
+                          toolbar={false}
+                        />
+                      </Box>
+                    ) : (
+                      <QuillEditor
+                        placeholder=""
+                        initial={cur.notes}
+                        save={() => {}}
+                        height="32"
+                        editorId={`bond-${cur.id}`}
+                        toolbar={false}
+                        readOnly
+                        updateOnChange
+                      />
+                    )}
                   </Box>
                 ))}
               </Stack>
@@ -788,18 +832,27 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               />
             </Box>
           </Stack>
-          {canEdit && (
-            <>
-              <Divider my={6} />
-              <FormLabel>Notes</FormLabel>
-              <Textarea
-                mb={40}
-                defaultValue={character.notes}
-                onChange={({ target }) =>
-                  delayedTextUpdate('notes', target.value)
-                }
-              />
-            </>
+          <Divider my={6} />
+          <FormLabel>Notes</FormLabel>
+          {canEdit ? (
+            <QuillEditor
+              placeholder=""
+              initial={character.notes}
+              save={(val) => handleUpdate('notes', val)}
+              height="sm"
+              editorId={`notes-${character.id}`}
+            />
+          ) : (
+            <QuillEditor
+              placeholder=""
+              initial={character.notes}
+              save={() => {}}
+              height="sm"
+              editorId={`notes-${character.id}`}
+              readOnly
+              updateOnChange
+              toolbar={false}
+            />
           )}
           {saving && (
             <Box pos="absolute" bottom="5%" right="5%">

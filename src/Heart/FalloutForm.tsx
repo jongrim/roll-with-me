@@ -9,7 +9,6 @@ import {
   SliderFilledTrack,
   Box,
   Text,
-  Textarea,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -23,6 +22,7 @@ import {
   UseRadioProps,
   useColorModeValue,
   Flex,
+  FormHelperText,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -31,6 +31,7 @@ import {
   Resistance,
   resistances,
 } from './HeartGameTypes';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 interface FalloutFormProps {
   isOpen: boolean;
@@ -41,6 +42,8 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
   const [type, setType] = React.useState<FalloutType>('minor');
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [descriptionError, setDescriptionError] = React.useState('');
+  const errorColor = useColorModeValue('red.600', 'red.300');
   const [resistance, setResistance] = React.useState<Resistance>('Blood');
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -53,6 +56,10 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!description) {
+      setDescriptionError('Please provide a description');
+      return;
+    }
     onDone({
       id: uuidv4(),
       type,
@@ -63,6 +70,7 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
     setType('minor');
     setTitle('');
     setDescription('');
+    setDescriptionError('');
     setResistance('Blood');
   };
 
@@ -141,13 +149,29 @@ const FalloutForm = ({ isOpen, onDone }: FalloutFormProps) => {
                 onChange={({ target }) => setTitle(target.value)}
               />
             </FormControl>
-            <FormControl id="fallout-description" isRequired mt={4}>
+            <FormControl
+              id="fallout-description"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(descriptionError)}
+            >
               <FormLabel>Description</FormLabel>
-              <Textarea
-                variant="flushed"
-                value={description}
-                onChange={({ target }) => setDescription(target.value)}
-              />
+              <Box border="1px solid" borderColor="inherit" borderRadius="md">
+                <QuillEditor
+                  initial={description}
+                  save={setDescription}
+                  placeholder="Fallout description. Supports rich text formatting."
+                  saveDelay={0}
+                  height="32"
+                  editorId="fallout-editor"
+                  toolbar={false}
+                />
+              </Box>
+              {descriptionError && (
+                <FormHelperText color={errorColor}>
+                  {descriptionError}
+                </FormHelperText>
+              )}
             </FormControl>
             <Flex mt={6} justifyContent="space-between" {...group}>
               {resistances.map((resistance) => (

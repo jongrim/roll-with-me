@@ -8,6 +8,7 @@ import {
   Center,
   HStack,
   Tooltip,
+  Text,
 } from '@chakra-ui/react';
 import {
   RiImageAddFill,
@@ -248,39 +249,40 @@ const HexGrid = ({
             {hexRect.map(({ x, y }) => {
               const config = gridConfig[`${x}-${y}`] || {};
               return (
-                <Box
-                  as="polygon"
-                  fill={config.fill || 'transparent'}
-                  stroke={defaultStrokeColor}
-                  strokeWidth="0.5"
-                  points={cornersPath}
-                  _hover={{ fill: config.fill || hoverColor, opacity: 0.6 }}
-                  key={`${x}, ${y}`}
-                  transform={`translate(${x}px, ${y}px) rotate(${
-                    config.rotation ?? 0
-                  }deg)`}
-                  transformOrigin="center"
-                  style={{
-                    transformBox: 'fill-box',
-                  }}
-                  cursor="pointer"
-                  // @ts-ignore
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <SpaceWrapper notes={config.notes} key={`${x}, ${y}`}>
+                  <Box
+                    as="polygon"
+                    fill={config.fill || 'transparent'}
+                    stroke={defaultStrokeColor}
+                    strokeWidth="0.5"
+                    points={cornersPath}
+                    _hover={{ fill: config.fill || hoverColor, opacity: 0.6 }}
+                    transform={`translate(${x}px, ${y}px) rotate(${
+                      config.rotation ?? 0
+                    }deg)`}
+                    transformOrigin="center"
+                    style={{
+                      transformBox: 'fill-box',
+                    }}
+                    cursor="pointer"
                     // @ts-ignore
-                    const box = e.target.getBoundingClientRect?.();
-                    const boxCenter = (box.right + box.left) / 2;
-                    const offset = 20;
-                    const xMid = boxCenter - offset;
-                    const yMid = box.top;
-                    if (xMid === coords.x && yMid === coords.y) {
-                      setControlsVisible((cur) => !cur);
-                    } else if (!controlsVisible) {
-                      setControlsVisible(true);
-                    }
-                    setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
-                  }}
-                />
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // @ts-ignore
+                      const box = e.target.getBoundingClientRect?.();
+                      const boxCenter = (box.right + box.left) / 2;
+                      const offset = 20;
+                      const xMid = boxCenter - offset;
+                      const yMid = box.top;
+                      if (xMid === coords.x && yMid === coords.y) {
+                        setControlsVisible((cur) => !cur);
+                      } else if (!controlsVisible) {
+                        setControlsVisible(true);
+                      }
+                      setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
+                    }}
+                  />
+                </SpaceWrapper>
               );
             })}
           </motion.svg>
@@ -401,5 +403,22 @@ const HexGrid = ({
     </Box>
   );
 };
+
+function SpaceWrapper({
+  notes,
+  children,
+}: {
+  notes?: string;
+  children: React.ReactNode;
+}) {
+  if (notes) {
+    return (
+      <Tooltip label={<Text whiteSpace="pre-wrap">{notes}</Text>}>
+        {children}
+      </Tooltip>
+    );
+  }
+  return <>{children}</>;
+}
 
 export default HexGrid;

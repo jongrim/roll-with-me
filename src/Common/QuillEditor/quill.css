@@ -1,0 +1,6 @@
+.ql-picker,
+.ql-stroke,
+.ql-editor::before {
+  color: inherit !important;
+  stroke: inherit !important;
+}

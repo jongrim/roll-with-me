@@ -3,7 +3,6 @@ import {
   Input,
   FormControl,
   FormLabel,
-  Textarea,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -16,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Bond } from './HeartGameTypes';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 interface BondFormProps {
   isOpen: boolean;
@@ -55,11 +55,18 @@ const BondForm = ({ isOpen, onDone }: BondFormProps) => {
             </FormControl>
             <FormControl id="ability-description" isRequired mt={4}>
               <FormLabel>Notes</FormLabel>
-              <Textarea
+              <QuillEditor
+                editorId="new-bond"
+                height="40"
+                save={setNotes}
+                saveDelay={0}
+                placeholder="Add notes about the bond"
+              />
+              {/* <Textarea
                 variant="flushed"
                 value={notes}
                 onChange={({ target }) => setNotes(target.value)}
-              />
+              /> */}
               <FormHelperText>
                 Use notes to track stress and other relevant info
               </FormHelperText>

@@ -716,6 +716,7 @@ export type CreateHeartRoomInput = {
   d8Dice: Array< string >,
   d10Dice: Array< string >,
   d12Dice: Array< string >,
+  facilitatorNotes?: string | null,
   heartRoomSafetyModuleId: string,
   heartRoomHexMapModuleId: string,
 };
@@ -727,6 +728,7 @@ export type ModelHeartRoomConditionInput = {
   d8Dice?: ModelStringInput | null,
   d10Dice?: ModelStringInput | null,
   d12Dice?: ModelStringInput | null,
+  facilitatorNotes?: ModelStringInput | null,
   and?: Array< ModelHeartRoomConditionInput | null > | null,
   or?: Array< ModelHeartRoomConditionInput | null > | null,
   not?: ModelHeartRoomConditionInput | null,
@@ -741,6 +743,7 @@ export type HeartRoom = {
   d8Dice?: Array< string >,
   d10Dice?: Array< string >,
   d12Dice?: Array< string >,
+  facilitatorNotes?: string | null,
   createdAt?: string,
   updatedAt?: string,
   characters?: ModelHeartCharacterConnection,
@@ -796,6 +799,7 @@ export type UpdateHeartRoomInput = {
   d8Dice?: Array< string > | null,
   d10Dice?: Array< string > | null,
   d12Dice?: Array< string > | null,
+  facilitatorNotes?: string | null,
   heartRoomSafetyModuleId?: string | null,
   heartRoomHexMapModuleId?: string | null,
 };
@@ -1224,6 +1228,39 @@ export type DeleteVisualDieInput = {
   id?: string | null,
 };
 
+export type CreateRollableTableInput = {
+  id?: string | null,
+  title: string,
+  columns: Array< string >,
+};
+
+export type ModelRollableTableConditionInput = {
+  title?: ModelStringInput | null,
+  columns?: ModelStringInput | null,
+  and?: Array< ModelRollableTableConditionInput | null > | null,
+  or?: Array< ModelRollableTableConditionInput | null > | null,
+  not?: ModelRollableTableConditionInput | null,
+};
+
+export type RollableTable = {
+  __typename: "RollableTable",
+  id?: string,
+  title?: string,
+  columns?: Array< string >,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateRollableTableInput = {
+  id: string,
+  title?: string | null,
+  columns?: Array< string > | null,
+};
+
+export type DeleteRollableTableInput = {
+  id?: string | null,
+};
+
 export type ModelTrophyDarkRoomFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1403,6 +1440,7 @@ export type ModelHeartRoomFilterInput = {
   d8Dice?: ModelStringInput | null,
   d10Dice?: ModelStringInput | null,
   d12Dice?: ModelStringInput | null,
+  facilitatorNotes?: ModelStringInput | null,
   and?: Array< ModelHeartRoomFilterInput | null > | null,
   or?: Array< ModelHeartRoomFilterInput | null > | null,
   not?: ModelHeartRoomFilterInput | null,
@@ -1567,6 +1605,21 @@ export type ModelVisualDieFilterInput = {
   and?: Array< ModelVisualDieFilterInput | null > | null,
   or?: Array< ModelVisualDieFilterInput | null > | null,
   not?: ModelVisualDieFilterInput | null,
+};
+
+export type ModelRollableTableFilterInput = {
+  id?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  columns?: ModelStringInput | null,
+  and?: Array< ModelRollableTableFilterInput | null > | null,
+  or?: Array< ModelRollableTableFilterInput | null > | null,
+  not?: ModelRollableTableFilterInput | null,
+};
+
+export type ModelRollableTableConnection = {
+  __typename: "ModelRollableTableConnection",
+  items?:  Array<RollableTable | null > | null,
+  nextToken?: string | null,
 };
 
 export type CreateTrophyDarkRoomMutationVariables = {
@@ -2796,6 +2849,7 @@ export type CreateHeartRoomMutation = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -2869,6 +2923,7 @@ export type UpdateHeartRoomMutation = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -2942,6 +2997,7 @@ export type DeleteHeartRoomMutation = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -4134,6 +4190,54 @@ export type DeleteVisualDieMutation = {
   } | null,
 };
 
+export type CreateRollableTableMutationVariables = {
+  input?: CreateRollableTableInput,
+  condition?: ModelRollableTableConditionInput | null,
+};
+
+export type CreateRollableTableMutation = {
+  createRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateRollableTableMutationVariables = {
+  input?: UpdateRollableTableInput,
+  condition?: ModelRollableTableConditionInput | null,
+};
+
+export type UpdateRollableTableMutation = {
+  updateRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteRollableTableMutationVariables = {
+  input?: DeleteRollableTableInput,
+  condition?: ModelRollableTableConditionInput | null,
+};
+
+export type DeleteRollableTableMutation = {
+  deleteRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetTrophyDarkRoomQueryVariables = {
   id?: string,
 };
@@ -5304,6 +5408,7 @@ export type GetHeartRoomQuery = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -5380,6 +5485,7 @@ export type ListHeartRoomsQuery = {
       d8Dice: Array< string >,
       d10Dice: Array< string >,
       d12Dice: Array< string >,
+      facilitatorNotes?: string | null,
       createdAt: string,
       updatedAt: string,
       characters?:  {
@@ -5460,6 +5566,7 @@ export type HeartRoomByNameQuery = {
       d8Dice: Array< string >,
       d10Dice: Array< string >,
       d12Dice: Array< string >,
+      facilitatorNotes?: string | null,
       createdAt: string,
       updatedAt: string,
       characters?:  {
@@ -6215,6 +6322,42 @@ export type ListVisualDiesQuery = {
           nextToken?: string | null,
         } | null,
       } | null,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRollableTableQueryVariables = {
+  id?: string,
+};
+
+export type GetRollableTableQuery = {
+  getRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListRollableTablesQueryVariables = {
+  filter?: ModelRollableTableFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRollableTablesQuery = {
+  listRollableTables?:  {
+    __typename: "ModelRollableTableConnection",
+    items?:  Array< {
+      __typename: "RollableTable",
+      id: string,
+      title: string,
+      columns: Array< string >,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -8125,6 +8268,7 @@ export type OnCreateHeartRoomSubscription = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -8193,6 +8337,7 @@ export type OnUpdateHeartRoomSubscription = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -8261,6 +8406,7 @@ export type OnDeleteHeartRoomSubscription = {
     d8Dice: Array< string >,
     d10Dice: Array< string >,
     d12Dice: Array< string >,
+    facilitatorNotes?: string | null,
     createdAt: string,
     updatedAt: string,
     characters?:  {
@@ -9351,5 +9497,38 @@ export type OnDeleteVisualDieSubscription = {
         nextToken?: string | null,
       } | null,
     } | null,
+  } | null,
+};
+
+export type OnCreateRollableTableSubscription = {
+  onCreateRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateRollableTableSubscription = {
+  onUpdateRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteRollableTableSubscription = {
+  onDeleteRollableTable?:  {
+    __typename: "RollableTable",
+    id: string,
+    title: string,
+    columns: Array< string >,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
