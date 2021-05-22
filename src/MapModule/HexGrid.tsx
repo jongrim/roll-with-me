@@ -226,6 +226,7 @@ const HexGrid = ({
               border: '2px solid',
               borderColor: 'inherit',
               borderRadius: '12px',
+              width: '100%',
             }}
             transition={{
               duration: 0.8,
