@@ -42,7 +42,7 @@ function parseMapConfig(config?: RawHexMapModule): ParsedHexMapModule {
     id: config?.id || '',
     gridConfiguration: JSON.parse(config?.gridConfiguration || '{}'),
     backgroundImages:
-      config?.backgroundImages.map((img) => JSON.parse(img)) || [],
+      config?.backgroundImages?.map((img) => JSON.parse(img)) || [],
     createdAt: config?.createdAt || '',
     updatedAt: config?.updatedAt || '',
   };

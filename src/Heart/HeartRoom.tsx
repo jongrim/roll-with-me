@@ -10,6 +10,7 @@ import HeartGameArea from './HeartGameArea';
 import './heart.css';
 import useHeartCharacterSubscription from './useHeartCharacterSubscription';
 import { newCharacter } from './newCharacter';
+import { HeartCharacter } from '../API';
 
 export const NEW_CHARACTER = 'NEW';
 export const GM = 'GM';
@@ -71,7 +72,11 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
   }, [data, send, state.value]);
 
   const characters = React.useMemo(() => {
-    return data?.characters.items ?? [];
+    return (
+      (data?.characters?.items?.filter((c) =>
+        Boolean(c)
+      ) as HeartCharacter[]) ?? []
+    );
   }, [data?.characters?.items]);
 
   const trackedCharacters = useHeartCharacterSubscription({
@@ -192,6 +197,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           safetyModuleId={data?.safetyModule?.id ?? ''}
           hexMap={
             data?.hexMapModule ?? {
+              __typename: 'HexMapModule',
               id: '',
               gridConfiguration: '{}',
               backgroundImages: [],
@@ -221,6 +227,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
                 (d) => JSON.parse(d) as { username: string; result: number }
               ) ?? [],
           }}
+          facilitatorNotes={data?.facilitatorNotes}
         />
       );
     default:

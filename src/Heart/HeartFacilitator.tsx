@@ -3,6 +3,9 @@ import { Box, Heading } from '@chakra-ui/react';
 import RollableTable from '../Common/RollableTable/RollableTable';
 import { RollableTableI } from '../Common/RollableTable/RollableTableTypes';
 import QuillEditor from '../Common/QuillEditor/QuillEditor';
+import { API } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+import SpinningCube from '../SpinningCube/SpinningCube';
 
 const resourceGeneratorTable: RollableTableI = {
   id: 'heart-resource-generator',
@@ -103,13 +106,35 @@ const resourceGeneratorTable: RollableTableI = {
   ],
 };
 
-export default function HeartFacilitator() {
-  async function updateNotes(val: string) {
-    // if (!moduleData?.id) return;
-    // setIsSaving(true);
-    // await updateGMModule(moduleData.id, val);
-    // setIsSaving(false);
-  }
+interface HeartFacilitatorProps {
+  facilitatorNotes?: string | null;
+  gameID: string;
+}
+
+export default function HeartFacilitator({
+  facilitatorNotes,
+  gameID,
+}: HeartFacilitatorProps) {
+  const [isSaving, setIsSaving] = React.useState(false);
+
+  const updateNotes = async (val: string) => {
+    setIsSaving(true);
+    try {
+      await API.graphql({
+        query: mutations.updateHeartRoom,
+        variables: {
+          input: {
+            id: gameID,
+            facilitatorNotes: val,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <Box pr={3}>
@@ -117,9 +142,14 @@ export default function HeartFacilitator() {
         Game Facilitator Tools
       </Heading>
       <Box mb={6}>
-        <QuillEditor save={updateNotes} initial={''} saveDelay={1500} />
+        <QuillEditor
+          save={updateNotes}
+          initial={facilitatorNotes ?? ''}
+          saveDelay={1500}
+        />
       </Box>
       <RollableTable table={resourceGeneratorTable} />
+      {isSaving && <SpinningCube />}
     </Box>
   );
 }
