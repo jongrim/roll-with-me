@@ -43,9 +43,9 @@ import ResourceForm from './ResourceForm';
 import BeatsForm from './BeatsForm';
 import FalloutForm from './FalloutForm';
 import BondForm from './BondForm';
-import heart from './heart.svg';
 import { DelayedNumberInput, DelayedCheckbox } from '../Common/DelayedInputs';
 import QuillEditor from '../Common/QuillEditor/QuillEditor';
+import SpinningCube from '../SpinningCube/SpinningCube';
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
@@ -854,11 +854,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               toolbar={false}
             />
           )}
-          {saving && (
-            <Box pos="absolute" bottom="5%" right="5%">
-              <Image src={heart} w={24} alt="heart with black tendrils" />
-            </Box>
-          )}
+          {saving && <SpinningCube />}
         </>
       )}
     </Box>
