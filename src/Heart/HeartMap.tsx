@@ -10,15 +10,15 @@ import MapNotesDrawer from '../MapModule/MapNotesDrawer';
 import MapSpaceSettingsDrawer from '../MapModule/MapSpaceSettingsDrawer';
 import MapSpaceBackgroundDrawer from '../MapModule/MapSpaceBackgroundDrawer';
 import { ViewBox } from '../MapModule/viewBox';
+import { Box } from '@chakra-ui/react';
 
 interface HeartMapProps {
   hexMap: ParsedHexMapModule;
 }
 
 const HeartMap = ({ hexMap }: HeartMapProps) => {
-  const [drawerMode, setDrawerMode] = React.useState<
-    'closed' | 'background' | 'notes' | 'settings'
-  >('closed');
+  const [drawerMode, setDrawerMode] =
+    React.useState<'closed' | 'background' | 'notes' | 'settings'>('closed');
   const [clickedHex, setClickedHex] = React.useState<HexSpaceConfig>(
     createEmptyHexSpaceConfig({ x: 0, y: 0 })
   );
@@ -39,7 +39,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
     setDrawerMode('settings');
   };
   return (
-    <>
+    <Box pr={3}>
       <HexGrid
         backgroundImages={hexMap.backgroundImages}
         gridConfig={hexMap.gridConfiguration}
@@ -80,7 +80,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
           )}
         </MapDrawer>
       </HexGrid>
-    </>
+    </Box>
   );
 };
 
