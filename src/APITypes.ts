@@ -1,10 +1,13 @@
 import {
   HeartCharacter,
+  HeartRoom,
+  HexMapModule,
+  SafetyModule,
   TrophyGoldBeast,
   TrophyGoldCharacter,
   TrophyGoldDiceModule,
 } from './API';
-import { SafetyModule, VisualCounter, VisualDie, VisualLabel } from './types';
+import { VisualCounter, VisualDie, VisualLabel } from './types';
 
 export interface TextRoomDetails {
   id: string;
@@ -92,7 +95,7 @@ export interface RawTrophyGoldCharacter extends TrophyGoldCharacter {
   createdAt: string;
   updatedAt: string;
 }
-export interface HeartRoomDetails {
+export interface HeartRoomDetails extends HeartRoom {
   id: string;
   name: string;
   d4Dice: Array<string>;
@@ -100,29 +103,16 @@ export interface HeartRoomDetails {
   d8Dice: Array<string>;
   d10Dice: Array<string>;
   d12Dice: Array<string>;
-  createdAt: string;
-  updatedAt: string;
-  characters: {
-    items: HeartCharacter[];
-  };
   safetyModule: RawSafetyModule;
   hexMapModule: RawHexMapModule;
 }
 
-export interface RawSafetyModule {
+export interface RawSafetyModule extends SafetyModule {
   id: string;
-  xCardActive: boolean;
-  linesAndVeils: Array<string>;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface RawHexMapModule {
+export interface RawHexMapModule extends HexMapModule {
   id: string;
-  gridConfiguration: string;
-  backgroundImages: Array<string>;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export type InteractiveRoomData = {

@@ -40,6 +40,7 @@ interface HeartGameProps {
     d10Dice: { username: string; result: number }[];
     d12Dice: { username: string; result: number }[];
   };
+  facilitatorNotes?: string | null;
 }
 
 const HeartGameArea = ({
@@ -52,11 +53,8 @@ const HeartGameArea = ({
   safetyModuleId,
   hexMap,
   dice,
+  facilitatorNotes,
 }: HeartGameProps) => {
-  const activeLink = useColorModeValue(
-    { opacity: 1, backgroundColor: 'gray.100' },
-    { opacity: 1, backgroundColor: 'gray.700' }
-  );
   const ref = React.useRef<HTMLButtonElement>(null);
   const mapModule = useMap({ map: hexMap });
   return (
@@ -80,68 +78,9 @@ const HeartGameArea = ({
           ]}
         >
           <GridItem px={4} pt={1} pb={3} h="full">
-            <Flex direction={['row', 'row', 'column']} h="full">
-              <Stack
-                direction={['row', 'row', 'column']}
-                spacing={4}
-                ml={-3}
-                alignItems={['center', 'center', 'stretch']}
-              >
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/heart/${name}/characters`}
-                >
-                  Characters
-                </Link>
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/heart/${name}/dice`}
-                >
-                  Dice
-                </Link>
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/heart/${name}/map`}
-                >
-                  Map
-                </Link>
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/heart/${name}/facilitator`}
-                >
-                  Facilitator
-                </Link>
-                <Link
-                  rounded="md"
-                  px={3}
-                  py={2}
-                  opacity="0.8"
-                  _activeLink={activeLink}
-                  as={ReactRouterLink}
-                  to={`/heart/${name}/safety`}
-                >
-                  Safety
-                </Link>
+            <HeartNav
+              name={name}
+              xCardButton={
                 <Button
                   size="sm"
                   variant="outline"
@@ -151,29 +90,8 @@ const HeartGameArea = ({
                 >
                   x-card
                 </Button>
-              </Stack>
-              <Spacer />
-              <Link
-                rounded="md"
-                ml={-3}
-                px={3}
-                py={2}
-                opacity="0.8"
-                _activeLink={activeLink}
-                as={ReactRouterLink}
-                to={`/heart/${name}/credits`}
-              >
-                Credits
-              </Link>
-              <Link
-                isExternal
-                href="https://rowanrookanddecard.com/product/heart-the-city-beneath-rpg/"
-                justifySelf="end"
-                fontWeight="500"
-              >
-                Get Heart
-              </Link>
-            </Flex>
+              }
+            />
           </GridItem>
           <GridItem overflow="auto">
             <Route exact path={`/heart/${name}/characters`}>
@@ -202,7 +120,10 @@ const HeartGameArea = ({
               <HeartMap hexMap={mapModule} />
             </Route>
             <Route exact path={`/heart/${name}/facilitator`}>
-              <HeartFacilitator />
+              <HeartFacilitator
+                facilitatorNotes={facilitatorNotes}
+                gameID={id}
+              />
             </Route>
             <Redirect path="*" to={`/heart/${name}/characters`} />
           </GridItem>
@@ -214,5 +135,105 @@ const HeartGameArea = ({
     </Grid>
   );
 };
+
+function HeartNav({
+  name,
+  xCardButton,
+}: {
+  name: string;
+  xCardButton: React.ReactElement;
+}) {
+  const activeLink = useColorModeValue(
+    { opacity: 1, backgroundColor: 'gray.100' },
+    { opacity: 1, backgroundColor: 'gray.700' }
+  );
+  return (
+    <Flex direction={['row', 'row', 'column']} h="full">
+      <Stack
+        direction={['row', 'row', 'column']}
+        spacing={4}
+        ml={-3}
+        alignItems={['center', 'center', 'stretch']}
+      >
+        <Link
+          rounded="md"
+          px={3}
+          py={2}
+          opacity="0.8"
+          _activeLink={activeLink}
+          as={ReactRouterLink}
+          to={`/heart/${name}/characters`}
+        >
+          Characters
+        </Link>
+        <Link
+          rounded="md"
+          px={3}
+          py={2}
+          opacity="0.8"
+          _activeLink={activeLink}
+          as={ReactRouterLink}
+          to={`/heart/${name}/dice`}
+        >
+          Dice
+        </Link>
+        <Link
+          rounded="md"
+          px={3}
+          py={2}
+          opacity="0.8"
+          _activeLink={activeLink}
+          as={ReactRouterLink}
+          to={`/heart/${name}/map`}
+        >
+          Map
+        </Link>
+        <Link
+          rounded="md"
+          px={3}
+          py={2}
+          opacity="0.8"
+          _activeLink={activeLink}
+          as={ReactRouterLink}
+          to={`/heart/${name}/facilitator`}
+        >
+          Facilitator
+        </Link>
+        <Link
+          rounded="md"
+          px={3}
+          py={2}
+          opacity="0.8"
+          _activeLink={activeLink}
+          as={ReactRouterLink}
+          to={`/heart/${name}/safety`}
+        >
+          Safety
+        </Link>
+      </Stack>
+      <Spacer />
+      <Link
+        rounded="md"
+        ml={-3}
+        px={3}
+        py={2}
+        opacity="0.8"
+        _activeLink={activeLink}
+        as={ReactRouterLink}
+        to={`/heart/${name}/credits`}
+      >
+        Credits
+      </Link>
+      <Link
+        isExternal
+        href="https://rowanrookanddecard.com/product/heart-the-city-beneath-rpg/"
+        justifySelf="end"
+        fontWeight="500"
+      >
+        Get Heart
+      </Link>
+    </Flex>
+  );
+}
 
 export default HeartGameArea;
