@@ -12,6 +12,7 @@ import NewRoom from './NewRoom/NewRoom';
 import UserRoomProvider from './UserRoomProvider';
 import Guide from './Guide/Guide';
 import RandomNumbersProvider from './RandomNumbersProvider';
+import ErrorBoundary from './ErrorBoundary';
 
 export const rollWithMeTheme = extendTheme({
   colors: {
@@ -43,42 +44,44 @@ export const rollWithMeTheme = extendTheme({
 function App() {
   return (
     <ChakraProvider theme={rollWithMeTheme} resetCSS>
-      <AuthProvider>
-        <UserRoomProvider>
-          <RandomNumbersProvider>
-            <Box className="App">
-              <Router>
-                <Switch>
-                  <Route exact path="/">
-                    <Home />
-                  </Route>
-                  <Route path="/new-room">
-                    <NewRoom />
-                  </Route>
-                  <Route path="/profile">
-                    <Profile />
-                  </Route>
-                  <Route path="/sign-in">
-                    <SignIn />
-                  </Route>
-                  <Route path="/feedback">
-                    <Feedback />
-                  </Route>
-                  <Route path="/privacy">
-                    <Privacy />
-                  </Route>
-                  <Route path="/guide">
-                    <Guide />
-                  </Route>
-                  <Route path="/:type/:name">
-                    <RoomProvider />
-                  </Route>
-                </Switch>
-              </Router>
-            </Box>
-          </RandomNumbersProvider>
-        </UserRoomProvider>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <UserRoomProvider>
+            <RandomNumbersProvider>
+              <Box className="App">
+                <Router>
+                  <Switch>
+                    <Route exact path="/">
+                      <Home />
+                    </Route>
+                    <Route path="/new-room">
+                      <NewRoom />
+                    </Route>
+                    <Route path="/profile">
+                      <Profile />
+                    </Route>
+                    <Route path="/sign-in">
+                      <SignIn />
+                    </Route>
+                    <Route path="/feedback">
+                      <Feedback />
+                    </Route>
+                    <Route path="/privacy">
+                      <Privacy />
+                    </Route>
+                    <Route path="/guide">
+                      <Guide />
+                    </Route>
+                    <Route path="/:type/:name">
+                      <RoomProvider />
+                    </Route>
+                  </Switch>
+                </Router>
+              </Box>
+            </RandomNumbersProvider>
+          </UserRoomProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </ChakraProvider>
   );
 }

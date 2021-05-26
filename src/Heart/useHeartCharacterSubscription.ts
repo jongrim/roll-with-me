@@ -2,6 +2,7 @@ import * as React from 'react';
 import { API } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
 import { HeartCharacter } from '../API';
+import rollbar from '../utils/logger';
 
 const useHeartCharacterSubscription = ({
   characters,
@@ -64,6 +65,9 @@ const useHeartCharacterSubscription = ({
               return c;
             });
           });
+        },
+        error: (error: any) => {
+          rollbar.error('subscription error', error);
         },
       });
     });

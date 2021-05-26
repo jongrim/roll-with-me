@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { HeartRoomDetails } from '../APITypes';
+import rollbar from '../utils/logger';
+import { useToast } from '@chakra-ui/toast';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
@@ -29,6 +31,7 @@ const getRoomData = async (id: string) => {
 };
 
 const useHeartRoomLookup = (name: string) => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
   const [roomData, setRoomData] = React.useState<HeartRoomDetails>();
   const history = useHistory();
@@ -62,9 +65,18 @@ const useHeartRoomLookup = (name: string) => {
       next: ({ value }) => {
         setRoomData(value.data?.onUpdateHeartRoom);
       },
+      error: (error: any) => {
+        rollbar.error('subscription error', error);
+        toast({
+          status: 'error',
+          description:
+            'Lost connection to game server. Please refresh the page',
+          duration: null,
+        });
+      },
     });
     return () => subscription.unsubscribe();
-  }, [roomData?.id]);
+  }, [roomData?.id, toast]);
 
   return { data: roomData, isLoading };
 };
