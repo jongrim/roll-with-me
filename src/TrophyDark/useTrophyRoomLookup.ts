@@ -5,6 +5,7 @@ import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { TrophyDarkRoomDetails } from '../APITypes';
 import { useToast } from '@chakra-ui/react';
+import rollbar from '../utils/logger';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
@@ -66,7 +67,8 @@ const useTrophyRoomLookup = (name: string) => {
       next: ({ value }) => {
         setRoomData(value.data?.onUpdateTrophyDarkRoomById);
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
+        rollbar.error('subscription error', error);
         toast({
           status: 'error',
           description:
