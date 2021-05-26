@@ -8,4 +8,8 @@ const isLocalhost = Boolean(
     )
 );
 
+const isDevDeploy = Boolean(window.location.hostname.includes('dev'));
+
+export const isProd = !(isLocalhost || isDevDeploy);
+
 export default isLocalhost;

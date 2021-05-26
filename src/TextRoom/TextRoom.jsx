@@ -5,6 +5,7 @@ import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
+import rollbar from '../utils/logger';
 
 import TextRoomPage from './TextRoomPage';
 import { assignResultsToDice, sumOfDice } from '../utils/rolls';
@@ -54,7 +55,8 @@ function TextRoom({ name }) {
         setCustomDice(parsedCustomDice);
         setIsRolling(false);
       },
-      error: (errors) => {
+      error: (error) => {
+        rollbar.error('subscription error', error);
         toast({
           status: 'error',
           description:

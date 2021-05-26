@@ -5,6 +5,7 @@ import * as queries from '../graphql/queries';
 import * as subscriptions from '../graphql/subscriptions';
 import { InteractiveRoomData } from '../APITypes';
 import { useToast } from '@chakra-ui/toast';
+import rollbar from '../utils/logger';
 
 const getRoomId = async (name: string) => {
   // @ts-ignore
@@ -64,7 +65,8 @@ const useRoomLookup = (name: string) => {
       next: ({ value }) => {
         setRoomData(value.data?.onUpdateInteractiveRoomById);
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
+        rollbar.error('subscription error', error);
         toast({
           status: 'error',
           description:
