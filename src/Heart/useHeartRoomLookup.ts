@@ -48,6 +48,7 @@ const useHeartRoomLookup = (name: string) => {
           if (e.message === 'room not found') {
             history.push(`/new-room?type=heart&name=${name}&notFound=true`);
           }
+          console.warn(e);
         });
     }
   }, [name, history]);

@@ -25,6 +25,7 @@ const mod6 = (x: number) => x % 6;
 const mod8 = (x: number) => x % 8;
 const mod10 = (x: number) => x % 10;
 const mod12 = (x: number) => x % 12;
+const mod20 = (x: number) => x % 20;
 
 const handleSubmit = async ({
   d4,
@@ -32,6 +33,7 @@ const handleSubmit = async ({
   d8,
   d10,
   d12,
+  d20,
   id,
   username,
 }: {
@@ -40,6 +42,7 @@ const handleSubmit = async ({
   d8: number;
   d10: number;
   d12: number;
+  d20: number;
   id: string;
   username: string;
 }) => {
@@ -49,6 +52,7 @@ const handleSubmit = async ({
   const d8Dice = [];
   const d10Dice = [];
   const d12Dice = [];
+  const d20Dice = [];
   for (let i = 0; i < d4; i++) {
     d4Dice.push(
       JSON.stringify({ username, result: `${mod4(results.pop() ?? 1) + 1}` })
@@ -74,6 +78,11 @@ const handleSubmit = async ({
       JSON.stringify({ username, result: `${mod12(results.pop() ?? 1) + 1}` })
     );
   }
+  for (let i = 0; i < d20; i++) {
+    d20Dice.push(
+      JSON.stringify({ username, result: `${mod20(results.pop() ?? 1) + 1}` })
+    );
+  }
   try {
     API.graphql({
       query: mutations.updateHeartRoom,
@@ -85,6 +94,7 @@ const handleSubmit = async ({
           d8Dice,
           d10Dice,
           d12Dice,
+          d20Dice,
         },
       },
     });
@@ -101,30 +111,35 @@ const HeartDiceForm = ({ id, username }: HeartDiceFormProps) => {
   const [d8, setD8] = React.useState(0);
   const [d10, setD10] = React.useState(0);
   const [d12, setD12] = React.useState(0);
+  const [d20, setD20] = React.useState(0);
   const [isRolling, setIsRolling] = React.useState(false);
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
         setIsRolling(true);
-        await handleSubmit({ d4, d6, d8, d10, d12, id, username });
+        await handleSubmit({ d4, d6, d8, d10, d12, d20, id, username });
         setIsRolling(false);
       }}
     >
-      <Grid templateColumns="1fr 1fr 1fr 1fr 1fr" gap={6}>
+      <Grid
+        templateColumns="1fr 1fr 1fr"
+        templateRows="auto auto"
+        columnGap={20}
+        rowGap={4}
+      >
         {[
           { val: d4, set: setD4, label: 'D4' },
           { val: d6, set: setD6, label: 'D6' },
           { val: d8, set: setD8, label: 'D8' },
           { val: d10, set: setD10, label: 'D10' },
           { val: d12, set: setD12, label: 'D12' },
+          { val: d20, set: setD20, label: 'D20' },
         ].map(({ val, set, label }) => (
           <GridItem key={label}>
             <FormControl id={`die-${label}`}>
               <FormLabel fontSize="xl">{label}</FormLabel>
               <NumberInput
-                variant="flushed"
-                size="md"
                 min={0}
                 val={val}
                 onChange={(_, value) => set(value)}
@@ -138,17 +153,16 @@ const HeartDiceForm = ({ id, username }: HeartDiceFormProps) => {
             </FormControl>
           </GridItem>
         ))}
-        <GridItem colSpan={5}>
-          <Button
-            w="full"
-            type="submit"
-            isLoading={isRolling}
-            colorScheme="red"
-          >
-            Roll
-          </Button>
-        </GridItem>
       </Grid>
+      <Button
+        w="full"
+        mt={4}
+        type="submit"
+        isLoading={isRolling}
+        colorScheme="red"
+      >
+        Roll
+      </Button>
     </form>
   );
 };

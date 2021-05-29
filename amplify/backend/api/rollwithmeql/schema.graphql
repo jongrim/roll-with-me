@@ -171,10 +171,11 @@ type HeartRoom
   d8Dice: [AWSJSON!]!
   d10Dice: [AWSJSON!]!
   d12Dice: [AWSJSON!]!
+  d20Dice: [AWSJSON!]
   safetyModule: SafetyModule! @connection
   hexMapModule: HexMapModule! @connection
   characters: [HeartCharacter] @connection(keyName: "byGame", fields: ["id"])
-  facilitatorNotes: AWSJSON
+  facilitatorNotes: String
 }
 
 type HeartCharacter

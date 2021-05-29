@@ -1083,6 +1083,7 @@ export const getHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      d20Dice
       facilitatorNotes
       createdAt
       updatedAt
@@ -1153,6 +1154,7 @@ export const listHeartRooms = /* GraphQL */ `
         d8Dice
         d10Dice
         d12Dice
+        d20Dice
         facilitatorNotes
         createdAt
         updatedAt
@@ -1233,6 +1235,7 @@ export const heartRoomByName = /* GraphQL */ `
         d8Dice
         d10Dice
         d12Dice
+        d20Dice
         facilitatorNotes
         createdAt
         updatedAt
