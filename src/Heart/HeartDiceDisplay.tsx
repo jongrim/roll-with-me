@@ -11,8 +11,10 @@ import {
   TabPanel,
   Stack,
   Flex,
+  Image,
 } from '@chakra-ui/react';
 import { HeartRoll } from './HeartGameTypes';
+import rules from './rules_in_brief.png';
 
 interface HeartDiceDisplayProps {
   d4Dice: { username: string; result: number }[];
@@ -54,6 +56,7 @@ const HeartDiceDisplay = ({
         <TabList>
           <Tab>Current Roll</Tab>
           <Tab>Previous Rolls</Tab>
+          <Tab>Rules in Brief</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px={0}>
@@ -194,6 +197,9 @@ const HeartDiceDisplay = ({
             </Grid>
           </TabPanel>
           <TabPanel px={0}>
+            <Text fontSize="sm" mb={3}>
+              Note, only rolls since connected are shown
+            </Text>
             <Grid
               templateColumns="repeat(3, 1fr)"
               columnGap={20}
@@ -225,6 +231,20 @@ const HeartDiceDisplay = ({
                 </Box>
               ))}
             </Grid>
+          </TabPanel>
+          <TabPanel px={0}>
+            <Image
+              src={rules}
+              alt="Rules in Brief. Pg 8 of Heart"
+              height="100%"
+              width="100%"
+              borderRadius="md"
+            />
+            <Text fontSize="sm" fontStyle="italic" mt={1} pb={4}>
+              Rules in Brief, pg. 8 of Heart Rulebook. Copyright by Grant Howitt
+              and Christopher Taylor. Published by Rowan, Rook and Decard Ltd.
+              Used with permission.
+            </Text>
           </TabPanel>
         </TabPanels>
       </Tabs>
