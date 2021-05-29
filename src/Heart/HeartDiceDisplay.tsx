@@ -237,7 +237,8 @@ const HeartDiceDisplay = ({
               src={rules}
               alt="Rules in Brief. Pg 8 of Heart"
               height="100%"
-              width="100%"
+              width="full"
+              maxW="5xl"
               borderRadius="md"
             />
             <Text fontSize="sm" fontStyle="italic" mt={1} pb={4}>
