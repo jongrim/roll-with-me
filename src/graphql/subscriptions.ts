@@ -1713,6 +1713,7 @@ export const onCreateHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      d20Dice
       facilitatorNotes
       createdAt
       updatedAt
@@ -1778,6 +1779,7 @@ export const onUpdateHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      d20Dice
       facilitatorNotes
       createdAt
       updatedAt
@@ -1843,6 +1845,7 @@ export const onDeleteHeartRoom = /* GraphQL */ `
       d8Dice
       d10Dice
       d12Dice
+      d20Dice
       facilitatorNotes
       createdAt
       updatedAt

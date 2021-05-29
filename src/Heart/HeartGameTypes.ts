@@ -1,3 +1,11 @@
+export interface HeartRoll {
+  id: string;
+  username: string;
+  dice: {
+    [label: string]: number[];
+  };
+}
+
 export type Resistance = 'Blood' | 'Mind' | 'Echo' | 'Fortune' | 'Supply';
 export const resistances: Resistance[] = [
   'Blood',

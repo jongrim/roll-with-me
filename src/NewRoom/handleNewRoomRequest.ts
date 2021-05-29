@@ -193,6 +193,7 @@ async function handleHeartRoomRequest(name: string) {
     d8Dice: [],
     d10Dice: [],
     d12Dice: [],
+    d20Dice: [],
   });
 }
 
