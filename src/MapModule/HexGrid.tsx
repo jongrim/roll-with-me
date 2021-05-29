@@ -75,6 +75,7 @@ const HexGrid = ({
   });
   const defaultStrokeColor = useColorModeValue('#CBD5E0', '#4A5568');
   const hoverColor = useColorModeValue('#F7FAFC', '#2D3748');
+  const [isDragging, setIsDragging] = React.useState(false);
   const [viewBox, setViewBox] = React.useState<ViewBox>(defaultViewBox);
   const [cornersPath, hexRect, width, height] = React.useMemo(() => {
     const Hex = extendHex({ size: 7, orientation: 'flat' });
@@ -212,81 +213,96 @@ const HexGrid = ({
           </HStack>
         </Center>
         <Center>
-          <motion.svg
-            animate={{
-              viewBox: viewBox.toString(),
-            }}
-            initial={{
-              viewBox: '0 0 150 100',
-            }}
-            preserveAspectRatio="xMidYMid slice"
-            style={{
-              minHeight: '36rem',
-              maxHeight: '80vh',
-              border: '2px solid',
-              borderColor: 'inherit',
-              borderRadius: '12px',
-              width: '100%',
-            }}
-            transition={{
-              duration: 0.8,
-            }}
+          <Box
+            minH="36rem"
+            maxH="80vh"
+            border="2px solid"
+            borderColor="inherit"
+            borderRadius="md"
+            minW="3xl"
+            w="full"
+            overflow="hidden"
           >
-            <defs>
-              {backgroundImages.map(({ path, id }) => {
+            <motion.svg
+              animate={{
+                viewBox: viewBox.toString(),
+              }}
+              initial={{
+                viewBox: '0 0 150 100',
+              }}
+              preserveAspectRatio="xMidYMid slice"
+              transition={{
+                duration: 0.8,
+              }}
+              drag
+              dragMomentum={false}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={() => {
+                setTimeout(() => {
+                  setIsDragging(false);
+                }, 300);
+              }}
+            >
+              <defs>
+                {backgroundImages.map(({ path, id }) => {
+                  return (
+                    <pattern
+                      id={id}
+                      key={id}
+                      patternUnits="userSpaceOnUse"
+                      width={width}
+                      height={height}
+                    >
+                      <image href={path} height={height} width={width} />
+                    </pattern>
+                  );
+                })}
+              </defs>
+              {hexRect.map(({ x, y }) => {
+                const config = gridConfig[`${x}-${y}`] || {};
                 return (
-                  <pattern
-                    id={id}
-                    key={id}
-                    patternUnits="userSpaceOnUse"
-                    width={width}
-                    height={height}
-                  >
-                    <image href={path} height={height} width={width} />
-                  </pattern>
+                  <SpaceWrapper notes={config.notes} key={`${x}, ${y}`}>
+                    <Box
+                      as="polygon"
+                      fill={config.fill || 'transparent'}
+                      stroke={defaultStrokeColor}
+                      strokeWidth="0.5"
+                      points={cornersPath}
+                      _hover={{ fill: config.fill || hoverColor, opacity: 0.6 }}
+                      transform={`translate(${x}px, ${y}px) rotate(${
+                        config.rotation ?? 0
+                      }deg)`}
+                      transformOrigin="center"
+                      style={{
+                        transformBox: 'fill-box',
+                      }}
+                      cursor="pointer"
+                      // @ts-ignore
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log(isDragging);
+                        if (isDragging) {
+                          return;
+                        }
+                        // @ts-ignore
+                        const box = e.target.getBoundingClientRect?.();
+                        const boxCenter = (box.right + box.left) / 2;
+                        const offset = 20;
+                        const xMid = boxCenter - offset;
+                        const yMid = box.top;
+                        if (xMid === coords.x && yMid === coords.y) {
+                          setControlsVisible((cur) => !cur);
+                        } else if (!controlsVisible) {
+                          setControlsVisible(true);
+                        }
+                        setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
+                      }}
+                    />
+                  </SpaceWrapper>
                 );
               })}
-            </defs>
-            {hexRect.map(({ x, y }) => {
-              const config = gridConfig[`${x}-${y}`] || {};
-              return (
-                <SpaceWrapper notes={config.notes} key={`${x}, ${y}`}>
-                  <Box
-                    as="polygon"
-                    fill={config.fill || 'transparent'}
-                    stroke={defaultStrokeColor}
-                    strokeWidth="0.5"
-                    points={cornersPath}
-                    _hover={{ fill: config.fill || hoverColor, opacity: 0.6 }}
-                    transform={`translate(${x}px, ${y}px) rotate(${
-                      config.rotation ?? 0
-                    }deg)`}
-                    transformOrigin="center"
-                    style={{
-                      transformBox: 'fill-box',
-                    }}
-                    cursor="pointer"
-                    // @ts-ignore
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // @ts-ignore
-                      const box = e.target.getBoundingClientRect?.();
-                      const boxCenter = (box.right + box.left) / 2;
-                      const offset = 20;
-                      const xMid = boxCenter - offset;
-                      const yMid = box.top;
-                      if (xMid === coords.x && yMid === coords.y) {
-                        setControlsVisible((cur) => !cur);
-                      } else if (!controlsVisible) {
-                        setControlsVisible(true);
-                      }
-                      setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
-                    }}
-                  />
-                </SpaceWrapper>
-              );
-            })}
-          </motion.svg>
+            </motion.svg>
+          </Box>
         </Center>
         <AnimatePresence>
           {controlsVisible && (
