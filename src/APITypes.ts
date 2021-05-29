@@ -1,5 +1,4 @@
 import {
-  HeartCharacter,
   HeartRoom,
   HexMapModule,
   SafetyModule,
@@ -98,11 +97,6 @@ export interface RawTrophyGoldCharacter extends TrophyGoldCharacter {
 export interface HeartRoomDetails extends HeartRoom {
   id: string;
   name: string;
-  d4Dice: Array<string>;
-  d6Dice: Array<string>;
-  d8Dice: Array<string>;
-  d10Dice: Array<string>;
-  d12Dice: Array<string>;
   safetyModule: RawSafetyModule;
   hexMapModule: RawHexMapModule;
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
   Button,
@@ -23,7 +24,7 @@ import HeartMap from './HeartMap';
 import useMap from '../MapModule/useMap';
 import { HeartCharacter } from '../API';
 import HeartFacilitator from './HeartFacilitator';
-
+import { HeartRoll } from './HeartGameTypes';
 interface HeartGameProps {
   name: string;
   username: string;
@@ -39,6 +40,7 @@ interface HeartGameProps {
     d8Dice: { username: string; result: number }[];
     d10Dice: { username: string; result: number }[];
     d12Dice: { username: string; result: number }[];
+    d20Dice: { username: string; result: number }[];
   };
   facilitatorNotes?: string | null;
 }
@@ -57,6 +59,46 @@ const HeartGameArea = ({
 }: HeartGameProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const mapModule = useMap({ map: hexMap });
+  const [prevRolls, setPrevRolls] = React.useState<HeartRoll[]>([]);
+  let rollUsername =
+    dice.d4Dice.length > 0
+      ? dice.d4Dice[0].username
+      : dice.d6Dice.length > 0
+      ? dice.d6Dice[0].username
+      : dice.d8Dice.length > 0
+      ? dice.d8Dice[0].username
+      : dice.d10Dice.length > 0
+      ? dice.d10Dice[0].username
+      : dice.d12Dice.length > 0
+      ? dice.d12Dice[0].username
+      : dice.d20Dice.length > 0
+      ? dice.d20Dice[0].username
+      : 'a ghost';
+  React.useEffect(() => {
+    setPrevRolls((cur) => [
+      {
+        id: uuidv4(),
+        username: rollUsername,
+        dice: {
+          D4: dice.d4Dice.map((d) => d.result),
+          D6: dice.d6Dice.map((d) => d.result),
+          D8: dice.d8Dice.map((d) => d.result),
+          D10: dice.d10Dice.map((d) => d.result),
+          D12: dice.d12Dice.map((d) => d.result),
+          D20: dice.d20Dice.map((d) => d.result),
+        },
+      },
+      ...cur,
+    ]);
+  }, [
+    rollUsername,
+    dice.d4Dice,
+    dice.d6Dice,
+    dice.d8Dice,
+    dice.d10Dice,
+    dice.d12Dice,
+    dice.d20Dice,
+  ]);
   return (
     <Grid
       h="full"
@@ -101,9 +143,17 @@ const HeartGameArea = ({
               />
             </Route>
             <Route exact path={`/heart/${name}/dice`}>
-              <Box pr={3}>
+              <Box px={3}>
                 <HeartDiceForm id={id} username={username} />
-                <HeartDiceDisplay {...dice} />
+                <HeartDiceDisplay
+                  d4Dice={dice.d4Dice}
+                  d6Dice={dice.d6Dice}
+                  d8Dice={dice.d8Dice}
+                  d10Dice={dice.d10Dice}
+                  d12Dice={dice.d12Dice}
+                  d20Dice={dice.d20Dice}
+                  prevRolls={prevRolls}
+                />
               </Box>
             </Route>
             <Route exact path={`/heart/${name}/safety`}>

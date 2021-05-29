@@ -103,6 +103,42 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
     setUsername(name);
   };
 
+  const dice = React.useMemo(() => {
+    return {
+      d4Dice:
+        data?.d4Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+      d6Dice:
+        data?.d6Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+      d8Dice:
+        data?.d8Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+      d10Dice:
+        data?.d10Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+      d12Dice:
+        data?.d12Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+      d20Dice:
+        data?.d20Dice?.map(
+          (d) => JSON.parse(d) as { username: string; result: number }
+        ) ?? [],
+    };
+  }, [
+    data?.d4Dice,
+    data?.d6Dice,
+    data?.d8Dice,
+    data?.d10Dice,
+    data?.d12Dice,
+    data?.d20Dice,
+  ]);
+
   switch (state.value) {
     case 'loading':
       return (
@@ -205,28 +241,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
               updatedAt: '',
             }
           }
-          dice={{
-            d4Dice:
-              data?.d4Dice?.map(
-                (d) => JSON.parse(d) as { username: string; result: number }
-              ) ?? [],
-            d6Dice:
-              data?.d6Dice?.map(
-                (d) => JSON.parse(d) as { username: string; result: number }
-              ) ?? [],
-            d8Dice:
-              data?.d8Dice?.map(
-                (d) => JSON.parse(d) as { username: string; result: number }
-              ) ?? [],
-            d10Dice:
-              data?.d10Dice?.map(
-                (d) => JSON.parse(d) as { username: string; result: number }
-              ) ?? [],
-            d12Dice:
-              data?.d12Dice?.map(
-                (d) => JSON.parse(d) as { username: string; result: number }
-              ) ?? [],
-          }}
+          dice={dice}
           facilitatorNotes={data?.facilitatorNotes}
         />
       );

@@ -1,5 +1,18 @@
 import * as React from 'react';
-import { Text, HStack, Stack, Box } from '@chakra-ui/react';
+import {
+  Text,
+  HStack,
+  Box,
+  Grid,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Stack,
+  Flex,
+} from '@chakra-ui/react';
+import { HeartRoll } from './HeartGameTypes';
 
 interface HeartDiceDisplayProps {
   d4Dice: { username: string; result: number }[];
@@ -7,6 +20,8 @@ interface HeartDiceDisplayProps {
   d8Dice: { username: string; result: number }[];
   d10Dice: { username: string; result: number }[];
   d12Dice: { username: string; result: number }[];
+  d20Dice: { username: string; result: number }[];
+  prevRolls: HeartRoll[];
 }
 
 const HeartDiceDisplay = ({
@@ -15,6 +30,8 @@ const HeartDiceDisplay = ({
   d8Dice,
   d10Dice,
   d12Dice,
+  d20Dice,
+  prevRolls,
 }: HeartDiceDisplayProps) => {
   let username =
     d4Dice.length > 0
@@ -27,83 +44,191 @@ const HeartDiceDisplay = ({
       ? d10Dice[0].username
       : d12Dice.length > 0
       ? d12Dice[0].username
+      : d20Dice.length > 0
+      ? d20Dice[0].username
       : 'a ghost';
+
   return (
-    <Stack direction="column" spacing={4} mt={6}>
-      {d4Dice.length > 0 && (
-        <Box>
-          <Text fontSize="lg" borderBottom="1px solid" borderColor="inherit">
-            D4
-          </Text>
-          <HStack spacing={3}>
-            {d4Dice.map((d, i) => (
-              <Text key={`${d.result} - ${i}`} fontWeight="500" fontSize="lg">
-                {d.result}
-              </Text>
-            ))}
-          </HStack>
-        </Box>
-      )}
-      {d6Dice.length > 0 && (
-        <Box>
-          <Text fontSize="lg" borderBottom="1px solid" borderColor="inherit">
-            D6
-          </Text>
-          <HStack spacing={3}>
-            {d6Dice.map((d, i) => (
-              <Text key={`${d.result} - ${i}`} fontWeight="500" fontSize="lg">
-                {d.result}
-              </Text>
-            ))}
-          </HStack>
-        </Box>
-      )}
-      {d8Dice.length > 0 && (
-        <Box>
-          <Text fontSize="lg" borderBottom="1px solid" borderColor="inherit">
-            D8
-          </Text>
-          <HStack spacing={3}>
-            {d8Dice.map((d, i) => (
-              <Text key={`${d.result} - ${i}`} fontWeight="500" fontSize="lg">
-                {d.result}
-              </Text>
-            ))}
-          </HStack>
-        </Box>
-      )}
-      {d10Dice.length > 0 && (
-        <Box>
-          <Text fontSize="lg" borderBottom="1px solid" borderColor="inherit">
-            D10
-          </Text>
-          <HStack spacing={3}>
-            {d10Dice.map((d, i) => (
-              <Text key={`${d.result} - ${i}`} fontWeight="500" fontSize="lg">
-                {d.result}
-              </Text>
-            ))}
-          </HStack>
-        </Box>
-      )}
-      {d12Dice.length > 0 && (
-        <Box>
-          <Text fontSize="lg" borderBottom="1px solid" borderColor="inherit">
-            D12
-          </Text>
-          <HStack spacing={3}>
-            {d12Dice.map((d, i) => (
-              <Text key={`${d.result} - ${i}`} fontWeight="500" fontSize="lg">
-                {d.result}
-              </Text>
-            ))}
-          </HStack>
-        </Box>
-      )}
-      <Text mt={6} opacity="0.8">
-        Rolled by {username}
-      </Text>
-    </Stack>
+    <Box py={4}>
+      <Tabs isFitted>
+        <TabList>
+          <Tab>Current Roll</Tab>
+          <Tab>Previous Rolls</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel px={0}>
+            <Text mb={2}>Rolled by {username}</Text>
+            <Grid templateColumns="repeat(3, 1fr)" rowGap={4} columnGap={20}>
+              {d4Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D4
+                  </Text>
+                  <HStack spacing={3}>
+                    {d4Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+              {d6Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D6
+                  </Text>
+                  <HStack spacing={3}>
+                    {d6Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+              {d8Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D8
+                  </Text>
+                  <HStack spacing={3}>
+                    {d8Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+              {d10Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D10
+                  </Text>
+                  <HStack spacing={3}>
+                    {d10Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+              {d12Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D12
+                  </Text>
+                  <HStack spacing={3}>
+                    {d12Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+              {d20Dice.length > 0 && (
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    borderBottom="1px solid"
+                    borderColor="inherit"
+                  >
+                    D20
+                  </Text>
+                  <HStack spacing={3}>
+                    {d20Dice.map((d, i) => (
+                      <Text
+                        key={`${d.result} - ${i}`}
+                        fontWeight="500"
+                        fontSize="lg"
+                      >
+                        {d.result}
+                      </Text>
+                    ))}
+                  </HStack>
+                </Box>
+              )}
+            </Grid>
+          </TabPanel>
+          <TabPanel px={0}>
+            <Grid
+              templateColumns="repeat(3, 1fr)"
+              columnGap={20}
+              rowGap={4}
+              alignItems="start"
+            >
+              {prevRolls.map((roll) => (
+                <Box
+                  key={roll.id}
+                  px={4}
+                  py={3}
+                  boxShadow="md"
+                  border="1px solid"
+                  borderColor="inherit"
+                  borderRadius="md"
+                >
+                  <Stack direction="column">
+                    {Object.entries(roll.dice).map(([label, numbers]) => {
+                      if (numbers.length === 0) return null;
+                      return (
+                        <Flex key={`${roll.id}-${label}`}>
+                          <Text fontWeight="600">{label}</Text>
+                          <Text ml={3}>{numbers.join(', ')}</Text>
+                        </Flex>
+                      );
+                    })}
+                  </Stack>
+                  <Text fontSize="sm">Rolled by {roll.username}</Text>
+                </Box>
+              ))}
+            </Grid>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
   );
 };
 
