@@ -5,12 +5,12 @@ import {
   DrawerBody,
   Stack,
   Text,
-  Textarea,
   useToast,
   Link,
 } from '@chakra-ui/react';
 import { updateMapConfiguration } from './useMap';
 import { HexSpaceConfig, ParsedHexMapModule } from './gridConfiguration';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
 interface MapNotesDrawerProps {
   clickedHex: HexSpaceConfig;
@@ -32,10 +32,15 @@ function MapNotesDrawer({
       <DrawerHeader fontFamily={fontFamily}>Space Notes</DrawerHeader>
       <DrawerBody fontFamily={fontFamily}>
         <Stack direction="column" spacing={3}>
-          <Textarea
-            id="space-notes"
-            defaultValue={clickedHex.notes}
-            onChange={({ target }) => setNotes(target.value)}
+          <QuillEditor
+            initial={clickedHex.notes}
+            save={(val) => setNotes(val)}
+            height="lg"
+            editorId="space-notes"
+            saveDelay={0}
+            placeholder="Create notes about this space. Be careful with pasting content as it may paste color values that
+            can make the text tough to read for light or dark backgrounds. Paste
+            without formatting or add a color background using the toolbar."
           />
           <Button
             onClick={() => {

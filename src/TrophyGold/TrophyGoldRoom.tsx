@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box, Flex, Spinner, useToast } from '@chakra-ui/react';
-import { useAnimation } from 'framer-motion';
 import useTrophyRoomLookup from './useTrophyRoomLookup';
 import { useMachine } from '@xstate/react';
 import { Machine, assign } from 'xstate';

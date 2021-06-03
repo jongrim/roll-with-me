@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   IconButton,
-  useToast,
   useColorModeValue,
   Flex,
   Menu,
@@ -34,8 +33,6 @@ export default function RollableTable({
   onUpdate,
   editable = false,
 }: RollableTableProps) {
-  const toast = useToast();
-
   const [columns, setColumns] = React.useState(table.columns);
   const maxLength = React.useMemo(() => {
     return columns.reduce(
