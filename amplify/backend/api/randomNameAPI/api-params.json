@@ -1,40 +1,41 @@
 {
-    "paths": [
-        {
-            "name": "/random-room-name",
-            "lambdaFunction": "randomRoomName",
-            "privacy": {
-                "protected": true,
-                "auth": [
-                    "/GET"
-                ],
-                "unauth": [
-                    "/GET"
-                ]
-            }
-        }
-    ],
-    "resourceName": "randomNameAPI",
-    "apiName": "randomNameAPI",
-    "functionArns": [
-        {
-            "lambdaFunction": "randomRoomName"
-        }
-    ],
-    "privacy": {
-        "auth": 1,
-        "unauth": 1,
-        "authRoleName": "amplify-rollwithme-dev-192622-authRole",
-        "unAuthRoleName": "amplify-rollwithme-dev-192622-unauthRole"
-    },
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "randomRoomName",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
-        }
-    ]
+  "paths": [
+    {
+      "name": "/random-room-name",
+      "lambdaFunction": "randomRoomName",
+      "privacy": {
+        "protected": true,
+        "auth": [
+          "/GET"
+        ],
+        "unauth": [
+          "/GET"
+        ]
+      },
+      "policyResourceName": "/random-room-name"
+    }
+  ],
+  "resourceName": "randomNameAPI",
+  "apiName": "randomNameAPI",
+  "functionArns": [
+    {
+      "lambdaFunction": "randomRoomName"
+    }
+  ],
+  "privacy": {
+    "auth": 1,
+    "unauth": 1,
+    "authRoleName": "amplify-rollwithme-dev-192622-authRole",
+    "unAuthRoleName": "amplify-rollwithme-dev-192622-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "randomRoomName",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
 }
