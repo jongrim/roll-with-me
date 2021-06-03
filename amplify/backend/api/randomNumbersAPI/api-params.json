@@ -1,45 +1,45 @@
 {
-    "paths": [
-        {
-            "name": "/random-numbers",
-            "lambdaFunction": "randomNumbers",
-            "privacy": {
-                "protected": true,
-                "auth": [
-                    "/POST",
-                    "/GET",
-                    "/PUT",
-                    "/PATCH",
-                    "/DELETE"
-                ],
-                "unauth": [
-                    "/GET"
-                ]
-            },
-            "policyResourceName": "/random-numbers"
-        }
-    ],
-    "resourceName": "randomNumbersAPI",
-    "apiName": "randomNumbersAPI",
-    "functionArns": [
-        {
-            "lambdaFunction": "randomNumbers"
-        }
-    ],
-    "privacy": {
-        "auth": 1,
-        "unauth": 1,
-        "authRoleName": "amplify-rollwithme-dev-192622-authRole",
-        "unAuthRoleName": "amplify-rollwithme-dev-192622-unauthRole"
-    },
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "randomNumbers",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
-        }
-    ]
+  "paths": [
+    {
+      "name": "/random-numbers",
+      "lambdaFunction": "randomNumbers",
+      "privacy": {
+        "protected": true,
+        "auth": [
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
+        ],
+        "unauth": [
+          "/GET"
+        ]
+      },
+      "policyResourceName": "/random-numbers"
+    }
+  ],
+  "resourceName": "randomNumbersAPI",
+  "apiName": "randomNumbersAPI",
+  "functionArns": [
+    {
+      "lambdaFunction": "randomNumbers"
+    }
+  ],
+  "privacy": {
+    "auth": 1,
+    "unauth": 1,
+    "authRoleName": "amplify-rollwithme-dev-192622-authRole",
+    "unAuthRoleName": "amplify-rollwithme-dev-192622-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "randomNumbers",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
 }

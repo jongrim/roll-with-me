@@ -2,14 +2,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 let note = uuidv4();
 
-context('signed in', () => {
+context('lines and veils', () => {
   before(() => {
     window.localStorage.setItem('desktop-notifications-declined', 'true');
-    cy.login();
   });
 
   it('can add safety items to a room', () => {
     cy.visit('http://localhost:3000/r/cypress-testing-room');
+    cy.enterUsername('cypress');
     cy.findByText('Safety').click({ force: true });
     cy.findByTestId('new-item-form').within(() => {
       cy.findByLabelText(/Item/i).type('spiders', { force: true });
