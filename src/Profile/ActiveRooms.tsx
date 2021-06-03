@@ -18,16 +18,16 @@ import { RiPencilLine } from 'react-icons/ri';
 import { userRoom, UserRoomContext } from '../UserRoomProvider';
 import * as mutations from '../graphql/mutations';
 
-async function deleteUserRoom({ id }: { id: string }) {
-  await API.graphql({
-    query: mutations.deleteUserRoom,
-    variables: {
-      input: {
-        id,
-      },
-    },
-  });
-}
+// async function deleteUserRoom({ id }: { id: string }) {
+//   await API.graphql({
+//     query: mutations.deleteUserRoom,
+//     variables: {
+//       input: {
+//         id,
+//       },
+//     },
+//   });
+// }
 
 const ActiveRooms = () => {
   const { userRooms } = React.useContext(UserRoomContext);
