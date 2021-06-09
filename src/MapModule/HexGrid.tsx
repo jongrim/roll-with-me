@@ -6,21 +6,15 @@ import {
   Icon,
   IconButton,
   Center,
-  HStack,
   Tooltip,
   Text,
+  Flex,
 } from '@chakra-ui/react';
 import {
   RiImageAddFill,
   RiStickyNoteLine,
   RiSettings3Line,
-  RiZoomOutLine,
-  RiZoomInLine,
-  RiArrowDropDownLine,
-  RiArrowDropLeftLine,
-  RiArrowDropRightLine,
-  RiArrowDropUpLine,
-  RiFocus3Line,
+  RiInformationLine,
 } from 'react-icons/ri';
 import { AnimatePresence, motion } from 'framer-motion';
 import { makeViewBox, ViewBox } from './viewBox';
@@ -29,8 +23,9 @@ import {
   GridConfig,
   HexSpaceConfig,
 } from './gridConfiguration';
+import QuillEditor from '../Common/QuillEditor/QuillEditor';
 
-const defaultViewBox = makeViewBox({ x: 0, y: 0, width: 150, height: 100 });
+const defaultViewBox = makeViewBox({ x: 0, y: 0, width: 200, height: 125 });
 
 interface GridContextI {
   viewBox: ViewBox;
@@ -74,7 +69,8 @@ const HexGrid = ({
     rawY: 0,
   });
   const defaultStrokeColor = useColorModeValue('#CBD5E0', '#4A5568');
-  const hoverColor = useColorModeValue('#F7FAFC', '#2D3748');
+  const hoverColor = useColorModeValue('#EDF2F7', '#2D3748');
+  const [isDragging, setIsDragging] = React.useState(false);
   const [viewBox, setViewBox] = React.useState<ViewBox>(defaultViewBox);
   const [cornersPath, hexRect, width, height] = React.useMemo(() => {
     const Hex = extendHex({ size: 7, orientation: 'flat' });
@@ -142,151 +138,121 @@ const HexGrid = ({
       }}
     >
       <GridContext.Provider value={{ viewBox, updateViewBox: setViewBox }}>
-        <Center>
-          <HStack my={3} spacing={2}>
-            <IconButton
-              icon={<Icon as={RiArrowDropLeftLine} w={8} h={8} />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="pan left"
-              onClick={() => setViewBox(viewBox.panLeft())}
-            />
-            <IconButton
-              icon={<Icon as={RiArrowDropUpLine} w={8} h={8} />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="pan up"
-              onClick={() => setViewBox(viewBox.panUp())}
-            />
-            <IconButton
-              icon={<Icon as={RiArrowDropDownLine} w={8} h={8} />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="pan down"
-              onClick={() => setViewBox(viewBox.panDown())}
-            />
-            <IconButton
-              icon={<Icon as={RiArrowDropRightLine} w={8} h={8} />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="pan right"
-              onClick={() => setViewBox(viewBox.panRight())}
-            />
-            <IconButton
-              icon={<RiZoomInLine />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="zoom in"
-              onClick={() => {
-                setViewBox(viewBox.zoomIn());
-              }}
-            />
-            <IconButton
-              icon={<RiZoomOutLine />}
-              variant="ghost"
-              rounded="lg"
-              aria-label="zoom out"
-              onClick={() => setViewBox(viewBox.zoomOut())}
-            />
-            <Tooltip
-              label="Reset zoom and center"
-              aria-label="reset zoom and center"
-            >
-              <IconButton
-                icon={<RiFocus3Line />}
-                variant="ghost"
-                rounded="lg"
-                aria-label="reset zoom and center"
-                onClick={() => {
-                  setViewBox(
-                    viewBox.centerOnPoint({
-                      centerX: 75,
-                      centerY: 50,
-                      newWidth: 150,
-                      newHeight: 100,
-                    })
-                  );
-                }}
-              />
-            </Tooltip>
-          </HStack>
+        <Center mb={2}>
+          <Tooltip
+            label={
+              <span>
+                <Text>Click and drag to move the map.</Text>
+                <Text>Click a space to open options.</Text>
+                <Text>Click it again to close.</Text>
+              </span>
+            }
+          >
+            <span>
+              <Icon icon={<RiInformationLine />} h={8} w={8} />
+            </span>
+          </Tooltip>
         </Center>
         <Center>
-          <motion.svg
-            animate={{
-              viewBox: viewBox.toString(),
-            }}
-            initial={{
-              viewBox: '0 0 150 100',
-            }}
-            preserveAspectRatio="xMidYMid slice"
-            style={{
-              minHeight: '36rem',
-              maxHeight: '80vh',
-              border: '2px solid',
-              borderColor: 'inherit',
-              borderRadius: '12px',
-              width: '100%',
-            }}
-            transition={{
-              duration: 0.8,
-            }}
+          <Flex
+            minH="36rem"
+            maxH="80vh"
+            border="2px solid"
+            borderColor="inherit"
+            borderRadius="md"
+            maxW="85rem"
+            overflow="hidden"
+            justifyContent="center"
+            alignItems="center"
           >
-            <defs>
-              {backgroundImages.map(({ path, id }) => {
-                return (
-                  <pattern
-                    id={id}
-                    key={id}
-                    patternUnits="userSpaceOnUse"
-                    width={width}
-                    height={height}
-                  >
-                    <image href={path} height={height} width={width} />
-                  </pattern>
-                );
-              })}
-            </defs>
-            {hexRect.map(({ x, y }) => {
-              const config = gridConfig[`${x}-${y}`] || {};
-              return (
-                <SpaceWrapper notes={config.notes} key={`${x}, ${y}`}>
-                  <Box
-                    as="polygon"
-                    fill={config.fill || 'transparent'}
-                    stroke={defaultStrokeColor}
-                    strokeWidth="0.5"
-                    points={cornersPath}
-                    _hover={{ fill: config.fill || hoverColor, opacity: 0.6 }}
-                    transform={`translate(${x}px, ${y}px) rotate(${
-                      config.rotation ?? 0
-                    }deg)`}
-                    transformOrigin="center"
-                    style={{
-                      transformBox: 'fill-box',
-                    }}
-                    cursor="pointer"
-                    // @ts-ignore
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // @ts-ignore
-                      const box = e.target.getBoundingClientRect?.();
-                      const boxCenter = (box.right + box.left) / 2;
-                      const offset = 20;
-                      const xMid = boxCenter - offset;
-                      const yMid = box.top;
-                      if (xMid === coords.x && yMid === coords.y) {
-                        setControlsVisible((cur) => !cur);
-                      } else if (!controlsVisible) {
-                        setControlsVisible(true);
-                      }
-                      setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
-                    }}
-                  />
-                </SpaceWrapper>
-              );
-            })}
-          </motion.svg>
+            <Box flex="0">
+              <motion.svg
+                initial={{
+                  viewBox: '0 0 162 135',
+                }}
+                style={{
+                  width: '80rem',
+                }}
+                preserveAspectRatio="xMidYMid slice"
+                transition={{
+                  duration: 0.8,
+                }}
+                drag
+                dragMomentum={false}
+                onDragStart={() => setIsDragging(true)}
+                onDragEnd={() => {
+                  setTimeout(() => {
+                    setIsDragging(false);
+                  }, 300);
+                }}
+              >
+                <defs>
+                  {backgroundImages.map(({ path, id }) => {
+                    return (
+                      <pattern
+                        id={id}
+                        key={id}
+                        patternUnits="userSpaceOnUse"
+                        width={width}
+                        height={height}
+                      >
+                        <image href={path} height={height} width={width} />
+                      </pattern>
+                    );
+                  })}
+                </defs>
+                {hexRect.map(({ x, y }) => {
+                  const config = gridConfig[`${x}-${y}`] || {};
+                  return (
+                    <SpaceWrapper
+                      notes={config.notes}
+                      id={`space-${Math.round(x)}-${Math.round(y)}`}
+                      key={`${x}, ${y}`}
+                    >
+                      <Box
+                        as="polygon"
+                        fill={config.fill || 'transparent'}
+                        stroke={defaultStrokeColor}
+                        strokeWidth="0.5"
+                        points={cornersPath}
+                        _hover={{
+                          fill: config.fill || hoverColor,
+                          opacity: 0.6,
+                        }}
+                        transform={`translate(${x}px, ${y}px) rotate(${
+                          config.rotation ?? 0
+                        }deg)`}
+                        transformOrigin="center"
+                        style={{
+                          transformBox: 'fill-box',
+                        }}
+                        cursor="pointer"
+                        // @ts-ignore
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (isDragging) {
+                            return;
+                          }
+                          // @ts-ignore
+                          const box = e.target.getBoundingClientRect?.();
+                          const boxCenter = (box.right + box.left) / 2;
+                          const offset = 20;
+                          const xMid = boxCenter - offset;
+                          const yMid = box.top;
+                          if (xMid === coords.x && yMid === coords.y) {
+                            setControlsVisible((cur) => !cur);
+                          } else if (!controlsVisible) {
+                            setControlsVisible(true);
+                          }
+                          setCoords({ x: xMid, rawX: x, y: yMid, rawY: y });
+                        }}
+                      />
+                    </SpaceWrapper>
+                  );
+                })}
+              </motion.svg>
+            </Box>
+          </Flex>
         </Center>
         <AnimatePresence>
           {controlsVisible && (
@@ -408,13 +374,29 @@ const HexGrid = ({
 function SpaceWrapper({
   notes,
   children,
+  id,
 }: {
   notes?: string;
   children: React.ReactNode;
+  id: string;
 }) {
+  const bg = useColorModeValue('gray.50', 'gray.600');
   if (notes) {
     return (
-      <Tooltip label={<Text whiteSpace="pre-wrap">{notes}</Text>}>
+      <Tooltip
+        bg={bg}
+        label={
+          <QuillEditor
+            initial={notes}
+            save={() => {}}
+            readOnly
+            updateOnChange
+            toolbar={false}
+            height="auto"
+            editorId={id}
+          />
+        }
+      >
         {children}
       </Tooltip>
     );

@@ -1,4 +1,33 @@
 {
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rollwithme-dev-192622-authRole",
+      "UnauthRoleArn": "arn:aws:iam::298644330995:role/amplify-rollwithme-dev-192622-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::298644330995:role/amplify-rollwithme-dev-192622-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
+      "UnauthRoleName": "amplify-rollwithme-dev-192622-unauthRole",
+      "StackName": "amplify-rollwithme-dev-192622",
+      "StackId": "arn:aws:cloudformation:us-east-1:298644330995:stack/amplify-rollwithme-dev-192622/5d325250-22eb-11eb-8561-12704013453b",
+      "AmplifyAppId": "d1y92bo115vf7n",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-rollwithme-dev-192622-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "rollwithmea4fdec43": {}
+      },
+      "function": {
+        "randomRoomName": {
+          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
+          "s3Key": "amplify-builds/randomRoomName-54587641794572782f57-build.zip"
+        },
+        "randomNumbers": {
+          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
+          "s3Key": "amplify-builds/randomNumbers-434362492f4535784b6a-build.zip"
+        }
+      }
+    }
+  },
   "main": {
     "awscloudformation": {
       "AuthRoleName": "amplify-rollwithme-main-192344-authRole",
@@ -18,34 +47,6 @@
       "function": {
         "randomRoomName": {},
         "randomNumbers": {}
-      }
-    }
-  },
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-rollwithme-dev-192622-authRole",
-      "UnauthRoleArn": "arn:aws:iam::298644330995:role/amplify-rollwithme-dev-192622-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::298644330995:role/amplify-rollwithme-dev-192622-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
-      "UnauthRoleName": "amplify-rollwithme-dev-192622-unauthRole",
-      "StackName": "amplify-rollwithme-dev-192622",
-      "StackId": "arn:aws:cloudformation:us-east-1:298644330995:stack/amplify-rollwithme-dev-192622/5d325250-22eb-11eb-8561-12704013453b",
-      "AmplifyAppId": "d1y92bo115vf7n"
-    },
-    "categories": {
-      "auth": {
-        "rollwithmea4fdec43": {}
-      },
-      "function": {
-        "randomRoomName": {
-          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
-          "s3Key": "amplify-builds/randomRoomName-54587641794572782f57-build.zip"
-        },
-        "randomNumbers": {
-          "deploymentBucketName": "amplify-rollwithme-dev-192622-deployment",
-          "s3Key": "amplify-builds/randomNumbers-434362492f4535784b6a-build.zip"
-        }
       }
     }
   }

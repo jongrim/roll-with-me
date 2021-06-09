@@ -5,18 +5,11 @@ import {
   HStack,
   Icon,
   IconButton,
-  ScaleFade,
   Text,
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
 import { BsTriangle, BsSquare, BsDiamond, BsOctagon } from 'react-icons/bs';
-import {
-  RiRestartLine,
-  RiDeleteBin4Line,
-  RiUser3Fill,
-  RiSettings4Fill,
-} from 'react-icons/ri';
 import { API } from 'aws-amplify';
 import gsap, { Elastic } from 'gsap';
 import { AnimationControls, motion, useAnimation } from 'framer-motion';
@@ -24,7 +17,6 @@ import { Draggable } from 'gsap/all';
 import * as subscriptions from '../graphql/subscriptions';
 import * as mutations from '../graphql/mutations';
 import { VisualDie } from '../types';
-import { RandomNumbersContext } from '../RandomNumbersProvider';
 import { LightDie } from '../TrophyShared/LightDiceDarkDice';
 
 const Heptagon = () => {
@@ -456,108 +448,108 @@ const VDie: React.FC<{
   }
 };
 
-const DieActions = ({
-  id,
-  isVisible,
-  sides,
-  setActionInProgress,
-  version,
-  updateActivity,
-}: {
-  id: string;
-  isVisible: boolean;
-  sides: number;
-  setActionInProgress: (val: boolean) => void;
-  version: number;
-  updateActivity: () => void;
-}) => {
-  const { getNumbers } = React.useContext(RandomNumbersContext);
-  const deleteDie = async () => {
-    setActionInProgress(true);
-    updateActivity();
-    try {
-      await API.graphql({
-        query: mutations.deleteVisualDie,
-        variables: {
-          input: {
-            id,
-          },
-        },
-      });
-    } catch (e) {
-      console.warn(e);
-    } finally {
-      setActionInProgress(false);
-    }
-  };
-  const rerollDie = async () => {
-    setActionInProgress(true);
-    updateActivity();
-    const results = await getNumbers(1);
-    try {
-      const finalResult = (results[0] % sides) + 1;
-      API.graphql({
-        query: mutations.updateVisualDie,
-        variables: {
-          input: {
-            id,
-            result: finalResult || 0,
-            version: version + 1,
-          },
-        },
-      });
-    } catch (e) {
-      console.warn(e);
-    }
-  };
-  return (
-    <>
-      <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
-        <HStack spacing={2} mt={4}>
-          <IconButton
-            variant="ghost"
-            icon={<RiRestartLine />}
-            size="sm"
-            aria-label="roll die"
-            onClick={rerollDie}
-          />
-          <IconButton
-            variant="ghost"
-            icon={<RiDeleteBin4Line />}
-            size="sm"
-            aria-label="delete die"
-            onClick={deleteDie}
-          />
-        </HStack>
-      </ScaleFade>
-    </>
-  );
-};
+// const DieActions = ({
+//   id,
+//   isVisible,
+//   sides,
+//   setActionInProgress,
+//   version,
+//   updateActivity,
+// }: {
+//   id: string;
+//   isVisible: boolean;
+//   sides: number;
+//   setActionInProgress: (val: boolean) => void;
+//   version: number;
+//   updateActivity: () => void;
+// }) => {
+//   const { getNumbers } = React.useContext(RandomNumbersContext);
+//   const deleteDie = async () => {
+//     setActionInProgress(true);
+//     updateActivity();
+//     try {
+//       await API.graphql({
+//         query: mutations.deleteVisualDie,
+//         variables: {
+//           input: {
+//             id,
+//           },
+//         },
+//       });
+//     } catch (e) {
+//       console.warn(e);
+//     } finally {
+//       setActionInProgress(false);
+//     }
+//   };
+//   const rerollDie = async () => {
+//     setActionInProgress(true);
+//     updateActivity();
+//     const results = await getNumbers(1);
+//     try {
+//       const finalResult = (results[0] % sides) + 1;
+//       API.graphql({
+//         query: mutations.updateVisualDie,
+//         variables: {
+//           input: {
+//             id,
+//             result: finalResult || 0,
+//             version: version + 1,
+//           },
+//         },
+//       });
+//     } catch (e) {
+//       console.warn(e);
+//     }
+//   };
+//   return (
+//     <>
+//       <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
+//         <HStack spacing={2} mt={4}>
+//           <IconButton
+//             variant="ghost"
+//             icon={<RiRestartLine />}
+//             size="sm"
+//             aria-label="roll die"
+//             onClick={rerollDie}
+//           />
+//           <IconButton
+//             variant="ghost"
+//             icon={<RiDeleteBin4Line />}
+//             size="sm"
+//             aria-label="delete die"
+//             onClick={deleteDie}
+//           />
+//         </HStack>
+//       </ScaleFade>
+//     </>
+//   );
+// };
 
-const DieCreator: React.FC<{
-  createdBy: string;
-  sides: number | string;
-  isVisible: boolean;
-}> = ({ createdBy, sides, isVisible }) => {
-  return (
-    <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
-      <VStack spacing={3} alignItems="start">
-        <HStack spacing={2}>
-          <Icon as={RiUser3Fill} w={3} h={3} opacity="0.8" />
-          <Text fontSize="sm" opacity="0.8">
-            {createdBy}
-          </Text>
-        </HStack>
-        <HStack spacing={2}>
-          <Icon as={RiSettings4Fill} w={3} h={3} opacity="0.8" />
-          <Text fontSize="sm" opacity="0.8">
-            {Number.isInteger(sides) ? `${sides} sided` : `${sides} die`}
-          </Text>
-        </HStack>
-      </VStack>
-    </ScaleFade>
-  );
-};
+// const DieCreator: React.FC<{
+//   createdBy: string;
+//   sides: number | string;
+//   isVisible: boolean;
+// }> = ({ createdBy, sides, isVisible }) => {
+//   return (
+//     <ScaleFade unmountOnExit initialScale={0.9} in={isVisible}>
+//       <VStack spacing={3} alignItems="start">
+//         <HStack spacing={2}>
+//           <Icon as={RiUser3Fill} w={3} h={3} opacity="0.8" />
+//           <Text fontSize="sm" opacity="0.8">
+//             {createdBy}
+//           </Text>
+//         </HStack>
+//         <HStack spacing={2}>
+//           <Icon as={RiSettings4Fill} w={3} h={3} opacity="0.8" />
+//           <Text fontSize="sm" opacity="0.8">
+//             {Number.isInteger(sides) ? `${sides} sided` : `${sides} die`}
+//           </Text>
+//         </HStack>
+//       </VStack>
+//     </ScaleFade>
+//   );
+// };
 
 interface FudgeDieProps {
   trackedDie: VisualDie;

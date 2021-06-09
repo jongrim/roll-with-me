@@ -34,19 +34,20 @@ export default function QuillEditor({
 }) {
   const [editor, setEditor] = React.useState<Quill>();
 
-  const handleChange = React.useCallback(
-    debounce(
-      (
-        delta: unknown,
-        oldDelta: unknown,
-        source: 'user' | 'api' | 'silent'
-      ) => {
-        const contents = editor?.getContents().ops;
-        save(JSON.stringify(contents));
-      },
-      saveDelay
-    ),
-    [editor]
+  const handleChange = React.useMemo(
+    () =>
+      debounce(
+        (
+          delta: unknown,
+          oldDelta: unknown,
+          source: 'user' | 'api' | 'silent'
+        ) => {
+          const contents = editor?.getContents().ops;
+          save(JSON.stringify(contents));
+        },
+        saveDelay
+      ),
+    [editor, save, saveDelay]
   );
 
   React.useEffect(() => {
@@ -77,6 +78,7 @@ export default function QuillEditor({
       quill?.setContents(contents);
     }
     setEditor(quill);
+    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {

@@ -5,12 +5,13 @@ import { UpdateTrophyGoldCharacterInput } from '../API';
 export default function useDelayedUpdate(
   update: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>
 ) {
-  const delayedUpdate = React.useCallback(
-    debounce(async (val: Record<string, unknown>) => {
-      await update({
-        ...val,
-      });
-    }, 3000),
+  const delayedUpdate = React.useMemo(
+    () =>
+      debounce(async (val: Record<string, unknown>) => {
+        await update({
+          ...val,
+        });
+      }, 3000),
     [update]
   );
   return { delayedUpdate };

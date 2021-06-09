@@ -39,7 +39,7 @@ const HeartMap = ({ hexMap }: HeartMapProps) => {
     setDrawerMode('settings');
   };
   return (
-    <Box pr={3}>
+    <Box px={3}>
       <HexGrid
         backgroundImages={hexMap.backgroundImages}
         gridConfig={hexMap.gridConfiguration}

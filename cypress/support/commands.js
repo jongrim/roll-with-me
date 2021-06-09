@@ -39,3 +39,10 @@ Cypress.Commands.add('login', () => {
   cy.wait('@signIn');
   cy.wait('@signIn');
 });
+
+Cypress.Commands.add('enterUsername', (name) => {
+  cy.findByTestId('username-modal').within(() => {
+    cy.findByLabelText(/Choose a username for your rolls/i).type(name);
+    cy.findByText('Close').click();
+  });
+})
