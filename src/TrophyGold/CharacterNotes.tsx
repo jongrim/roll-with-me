@@ -1,35 +1,32 @@
-import * as React from 'react';
-import { Box, Textarea } from '@chakra-ui/react';
-import { UpdateTrophyGoldCharacterInput } from '../API';
-import CharacterSectionHeading from './CharacterSectionHeading';
-import useDelayedUpdate from './useDelayedUpdate';
+import * as React from "react";
+import { Box } from "@chakra-ui/react";
+import { UpdateTrophyGoldCharacterInput } from "../API";
+import CharacterSectionHeading from "./CharacterSectionHeading";
+import useDelayedUpdate from "./useDelayedUpdate";
+import QuillEditor from "../Common/QuillEditor/QuillEditor";
 
 interface CharacterNotesProps {
   notes: string;
-  onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => Promise<void>;
+  onSubmit: (val: Omit<UpdateTrophyGoldCharacterInput, "id">) => Promise<void>;
   canEdit: boolean;
+  id: string;
 }
 
-function CharacterNotes({ notes, onSubmit, canEdit }: CharacterNotesProps) {
-  const [trackedNotes, setTrackedNotes] = React.useState(notes || '');
+function CharacterNotes({ notes, onSubmit, canEdit, id }: CharacterNotesProps) {
   const { delayedUpdate } = useDelayedUpdate(onSubmit);
-  React.useEffect(() => {
-    if (!canEdit) {
-      setTrackedNotes(notes);
-    }
-  }, [notes, canEdit]);
   return (
     <Box>
       <CharacterSectionHeading>Notes</CharacterSectionHeading>
-      <Textarea
-        isReadOnly={!canEdit}
-        variant="outline"
-        value={trackedNotes}
-        onChange={({ target }) => {
-          const nextVal = target.value;
-          setTrackedNotes(nextVal);
+      <QuillEditor
+        placeholder="Notes of your adventures"
+        initial={notes}
+        save={(nextVal) => {
           delayedUpdate({ notes: nextVal });
         }}
+        updateOnChange={!canEdit}
+        readOnly={!canEdit}
+        height="auto"
+        editorId={`character-notes-${id}`}
       />
     </Box>
   );

@@ -102,8 +102,12 @@ const TrophyGoldRoom = ({ name }: TGoldProps) => {
     gameId: data?.id,
   });
 
+  const beasts = React.useMemo(() => {
+    return data?.bestiary.items ?? [];
+  }, [data?.bestiary?.items]);
+
   const trackedBeasts = useBeastSubscription({
-    beasts: data?.bestiary.items ?? [],
+    beasts: beasts ?? [],
     gameID: data?.id,
   });
 

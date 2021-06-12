@@ -409,6 +409,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               notes={character.notes || ''}
               onSubmit={updateWithId}
               canEdit={canEdit}
+              id={character.id}
             />
           </Box>
         </Box>
