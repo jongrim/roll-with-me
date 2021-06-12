@@ -1,44 +1,44 @@
-import * as React from 'react';
-import { Box, Flex, Spinner, useToast } from '@chakra-ui/react';
-import useHeartRoomLookup from './useHeartRoomLookup';
-import { useMachine } from '@xstate/react';
-import { Machine, assign } from 'xstate';
-import { API } from 'aws-amplify';
-import * as mutations from '../graphql/mutations';
-import CharacterChoiceCard from '../Common/CharacterChoice/CharacterChoiceCard';
-import HeartGameArea from './HeartGameArea';
-import './heart.css';
-import useHeartCharacterSubscription from './useHeartCharacterSubscription';
-import { newCharacter } from './newCharacter';
-import { HeartCharacter } from '../API';
+import * as React from "react";
+import { Box, Flex, Spinner, useToast } from "@chakra-ui/react";
+import useHeartRoomLookup from "./useHeartRoomLookup";
+import { useMachine } from "@xstate/react";
+import { Machine, assign } from "xstate";
+import { API } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+import CharacterChoiceCard from "../Common/CharacterChoice/CharacterChoiceCard";
+import HeartGameArea from "./HeartGameArea";
+import "./heart.css";
+import useHeartCharacterSubscription from "./useHeartCharacterSubscription";
+import { newCharacter } from "./newCharacter";
+import { HeartCharacterWithID } from "../APITypes";
 
-export const NEW_CHARACTER = 'NEW';
-export const GM = 'GM';
+export const NEW_CHARACTER = "NEW";
+export const GM = "GM";
 
 const gameLoadMachine = Machine<{
   characterChoice: string;
 }>({
-  id: 'trophyDarkGameLoad',
-  initial: 'loading',
+  id: "trophyDarkGameLoad",
+  initial: "loading",
   context: {
-    characterChoice: 'unset',
+    characterChoice: "unset",
   },
   states: {
     loading: {
       on: {
-        LOAD: { target: 'choosing' },
+        LOAD: { target: "choosing" },
       },
     },
     choosing: {
       on: {
         GM: {
-          target: 'PLAYING',
+          target: "PLAYING",
           actions: assign({
-            characterChoice: () => 'GM',
+            characterChoice: () => "GM",
           }),
         },
         CHOOSE: {
-          target: 'PLAYING',
+          target: "PLAYING",
           actions: assign({
             characterChoice: (ctx, event) => event.value,
           }),
@@ -46,7 +46,7 @@ const gameLoadMachine = Machine<{
       },
     },
     PLAYING: {
-      type: 'final',
+      type: "final",
     },
   },
 });
@@ -60,14 +60,14 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
 
   const [state, send] = useMachine(
     gameLoadMachine.withContext({
-      characterChoice: 'unset',
+      characterChoice: "unset",
     })
   );
   const { data } = useHeartRoomLookup(name);
 
   React.useEffect(() => {
-    if (data && state.value === 'loading') {
-      send('LOAD');
+    if (data && state.value === "loading") {
+      send("LOAD");
     }
   }, [data, send, state.value]);
 
@@ -75,7 +75,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
     return (
       (data?.characters?.items?.filter((c) =>
         Boolean(c)
-      ) as HeartCharacter[]) ?? []
+      ) as HeartCharacterWithID[]) ?? []
     );
   }, [data?.characters?.items]);
 
@@ -84,7 +84,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
     gameId: data?.id,
   });
 
-  const [username, setUsername] = React.useState('');
+  const [username, setUsername] = React.useState("");
 
   const updateUsername = (name: string) => {
     try {
@@ -140,7 +140,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
   ]);
 
   switch (state.value) {
-    case 'loading':
+    case "loading":
       return (
         <Flex
           direction="column"
@@ -152,7 +152,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           <Spinner />
         </Flex>
       );
-    case 'choosing':
+    case "choosing":
       return (
         <Flex
           direction="column"
@@ -167,8 +167,8 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
             onDone={async (character: string) => {
               switch (character) {
                 case GM:
-                  send('GM');
-                  setUsername('Game Facilitator');
+                  send("GM");
+                  setUsername("Game Facilitator");
                   break;
                 case NEW_CHARACTER:
                   try {
@@ -184,23 +184,23 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
                       },
                     });
                     toast({
-                      status: 'success',
-                      title: 'Character created',
+                      status: "success",
+                      title: "Character created",
                       isClosable: true,
                       duration: 3000,
                     });
-                    send('CHOOSE', {
+                    send("CHOOSE", {
                       value: createdCharacter?.createHeartCharacter?.id,
                     });
                   } catch (e) {
-                    let errorMessage = 'Check your values and try again';
-                    if (e.errors[0]?.message?.includes('valid URL')) {
+                    let errorMessage = "Check your values and try again";
+                    if (e.errors[0]?.message?.includes("valid URL")) {
                       errorMessage =
-                        'The image URL you provided is not valid. Either remove it or provide a different one.';
+                        "The image URL you provided is not valid. Either remove it or provide a different one.";
                     }
                     toast({
-                      status: 'error',
-                      title: 'Unable to create character',
+                      status: "error",
+                      title: "Unable to create character",
                       description: errorMessage,
                       isClosable: true,
                       duration: 5000,
@@ -212,8 +212,8 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
                   const playerName = trackedCharacters.find(
                     (c) => c.id === character
                   )?.playerName;
-                  setUsername(playerName || 'Unable to load username');
-                  send('CHOOSE', {
+                  setUsername(playerName || "Unable to load username");
+                  send("CHOOSE", {
                     value: character,
                   });
               }
@@ -221,7 +221,7 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           />
         </Flex>
       );
-    case 'PLAYING':
+    case "PLAYING":
       return (
         <HeartGameArea
           name={name}
@@ -229,16 +229,16 @@ const HeartRoom = ({ name }: HeartRoomProps) => {
           setUsername={updateUsername}
           characters={trackedCharacters}
           characterChoice={state.context.characterChoice}
-          id={data?.id ?? ''}
-          safetyModuleId={data?.safetyModule?.id ?? ''}
+          id={data?.id ?? ""}
+          safetyModuleId={data?.safetyModule?.id ?? ""}
           hexMap={
             data?.hexMapModule ?? {
-              __typename: 'HexMapModule',
-              id: '',
-              gridConfiguration: '{}',
+              __typename: "HexMapModule",
+              id: "",
+              gridConfiguration: "{}",
               backgroundImages: [],
-              createdAt: '',
-              updatedAt: '',
+              createdAt: "",
+              updatedAt: "",
             }
           }
           dice={dice}

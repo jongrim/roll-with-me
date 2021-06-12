@@ -5,8 +5,9 @@ import {
   TrophyGoldBeast,
   TrophyGoldCharacter,
   TrophyGoldDiceModule,
-} from './API';
-import { VisualCounter, VisualDie, VisualLabel } from './types';
+  HeartCharacter,
+} from "./API";
+import { VisualCounter, VisualDie, VisualLabel } from "./types";
 
 export interface TextRoomDetails {
   id: string;
@@ -99,6 +100,10 @@ export interface HeartRoomDetails extends HeartRoom {
   name: string;
   safetyModule: RawSafetyModule;
   hexMapModule: RawHexMapModule;
+}
+
+export interface HeartCharacterWithID extends HeartCharacter {
+  id: string;
 }
 
 export interface RawSafetyModule extends SafetyModule {

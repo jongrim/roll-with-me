@@ -27,6 +27,7 @@ function CharacterNotes({ notes, onSubmit, canEdit, id }: CharacterNotesProps) {
         readOnly={!canEdit}
         height="auto"
         editorId={`character-notes-${id}`}
+        toolbar={canEdit}
       />
     </Box>
   );

@@ -1,40 +1,32 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Button,
   Flex,
   Grid,
   GridItem,
-  HStack,
-  Link,
   Spacer,
-  StackDivider,
-  useColorModeValue,
-  Text,
   IconButton,
   Tooltip,
-} from '@chakra-ui/react';
-import {
-  RiLayoutRowLine,
-  RiLayoutColumnLine,
-  RiExternalLinkFill,
-} from 'react-icons/ri';
-import SettingsBar from '../SettingsBar';
-import { Route, Redirect } from 'react-router-dom';
-import TrophyDice from './TrophyDice';
-import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from '../APITypes';
-import CharacterList from './CharacterList';
-import SafetyForm from '../SafetyForm/SafetyForm';
-import setXCard from '../SafetyForm/xCard';
-import XCardModal from '../XCardModal/XCardModal';
-import { updateCharacter } from './Character';
-import { TrophyGoldBeast, UpdateTrophyGoldCharacterInput } from '../API';
-import useDelayedUpdate from './useDelayedUpdate';
-import NewWindow from 'react-new-window';
-import SidebarNav, { SidebarLink } from './SidebarNav';
-import Bestiary from './Bestiary';
-import Credits from './Credits';
-import { GM } from './TrophyGoldRoom';
-import GameFacilitator from './GameFacilitator';
+} from "@chakra-ui/react";
+import { RiExternalLinkFill } from "react-icons/ri";
+import SettingsBar from "../SettingsBar";
+import { Route, Redirect } from "react-router-dom";
+import TrophyDice from "./TrophyDice";
+import { RawTrophyGoldCharacter, RawTrophyGoldRoomDetails } from "../APITypes";
+import CharacterList from "./CharacterList";
+import SafetyForm from "../SafetyForm/SafetyForm";
+import setXCard from "../SafetyForm/xCard";
+import XCardModal from "../XCardModal/XCardModal";
+import { updateCharacter } from "./Character";
+import { TrophyGoldBeast, UpdateTrophyGoldCharacterInput } from "../API";
+import useDelayedUpdate from "./useDelayedUpdate";
+import NewWindow from "react-new-window";
+import SidebarNav, { SidebarLink } from "./SidebarNav";
+import Bestiary from "./Bestiary";
+import Credits from "./Credits";
+import { GM } from "./TrophyGoldRoom";
+import GameFacilitator from "./GameFacilitator";
+import CharacterNavBar from "../Common/CharacterNavBar/CharacterNavBar";
 
 interface TrophyGoldGameProps {
   username: string;
@@ -45,7 +37,7 @@ interface TrophyGoldGameProps {
   gameData: RawTrophyGoldRoomDetails;
 }
 
-export type viewLayout = 'side' | 'top';
+export type viewLayout = "side" | "top";
 
 const TrophyGoldGameArea = ({
   username,
@@ -56,18 +48,16 @@ const TrophyGoldGameArea = ({
   gameData,
 }: TrophyGoldGameProps) => {
   const { id, safetyModule, diceModule, name } = gameData;
-  const characterLinkColor = useColorModeValue('blue.600', 'blue.400');
   const xCardRef = React.useRef<HTMLButtonElement>(null);
   const updateWithId = React.useCallback(
-    async (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => {
+    async (update: Omit<UpdateTrophyGoldCharacterInput, "id">) => {
       await updateCharacter({ id: characterChoice, ...update });
     },
     [characterChoice]
   );
-  const { delayedUpdate: delayedUsernameUpdate } = useDelayedUpdate(
-    updateWithId
-  );
-  const [layout, setLayout] = React.useState<viewLayout>('top');
+  const { delayedUpdate: delayedUsernameUpdate } =
+    useDelayedUpdate(updateWithId);
+  const [layout, setLayout] = React.useState<viewLayout>("top");
   const [popoutDice, setPopoutDice] = React.useState(false);
   React.useEffect(() => {
     return () => setPopoutDice(false);
@@ -90,11 +80,11 @@ const TrophyGoldGameArea = ({
       <GridItem>
         <Grid
           h="full"
-          templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
+          templateColumns={["1fr", "1fr", "150px minmax(0, 1fr)"]}
           templateRows={[
-            'auto auto minmax(0, 1fr)',
-            'auto auto minmax(0, 1fr)',
-            'minmax(0, 1fr)',
+            "auto auto minmax(0, 1fr)",
+            "auto auto minmax(0, 1fr)",
+            "minmax(0, 1fr)",
           ]}
         >
           <GridItem h="full">
@@ -124,60 +114,9 @@ const TrophyGoldGameArea = ({
               <Grid
                 h="full"
                 templateColumns="1fr"
-                templateRows={'auto minmax(0, 1fr) auto'}
+                templateRows="minmax(0, 1fr)"
                 alignContent="start"
               >
-                <GridItem>
-                  <Flex
-                    borderBottom="1px solid"
-                    borderColor="inherit"
-                    px={2}
-                    py={1}
-                    wrap="wrap"
-                  >
-                    <HStack spacing={8} divider={<StackDivider />}>
-                      {visibleCharacters.map((c) => (
-                        <Link
-                          color={characterLinkColor}
-                          href={
-                            c.characterName
-                              ? `#${c.characterName.replace(' ', '')}`
-                              : `#${c.id}`
-                          }
-                          key={c.id}
-                        >
-                          <Text isTruncated maxW="sm">
-                            {c.characterName || 'Unnamed treasure hunter'}
-                          </Text>
-                        </Link>
-                      ))}
-                    </HStack>
-                    <Spacer />
-                    <Tooltip
-                      label="Change character sheet layout"
-                      placement="left"
-                    >
-                      <IconButton
-                        variant="ghost"
-                        icon={
-                          layout === 'side' ? (
-                            <RiLayoutColumnLine />
-                          ) : (
-                            <RiLayoutRowLine />
-                          )
-                        }
-                        aria-label="Change character sheet layout"
-                        onClick={() => {
-                          if (layout === 'top') {
-                            setLayout('side');
-                          } else {
-                            setLayout('top');
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </Flex>
-                </GridItem>
                 <GridItem overflow="auto">
                   <CharacterList
                     characters={visibleCharacters}
@@ -245,6 +184,11 @@ const TrophyGoldGameArea = ({
             <Redirect path="*" to={`/trophy-gold/${name}/characters`} />
           </GridItem>
         </Grid>
+        <CharacterNavBar
+          characters={visibleCharacters}
+          layout={layout}
+          setLayout={setLayout}
+        />
       </GridItem>
       {safetyModule.id && (
         <XCardModal safetyModuleId={safetyModule.id} ref={xCardRef} />
