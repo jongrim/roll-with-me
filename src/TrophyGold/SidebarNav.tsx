@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Box,
   Flex,
@@ -10,16 +10,16 @@ import {
   Collapse,
   IconButton,
   useBreakpointValue,
-} from '@chakra-ui/react';
-import { RiMenuLine } from 'react-icons/ri';
-import { NavLink as ReactRouterLink } from 'react-router-dom';
+} from "@chakra-ui/react";
+import { RiMenuLine } from "react-icons/ri";
+import { NavLink as ReactRouterLink } from "react-router-dom";
 
 export default function SidebarNav({
-  children = null,
+  children,
   name,
   xCardButton,
 }: {
-  children?: React.ReactNode;
+  children?: (onClick: () => void) => React.ReactNode;
   name: string;
   xCardButton: React.ReactNode;
 }) {
@@ -29,10 +29,11 @@ export default function SidebarNav({
     md: false,
     lg: false,
     xl: false,
-    '2xl': false,
+    "2xl": false,
   });
-  const bgColor = useColorModeValue('white', 'gray.800');
+  const bgColor = useColorModeValue("white", "gray.800");
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const closeMenu = () => setMenuOpen(false);
   return (
     <Box height="full">
       {isSmaller && (
@@ -40,7 +41,6 @@ export default function SidebarNav({
           ml={3}
           icon={<RiMenuLine />}
           aria-label="open menu"
-          colorScheme="teal"
           variant="outline"
           size="sm"
           position="absolute"
@@ -52,32 +52,38 @@ export default function SidebarNav({
       <SidebarContainer isSmaller={Boolean(isSmaller)} menuOpen={menuOpen}>
         <Flex
           direction="column"
-          height={['auto', 'auto', 'full']}
+          height={["auto", "auto", "full"]}
           width="full"
-          position={['absolute', 'absolute', 'inherit']}
+          position={["absolute", "absolute", "inherit"]}
           bgColor={bgColor}
           zIndex="20"
           px={1}
+          borderBottom={isSmaller ? "1px solid" : ""}
+          borderColor={isSmaller ? "inherit" : ""}
         >
           <Stack direction="column" spacing={4} alignItems="stretch">
-            <SidebarLink name={name} destination="characters">
+            <SidebarLink
+              onClick={closeMenu}
+              name={name}
+              destination="characters"
+            >
               Characters
             </SidebarLink>
-            <SidebarLink name={name} destination="dice">
+            <SidebarLink onClick={closeMenu} name={name} destination="dice">
               Dice
             </SidebarLink>
-            <SidebarLink name={name} destination="bestiary">
+            <SidebarLink onClick={closeMenu} name={name} destination="bestiary">
               Bestiary
             </SidebarLink>
-            <SidebarLink name={name} destination="safety">
+            <SidebarLink onClick={closeMenu} name={name} destination="safety">
               Safety
             </SidebarLink>
-            {children}
+            {children && children(closeMenu)}
             {xCardButton}
           </Stack>
           {!isSmaller && <Spacer />}
           <Stack direction="column" spacing={4} alignItems="stretch" py={4}>
-            <SidebarLink name={name} destination="credits">
+            <SidebarLink onClick={closeMenu} name={name} destination="credits">
               Credits
             </SidebarLink>
             <Link
@@ -126,8 +132,8 @@ export function SidebarLink({
   destination: string;
 } & LinkProps) {
   const activeLink = useColorModeValue(
-    { opacity: 1, backgroundColor: 'gray.100' },
-    { opacity: 1, backgroundColor: 'gray.700' }
+    { opacity: 1, backgroundColor: "gray.100" },
+    { opacity: 1, backgroundColor: "gray.700" }
   );
   return (
     <Link

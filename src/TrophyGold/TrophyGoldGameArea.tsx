@@ -102,11 +102,20 @@ const TrophyGoldGameArea = ({
                 </Button>
               }
             >
-              {characterChoice === GM && (
-                <SidebarLink name={name} destination="facilitator">
-                  Game Facilitator
-                </SidebarLink>
-              )}
+              {(onClick: () => void) => {
+                if (characterChoice === GM) {
+                  return (
+                    <SidebarLink
+                      onClick={onClick}
+                      name={name}
+                      destination="facilitator"
+                    >
+                      Game Facilitator
+                    </SidebarLink>
+                  );
+                }
+                return null;
+              }}
             </SidebarNav>
           </GridItem>
           <GridItem overflow="auto" px={[0, 0, 0, 2]} pr={4}>
@@ -123,17 +132,16 @@ const TrophyGoldGameArea = ({
                     characterChoice={characterChoice}
                     layout={layout}
                   />
+                  <CharacterNavBar
+                    characters={visibleCharacters}
+                    layout={layout}
+                    setLayout={setLayout}
+                  />
                 </GridItem>
               </Grid>
             </Route>
             <Route exact path={`/trophy-gold/${name}/dice`}>
-              <Flex
-                borderBottom="1px solid"
-                borderColor="inherit"
-                px={2}
-                py={1}
-                wrap="wrap"
-              >
+              <Flex px={2} py={1} wrap="wrap">
                 <Spacer />
                 <Tooltip label="Open dice in new window" placement="left">
                   <IconButton
@@ -184,11 +192,6 @@ const TrophyGoldGameArea = ({
             <Redirect path="*" to={`/trophy-gold/${name}/characters`} />
           </GridItem>
         </Grid>
-        <CharacterNavBar
-          characters={visibleCharacters}
-          layout={layout}
-          setLayout={setLayout}
-        />
       </GridItem>
       {safetyModule.id && (
         <XCardModal safetyModuleId={safetyModule.id} ref={xCardRef} />

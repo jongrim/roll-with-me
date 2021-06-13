@@ -29,12 +29,13 @@ export default function CharacterNavBar({
       borderRadius="sm"
       pr={3}
       py={1}
-      wrap="wrap"
       position="fixed"
       bottom="0px"
       right="0px"
       bgColor={bgColor}
       zIndex={1}
+      maxW="full"
+      overflow="auto"
     >
       {characters.map((c) => (
         <Button
@@ -50,6 +51,7 @@ export default function CharacterNavBar({
             });
           }}
           key={c.id}
+          minW="24"
         >
           <Text isTruncated maxW="sm">
             {c.characterName || "Unnamed wanderer"}

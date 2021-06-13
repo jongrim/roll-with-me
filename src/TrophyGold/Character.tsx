@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Grid,
   GridItem,
@@ -14,29 +14,29 @@ import {
   Icon,
   useColorModeValue,
   useDisclosure,
-} from '@chakra-ui/react';
-import { RiCameraFill, RiArrowRightLine } from 'react-icons/ri';
-import { API } from 'aws-amplify';
-import * as mutations from '../graphql/mutations';
-import { RawTrophyGoldCharacter } from '../APITypes';
-import { UpdateTrophyGoldCharacterInput } from '../API';
-import CharacterDrive from './CharacterDrive';
-import CharacterBackground from './CharacterBackground';
-import CharacterOccupation from './CharacterOccupation';
-import CharacterRituals from './CharacterRituals';
-import CharacterBackpack from './CharacterBackpack';
-import CharacterCombatEquipment from './CharacterCombatEquipment';
-import CharacterFoundEquipment from './CharacterFoundEquipment';
-import SpinningCube from '../SpinningCube/SpinningCube';
-import CharacterConditions from './CharacterConditions';
-import CharacterSectionHeading from './CharacterSectionHeading';
-import useDelayedUpdate from './useDelayedUpdate';
-import CharacterNotes from './CharacterNotes';
-import { RandomNumbersContext } from '../RandomNumbersProvider';
-import RuinBoxes from './RuinBoxes';
-import { ArmorSet, WeaponSet } from './TrophyGoldGameTypes';
-import Hearthfire from './Hearthfire';
-import { DelayedNumberInput, DelayedTextarea } from '../Common/DelayedInputs';
+} from "@chakra-ui/react";
+import { RiCameraFill, RiArrowRightLine } from "react-icons/ri";
+import { API } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+import { RawTrophyGoldCharacter } from "../APITypes";
+import { UpdateTrophyGoldCharacterInput } from "../API";
+import CharacterDrive from "./CharacterDrive";
+import CharacterBackground from "./CharacterBackground";
+import CharacterOccupation from "./CharacterOccupation";
+import CharacterRituals from "./CharacterRituals";
+import CharacterBackpack from "./CharacterBackpack";
+import CharacterCombatEquipment from "./CharacterCombatEquipment";
+import CharacterFoundEquipment from "./CharacterFoundEquipment";
+import SpinningCube from "../SpinningCube/SpinningCube";
+import CharacterConditions from "./CharacterConditions";
+import CharacterSectionHeading from "./CharacterSectionHeading";
+import useDelayedUpdate from "./useDelayedUpdate";
+import CharacterNotes from "./CharacterNotes";
+import { RandomNumbersContext } from "../RandomNumbersProvider";
+import RuinBoxes from "./RuinBoxes";
+import { ArmorSet, WeaponSet } from "./TrophyGoldGameTypes";
+import Hearthfire from "./Hearthfire";
+import { DelayedNumberInput, DelayedTextarea } from "../Common/DelayedInputs";
 
 export const updateCharacter = async (
   character: UpdateTrophyGoldCharacterInput
@@ -67,10 +67,10 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     onClose: onHearthfireClose,
     onOpen: onHearthfireOpen,
   } = useDisclosure();
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const tableBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const bgColor = useColorModeValue("white", "gray.800");
+  const tableBorderColor = useColorModeValue("gray.400", "gray.500");
   const rituals = character.rituals || [];
-  const [first = '', second = '', third = ''] = rituals;
+  const [first = "", second = "", third = ""] = rituals;
   const baseRuin = ([first, second, third].filter(Boolean).length ?? 0) + 1;
   const weaponSet: WeaponSet = React.useMemo(
     () => JSON.parse(character.weaponSet),
@@ -83,27 +83,27 @@ const Character = ({ character, canEdit }: CharacterProps) => {
   const baseBurdens = React.useMemo(() => {
     return (
       Object.values(armorSet).filter(
-        ({ description }) => description.trim() !== ''
+        ({ description }) => description.trim() !== ""
       ).length +
       Object.values(weaponSet).filter(
-        ({ description }) => description.trim() !== ''
+        ({ description }) => description.trim() !== ""
       ).length +
       1
     );
   }, [weaponSet, armorSet]);
   const ruin = character.ruin || baseRuin;
   const [characterName, setCharacterName] = React.useState(
-    character?.characterName || ''
+    character?.characterName || ""
   );
   const [characterPronouns, setCharacterPronouns] = React.useState(
-    character?.characterPronouns || ''
+    character?.characterPronouns || ""
   );
   const [imageUrl, setImageUrl] = React.useState(
-    character?.characterImageUrl || ''
+    character?.characterImageUrl || ""
   );
   const [isSaving, setIsSaving] = React.useState(false);
   const updateWithId = React.useCallback(
-    async (update: Omit<UpdateTrophyGoldCharacterInput, 'id'>) => {
+    async (update: Omit<UpdateTrophyGoldCharacterInput, "id">) => {
       setIsSaving(true);
       updateCharacter({ id: character.id, ...update }).then(() =>
         setIsSaving(false)
@@ -112,23 +112,22 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     [character.id]
   );
   const { delayedUpdate: delayedNameUpdate } = useDelayedUpdate(updateWithId);
-  const { delayedUpdate: delayedPronounsUpdate } = useDelayedUpdate(
-    updateWithId
-  );
+  const { delayedUpdate: delayedPronounsUpdate } =
+    useDelayedUpdate(updateWithId);
 
   React.useEffect(() => {
     if (!canEdit) {
-      setCharacterName(character?.characterName || '');
+      setCharacterName(character?.characterName || "");
     }
   }, [character?.characterName, canEdit]);
   React.useEffect(() => {
     if (!canEdit) {
-      setCharacterPronouns(character.characterPronouns || '');
+      setCharacterPronouns(character.characterPronouns || "");
     }
   }, [character?.characterPronouns, canEdit]);
   React.useEffect(() => {
     if (!canEdit) {
-      setImageUrl(character.characterImageUrl || '');
+      setImageUrl(character.characterImageUrl || "");
     }
   }, [character?.characterImageUrl, canEdit]);
 
@@ -137,7 +136,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
       fontFamily="Roboto Slab"
       id={
         character.characterName
-          ? character.characterName.replace(' ', '')
+          ? character.characterName.replace(" ", "")
           : character.id
       }
       pr={3}
@@ -162,6 +161,14 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           onClose={onHearthfireClose}
           characterHearthfire={character.hearthfire}
           updateWithId={updateWithId}
+          notes={
+            <CharacterNotes
+              notes={character.notes || ""}
+              onSubmit={updateWithId}
+              canEdit={canEdit}
+              id={character.id}
+            />
+          }
         />
       ) : (
         <Box>
@@ -207,8 +214,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                 onChange={({ target }) => {
                   const nextVal = target.value;
                   setImageUrl(nextVal);
-                  if (nextVal === '') {
-                    return updateWithId({ characterImageUrl: '' });
+                  if (nextVal === "") {
+                    return updateWithId({ characterImageUrl: "" });
                   }
                   try {
                     const url = new URL(nextVal);
@@ -266,7 +273,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
               <Text fontSize="sm" fontWeight="400">
                 Weak Point
               </Text>
-              <Text fontSize="lg">{character.weakPoint || '–'}</Text>
+              <Text fontSize="lg">{character.weakPoint || "–"}</Text>
               <HStack spacing={3}>
                 <Button
                   variant="ghost"
@@ -325,21 +332,21 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           </HStack>
           <Divider my={6} />
           <CharacterDrive
-            drive={character.drive || ''}
+            drive={character.drive || ""}
             onSubmit={updateWithId}
             canEdit={canEdit}
           />
           <Box mt={6}>
             <CharacterOccupation
               canEdit={canEdit}
-              occupation={character.occupation || ''}
+              occupation={character.occupation || ""}
               onSubmit={updateWithId}
             />
           </Box>
           <Box mt={6}>
             <CharacterBackground
               canEdit={canEdit}
-              background={character.background || ''}
+              background={character.background || ""}
               onSubmit={updateWithId}
             />
           </Box>
@@ -347,7 +354,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <CharacterSectionHeading>Skills</CharacterSectionHeading>
             <DelayedTextarea
               isReadOnly={!canEdit}
-              initialValue={character.skills || ''}
+              initialValue={character.skills || ""}
               onUpdate={(val) => {
                 updateWithId({ skills: val });
               }}
@@ -364,7 +371,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <Box mt={10}>
             <CharacterBackpack
               canEdit={canEdit}
-              backpack={character.backpack || '{}'}
+              backpack={character.backpack || "{}"}
               onSubmit={updateWithId}
             />
           </Box>
@@ -400,13 +407,13 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           </Box>
           <Divider my={6} />
           <CharacterConditions
-            conditions={character.conditions || ''}
+            conditions={character.conditions || ""}
             onSubmit={updateWithId}
             canEdit={canEdit}
           />
           <Box mt={6} mb={40}>
             <CharacterNotes
-              notes={character.notes || ''}
+              notes={character.notes || ""}
               onSubmit={updateWithId}
               canEdit={canEdit}
               id={character.id}
