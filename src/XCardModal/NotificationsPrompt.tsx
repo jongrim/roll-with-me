@@ -22,6 +22,8 @@ export default function NotificationsPrompt() {
         py={3}
         w="md"
         bgColor={bgColor}
+        border="1px solid"
+        borderColor="inherit"
         borderRadius="md"
         boxShadow="lg"
         zIndex={20}

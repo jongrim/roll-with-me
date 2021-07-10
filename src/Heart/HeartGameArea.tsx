@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   Box,
   Button,
@@ -10,27 +10,27 @@ import {
   Spacer,
   Stack,
   useColorModeValue,
-} from '@chakra-ui/react';
-import SettingsBar from '../SettingsBar';
-import { Route, NavLink as ReactRouterLink, Redirect } from 'react-router-dom';
-import HeartDiceForm from './HeartDiceForm';
-import { RawHexMapModule } from '../APITypes';
-import CharacterList from './CharacterList';
-import SafetyForm from '../SafetyForm/SafetyForm';
-import setXCard from '../SafetyForm/xCard';
-import XCardModal from '../XCardModal/XCardModal';
-import HeartDiceDisplay from './HeartDiceDisplay';
-import HeartMap from './HeartMap';
-import useMap from '../MapModule/useMap';
-import { HeartCharacter } from '../API';
-import HeartFacilitator from './HeartFacilitator';
-import { HeartRoll } from './HeartGameTypes';
+} from "@chakra-ui/react";
+import SettingsBar from "../SettingsBar";
+import { Route, NavLink as ReactRouterLink, Redirect } from "react-router-dom";
+import HeartDiceForm from "./HeartDiceForm";
+import { RawHexMapModule } from "../APITypes";
+import CharacterList from "./CharacterList";
+import SafetyForm from "../SafetyForm/SafetyForm";
+import setXCard from "../SafetyForm/xCard";
+import XCardModal from "../XCardModal/XCardModal";
+import HeartDiceDisplay from "./HeartDiceDisplay";
+import HeartMap from "./HeartMap";
+import useMap from "../MapModule/useMap";
+import { HeartCharacterWithID } from "../APITypes";
+import HeartFacilitator from "./HeartFacilitator";
+import { HeartRoll } from "./HeartGameTypes";
 interface HeartGameProps {
   name: string;
   username: string;
   setUsername: (val: string) => void;
-  characters: HeartCharacter[];
-  characterChoice: 'GM' | string;
+  characters: HeartCharacterWithID[];
+  characterChoice: "GM" | string;
   id: string;
   safetyModuleId: string;
   hexMap: RawHexMapModule;
@@ -73,7 +73,7 @@ const HeartGameArea = ({
       ? dice.d12Dice[0].username
       : dice.d20Dice.length > 0
       ? dice.d20Dice[0].username
-      : 'a ghost';
+      : "a ghost";
   React.useEffect(() => {
     setPrevRolls((cur) => [
       {
@@ -112,11 +112,11 @@ const HeartGameArea = ({
       <GridItem>
         <Grid
           h="full"
-          templateColumns={['1fr', '1fr', '150px minmax(0, 1fr)']}
+          templateColumns={["1fr", "1fr", "150px minmax(0, 1fr)"]}
           templateRows={[
-            'auto minmax(0, 1fr)',
-            'auto minmax(0, 1fr)',
-            'minmax(0, 1fr)',
+            "auto minmax(0, 1fr)",
+            "auto minmax(0, 1fr)",
+            "minmax(0, 1fr)",
           ]}
         >
           <GridItem px={4} pt={1} pb={3} h="full">
@@ -194,16 +194,16 @@ function HeartNav({
   xCardButton: React.ReactElement;
 }) {
   const activeLink = useColorModeValue(
-    { opacity: 1, backgroundColor: 'gray.100' },
-    { opacity: 1, backgroundColor: 'gray.700' }
+    { opacity: 1, backgroundColor: "gray.100" },
+    { opacity: 1, backgroundColor: "gray.700" }
   );
   return (
-    <Flex direction={['row', 'row', 'column']} h="full">
+    <Flex direction={["row", "row", "column"]} h="full">
       <Stack
-        direction={['row', 'row', 'column']}
+        direction={["row", "row", "column"]}
         spacing={4}
         ml={-3}
-        alignItems={['center', 'center', 'stretch']}
+        alignItems={["center", "center", "stretch"]}
       >
         <Link
           rounded="md"

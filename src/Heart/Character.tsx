@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Grid,
   GridItem,
@@ -18,12 +18,13 @@ import {
   IconButton,
   Tag,
   TagLabel,
-} from '@chakra-ui/react';
-import { RiCameraFill, RiPencilLine, RiDeleteBin4Line } from 'react-icons/ri';
-import { API } from 'aws-amplify';
-import * as mutations from '../graphql/mutations';
-import CharacterForm from './CharacterForm';
-import { HeartCharacter, UpdateHeartCharacterInput } from '../API';
+} from "@chakra-ui/react";
+import { RiCameraFill, RiPencilLine, RiDeleteBin4Line } from "react-icons/ri";
+import { API } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+import CharacterForm from "./CharacterForm";
+import { UpdateHeartCharacterInput } from "../API";
+import { HeartCharacterWithID } from "../APITypes";
 import {
   Ability,
   Beat,
@@ -36,16 +37,16 @@ import {
   Resource,
   SkillMap,
   skills,
-} from './HeartGameTypes';
-import AbilityForm from './AbilityForm';
-import EquipmentForm from './EquipmentForm';
-import ResourceForm from './ResourceForm';
-import BeatsForm from './BeatsForm';
-import FalloutForm from './FalloutForm';
-import BondForm from './BondForm';
-import { DelayedNumberInput, DelayedCheckbox } from '../Common/DelayedInputs';
-import QuillEditor from '../Common/QuillEditor/QuillEditor';
-import SpinningCube from '../SpinningCube/SpinningCube';
+} from "./HeartGameTypes";
+import AbilityForm from "./AbilityForm";
+import EquipmentForm from "./EquipmentForm";
+import ResourceForm from "./ResourceForm";
+import BeatsForm from "./BeatsForm";
+import FalloutForm from "./FalloutForm";
+import BondForm from "./BondForm";
+import { DelayedNumberInput, DelayedCheckbox } from "../Common/DelayedInputs";
+import QuillEditor from "../Common/QuillEditor/QuillEditor";
+import SpinningCube from "../SpinningCube/SpinningCube";
 
 const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   try {
@@ -62,12 +63,12 @@ const updateCharacter = async (character: UpdateHeartCharacterInput) => {
   }
 };
 interface CharacterProps {
-  character: Exclude<HeartCharacter, null>;
+  character: Exclude<HeartCharacterWithID, null>;
   canEdit: boolean;
 }
 
 const Character = ({ character, canEdit }: CharacterProps) => {
-  const redTextColor = useColorModeValue('red.800', 'red.400');
+  const redTextColor = useColorModeValue("red.800", "red.400");
   const [saving, setSaving] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [beatsFormOpen, setBeatsFormOpen] = React.useState(false);
@@ -87,14 +88,14 @@ const Character = ({ character, canEdit }: CharacterProps) => {
     character?.resources?.map((r) => JSON.parse(r)) ?? [];
   const bonds: Bond[] = character?.bonds?.map((b) => JSON.parse(b)) ?? [];
 
-  const characterSkills: SkillMap = JSON.parse(character.skills || '');
-  const characterDomains: DomainMap = JSON.parse(character.domains || '');
+  const characterSkills: SkillMap = JSON.parse(character.skills || "");
+  const characterDomains: DomainMap = JSON.parse(character.domains || "");
 
   const handleUpdate = React.useCallback(
     async (key, val) => {
       setSaving(true);
       await updateCharacter({
-        id: character.id || '',
+        id: character.id || "",
         [key]: val,
       });
       setSaving(false);
@@ -115,7 +116,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           </Text>
           <Text opacity="0.8">
             {[character.ancestry, character.class, character.calling].join(
-              ', '
+              ", "
             )}
           </Text>
         </HStack>
@@ -129,7 +130,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           onDone={(char) =>
             updateCharacter({
               ...char,
-              id: character.id || '',
+              id: character.id || "",
             }).then(() => {
               setIsEditing(false);
             })
@@ -235,7 +236,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                   const stringified = beats.map((b) => JSON.stringify(b));
                   setSaving(true);
                   await updateCharacter({
-                    id: character.id || '',
+                    id: character.id || "",
                     beats: stringified,
                   });
                   setSaving(false);
@@ -273,7 +274,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             .map((f) => JSON.stringify(f));
                           setSaving(true);
                           await updateCharacter({
-                            id: character.id || '',
+                            id: character.id || "",
                             fallout: filteredFallout,
                           });
                           setSaving(false);
@@ -312,7 +313,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                   const stringified = JSON.stringify(fallout);
                   setSaving(true);
                   await updateCharacter({
-                    id: character.id || '',
+                    id: character.id || "",
                     fallout: character.fallout?.concat(stringified),
                   });
                   setSaving(false);
@@ -323,8 +324,8 @@ const Character = ({ character, canEdit }: CharacterProps) => {
           <Divider my={6} />
           <Grid templateColumns="1fr" templateRows="1fr" gap={3}>
             {resistances.map((resistance) => {
-              const stressKey = resistance.toLowerCase() + 'Stress';
-              const protectionKey = resistance.toLowerCase() + 'Protection';
+              const stressKey = resistance.toLowerCase() + "Stress";
+              const protectionKey = resistance.toLowerCase() + "Protection";
               return (
                 <GridItem key={resistance}>
                   <Flex
@@ -401,7 +402,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id || '',
+                          id: character.id || "",
                           skills: JSON.stringify(newSkills),
                         });
                         setSaving(false);
@@ -425,7 +426,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id || '',
+                          id: character.id || "",
                           skills: JSON.stringify(newKnacks),
                         });
                         setSaving(false);
@@ -464,7 +465,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id || '',
+                          id: character.id || "",
                           domains: JSON.stringify(newDomains),
                         });
                         setSaving(false);
@@ -488,7 +489,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             };
                         setSaving(true);
                         await updateCharacter({
-                          id: character.id || '',
+                          id: character.id || "",
                           domains: JSON.stringify(newKnacks),
                         });
                         setSaving(false);
@@ -528,7 +529,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((a) => JSON.stringify(a));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id || '',
+                              id: character.id || "",
                               abilities: filtered,
                             });
                             setSaving(false);
@@ -567,7 +568,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(ability);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id || '',
+                      id: character.id || "",
                       abilities: character.abilities?.concat(stringified),
                     });
                     setSaving(false);
@@ -591,7 +592,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               cur.type,
                               `${cur.quality} quality`,
                               cur.rank,
-                            ].join(' – ')}
+                            ].join(" – ")}
                           </Text>
                           <HStack spacing={3} mt={2}>
                             {cur.tags?.map((tag) => (
@@ -619,7 +620,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((a) => JSON.stringify(a));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id || '',
+                              id: character.id || "",
                               equipment: filtered,
                             });
                             setSaving(false);
@@ -647,7 +648,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(equipment);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id || '',
+                      id: character.id || "",
                       equipment: character.equipment?.concat(stringified),
                     });
                     setSaving(false);
@@ -667,7 +668,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                         <Box w="md">
                           <Text fontSize="lg">{cur.name}</Text>
                           <Text opacity="0.9">
-                            {[cur.value, cur.domain].join(' – ')}
+                            {[cur.value, cur.domain].join(" – ")}
                           </Text>
                           <HStack spacing={3} mt={2}>
                             {cur.tags?.map((tag) => (
@@ -695,7 +696,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               .map((r) => JSON.stringify(r));
                             setSaving(true);
                             await updateCharacter({
-                              id: character.id || '',
+                              id: character.id || "",
                               resources: filtered,
                             });
                             setSaving(false);
@@ -723,7 +724,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(resource);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id || '',
+                      id: character.id || "",
                       resources: character.resources?.concat(stringified),
                     });
                     setSaving(false);
@@ -756,7 +757,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                             .map((b) => JSON.stringify(b));
                           setSaving(true);
                           await updateCharacter({
-                            id: character.id || '',
+                            id: character.id || "",
                             bonds: filtered,
                           });
                           setSaving(false);
@@ -784,7 +785,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                               }
                               return JSON.stringify(b);
                             });
-                            handleUpdate('bonds', updatedBonds);
+                            handleUpdate("bonds", updatedBonds);
                           }}
                           height="32"
                           editorId={`bond-${cur.id}`}
@@ -823,7 +824,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
                     const stringified = JSON.stringify(bond);
                     setSaving(true);
                     await updateCharacter({
-                      id: character.id || '',
+                      id: character.id || "",
                       bonds: character.bonds?.concat(stringified),
                     });
                     setSaving(false);
@@ -838,7 +839,7 @@ const Character = ({ character, canEdit }: CharacterProps) => {
             <QuillEditor
               placeholder=""
               initial={character.notes}
-              save={(val) => handleUpdate('notes', val)}
+              save={(val) => handleUpdate("notes", val)}
               height="sm"
               editorId={`notes-${character.id}`}
             />
