@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Button,
   Box,
@@ -9,30 +9,32 @@ import {
   Checkbox,
   ListItem,
   UnorderedList,
-} from '@chakra-ui/react';
-import merge from 'lodash.merge';
-import { RiArrowLeftLine } from 'react-icons/ri';
-import { CharacterHearthfire, initial } from './hearthfireItems';
-import { UpdateTrophyGoldCharacterInput } from '../API';
+} from "@chakra-ui/react";
+import merge from "lodash.merge";
+import { RiArrowLeftLine } from "react-icons/ri";
+import { CharacterHearthfire, initial } from "./hearthfireItems";
+import { UpdateTrophyGoldCharacterInput } from "../API";
 
 interface HearthfireProps {
   onClose: () => void;
   characterHearthfire?: string | null;
   updateWithId: (
-    update: Omit<UpdateTrophyGoldCharacterInput, 'id'>
+    update: Omit<UpdateTrophyGoldCharacterInput, "id">
   ) => Promise<void>;
+  notes: React.ReactNode;
 }
 
 function Hearthfire({
   characterHearthfire,
   onClose,
   updateWithId,
+  notes,
 }: HearthfireProps) {
   const [hearth, setHearth] = React.useState(
     merge(
       {},
       initial,
-      JSON.parse(characterHearthfire || '{}') as CharacterHearthfire,
+      JSON.parse(characterHearthfire || "{}") as CharacterHearthfire,
       { dirty: false }
     )
   );
@@ -66,6 +68,10 @@ function Hearthfire({
         Back to Character Sheet
       </Button>
       <Box mb={4}>
+        <Text mb={2}>
+          Complete these sections to grow your story. Use your notes field (at
+          the bottom of the sheet) to record your progress where needed.
+        </Text>
         <Flex alignItems="center">
           <Text mt={1} mr={1} fontWeight="600">
             Hoard
@@ -360,6 +366,7 @@ function Hearthfire({
           add it to their own Household or found equipment.
         </Text>
       </Box>
+      <Box mb={24}>{notes}</Box>
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Grid,
   GridItem,
@@ -13,14 +13,15 @@ import {
   Icon,
   Image,
   Select,
-} from '@chakra-ui/react';
-import { RiCameraFill } from 'react-icons/ri';
-import { HeartCharacter, UpdateHeartCharacterInput } from '../API';
-import { ancestries, callings, classes } from './HeartGameTypes';
+} from "@chakra-ui/react";
+import { RiCameraFill } from "react-icons/ri";
+import { UpdateHeartCharacterInput } from "../API";
+import { HeartCharacterWithID } from "../APITypes";
+import { ancestries, callings, classes } from "./HeartGameTypes";
 
 interface CharacterFormProps {
-  onDone: (character: Omit<UpdateHeartCharacterInput, 'id'>) => void;
-  character?: Exclude<HeartCharacter, null>;
+  onDone: (character: Omit<UpdateHeartCharacterInput, "id">) => void;
+  character?: Exclude<HeartCharacterWithID, null>;
   submitText: string;
 }
 
@@ -30,17 +31,17 @@ const CharacterForm = ({
   submitText,
 }: CharacterFormProps) => {
   const [characterName, setCharacterName] = React.useState(
-    character?.characterName || ''
+    character?.characterName || ""
   );
   const [characterPronouns, setCharacterPronouns] = React.useState(
-    character?.characterPronouns || ''
+    character?.characterPronouns || ""
   );
   const [imageUrl, setImageUrl] = React.useState(
-    character?.characterImageUrl || ''
+    character?.characterImageUrl || ""
   );
-  const [ancestry, setAncestry] = React.useState(character?.ancestry || '');
-  const [calling, setCalling] = React.useState(character?.calling || '');
-  const [charClass, setCharClass] = React.useState(character?.class || '');
+  const [ancestry, setAncestry] = React.useState(character?.ancestry || "");
+  const [calling, setCalling] = React.useState(character?.calling || "");
+  const [charClass, setCharClass] = React.useState(character?.class || "");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,26 +1,26 @@
-import * as React from 'react';
-import { API } from 'aws-amplify';
-import * as subscriptions from '../graphql/subscriptions';
-import { HeartCharacter } from '../API';
-import rollbar from '../utils/logger';
+import * as React from "react";
+import { API } from "aws-amplify";
+import * as subscriptions from "../graphql/subscriptions";
+import { HeartCharacterWithID } from "../APITypes";
+import rollbar from "../utils/logger";
 
 const useHeartCharacterSubscription = ({
   characters,
   gameId,
 }: {
-  characters: HeartCharacter[];
+  characters: HeartCharacterWithID[];
   gameId?: string;
 }) => {
   const [trackedCharacterIds, setTrackedCharacterIds] = React.useState<
     string[]
   >([]);
   const [trackedCharacters, setTrackedCharacters] = React.useState<
-    HeartCharacter[]
+    HeartCharacterWithID[]
   >([]);
 
   React.useEffect(() => {
     // handles first load of characters with game data
-    setTrackedCharacterIds(characters.map((c) => c.id || ''));
+    setTrackedCharacterIds(characters.map((c) => c.id || ""));
     setTrackedCharacters(characters);
   }, [characters]);
 
@@ -67,7 +67,7 @@ const useHeartCharacterSubscription = ({
           });
         },
         error: (error: any) => {
-          rollbar.error('subscription error', error);
+          rollbar.error("subscription error", error);
         },
       });
     });
