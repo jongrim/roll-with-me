@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-import { Die, Roll, SavedRoll } from '../types';
-import { CustomDie } from './dice';
+import { v4 as uuidv4 } from "uuid";
+import { Die, Roll, SavedRoll } from "../types";
+import { CustomDie } from "./dice";
 
 export function createDieOfNSides({
   n,
@@ -22,8 +22,8 @@ export function createFudgeDie(): Die {
     id: uuidv4(),
     sides: 6,
     result: undefined,
-    name: 'Fudge',
-    type: 'fudge',
+    name: "Fudge",
+    type: "fudge",
   };
 }
 
@@ -31,8 +31,10 @@ export function makeNFudgeDice({ n }: { n: number }): Die[] {
   return Array.from(new Array(n)).map(() => createFudgeDie());
 }
 
-const dieFactory = ({ n, name }: { n: number; name?: string }) => () =>
-  createDieOfNSides({ n, name });
+const dieFactory =
+  ({ n, name }: { n: number; name?: string }) =>
+  () =>
+    createDieOfNSides({ n, name });
 
 export function makeNDice({
   count,
@@ -65,7 +67,7 @@ export function assignResultsToDice<T extends { sides: number }>({
 
 export function sumOfDice(dice: Die[]): number {
   return dice.reduce((acc, cur) => {
-    if (cur.type === 'fudge') {
+    if (cur.type === "fudge") {
       return acc + fudgeDieNumberResult(cur.result || 0);
     }
     return acc + (cur.result || 0);
@@ -89,7 +91,7 @@ export function getRollFromQuickString(
     createdAt: new Date().toISOString(),
     modifier: modifier,
     rollName: specifiedRollName ?? describeRoll({ dice, modifier }),
-    rolledBy: '',
+    rolledBy: "",
     sum: 0,
     dice,
   };
@@ -104,7 +106,7 @@ export function getRollName(s: string) {
 export function getModifier(s: string) {
   const modifierReg = /(\+|-)\s?\d/;
   const modifier = modifierReg.exec(s);
-  return Number(modifier?.[0].replace(' ', '') ?? 0);
+  return Number(modifier?.[0].replace(" ", "") ?? 0);
 }
 
 export function getCustomDice(s: string, customDice?: CustomDie[]) {
@@ -116,7 +118,7 @@ export function getCustomDice(s: string, customDice?: CustomDie[]) {
 
   if (customDice) {
     customDice.forEach((die) => {
-      const dieNameReg = new RegExp(`(\\d*)\\s*(${die.name})\\b`, 'i');
+      const dieNameReg = new RegExp(`(\\d*)\\s*(${die.name})\\b`, "i");
       const diceNameGroups = s.match(dieNameReg);
       if (diceNameGroups) {
         const dieTemplate = customDice.find((d) => d.id === die.id);
@@ -158,12 +160,12 @@ export function getBaseDice(s: string) {
         const count = countReg
           .exec(group[0])?.[0]
           .toLowerCase()
-          .replace('d', '')
+          .replace("d", "")
           .trim();
         const sides = sidesReg
           .exec(group[0])?.[0]
           .toLowerCase()
-          .replace('d', '')
+          .replace("d", "")
           .trim();
         return makeNDice({
           count: Number(count),
@@ -188,7 +190,7 @@ export function getFudgeDice(s: string) {
         const count = countReg
           .exec(group[0])?.[0]
           .toLowerCase()
-          .replace('d', '')
+          .replace("d", "")
           .trim();
         return makeNFudgeDice({ n: Number(count) });
       })
@@ -220,12 +222,12 @@ export function getCountOfDiceTypesFromDice(dice: Die[]): string {
   });
   return Object.entries(diceCountMap)
     .map(([key, val]) => `${val} ${key}`)
-    .join(' + ');
+    .join(" + ");
 }
 
 export function getCountOfDiceTypesFromRoll(roll: SavedRoll): string {
   let diceCountMap: Record<string, number> = {};
-  roll?.dice.forEach((d) => {
+  roll.dice.forEach((d) => {
     if (diceCountMap[d.name]) {
       diceCountMap[d.name] += 1;
     } else {
@@ -234,25 +236,27 @@ export function getCountOfDiceTypesFromRoll(roll: SavedRoll): string {
   });
   return Object.entries(diceCountMap)
     .map(([key, val]) => `${val} ${key}`)
-    .join(' + ');
+    .join(" + ");
 }
 
 // Used for rolling a saved roll or a pre-defined roll
-export const savedRollToRoll = (name: string) => (roll: SavedRoll): Roll => {
-  return {
-    ...roll,
-    id: uuidv4(),
-    createdAt: new Date().toISOString(),
-    sum: 0,
-    rolledBy: name,
+export const savedRollToRoll =
+  (name: string) =>
+  (roll: SavedRoll): Roll => {
+    return {
+      ...roll,
+      id: uuidv4(),
+      createdAt: new Date().toISOString(),
+      sum: 0,
+      rolledBy: name,
+    };
   };
-};
 
 export const createEmptySavedRoll = (): SavedRoll => {
   return {
     id: uuidv4(),
     createdAt: new Date().toDateString(),
-    rollName: '',
+    rollName: "",
     modifier: 0,
     dice: [],
   };
@@ -276,13 +280,13 @@ export const createNewRollFromValues = ({
   const newRoll = {
     id,
     dice,
-    rollName: rollName || '',
-    rolledBy: rolledBy || '',
+    rollName: rollName || "",
+    rolledBy: rolledBy || "",
     modifier: modifier || 0,
     sum: 0,
     offline,
   };
-  if (newRoll.rollName === '') {
+  if (newRoll.rollName === "") {
     newRoll.rollName = describeRoll(newRoll);
   }
   return newRoll;
@@ -292,12 +296,12 @@ export const fudgeDieTextResult = (result: number) => {
   switch (result) {
     case 1:
     case 2:
-      return '+';
+      return "+";
     case 3:
     case 4:
-      return '—';
+      return "—";
     default:
-      return 'blank';
+      return "blank";
   }
 };
 
