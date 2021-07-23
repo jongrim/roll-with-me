@@ -30,7 +30,6 @@ test:
         - "npm start & npx wait-on http://localhost:3000"
     test:
       commands:
-        - npm test:nowatch
         - 'npx cypress run --reporter mochawesome --reporter-options "reportDir=cypress/report/mochawesome-report,overwrite=false,html=false,json=true,timestamp=mmddyyyy_HHMMss"'
     postTest:
       commands:
