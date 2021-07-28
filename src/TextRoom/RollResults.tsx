@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import * as React from "react";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import {
   Box,
   Divider,
@@ -15,10 +15,14 @@ import {
   Flex,
   useColorModeValue,
   useMediaQuery,
-} from '@chakra-ui/react';
-import { AnimateSharedLayout, motion } from 'framer-motion';
-import { Die, Roll } from '../types';
-import { fudgeDieNumberResult, fudgeDieTextResult } from '../utils/rolls';
+} from "@chakra-ui/react";
+import { AnimateSharedLayout, motion } from "framer-motion";
+import { Die, Roll } from "../types";
+import {
+  fudgeDieNumberResult,
+  fudgeDieTextResult,
+  summarizeResults,
+} from "../utils/rolls";
 
 interface RollResultsProps {
   rolls: Roll[];
@@ -32,7 +36,7 @@ interface dieResultsMap {
 }
 
 const RollResults = ({ rolls }: RollResultsProps) => {
-  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
   return (
     <AnimateSharedLayout>
       <HStack
@@ -68,7 +72,7 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
   const diceMap: dieResultsMap = React.useMemo(() => {
     let map: dieResultsMap = {};
     roll?.dice.forEach((d) => {
-      if (d.type === 'fudge') {
+      if (d.type === "fudge") {
         map.Fudge = {
           dice: [d].concat(map.Fudge?.dice ?? []),
           sum: fudgeDieNumberResult(d.result || 0) + (map.Fudge?.sum || 0),
@@ -94,8 +98,12 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
         <StatLabel>{roll?.rollName}</StatLabel>
         <StatNumber fontSize={26}>{roll?.sum}</StatNumber>
         {(groupResults.length > 1 || roll.modifier !== 0) && (
-          <StatHelpText fontSize={14}>{`${groupResults.join(' + ')}${
-            roll?.modifier ? ` + ${roll.modifier}` : ''
+          <StatHelpText fontSize={14}>{`${groupResults.join(" + ")}${
+            roll?.modifier
+              ? roll.modifier > 0
+                ? ` + ${roll.modifier}`
+                : ` - ${String(roll.modifier).replace("-", "")}`
+              : ""
           }`}</StatHelpText>
         )}
       </Stat>
@@ -116,7 +124,7 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
                 <GridItem key={d.id}>
                   <Stat>
                     <StatNumber>
-                      {d.type === 'fudge'
+                      {d.type === "fudge"
                         ? fudgeDieTextResult(d.result || 0)
                         : d.result}
                     </StatNumber>
@@ -135,15 +143,15 @@ const DetailedRollResults = ({ roll }: { roll: Roll }) => {
 const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
   const opacity = 1 - offset * 0.3;
   const y = offset * 120;
-  const borderColor = useColorModeValue('gray.50', 'inherit');
-  const subtleTextColor = useColorModeValue('gray.600', 'gray.400');
+  const borderColor = useColorModeValue("gray.50", "inherit");
+  const subtleTextColor = useColorModeValue("gray.600", "gray.400");
   return (
     <motion.div
       initial={{ opacity: 0, y: -50, scale: 0.9 }}
       animate={{ opacity, y, scale: 1 }}
       transition={{ duration: 0.4 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-      style={{ position: 'absolute', right: 0 }}
+      style={{ position: "absolute", right: 0 }}
     >
       <Box
         mt={8}
@@ -170,14 +178,7 @@ const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
             maxW={60}
             isTruncated
           >
-            (
-            {roll.dice
-              .map(({ type, result = 0 }) => {
-                if (type === 'fudge') return fudgeDieNumberResult(result);
-                return result;
-              })
-              .join(' + ')}{' '}
-            + {roll.modifier})
+            ({summarizeResults({ dice: roll.dice, modifier: roll.modifier })})
           </Text>
         </Flex>
         <Text fontSize="sm" fontWeight="300">

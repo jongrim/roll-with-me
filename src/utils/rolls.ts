@@ -208,8 +208,26 @@ export function describeRoll({
   modifier: number;
 }): string {
   const diceString = getCountOfDiceTypesFromDice(dice);
-  return `${diceString} + ${modifier}`;
+  const result = `${diceString} + ${modifier}`;
+  return result.replace(" + -", " - ");
 }
+
+export const summarizeResults = ({
+  dice,
+  modifier,
+}: {
+  dice: Die[];
+  modifier: Number;
+}) => {
+  let result = dice
+    .map(({ type, result = 0 }) => {
+      if (type === "fudge") return fudgeDieNumberResult(result);
+      return result;
+    })
+    .join(" + ");
+  result = modifier !== 0 ? result + ` + ${modifier}` : result;
+  return result.replace(" + -", " - ");
+};
 
 export function getCountOfDiceTypesFromDice(dice: Die[]): string {
   let diceCountMap: Record<string, number> = {};
