@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { format, parseISO } from 'date-fns';
+import * as React from "react";
+import { format, parseISO } from "date-fns";
 import {
   Container,
   Heading,
@@ -24,23 +24,23 @@ import {
   useToast,
   Link,
   useColorModeValue,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import {
   RiDeleteBin4Line,
   RiRepeat2Line,
   RiBookmarkLine,
-} from 'react-icons/ri';
-import { v4 as uuidv4 } from 'uuid';
-import { API } from 'aws-amplify';
-import * as mutations from '../graphql/mutations';
-import { Roll, SavedRoll } from '../types';
+} from "react-icons/ri";
+import { v4 as uuidv4 } from "uuid";
+import { API } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+import { Roll, SavedRoll } from "../types";
 import {
   savedRollToRoll,
   createNewRollFromValues,
   fudgeDieTextResult,
-  fudgeDieNumberResult,
-} from '../utils/rolls';
-import { compose } from '../utils/fnTools';
+  summarizeResults,
+} from "../utils/rolls";
+import { compose } from "../utils/fnTools";
 
 async function setRolls({ id, rolls }: { id: string; rolls: Roll[] }) {
   await API.graphql({
@@ -76,21 +76,21 @@ const RollsHistory = ({
     setRolls({ id: roomId, rolls: nextRolls })
       .then(() => {
         toast({
-          status: 'success',
-          title: 'Roll deleted from history',
+          status: "success",
+          title: "Roll deleted from history",
           duration: 3000,
           isClosable: true,
         });
       })
       .catch(() => {
         toast({
-          status: 'warning',
-          title: 'Unable to remove roll',
+          status: "warning",
+          title: "Unable to remove roll",
           duration: 3000,
           isClosable: true,
           description: (
             <Text>
-              Please try again. If the problem persists, please{' '}
+              Please try again. If the problem persists, please{" "}
               <Link
                 href="/feedback"
                 isExternal
@@ -111,7 +111,7 @@ const RollsHistory = ({
         Roll History
       </Heading>
       <Grid
-        templateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr']}
+        templateColumns={["1fr", "1fr", "1fr 1fr", "1fr 1fr 1fr"]}
         templateRows="minmax(0, 1fr)"
         gap={8}
       >
@@ -144,10 +144,10 @@ const RollHistoryEntry = ({
   saveRoll: (roll: SavedRoll) => void;
 }) => {
   const { isOpen, onToggle } = useDisclosure();
-  const subtleTextColor = useColorModeValue('gray.600', 'gray.400');
+  const subtleTextColor = useColorModeValue("gray.600", "gray.400");
   const itemBorder = useColorModeValue(
-    { boxShadow: 'md', borderColor: 'gray.50' },
-    { borderColor: 'inherit' }
+    { boxShadow: "md", borderColor: "gray.50" },
+    { borderColor: "inherit" }
   );
   return (
     <GridItem
@@ -165,14 +165,7 @@ const RollHistoryEntry = ({
               {roll.sum}
             </Text>
             <Text fontSize="sm" color={subtleTextColor}>
-              (
-              {roll.dice
-                .map(({ type, result = 0 }) => {
-                  if (type === 'fudge') return fudgeDieNumberResult(result);
-                  return result;
-                })
-                .join(' + ')}{' '}
-              + {roll.modifier})
+              ({summarizeResults({ dice: roll.dice, modifier: roll.modifier })})
             </Text>
           </HStack>
           <HStack spacing={2}>
@@ -185,7 +178,7 @@ const RollHistoryEntry = ({
               placement="top-start"
             >
               <Text fontSize="sm" fontWeight="300">
-                {format(parseISO(roll.createdAt), 'LLL do, h:mm aaa')}
+                {format(parseISO(roll.createdAt), "LLL do, h:mm aaa")}
               </Text>
             </Tooltip>
           </HStack>
@@ -210,7 +203,7 @@ const RollHistoryEntry = ({
                   id: uuidv4(),
                   dice: roll.dice,
                   rollName: roll.rollName,
-                  rolledBy: '',
+                  rolledBy: "",
                   modifier: roll.modifier,
                 });
                 rollAgain(newRoll);
@@ -263,7 +256,7 @@ const RollInfo = ({ roll }: { roll: Roll }) => {
             <Td fontWeight="300">{die.name || i + 1}</Td>
             <Td fontWeight="300">{die.sides}</Td>
             <Td fontWeight="600">
-              {die.type === 'fudge'
+              {die.type === "fudge"
                 ? fudgeDieTextResult(die.result || 0)
                 : die.result}
             </Td>
