@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../AuthProvider';
-import { API } from 'aws-amplify';
-import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
-import * as subscriptions from '../graphql/subscriptions';
-import rollbar from '../utils/logger';
+import * as React from "react";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../AuthProvider";
+import { API } from "aws-amplify";
+import * as queries from "../graphql/queries";
+import * as mutations from "../graphql/mutations";
+import * as subscriptions from "../graphql/subscriptions";
+import rollbar from "../utils/logger";
 
-import TextRoomPage from './TextRoomPage';
-import { assignResultsToDice, sumOfDice } from '../utils/rolls';
+import TextRoomPage from "./TextRoomPage";
+import { assignResultsToDice, sumOfDice } from "../utils/rolls";
 
-import { useToast } from '@chakra-ui/react';
-import { UserRoomContext } from '../UserRoomProvider';
-import { RandomNumbersContext } from '../RandomNumbersProvider';
+import { useToast } from "@chakra-ui/react";
+import { UserRoomContext } from "../UserRoomProvider";
+import { RandomNumbersContext } from "../RandomNumbersProvider";
 
-const LOCAL_STORAGE_ROLL_KEY = 'local-saved-rolls';
+const LOCAL_STORAGE_ROLL_KEY = "local-saved-rolls";
 
 function TextRoom({ name }) {
   const toast = useToast();
@@ -51,16 +51,19 @@ function TextRoom({ name }) {
         const nextCustomDice =
           value.data.onUpdateTextRoomByName?.customDice ?? [];
         const parsedCustomDice = nextCustomDice.map((die) => JSON.parse(die));
+        const nextRoomCounters =
+          value.data.onUpdateTextRoomByName?.counters ?? [];
+        setCounters(nextRoomCounters.map((counter) => JSON.parse(counter)));
         setRolls(parsedRolls);
         setCustomDice(parsedCustomDice);
         setIsRolling(false);
       },
       error: (error) => {
-        rollbar.error('subscription error', error);
+        rollbar.error("subscription error", error);
         toast({
-          status: 'error',
+          status: "error",
           description:
-            'Lost connection to game server. Please refresh the page',
+            "Lost connection to game server. Please refresh the page",
           duration: null,
         });
       },
@@ -112,14 +115,14 @@ function TextRoom({ name }) {
       try {
         const { data } = await API.graphql({
           query: queries.listSavedRolls,
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
+          authMode: "AMAZON_COGNITO_USER_POOLS",
         });
         const rolls = data?.listSavedRolls?.items ?? [];
         setSavedRolls(
           rolls.map((roll) => {
             return {
-              id: roll?.id || '',
-              rollName: roll?.rollName || '',
+              id: roll?.id || "",
+              rollName: roll?.rollName || "",
               modifier: roll?.modifier || 0,
               dice: roll?.dice.map((r) => JSON.parse(r)) || [],
             };
@@ -151,8 +154,8 @@ function TextRoom({ name }) {
       await updateRollInAmplify(roll);
     }
     toast({
-      title: 'Roll updated',
-      status: 'info',
+      title: "Roll updated",
+      status: "info",
       duration: 7000,
       isClosable: true,
     });
@@ -172,7 +175,7 @@ function TextRoom({ name }) {
         variables: {
           input: rollToSave,
         },
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
+        authMode: "AMAZON_COGNITO_USER_POOLS",
       });
       const createdRoll = data?.updateSavedRoll;
       setSavedRolls((cur) =>
@@ -216,8 +219,8 @@ function TextRoom({ name }) {
       await deleteRollInAmplify(roll);
     }
     toast({
-      title: 'Roll deleted',
-      status: 'info',
+      title: "Roll deleted",
+      status: "info",
       duration: 7000,
       isClosable: true,
     });
@@ -244,7 +247,7 @@ function TextRoom({ name }) {
             id: roll.id,
           },
         },
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
+        authMode: "AMAZON_COGNITO_USER_POOLS",
       });
       setSavedRolls((cur) => cur.filter((r) => r.id !== roll.id));
     } catch (e) {
@@ -264,8 +267,8 @@ function TextRoom({ name }) {
       saveToLocal(roll);
     }
     toast({
-      title: 'Roll saved',
-      status: 'info',
+      title: "Roll saved",
+      status: "info",
       duration: 7000,
       isClosable: true,
     });
@@ -295,7 +298,7 @@ function TextRoom({ name }) {
         variables: {
           input: rollToSave,
         },
-        authMode: 'AMAZON_COGNITO_USER_POOLS',
+        authMode: "AMAZON_COGNITO_USER_POOLS",
       });
       const createdRoll = data?.createSavedRoll;
       setSavedRolls((cur) =>
@@ -329,13 +332,13 @@ function TextRoom({ name }) {
         },
       });
     } catch (e) {
-      console.error('error sending', e);
+      console.error("error sending", e);
     }
   }
 
   async function onSubmit(rollWithoutResults) {
     updateRoomActivity({
-      roomKey: 'textRoom',
+      roomKey: "textRoom",
       roomId,
     });
     setIsRolling(true);
@@ -350,7 +353,7 @@ function TextRoom({ name }) {
         sumOfDice(rollWithResults.dice) + rollWithResults.modifier;
       sendRoll(rollWithResults);
     } catch (e) {
-      console.error('error sending', e);
+      console.error("error sending", e);
     } finally {
       // cleanup if something went wrong
       setTimeout(() => {

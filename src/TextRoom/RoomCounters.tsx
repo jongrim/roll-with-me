@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   Input,
   Text,
@@ -25,35 +25,28 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-} from '@chakra-ui/react';
-import { RiAddCircleLine, RiDeleteBin4Line } from 'react-icons/ri';
-import { useRoomCounters } from './useRoomCounters';
-import { Counter } from '../types';
+} from "@chakra-ui/react";
+import { RiAddCircleLine, RiDeleteBin4Line } from "react-icons/ri";
+import { useRoomCounters } from "./useRoomCounters";
+import { Counter } from "../types";
 
 interface RoomCountersProps {
   roomId: string;
   roomName: string;
-  counters: unknown[];
+  counters: Counter[];
 }
 
 const RoomCounters: React.FC<RoomCountersProps> = ({
   roomId,
   roomName,
-  counters: initialCounters,
+  counters,
 }) => {
-  const {
-    counters,
-    createCounter,
-    updateCounter,
-    deleteCounter,
-    isLoading,
-  } = useRoomCounters({ name: roomName, roomId, initialCounters });
+  const { createCounter, updateCounter, deleteCounter, isLoading } =
+    useRoomCounters({ name: roomName, roomId, counters });
 
-  const [newCounterTitle, setNewCounterTitle] = React.useState('');
-  const [
-    newCounterStartingCount,
-    setNewCounterStartingCount,
-  ] = React.useState<number>();
+  const [newCounterTitle, setNewCounterTitle] = React.useState("");
+  const [newCounterStartingCount, setNewCounterStartingCount] =
+    React.useState<number>();
   const [counterToDelete, setCounterToDelete] = React.useState<Counter>();
   return (
     <Box position="relative">
@@ -64,9 +57,9 @@ const RoomCounters: React.FC<RoomCountersProps> = ({
           </Center>
         </Box>
       )}
-      <Box opacity={isLoading ? '0.6' : '1'}>
+      <Box opacity={isLoading ? "0.6" : "1"}>
         <Text>Use counters to track meta-items like tokens or clocks</Text>
-        {counters.map((counter: Counter) => (
+        {counters.map((counter) => (
           <CounterInput
             key={counter.id}
             {...counter}
@@ -87,8 +80,8 @@ const RoomCounters: React.FC<RoomCountersProps> = ({
               id: uuidv4(),
             };
             createCounter(newCounter);
-            setNewCounterTitle('');
-            setNewCounterStartingCount(undefined);
+            setNewCounterTitle("");
+            setNewCounterStartingCount(0);
           }}
         >
           <FormControl isRequired>
@@ -118,6 +111,7 @@ const RoomCounters: React.FC<RoomCountersProps> = ({
             variant="outline"
             type="submit"
             mt={4}
+            aria-label="Create"
           >
             Create
           </Button>
@@ -150,28 +144,33 @@ const CounterInput: React.FC<CounterProps> = ({
   updateCounter,
   deleteCounter,
 }) => {
-  const {
-    getInputProps,
-    getIncrementButtonProps,
-    getDecrementButtonProps,
-  } = useNumberInput({
-    step: 1,
-    value,
-  });
+  const inputId = `counter-${title}-${id}`;
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
+    useNumberInput({
+      step: 1,
+      value,
+      id: inputId,
+      name: inputId,
+    });
 
   const increment = () => updateCounter({ id, title, value: value + 1 });
   const decrement = () => updateCounter({ id, title, value: value - 1 });
 
-  const inc = getIncrementButtonProps({ onClick: increment });
-  const dec = getDecrementButtonProps({ onClick: decrement });
+  const inc = getIncrementButtonProps({
+    onClick: increment,
+    "aria-label": `Increase ${title} counter by one`,
+  });
+  const dec = getDecrementButtonProps({
+    onClick: decrement,
+    "aria-label": `Decrease ${title} counter by one`,
+  });
   const input = getInputProps({
-    // @ts-ignore
-    isReadOnly: true,
+    readOnly: true,
   });
 
   return (
     <Box mt={3}>
-      <Text fontWeight="600" fontSize="sm">
+      <Text as="label" htmlFor={inputId} fontWeight="600" fontSize="sm">
         {title}
       </Text>
       <HStack mt={2}>
@@ -181,7 +180,7 @@ const CounterInput: React.FC<CounterProps> = ({
         <IconButton
           variant="outline"
           icon={<RiDeleteBin4Line />}
-          aria-label="delete"
+          aria-label={`Delete the ${title} counter`}
           onClick={deleteCounter}
         />
       </HStack>
