@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Tabs,
   TabList,
@@ -19,29 +19,29 @@ import {
   Modal,
   ModalContent,
   Spinner,
-} from '@chakra-ui/react';
-import { v4 as uuidv4 } from 'uuid';
-import BuildRollForm from './BuildRollForm';
-import SettingsBar from '../SettingsBar/SettingsBar';
-import RollsHistory from './RollsHistory';
-import { Roll, SafetyModule, SavedRoll } from '../types';
+} from "@chakra-ui/react";
+import { v4 as uuidv4 } from "uuid";
+import BuildRollForm from "./BuildRollForm";
+import SettingsBar from "../SettingsBar/SettingsBar";
+import RollsHistory from "./RollsHistory";
+import { Counter, Roll, SafetyModule, SavedRoll } from "../types";
 import {
   createNewRollFromValues,
   makeNDice,
   savedRollToRoll,
-} from '../utils/rolls';
-import RollResults from './RollResults';
-import SavedRolls from './SavedRolls';
-import { compose } from '../utils/fnTools';
-import RoomCounters from './RoomCounters';
-import XCardModal from '../XCardModal/XCardModal';
-import SafetyForm from '../SafetyForm/SafetyForm';
-import SpinningCube from '../SpinningCube/SpinningCube';
-import UsernameModal from '../UsernameModal/UsernameModal';
-import QuickRollBar from '../QuickRollBar/QuickRollBar';
-import useUserRoom from '../hooks/useUserRoom';
-import TextRoomControls from './TextRoomControls';
-import { CustomDie } from '../utils/dice';
+} from "../utils/rolls";
+import RollResults from "./RollResults";
+import SavedRolls from "./SavedRolls";
+import { compose } from "../utils/fnTools";
+import RoomCounters from "./RoomCounters";
+import XCardModal from "../XCardModal/XCardModal";
+import SafetyForm from "../SafetyForm/SafetyForm";
+import SpinningCube from "../SpinningCube/SpinningCube";
+import UsernameModal from "../UsernameModal/UsernameModal";
+import QuickRollBar from "../QuickRollBar/QuickRollBar";
+import useUserRoom from "../hooks/useUserRoom";
+import TextRoomControls from "./TextRoomControls";
+import { CustomDie } from "../utils/dice";
 
 interface TextRoomPageProps {
   roomId: string;
@@ -49,7 +49,7 @@ interface TextRoomPageProps {
   onSubmit: (roll: Roll) => void;
   rolls: Roll[];
   customDice: CustomDie[];
-  counters: unknown[];
+  counters: Counter[];
   savedRolls: SavedRoll[];
   createRoll: (roll: SavedRoll) => void;
   deleteRoll: (roll: SavedRoll) => void;
@@ -87,18 +87,18 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
   } = useUserRoom({
     roomName,
     roomId,
-    roomKey: 'textRoom',
+    roomKey: "textRoom",
   });
   const [actionInProgress, setActionInProgress] = React.useState(false);
   const quickRollRef = React.useRef<HTMLInputElement>(null!);
   React.useEffect(() => {
     const checkForQuickCommand = (e: KeyboardEvent) => {
-      if (e.key === '/' && e.ctrlKey) {
+      if (e.key === "/" && e.ctrlKey) {
         quickRollRef.current?.focus();
       }
     };
-    document.addEventListener('keyup', checkForQuickCommand);
-    return () => document.removeEventListener('keyup', checkForQuickCommand);
+    document.addEventListener("keyup", checkForQuickCommand);
+    return () => document.removeEventListener("keyup", checkForQuickCommand);
   }, [quickRollRef]);
 
   const submitQuickRoll = compose(
@@ -131,8 +131,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                   submitQuickRoll({
                     id: uuidv4(),
                     dice: makeNDice({ count: 2, sides: 6 }),
-                    rollName: '2d6',
-                    rolledBy: '',
+                    rollName: "2d6",
+                    rolledBy: "",
                     modifier: 0,
                   })
                 }
@@ -149,8 +149,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                   submitQuickRoll({
                     id: uuidv4(),
                     dice: makeNDice({ count: 1, sides: 20 }),
-                    rollName: '1d20',
-                    rolledBy: '',
+                    rollName: "1d20",
+                    rolledBy: "",
                     modifier: 0,
                   })
                 }
@@ -167,8 +167,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                   submitQuickRoll({
                     id: uuidv4(),
                     dice: makeNDice({ count: 2, sides: 20 }),
-                    rollName: '2d20',
-                    rolledBy: '',
+                    rollName: "2d20",
+                    rolledBy: "",
                     modifier: 0,
                   })
                 }
@@ -185,8 +185,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
                   submitQuickRoll({
                     id: uuidv4(),
                     dice: makeNDice({ count: 1, sides: 100 }),
-                    rollName: '1d100',
-                    rolledBy: '',
+                    rollName: "1d100",
+                    rolledBy: "",
                     modifier: 0,
                   })
                 }
@@ -212,21 +212,21 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
         <Tabs
           variant="unstyled"
           display="flex"
-          flexDirection={['column', 'column', 'column', 'row']}
+          flexDirection={["column", "column", "column", "row"]}
           isLazy
         >
           <TabList
-            flexDirection={['row', 'row', 'row', 'column']}
-            justifyContent={['stretch', 'stretch', 'flex-start']}
+            flexDirection={["row", "row", "row", "column"]}
+            justifyContent={["stretch", "stretch", "flex-start"]}
             mr={[0, 0, 0, 8]}
             my={[4, 4, 4, 0]}
-            pt={[0, 0, 0, '0.4rem']}
+            pt={[0, 0, 0, "0.4rem"]}
           >
             <Tab
               _selected={{
                 opacity: 1,
-                borderBottom: '1px solid',
-                borderBottomColor: 'brand.300',
+                borderBottom: "1px solid",
+                borderBottomColor: "brand.300",
               }}
               opacity="0.6"
               flex={[1, 1, 1, 0]}
@@ -236,8 +236,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             <Tab
               _selected={{
                 opacity: 1,
-                borderBottom: '1px solid',
-                borderBottomColor: 'brand.300',
+                borderBottom: "1px solid",
+                borderBottomColor: "brand.300",
               }}
               opacity="0.6"
               flex={[1, 1, 1, 0]}
@@ -247,8 +247,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             <Tab
               _selected={{
                 opacity: 1,
-                borderBottom: '1px solid',
-                borderBottomColor: 'brand.300',
+                borderBottom: "1px solid",
+                borderBottomColor: "brand.300",
               }}
               opacity="0.6"
               flex={[1, 1, 1, 0]}
@@ -258,8 +258,8 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             <Tab
               _selected={{
                 opacity: 1,
-                borderBottom: '1px solid',
-                borderBottomColor: 'brand.300',
+                borderBottom: "1px solid",
+                borderBottomColor: "brand.300",
               }}
               opacity="0.6"
               flex={[1, 1, 1, 0]}
@@ -270,7 +270,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           <TabPanels>
             <TabPanel px={0}>
               <Grid
-                templateColumns={['1fr', '1fr', '1fr 1fr']}
+                templateColumns={["1fr", "1fr", "1fr 1fr"]}
                 templateRows="minmax(0, 1fr)"
                 w="full"
                 gap={8}
