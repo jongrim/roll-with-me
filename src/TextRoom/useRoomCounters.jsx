@@ -1,31 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { API } from 'aws-amplify';
-import * as subscriptions from '../graphql/subscriptions';
-import * as mutations from '../graphql/mutations';
-import { useToast } from '@chakra-ui/react';
+import { API } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+import { useToast } from "@chakra-ui/react";
 
-export function useRoomCounters({ name, roomId, initialCounters }) {
-  const [counters, setCounters] = React.useState(initialCounters);
+export function useRoomCounters({ name, roomId, counters }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
-
-  React.useEffect(() => {
-    const subscription = API.graphql({
-      query: subscriptions.onUpdateTextRoomByName,
-      variables: {
-        name,
-      },
-    }).subscribe({
-      next: ({ value }) => {
-        const nextCounters = value.data.onUpdateTextRoomByName?.counters ?? [];
-        const parsedCounters = nextCounters.map((token) => JSON.parse(token));
-        setCounters(parsedCounters);
-        setIsLoading(false);
-      },
-    });
-    return () => subscription.unsubscribe();
-  }, [name]);
 
   async function updateAmplify(updatedCounters) {
     try {
@@ -40,13 +21,14 @@ export function useRoomCounters({ name, roomId, initialCounters }) {
         },
       });
     } catch (e) {
-      console.error('error sending', e);
-      setIsLoading(false);
+      console.error("error sending", e);
       toast({
-        title: 'An error occurred',
-        description: 'Unable to complete the operation',
-        status: 'error',
+        title: "An error occurred",
+        description: "Unable to complete the operation",
+        status: "error",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -70,7 +52,6 @@ export function useRoomCounters({ name, roomId, initialCounters }) {
   }
 
   return {
-    counters,
     createCounter,
     updateCounter,
     deleteCounter,
