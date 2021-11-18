@@ -182,7 +182,10 @@ const RollSummary = ({ roll, offset }: { roll: Roll; offset: number }) => {
           </Text>
         </Flex>
         <Text fontSize="sm" fontWeight="300">
-          {formatDistanceToNow(parseISO(roll.createdAt))} ago
+          {roll.createdAt
+            ? formatDistanceToNow(parseISO(roll.createdAt))
+            : "No time available"}{" "}
+          ago
         </Text>
       </Box>
     </motion.div>
