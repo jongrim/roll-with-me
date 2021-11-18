@@ -114,6 +114,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
         <VStack spacing={4} w="full" align="flex-start">
           <Box w="full">
             <QuickRollBar
+              isDisabled={loadingStates.isRolling}
               name={username}
               onSubmit={onSubmit}
               ref={quickRollRef}
@@ -124,6 +125,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
           <Flex w="full">
             <Box mr={2}>
               <Button
+                isDisabled={loadingStates.isRolling}
                 size="sm"
                 variant="outline"
                 colorScheme="red"
@@ -142,24 +144,27 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             </Box>
             <Box mr={2}>
               <Button
+                isDisabled={loadingStates.isRolling}
                 size="sm"
                 variant="outline"
                 colorScheme="orange"
-                onClick={() =>
+                onClick={() => {
+                  console.log("click!!!");
                   submitQuickRoll({
                     id: uuidv4(),
                     dice: makeNDice({ count: 1, sides: 20 }),
                     rollName: "1d20",
                     rolledBy: "",
                     modifier: 0,
-                  })
-                }
+                  });
+                }}
               >
                 1d20
               </Button>
             </Box>
             <Box mr={2}>
               <Button
+                isDisabled={loadingStates.isRolling}
                 size="sm"
                 variant="outline"
                 colorScheme="yellow"
@@ -178,6 +183,7 @@ const TextRoomPage: React.FC<TextRoomPageProps> = ({
             </Box>
             <Box mr={2}>
               <Button
+                isDisabled={loadingStates.isRolling}
                 size="sm"
                 variant="outline"
                 colorScheme="green"

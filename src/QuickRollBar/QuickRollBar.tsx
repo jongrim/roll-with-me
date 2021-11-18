@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   FormControl,
   FormErrorMessage,
@@ -6,22 +6,23 @@ import {
   InputGroup,
   InputLeftElement,
   Kbd,
-} from '@chakra-ui/react';
-import { getRollFromQuickString } from '../utils/rolls';
-import { Roll } from '../types';
-import { CustomDie } from '../utils/dice';
+} from "@chakra-ui/react";
+import { getRollFromQuickString } from "../utils/rolls";
+import { Roll } from "../types";
+import { CustomDie } from "../utils/dice";
 
 interface QuickRollBarProps {
   name: string;
   onSubmit: (roll: Roll) => void;
   placeholder: string;
+  isDisabled?: boolean;
   customDice?: CustomDie[];
 }
 
 const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
-  ({ name, onSubmit, placeholder, customDice }, ref) => {
-    const [quickRollValue, setQuickRollValue] = React.useState('');
-    const [errorMessage, setErrorMessage] = React.useState('');
+  ({ name, onSubmit, placeholder, customDice, isDisabled = false }, ref) => {
+    const [quickRollValue, setQuickRollValue] = React.useState("");
+    const [errorMessage, setErrorMessage] = React.useState("");
     return (
       <form
         onSubmit={(e) => {
@@ -33,7 +34,7 @@ const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
             );
             quickRoll.rolledBy = name;
             onSubmit(quickRoll);
-            setErrorMessage('');
+            setErrorMessage("");
           } catch (e) {
             console.log(e);
             setErrorMessage("Sorry, I couldn't understand that");
@@ -46,6 +47,7 @@ const QuickRollBar = React.forwardRef<HTMLInputElement, QuickRollBarProps>(
               <Kbd>Ctrl</Kbd> + <Kbd>/</Kbd>
             </InputLeftElement>
             <Input
+              isDisabled={isDisabled}
               pl={24}
               variant="flushed"
               placeholder={placeholder}
