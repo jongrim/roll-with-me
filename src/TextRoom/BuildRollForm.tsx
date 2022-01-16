@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Button,
   CloseButton,
@@ -21,13 +21,13 @@ import {
   Switch,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { v4 as uuidv4 } from 'uuid';
-import { Die, Roll, SavedRoll } from '../types';
-import NewDie from './NewDie';
-import { createNewRollFromValues, savedRollToRoll } from '../utils/rolls';
-import { compose } from '../utils/fnTools';
-import { CustomDie } from '../utils/dice';
+} from "@chakra-ui/react";
+import { v4 as uuidv4 } from "uuid";
+import { Die, Roll, SavedRoll } from "../types";
+import NewDie from "./NewDie";
+import { createNewRollFromValues, savedRollToRoll } from "../utils/rolls";
+import { compose } from "../utils/fnTools";
+import { CustomDie } from "../utils/dice";
 
 interface BuildRollFormProps {
   onSubmit: (roll: Roll) => void;
@@ -48,14 +48,16 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
 }) => {
   // custom dice
   const [dice, setDice] = React.useState<Die[]>([]);
+  const [displayNoDiceErrorMessage, setDisplayNoDiceErrorMessage] =
+    React.useState(false);
   const addDieToDice = (die: Die) => setDice((cur) => cur.concat(die));
 
   const [modifier, setModifier] = React.useState<number>();
-  const [name, setName] = React.useState<string>('');
+  const [name, setName] = React.useState<string>("");
 
   const [saveNewRoll, setSaveNewRoll] = React.useState(false);
 
-  const borderColor = useColorModeValue('gray.50', 'inherit');
+  const borderColor = useColorModeValue("gray.50", "inherit");
 
   return (
     <>
@@ -101,6 +103,12 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
         data-testid="roll-final-info"
         onSubmit={(e: React.BaseSyntheticEvent) => {
           e.preventDefault();
+          if (dice.length === 0) {
+            setDisplayNoDiceErrorMessage(true);
+            return;
+          } else {
+            setDisplayNoDiceErrorMessage(false);
+          }
           const newRoll: Roll = compose(
             savedRollToRoll(rolledByName),
             createNewRollFromValues
@@ -108,7 +116,7 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
             id: uuidv4(),
             dice,
             rollName: name,
-            rolledBy: '',
+            rolledBy: "",
             modifier: modifier || 0,
           });
           if (saveNewRoll) {
@@ -166,6 +174,13 @@ const BuildRollForm: React.FC<BuildRollFormProps> = ({
               />
             </FormControl>
           </GridItem>
+          {displayNoDiceErrorMessage && (
+            <GridItem colSpan={2}>
+              <Text color="red.500" _dark={{ color: "red.300" }}>
+                There's no dice in your roll! Add some and submit again.
+              </Text>
+            </GridItem>
+          )}
           <GridItem colSpan={2}>
             <Button
               isLoading={isRolling}
