@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   env:
     Type: String
@@ -88,20 +88,20 @@ Resources:
           - ShouldNotCreateEnvResources
           - rollwia4fdec43_sns-role
           - Fn::Join:
-              - ''
+              - ""
               - - sns
                 - a4fdec43
                 - Fn::Select:
-                    - '3'
+                    - "3"
                     - Fn::Split:
-                        - '-'
+                        - "-"
                         - Ref: AWS::StackName
-                - '-'
+                - "-"
                 - Ref: env
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-          - Sid: ''
+          - Sid: ""
             Effect: Allow
             Principal:
               Service: cognito-idp.amazonaws.com
@@ -113,12 +113,12 @@ Resources:
       Policies:
         - PolicyName: rollwia4fdec43-sns-policy
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
                   - sns:Publish
-                Resource: '*'
+                Resource: "*"
   UserPool:
     Type: AWS::Cognito::UserPool
     UpdateReplacePolicy: Retain
@@ -128,14 +128,14 @@ Resources:
           - ShouldNotCreateEnvResources
           - Ref: userPoolName
           - Fn::Join:
-              - ''
+              - ""
               - - Ref: userPoolName
-                - '-'
+                - "-"
                 - Ref: env
       Schema:
         - Name: email
-          Required: 'true'
-          Mutable: 'true'
+          Required: "true"
+          Mutable: "true"
       AutoVerifiedAttributes:
         Ref: autoVerifiedAttributes
       EmailVerificationMessage:
@@ -146,10 +146,10 @@ Resources:
         PasswordPolicy:
           MinimumLength:
             Ref: passwordPolicyMinLength
-          RequireLowercase: 'false'
-          RequireNumbers: 'false'
-          RequireSymbols: 'false'
-          RequireUppercase: 'false'
+          RequireLowercase: "false"
+          RequireNumbers: "false"
+          RequireSymbols: "false"
+          RequireUppercase: "false"
       MfaConfiguration:
         Ref: mfaConfiguration
       SmsVerificationMessage:
@@ -186,18 +186,18 @@ Resources:
           - ShouldNotCreateEnvResources
           - Ref: userpoolClientLambdaRole
           - Fn::Join:
-              - ''
+              - ""
               - - upClientLambdaRole
                 - a4fdec43
                 - Fn::Select:
-                    - '3'
+                    - "3"
                     - Fn::Split:
-                        - '-'
+                        - "-"
                         - Ref: AWS::StackName
-                - '-'
+                - "-"
                 - Ref: env
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
@@ -212,31 +212,31 @@ Resources:
       Code:
         ZipFile:
           Fn::Join:
-            - ''
+            - ""
             - - const response = require('cfn-response');
               - const aws = require('aws-sdk');
               - const identity = new aws.CognitoIdentityServiceProvider();
               - exports.handler = (event, context, callback) => {
-              - ' if (event.RequestType == ''Delete'') { '
-              - '   response.send(event, context, response.SUCCESS, {})'
-              - ' }'
-              - ' if (event.RequestType == ''Update'' || event.RequestType == ''Create'') {'
-              - '   const params = {'
-              - '     ClientId: event.ResourceProperties.clientId,'
-              - '     UserPoolId: event.ResourceProperties.userpoolId'
-              - '   };'
-              - '   identity.describeUserPoolClient(params).promise()'
-              - '     .then((res) => {'
-              - '       response.send(event, context, response.SUCCESS, {''appSecret'': res.UserPoolClient.ClientSecret});'
-              - '     })'
-              - '     .catch((err) => {'
-              - '       response.send(event, context, response.FAILED, {err});'
-              - '     });'
-              - ' }'
-              - '};'
+              - " if (event.RequestType == 'Delete') { "
+              - "   response.send(event, context, response.SUCCESS, {})"
+              - " }"
+              - " if (event.RequestType == 'Update' || event.RequestType == 'Create') {"
+              - "   const params = {"
+              - "     ClientId: event.ResourceProperties.clientId,"
+              - "     UserPoolId: event.ResourceProperties.userpoolId"
+              - "   };"
+              - "   identity.describeUserPoolClient(params).promise()"
+              - "     .then((res) => {"
+              - "       response.send(event, context, response.SUCCESS, {'appSecret': res.UserPoolClient.ClientSecret});"
+              - "     })"
+              - "     .catch((err) => {"
+              - "       response.send(event, context, response.FAILED, {err});"
+              - "     });"
+              - " }"
+              - "};"
       Handler: index.handler
-      Runtime: nodejs12.x
-      Timeout: '300'
+      Runtime: nodejs16.x
+      Timeout: "300"
       Role:
         Fn::GetAtt:
           - UserPoolClientRole
@@ -249,7 +249,7 @@ Resources:
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -264,7 +264,7 @@ Resources:
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -298,71 +298,71 @@ Resources:
       Code:
         ZipFile:
           Fn::Join:
-            - ''
+            - ""
             - - const response = require('cfn-response');
               - const aws = require('aws-sdk');
               - const identity = new aws.CognitoIdentityServiceProvider();
               - exports.handler = (event, context, callback) => {
-              - ' const userPoolId = event.ResourceProperties.userPoolId;'
-              - ' const inputDomainName = event.ResourceProperties.hostedUIDomainName;'
-              - ' let deleteUserPoolDomain = (domainName) => {'
-              - '   let params = { Domain: domainName, UserPoolId: userPoolId };'
-              - '   return identity.deleteUserPoolDomain(params).promise();'
-              - ' };'
-              - ' if (event.RequestType == ''Delete'') {'
-              - '   deleteUserPoolDomain(inputDomainName)'
-              - '   .then(() => {response.send(event, context, response.SUCCESS, {})})'
-              - '   .catch((err) => { console.log(err); response.send(event, context, response.FAILED, {err}) });'
-              - ' }'
-              - ' if (event.RequestType == ''Update'' || event.RequestType == ''Create'') {'
-              - '  let checkDomainAvailability = (domainName) => {'
-              - '  let params = { Domain: domainName };'
-              - '  return identity.describeUserPoolDomain(params).promise().then((res) => {'
-              - '   if (res.DomainDescription && res.DomainDescription.UserPool) {'
-              - '    return false;'
-              - '   }'
-              - '   return true;'
-              - '   }).catch((err) => { return false; });'
-              - ' };'
-              - ' let createUserPoolDomain = (domainName) => {'
-              - '  let params = { Domain: domainName, UserPoolId: userPoolId };'
-              - '   return identity.createUserPoolDomain(params).promise();'
-              - ' };'
-              - ' identity.describeUserPool({UserPoolId: userPoolId }).promise().then((result) => {'
-              - '  if (inputDomainName) {'
-              - '   if (result.UserPool.Domain === inputDomainName) {'
-              - '    return;'
-              - '    } else {'
-              - '       if (!result.UserPool.Domain) {'
-              - '         return checkDomainAvailability(inputDomainName).then((isDomainAvailable) => {'
-              - '           if (isDomainAvailable) {'
-              - '             return createUserPoolDomain(inputDomainName);'
-              - '           } else {'
-              - '               throw new Error(''Domain not available'');'
-              - '           }'
-              - '         });'
-              - '       } else {'
-              - '           return checkDomainAvailability(inputDomainName).then((isDomainAvailable) => {'
-              - '             if (isDomainAvailable) {'
-              - '               return deleteUserPoolDomain(result.UserPool.Domain).then(() => createUserPoolDomain(inputDomainName));'
-              - '             } else {'
-              - '                 throw new Error(''Domain not available'');'
-              - '             }'
-              - '           });'
-              - '       }'
-              - '     }'
-              - '   } else {'
-              - '       if (result.UserPool.Domain) {'
-              - '         return deleteUserPoolDomain(result.UserPool.Domain);'
-              - '       }'
-              - '   }'
-              - ' }).then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {'
-              - ' console.log(err);  response.send(event, context, response.FAILED, {err});'
-              - ' });'
-              - '}}'
+              - " const userPoolId = event.ResourceProperties.userPoolId;"
+              - " const inputDomainName = event.ResourceProperties.hostedUIDomainName;"
+              - " let deleteUserPoolDomain = (domainName) => {"
+              - "   let params = { Domain: domainName, UserPoolId: userPoolId };"
+              - "   return identity.deleteUserPoolDomain(params).promise();"
+              - " };"
+              - " if (event.RequestType == 'Delete') {"
+              - "   deleteUserPoolDomain(inputDomainName)"
+              - "   .then(() => {response.send(event, context, response.SUCCESS, {})})"
+              - "   .catch((err) => { console.log(err); response.send(event, context, response.FAILED, {err}) });"
+              - " }"
+              - " if (event.RequestType == 'Update' || event.RequestType == 'Create') {"
+              - "  let checkDomainAvailability = (domainName) => {"
+              - "  let params = { Domain: domainName };"
+              - "  return identity.describeUserPoolDomain(params).promise().then((res) => {"
+              - "   if (res.DomainDescription && res.DomainDescription.UserPool) {"
+              - "    return false;"
+              - "   }"
+              - "   return true;"
+              - "   }).catch((err) => { return false; });"
+              - " };"
+              - " let createUserPoolDomain = (domainName) => {"
+              - "  let params = { Domain: domainName, UserPoolId: userPoolId };"
+              - "   return identity.createUserPoolDomain(params).promise();"
+              - " };"
+              - " identity.describeUserPool({UserPoolId: userPoolId }).promise().then((result) => {"
+              - "  if (inputDomainName) {"
+              - "   if (result.UserPool.Domain === inputDomainName) {"
+              - "    return;"
+              - "    } else {"
+              - "       if (!result.UserPool.Domain) {"
+              - "         return checkDomainAvailability(inputDomainName).then((isDomainAvailable) => {"
+              - "           if (isDomainAvailable) {"
+              - "             return createUserPoolDomain(inputDomainName);"
+              - "           } else {"
+              - "               throw new Error('Domain not available');"
+              - "           }"
+              - "         });"
+              - "       } else {"
+              - "           return checkDomainAvailability(inputDomainName).then((isDomainAvailable) => {"
+              - "             if (isDomainAvailable) {"
+              - "               return deleteUserPoolDomain(result.UserPool.Domain).then(() => createUserPoolDomain(inputDomainName));"
+              - "             } else {"
+              - "                 throw new Error('Domain not available');"
+              - "             }"
+              - "           });"
+              - "       }"
+              - "     }"
+              - "   } else {"
+              - "       if (result.UserPool.Domain) {"
+              - "         return deleteUserPoolDomain(result.UserPool.Domain);"
+              - "       }"
+              - "   }"
+              - " }).then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {"
+              - " console.log(err);  response.send(event, context, response.FAILED, {err});"
+              - " });"
+              - "}}"
       Handler: index.handler
-      Runtime: nodejs12.x
-      Timeout: '300'
+      Runtime: nodejs16.x
+      Timeout: "300"
       Role:
         Fn::GetAtt:
           - UserPoolClientRole
@@ -373,13 +373,13 @@ Resources:
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - hostedUI
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -391,20 +391,20 @@ Resources:
           - Effect: Allow
             Action:
               - cognito-idp:DescribeUserPoolDomain
-            Resource: '*'
+            Resource: "*"
     DependsOn: HostedUICustomResource
   HostedUICustomResourceLogPolicy:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - hostedUILogPolicy
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -434,7 +434,7 @@ Resources:
           - ShouldNotCreateEnvResources
           - Ref: hostedUIDomainName
           - Fn::Join:
-              - '-'
+              - "-"
               - - Ref: hostedUIDomainName
                 - Ref: env
     DependsOn: HostedUICustomResourceLogPolicy
@@ -444,79 +444,79 @@ Resources:
       Code:
         ZipFile:
           Fn::Join:
-            - ''
+            - ""
             - - const response = require('cfn-response');
               - const aws = require('aws-sdk');
               - const identity = new aws.CognitoIdentityServiceProvider();
               - exports.handler = (event, context, callback) => {
               - try{
-              - ' const userPoolId = event.ResourceProperties.userPoolId;'
-              - ' let hostedUIProviderMeta = JSON.parse(event.ResourceProperties.hostedUIProviderMeta);'
-              - ' let hostedUIProviderCreds = JSON.parse(event.ResourceProperties.hostedUIProviderCreds);'
-              - ' if(hostedUIProviderCreds.length === 0) {'
-              - '  response.send(event, context, response.SUCCESS, {});'
-              - ' }'
-              - ' if (event.RequestType == ''Delete'') {'
-              - '  response.send(event, context, response.SUCCESS, {});'
-              - ' }'
-              - ' if (event.RequestType == ''Update'' || event.RequestType == ''Create'') {'
-              - '  let getRequestParams = (providerName) => {'
-              - '   let providerMetaIndex = hostedUIProviderMeta.findIndex((provider) => provider.ProviderName === providerName);'
-              - '   let providerMeta =  hostedUIProviderMeta[providerMetaIndex];'
-              - '   let providerCredsIndex = hostedUIProviderCreds.findIndex((provider) => provider.ProviderName === providerName);'
-              - '   let providerCreds = hostedUIProviderCreds[providerCredsIndex];'
-              - '   let requestParams = {'
-              - '    ProviderDetails: {'
-              - '     ''client_id'': providerCreds.client_id,'
-              - '     ''client_secret'': providerCreds.client_secret,'
-              - '     ''authorize_scopes'': providerMeta.authorize_scopes'
-              - '    },'
-              - '    ProviderName: providerMeta.ProviderName,'
-              - '    UserPoolId: userPoolId,'
-              - '    AttributeMapping: providerMeta.AttributeMapping'
-              - '   };'
-              - '   return requestParams;'
-              - '  };'
-              - '  let createIdentityProvider = (providerName) => {'
-              - '   let requestParams = getRequestParams(providerName);'
-              - '   requestParams.ProviderType = requestParams.ProviderName;'
-              - '   return identity.createIdentityProvider(requestParams).promise();'
-              - '  };'
-              - '  let updateIdentityProvider = (providerName) => {'
-              - '   let requestParams = getRequestParams(providerName);'
-              - '   return identity.updateIdentityProvider(requestParams).promise();'
-              - '  };'
-              - '  let deleteIdentityProvider = (providerName) => {'
-              - '   let params = {ProviderName: providerName, UserPoolId: userPoolId};'
-              - '   return identity.deleteIdentityProvider(params).promise();'
-              - '  };'
-              - '  let providerPromises = [];'
-              - '  identity.listIdentityProviders({UserPoolId: userPoolId, MaxResults: 60}).promise()'
-              - '  .then((result) => {'
-              - '   let providerList = result.Providers.map(provider => provider.ProviderName);'
-              - '   let providerListInParameters = hostedUIProviderMeta.map(provider => provider.ProviderName);'
-              - '   hostedUIProviderMeta.forEach((providerMetadata) => {'
-              - '    if(providerList.indexOf(providerMetadata.ProviderName) > -1) {'
-              - '     providerPromises.push(updateIdentityProvider(providerMetadata.ProviderName));'
-              - '    } else {'
-              - '     providerPromises.push(createIdentityProvider(providerMetadata.ProviderName));'
-              - '    }'
-              - '  });'
-              - '  providerList.forEach((provider) => {'
-              - '   if(providerListInParameters.indexOf(provider) < 0) {'
-              - '    providerPromises.push(deleteIdentityProvider(provider));'
-              - '   }'
-              - '  });'
-              - '  return Promise.all(providerPromises);'
-              - ' }).then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {'
-              - '   console.log(err.stack); response.send(event, context, response.FAILED, {err})'
-              - ' });'
-              - ' } '
-              - ' } catch(err) { console.log(err.stack); response.send(event, context, response.FAILED, {err});};'
-              - '} '
+              - " const userPoolId = event.ResourceProperties.userPoolId;"
+              - " let hostedUIProviderMeta = JSON.parse(event.ResourceProperties.hostedUIProviderMeta);"
+              - " let hostedUIProviderCreds = JSON.parse(event.ResourceProperties.hostedUIProviderCreds);"
+              - " if(hostedUIProviderCreds.length === 0) {"
+              - "  response.send(event, context, response.SUCCESS, {});"
+              - " }"
+              - " if (event.RequestType == 'Delete') {"
+              - "  response.send(event, context, response.SUCCESS, {});"
+              - " }"
+              - " if (event.RequestType == 'Update' || event.RequestType == 'Create') {"
+              - "  let getRequestParams = (providerName) => {"
+              - "   let providerMetaIndex = hostedUIProviderMeta.findIndex((provider) => provider.ProviderName === providerName);"
+              - "   let providerMeta =  hostedUIProviderMeta[providerMetaIndex];"
+              - "   let providerCredsIndex = hostedUIProviderCreds.findIndex((provider) => provider.ProviderName === providerName);"
+              - "   let providerCreds = hostedUIProviderCreds[providerCredsIndex];"
+              - "   let requestParams = {"
+              - "    ProviderDetails: {"
+              - "     'client_id': providerCreds.client_id,"
+              - "     'client_secret': providerCreds.client_secret,"
+              - "     'authorize_scopes': providerMeta.authorize_scopes"
+              - "    },"
+              - "    ProviderName: providerMeta.ProviderName,"
+              - "    UserPoolId: userPoolId,"
+              - "    AttributeMapping: providerMeta.AttributeMapping"
+              - "   };"
+              - "   return requestParams;"
+              - "  };"
+              - "  let createIdentityProvider = (providerName) => {"
+              - "   let requestParams = getRequestParams(providerName);"
+              - "   requestParams.ProviderType = requestParams.ProviderName;"
+              - "   return identity.createIdentityProvider(requestParams).promise();"
+              - "  };"
+              - "  let updateIdentityProvider = (providerName) => {"
+              - "   let requestParams = getRequestParams(providerName);"
+              - "   return identity.updateIdentityProvider(requestParams).promise();"
+              - "  };"
+              - "  let deleteIdentityProvider = (providerName) => {"
+              - "   let params = {ProviderName: providerName, UserPoolId: userPoolId};"
+              - "   return identity.deleteIdentityProvider(params).promise();"
+              - "  };"
+              - "  let providerPromises = [];"
+              - "  identity.listIdentityProviders({UserPoolId: userPoolId, MaxResults: 60}).promise()"
+              - "  .then((result) => {"
+              - "   let providerList = result.Providers.map(provider => provider.ProviderName);"
+              - "   let providerListInParameters = hostedUIProviderMeta.map(provider => provider.ProviderName);"
+              - "   hostedUIProviderMeta.forEach((providerMetadata) => {"
+              - "    if(providerList.indexOf(providerMetadata.ProviderName) > -1) {"
+              - "     providerPromises.push(updateIdentityProvider(providerMetadata.ProviderName));"
+              - "    } else {"
+              - "     providerPromises.push(createIdentityProvider(providerMetadata.ProviderName));"
+              - "    }"
+              - "  });"
+              - "  providerList.forEach((provider) => {"
+              - "   if(providerListInParameters.indexOf(provider) < 0) {"
+              - "    providerPromises.push(deleteIdentityProvider(provider));"
+              - "   }"
+              - "  });"
+              - "  return Promise.all(providerPromises);"
+              - " }).then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {"
+              - "   console.log(err.stack); response.send(event, context, response.FAILED, {err})"
+              - " });"
+              - " } "
+              - " } catch(err) { console.log(err.stack); response.send(event, context, response.FAILED, {err});};"
+              - "} "
       Handler: index.handler
-      Runtime: nodejs12.x
-      Timeout: '300'
+      Runtime: nodejs16.x
+      Timeout: "300"
       Role:
         Fn::GetAtt:
           - UserPoolClientRole
@@ -527,13 +527,13 @@ Resources:
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - hostedUIProvider
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -549,13 +549,13 @@ Resources:
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - hostedUIProviderLogPolicy
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -591,49 +591,49 @@ Resources:
       Code:
         ZipFile:
           Fn::Join:
-            - ''
+            - ""
             - - const response = require('cfn-response');
               - const aws = require('aws-sdk');
               - const identity = new aws.CognitoIdentityServiceProvider();
               - exports.handler = (event, context, callback) => {
               - try{
-              - ' const userPoolId = event.ResourceProperties.userPoolId;'
-              - ' let webClientId = event.ResourceProperties.webClientId;'
-              - ' let nativeClientId = event.ResourceProperties.nativeClientId;'
-              - ' let hostedUIProviderMeta = JSON.parse(event.ResourceProperties.hostedUIProviderMeta);'
-              - ' let oAuthMetadata = JSON.parse(event.ResourceProperties.oAuthMetadata);'
-              - ' let providerList = hostedUIProviderMeta.map(provider => provider.ProviderName);'
-              - ' providerList.push(''COGNITO'');'
-              - ' if (event.RequestType == ''Delete'') {'
-              - '  response.send(event, context, response.SUCCESS, {});'
-              - ' }'
-              - ' if (event.RequestType == ''Update'' || event.RequestType == ''Create'') {'
-              - '  let params = {'
-              - '   UserPoolId: userPoolId,'
-              - '   AllowedOAuthFlows: oAuthMetadata.AllowedOAuthFlows,'
-              - '   AllowedOAuthFlowsUserPoolClient: true,'
-              - '   AllowedOAuthScopes: oAuthMetadata.AllowedOAuthScopes,'
-              - '   CallbackURLs: oAuthMetadata.CallbackURLs,'
-              - '   LogoutURLs: oAuthMetadata.LogoutURLs,'
-              - '   SupportedIdentityProviders: providerList'
-              - '  };'
-              - '  let updateUserPoolClientPromises = [];'
-              - '  params.ClientId = webClientId;'
-              - '  updateUserPoolClientPromises.push(identity.updateUserPoolClient(params).promise());'
-              - '  params.ClientId = nativeClientId;'
-              - '  updateUserPoolClientPromises.push(identity.updateUserPoolClient(params).promise());'
-              - '  Promise.all(updateUserPoolClientPromises)'
-              - '  .then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {'
-              - '    console.log(err.stack); response.send(event, context, response.FAILED, {err});'
-              - '  });'
-              - ' }'
+              - " const userPoolId = event.ResourceProperties.userPoolId;"
+              - " let webClientId = event.ResourceProperties.webClientId;"
+              - " let nativeClientId = event.ResourceProperties.nativeClientId;"
+              - " let hostedUIProviderMeta = JSON.parse(event.ResourceProperties.hostedUIProviderMeta);"
+              - " let oAuthMetadata = JSON.parse(event.ResourceProperties.oAuthMetadata);"
+              - " let providerList = hostedUIProviderMeta.map(provider => provider.ProviderName);"
+              - " providerList.push('COGNITO');"
+              - " if (event.RequestType == 'Delete') {"
+              - "  response.send(event, context, response.SUCCESS, {});"
+              - " }"
+              - " if (event.RequestType == 'Update' || event.RequestType == 'Create') {"
+              - "  let params = {"
+              - "   UserPoolId: userPoolId,"
+              - "   AllowedOAuthFlows: oAuthMetadata.AllowedOAuthFlows,"
+              - "   AllowedOAuthFlowsUserPoolClient: true,"
+              - "   AllowedOAuthScopes: oAuthMetadata.AllowedOAuthScopes,"
+              - "   CallbackURLs: oAuthMetadata.CallbackURLs,"
+              - "   LogoutURLs: oAuthMetadata.LogoutURLs,"
+              - "   SupportedIdentityProviders: providerList"
+              - "  };"
+              - "  let updateUserPoolClientPromises = [];"
+              - "  params.ClientId = webClientId;"
+              - "  updateUserPoolClientPromises.push(identity.updateUserPoolClient(params).promise());"
+              - "  params.ClientId = nativeClientId;"
+              - "  updateUserPoolClientPromises.push(identity.updateUserPoolClient(params).promise());"
+              - "  Promise.all(updateUserPoolClientPromises)"
+              - "  .then(() => {response.send(event, context, response.SUCCESS, {})}).catch((err) => {"
+              - "    console.log(err.stack); response.send(event, context, response.FAILED, {err});"
+              - "  });"
+              - " }"
               - >-
                 } catch(err) { console.log(err.stack); response.send(event,
                 context, response.FAILED, {err});};
-              - '}'
+              - "}"
       Handler: index.handler
-      Runtime: nodejs12.x
-      Timeout: '300'
+      Runtime: nodejs16.x
+      Timeout: "300"
       Role:
         Fn::GetAtt:
           - UserPoolClientRole
@@ -644,13 +644,13 @@ Resources:
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - OAuth
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -663,13 +663,13 @@ Resources:
     Properties:
       PolicyName:
         Fn::Join:
-          - '-'
+          - "-"
           - - Ref: UserPool
             - OAuthLogPolicy
       Roles:
         - Ref: UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
@@ -711,7 +711,7 @@ Resources:
           - ShouldNotCreateEnvResources
           - rollwithmea4fdec43_identitypool_a4fdec43
           - Fn::Join:
-              - ''
+              - ""
               - - rollwithmea4fdec43_identitypool_a4fdec43
                 - __
                 - Ref: env
@@ -762,7 +762,7 @@ Outputs:
         - ShouldNotCreateEnvResources
         - Ref: hostedUIDomainName
         - Fn::Join:
-            - '-'
+            - "-"
             - - Ref: hostedUIDomainName
               - Ref: env
   OAuthMetadata:
