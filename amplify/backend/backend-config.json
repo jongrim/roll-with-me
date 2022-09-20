@@ -29,7 +29,10 @@
         {
           "category": "function",
           "resourceName": "randomRoomName",
-          "attributes": ["Name", "Arn"]
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ]
     },
@@ -42,7 +45,7 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "description": "public"
+              "description": ""
             }
           },
           "additionalAuthenticationProviders": [
@@ -63,7 +66,10 @@
         {
           "category": "function",
           "resourceName": "randomNumbers",
-          "attributes": ["Name", "Arn"]
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ]
     }
