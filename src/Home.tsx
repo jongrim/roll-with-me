@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Grid,
   GridItem,
@@ -17,20 +17,20 @@ import {
   Center,
   HStack,
   LightMode,
-} from '@chakra-ui/react';
-import { Link as ReactRouterLink } from 'react-router-dom';
-import { FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
-import { RiArrowRightLine } from 'react-icons/ri';
-import { Auth } from 'aws-amplify';
-import logo from './images/personWithCoffee.svg';
-import { useHistory } from 'react-router-dom';
-import { AuthContext } from './AuthProvider';
-import { handleNewRoomRequest } from './NewRoom/handleNewRoomRequest';
-import getNewRoomNames from './functions/randomNames';
-import devEnabled from './utils/devEnabled';
+} from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { FaEnvelope, FaGithub, FaTwitter } from "react-icons/fa";
+import { RiArrowRightLine } from "react-icons/ri";
+import { Auth } from "aws-amplify";
+import logo from "./images/personWithCoffee.svg";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "./AuthProvider";
+import { handleNewRoomRequest } from "./NewRoom/handleNewRoomRequest";
+import getNewRoomNames from "./functions/randomNames";
+import devEnabled from "./utils/devEnabled";
 
 function Home() {
-  const [name, setName] = React.useState<string>('');
+  const [name, setName] = React.useState<string>("");
   const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
@@ -41,13 +41,13 @@ function Home() {
     starterName();
   }, []);
   const history = useHistory();
-  const requestRoom = (type: 'r' | 'i' | 'trophy-dark') => {
+  const requestRoom = (type: "r" | "i" | "trophy-dark") => {
     handleNewRoomRequest(type, name)
       .then(() => {
         history.push(`/${type}/${name}`);
       })
       .catch((e) => {
-        if (e.message === 'room exists') {
+        if (e.message === "room exists") {
           history.push(`/new-room?name=${name}&roomExists=true`);
         }
       });
@@ -71,7 +71,7 @@ function Home() {
               Black Lives Matter
             </Text>
             <Text fontSize="md" color="gray.100" textAlign="center">
-              Please support initiatives like the{' '}
+              Please support initiatives like the{" "}
               <Link href="https://eji.org/" isExternal color="teal.200">
                 Equal Justice Initiative
               </Link>
@@ -100,7 +100,7 @@ function Home() {
                 onChange={({ target }) => setName(target.value)}
                 mr={4}
                 _placeholder={{
-                  color: 'gray.400',
+                  color: "gray.400",
                 }}
                 placeholder="Loading..."
               />
@@ -110,7 +110,7 @@ function Home() {
                 rightIcon={<RiArrowRightLine />}
                 colorScheme="brand"
                 variant="outline"
-                onClick={() => requestRoom('r')}
+                onClick={() => requestRoom("r")}
               >
                 Go
               </Button>
@@ -121,7 +121,7 @@ function Home() {
           </Text>
         </Box>
         <Flex
-          flexDirection={['column-reverse', 'column-reverse', 'row', 'row']}
+          flexDirection={["column-reverse", "column-reverse", "row", "row"]}
           justifyContent="center"
           alignItems="center"
         >
@@ -129,23 +129,23 @@ function Home() {
             <Heading
               as="h1"
               fontFamily="title"
-              fontSize={['5xl', '6xl', '7xl']}
+              fontSize={["5xl", "6xl", "7xl"]}
               color="black"
-              textAlign={['center', 'center', 'left']}
+              textAlign={["center", "center", "left"]}
             >
               Roll With Me
             </Heading>
             <Text
               fontSize="lg"
-              w={['auto', 'auto', 'lg']}
+              w={["auto", "auto", "lg"]}
               color="black"
-              textAlign={['center', 'center', 'left']}
+              textAlign={["center", "center", "left"]}
             >
               Digital tools for playing great games online
             </Text>
             <Text
               color="gray.900"
-              textAlign={['center', 'center', 'left']}
+              textAlign={["center", "center", "left"]}
               mt={3}
             >
               Start an app and share the URL with friends to roll dice together
@@ -158,7 +158,7 @@ function Home() {
       </GridItem>
       <GridItem pt={14} pb={8} colSpan={6} px={[2, 2, 5]} bg="white">
         <Grid
-          templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']}
+          templateColumns={["1fr", "1fr", "repeat(2, 1fr)"]}
           gap={4}
           bg="white"
         >
@@ -180,7 +180,7 @@ function Home() {
                 borderRadius="md"
                 py={2}
                 _hover={{
-                  backgroundColor: 'purple.50',
+                  backgroundColor: "purple.50",
                 }}
               >
                 Text Dice Roller
@@ -198,7 +198,7 @@ function Home() {
                 borderRadius="md"
                 py={2}
                 _hover={{
-                  backgroundColor: 'purple.50',
+                  backgroundColor: "purple.50",
                 }}
               >
                 Visual Dice Table
@@ -223,31 +223,11 @@ function Home() {
                 borderRadius="md"
                 py={2}
                 _hover={{
-                  backgroundColor: 'green.50',
+                  backgroundColor: "green.50",
                 }}
               >
                 Trophy Dark
               </Link>
-              {devEnabled() && (
-                <Link
-                  as={ReactRouterLink}
-                  color="yellow.700"
-                  w="full"
-                  to="/new-room?type=trophy-gold"
-                  display="inline-flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  border="1px solid"
-                  borderColor="yellow.700"
-                  borderRadius="md"
-                  py={2}
-                  _hover={{
-                    backgroundColor: 'yellow.50',
-                  }}
-                >
-                  Trophy Gold
-                </Link>
-              )}
               {devEnabled() && (
                 <Link
                   as={ReactRouterLink}
@@ -262,7 +242,7 @@ function Home() {
                   borderRadius="md"
                   py={2}
                   _hover={{
-                    backgroundColor: 'red.50',
+                    backgroundColor: "red.50",
                   }}
                 >
                   Heart
@@ -295,7 +275,7 @@ function Home() {
                 to="/profile/settings"
                 color="gray.600"
                 _hover={{
-                  color: 'brand.500',
+                  color: "brand.500",
                 }}
               >
                 Manage profile
@@ -305,7 +285,7 @@ function Home() {
                 variant="link"
                 color="gray.600"
                 _hover={{
-                  color: 'brand.500',
+                  color: "brand.500",
                 }}
                 onClick={() => Auth.federatedSignIn()}
                 fontWeight="400"
@@ -315,20 +295,10 @@ function Home() {
             )}
             <Link
               as={ReactRouterLink}
-              to="/feedback"
-              color="gray.600"
-              _hover={{
-                color: 'brand.500',
-              }}
-            >
-              Provide feedback
-            </Link>
-            <Link
-              as={ReactRouterLink}
               to="/privacy"
               color="gray.600"
               _hover={{
-                color: 'brand.500',
+                color: "brand.500",
               }}
             >
               Privacy policy
@@ -338,7 +308,7 @@ function Home() {
               to="/guide"
               color="gray.600"
               _hover={{
-                color: 'brand.500',
+                color: "brand.500",
               }}
             >
               Usage guide
@@ -379,19 +349,6 @@ function Home() {
             />
           </Link>
         </Flex>
-        <Text color="gray.600" mt={4} fontSize="sm" textAlign="center">
-          Prefer the
-          <Link
-            isExternal
-            color="brand.500"
-            href="https://obscure-ridge-20711.herokuapp.com/"
-            ml={1}
-            mr={1}
-          >
-            the old version?
-          </Link>
-          Follow that link!
-        </Text>
       </GridItem>
     </Grid>
   );
