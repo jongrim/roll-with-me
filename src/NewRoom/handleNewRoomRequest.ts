@@ -1,21 +1,19 @@
-import { isAfter, add, parseISO } from 'date-fns';
-import { API } from 'aws-amplify';
+import { isAfter, add, parseISO } from "date-fns";
+import { API } from "aws-amplify";
 import {
   CreateTextRoomMutation,
   CreateSafetyModuleMutation,
   CreateInteractiveRoomMutation,
   CreateTrophyDarkRoomMutation,
   CreateHeartRoomMutation,
-  CreateTrophyGoldRoomMutation,
-  CreateTrophyGoldDiceModuleMutation,
   CreateHexMapModuleMutation,
-} from '../API';
-import gql from '../gql';
-import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
-import { roomCodes, roomPathCodes } from '../roomPaths';
-import heartBackgroundImages from '../Heart/heartBackgroundImages';
-import { BackgroundImage } from '../MapModule/gridConfiguration';
+} from "../API";
+import gql from "../gql";
+import * as mutations from "../graphql/mutations";
+import * as queries from "../graphql/queries";
+import { roomCodes, roomPathCodes } from "../roomPaths";
+import heartBackgroundImages from "../Heart/heartBackgroundImages";
+import { BackgroundImage } from "../MapModule/gridConfiguration";
 
 const sixMonthsAgo = add(new Date(), { months: -6 });
 
@@ -35,9 +33,6 @@ export const handleNewRoomRequest = async (
   if (type === roomCodes.heart) {
     return handleHeartRoomRequest(name);
   }
-  if (type === roomCodes.trophyGold) {
-    return handleTrophyGoldRoomRequest(name);
-  }
 };
 
 async function getNewMapModule({
@@ -46,7 +41,7 @@ async function getNewMapModule({
   startingBackgroundImages: BackgroundImage[];
 }) {
   return gql<CreateHexMapModuleMutation>(mutations.createHexMapModule, {
-    gridConfiguration: '{}',
+    gridConfiguration: "{}",
     backgroundImages: startingBackgroundImages.map((img) =>
       JSON.stringify(img)
     ),
@@ -72,7 +67,7 @@ async function handleTextRoomRequest(name: string) {
   if (existingRoom) {
     const lastUsedDate = parseISO(existingRoom?.updatedAt);
     if (isAfter(lastUsedDate, sixMonthsAgo)) {
-      throw new Error('room exists');
+      throw new Error("room exists");
     } else {
       await API.graphql({
         query: mutations.deleteTextRoom,
@@ -104,7 +99,7 @@ async function handleInteractiveRoomRequest(name: string) {
   if (existingRoom) {
     const lastUsedDate = parseISO(existingRoom?.updatedAt);
     if (isAfter(lastUsedDate, sixMonthsAgo)) {
-      throw new Error('room exists');
+      throw new Error("room exists");
     } else {
       await API.graphql({
         query: mutations.deleteInteractiveRoom,
@@ -135,7 +130,7 @@ async function handleTrophyDarkRoomRequest(name: string) {
   if (existingRoom) {
     const lastUsedDate = parseISO(existingRoom?.updatedAt);
     if (isAfter(lastUsedDate, sixMonthsAgo)) {
-      throw new Error('room exists');
+      throw new Error("room exists");
     } else {
       await API.graphql({
         query: mutations.deleteTrophyDarkRoom,
@@ -168,7 +163,7 @@ async function handleHeartRoomRequest(name: string) {
   if (existingRoom) {
     const lastUsedDate = parseISO(existingRoom?.updatedAt);
     if (isAfter(lastUsedDate, sixMonthsAgo)) {
-      throw new Error('room exists');
+      throw new Error("room exists");
     } else {
       await API.graphql({
         query: mutations.deleteHeartRoom,
@@ -194,50 +189,5 @@ async function handleHeartRoomRequest(name: string) {
     d10Dice: [],
     d12Dice: [],
     d20Dice: [],
-  });
-}
-
-async function getNewTrophyGoldDice() {
-  return gql<CreateTrophyGoldDiceModuleMutation>(
-    mutations.createTrophyGoldDiceModule,
-    {
-      lightDice: [],
-      darkDice: [],
-      goldDice: [],
-      diceMode: 'hunt',
-    }
-  );
-}
-
-async function handleTrophyGoldRoomRequest(name: string) {
-  const result = await API.graphql({
-    query: queries.trophyGoldRoomByName,
-    variables: {
-      name,
-    },
-  });
-  // @ts-ignore
-  const existingRoom = result?.data?.trophyGoldRoomByName?.items[0];
-  if (existingRoom) {
-    const lastUsedDate = parseISO(existingRoom?.updatedAt);
-    if (isAfter(lastUsedDate, sixMonthsAgo)) {
-      throw new Error('room exists');
-    } else {
-      await API.graphql({
-        query: mutations.deleteTrophyGoldRoom,
-        variables: {
-          input: {
-            id: existingRoom.id,
-          },
-        },
-      });
-    }
-  }
-  const newSafetyModule = await getNewSafetyModule();
-  const diceModule = await getNewTrophyGoldDice();
-  await gql<CreateTrophyGoldRoomMutation>(mutations.createTrophyGoldRoom, {
-    name,
-    trophyGoldRoomSafetyModuleId: newSafetyModule.data?.createSafetyModule?.id,
-    trophyGoldRoomDiceModuleId: diceModule.data?.createTrophyGoldDiceModule?.id,
   });
 }

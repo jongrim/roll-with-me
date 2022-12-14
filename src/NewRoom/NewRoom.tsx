@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import RoomRadioCard from './RoomRadioCard';
+import * as React from "react";
+import { useLocation, useHistory } from "react-router-dom";
+import RoomRadioCard from "./RoomRadioCard";
 import {
   Box,
   useRadioGroup,
@@ -16,28 +16,28 @@ import {
   VStack,
   Flex,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { RiArrowRightLine } from 'react-icons/ri';
-import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion';
-import { handleNewRoomRequest } from './handleNewRoomRequest';
-import getNewRoomNames from '../functions/randomNames';
+} from "@chakra-ui/react";
+import { RiArrowRightLine } from "react-icons/ri";
+import { motion, AnimateSharedLayout, useAnimation } from "framer-motion";
+import { handleNewRoomRequest } from "./handleNewRoomRequest";
+import getNewRoomNames from "../functions/randomNames";
 import {
   roomPathCodes,
   roomCodes,
   roomNames,
   roomNamesType,
-} from '../roomPaths';
-import devEnabled from '../utils/devEnabled';
+} from "../roomPaths";
+import devEnabled from "../utils/devEnabled";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const options = [
-  'Text',
-  'Visual',
-  'Trophy Dark',
-  ...(devEnabled() ? ['Trophy Gold', 'Heart'] : []),
+  "Text",
+  "Visual",
+  "Trophy Dark",
+  ...(devEnabled() ? ["Trophy Gold", "Heart"] : []),
 ];
 
 interface RoomTypeState {
@@ -53,8 +53,6 @@ const getRoomShortCode = (type: string) => {
       return roomCodes.visual;
     case roomNames.trophyDark:
       return roomCodes.trophyDark;
-    case roomNames.trophyGold:
-      return roomCodes.trophyGold;
     case roomNames.heart:
       return roomCodes.heart;
     default:
@@ -65,15 +63,13 @@ const getRoomShortCode = (type: string) => {
 // used for getting the display value of the radio buttons
 const getDefaultValueFromType = (type: string) => {
   switch (type.toLowerCase()) {
-    case 'text':
+    case "text":
       return roomNames.text;
-    case 'visual':
+    case "visual":
       return roomNames.visual;
-    case 'trophy-dark':
+    case "trophy-dark":
       return roomNames.trophyDark;
-    case 'trophy-gold':
-      return roomNames.trophyGold;
-    case 'heart':
+    case "heart":
       return roomNames.heart;
     default:
       return roomNames.text;
@@ -89,23 +85,19 @@ const roomTypeReducer = (
   event: roomTypeReducerEvent
 ): RoomTypeState => {
   switch (event.payload) {
-    case 'Text':
+    case "Text":
       return {
         roomShortCode: roomCodes.text,
       };
-    case 'Visual':
+    case "Visual":
       return {
         roomShortCode: roomCodes.visual,
       };
-    case 'Trophy Dark':
+    case "Trophy Dark":
       return {
         roomShortCode: roomCodes.trophyDark,
       };
-    case 'Trophy Gold':
-      return {
-        roomShortCode: roomCodes.trophyGold,
-      };
-    case 'Heart':
+    case "Heart":
       return {
         roomShortCode: roomCodes.heart,
       };
@@ -115,18 +107,18 @@ const roomTypeReducer = (
 const NewRoom: React.FC = () => {
   const history = useHistory();
   const query = useQuery();
-  const showRoomExists = query.get('roomExists') ?? false;
-  const showNotFound = query.get('notFound') ?? false;
+  const showRoomExists = query.get("roomExists") ?? false;
+  const showNotFound = query.get("notFound") ?? false;
   const inputEl = React.useRef<HTMLInputElement>(null);
 
-  const [name, setName] = React.useState(query.get('name') ?? '');
-  const [namePlaceholder, setNamePlaceholder] = React.useState('Loading...');
+  const [name, setName] = React.useState(query.get("name") ?? "");
+  const [namePlaceholder, setNamePlaceholder] = React.useState("Loading...");
   const [starterNames, setStarterNames] = React.useState<string[]>([]);
   React.useEffect(() => {
     async function starterName() {
       const result = await getNewRoomNames(6);
       setStarterNames(result);
-      setNamePlaceholder('What should we call it?');
+      setNamePlaceholder("What should we call it?");
       if (!name) {
         setName(result[0]);
       }
@@ -136,18 +128,17 @@ const NewRoom: React.FC = () => {
     }
   }, [name, starterNames]);
 
-  const roomTypeFromURL = getDefaultValueFromType(query.get('type') ?? '');
+  const roomTypeFromURL = getDefaultValueFromType(query.get("type") ?? "");
 
   const [{ roomShortCode }, dispatch] = React.useReducer(roomTypeReducer, {
     roomShortCode: getRoomShortCode(roomTypeFromURL),
   });
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'room type',
-    defaultValue: getDefaultValueFromType(query.get('type') ?? ''),
-    onChange: (
-      nextValue: 'Text' | 'Visual' | 'Trophy Dark' | 'Trophy Gold' | 'Heart'
-    ) => dispatch({ payload: nextValue }),
+    name: "room type",
+    defaultValue: getDefaultValueFromType(query.get("type") ?? ""),
+    onChange: (nextValue: "Text" | "Visual" | "Trophy Dark" | "Heart") =>
+      dispatch({ payload: nextValue }),
   });
 
   const group = getRootProps();
@@ -157,8 +148,8 @@ const NewRoom: React.FC = () => {
       <Center flexDirection="column" mt={12}>
         <Heading as="h1" size="md">
           {showNotFound && "That room doesn't exist... yet"}
-          {showRoomExists && 'Sorry, that room name is already in use'}
-          {!showRoomExists && !showNotFound && 'Create a new room'}
+          {showRoomExists && "Sorry, that room name is already in use"}
+          {!showRoomExists && !showNotFound && "Create a new room"}
         </Heading>
         <Text mt={6}>Room type</Text>
         <HStack {...group} mt={4}>
@@ -173,16 +164,16 @@ const NewRoom: React.FC = () => {
         </HStack>
         <AnimateSharedLayout>
           <Text mt={14}>
-            Name it something{' '}
+            Name it something{" "}
             <Box as="span">
-              <Terrifying visible={roomShortCode === 'trophy-dark'} />
-              <Fun strike={roomShortCode === 'trophy-dark'} />
+              <Terrifying visible={roomShortCode === "trophy-dark"} />
+              <Fun strike={roomShortCode === "trophy-dark"} />
             </Box>
           </Text>
         </AnimateSharedLayout>
         <Grid
           mt={4}
-          templateColumns={['1fr', '360px 1fr', '540px, 1fr', '680px 1fr']}
+          templateColumns={["1fr", "360px 1fr", "540px, 1fr", "680px 1fr"]}
           gap={4}
         >
           <GridItem>
@@ -226,7 +217,7 @@ const NewRoom: React.FC = () => {
                     history.push(`/${roomShortCode}/${name}`);
                   })
                   .catch((e) => {
-                    if (e.message === 'room exists') {
+                    if (e.message === "room exists") {
                       history.push(`/new-room?name=${name}&roomExists=true`);
                     }
                   });
@@ -247,11 +238,11 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
     if (visible) {
       controls
         .start({
-          width: 'auto',
+          width: "auto",
           transition: {
             duration: 0.65,
-            type: 'tween',
-            ease: 'easeOut',
+            type: "tween",
+            ease: "easeOut",
             delay: 1,
           },
         })
@@ -260,8 +251,8 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
             opacity: 1,
             transition: {
               duration: 0.5,
-              type: 'tween',
-              ease: 'easeOut',
+              type: "tween",
+              ease: "easeOut",
             },
           });
         });
@@ -269,12 +260,12 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
       controls
         .start({
           opacity: 0,
-          transition: { duration: 0.25, type: 'tween', ease: 'easeOut' },
+          transition: { duration: 0.25, type: "tween", ease: "easeOut" },
         })
         .then(() => {
           controls.start({
             width: 0,
-            transition: { duration: 0.25, type: 'tween', ease: 'easeOut' },
+            transition: { duration: 0.25, type: "tween", ease: "easeOut" },
           });
         });
     }
@@ -282,7 +273,7 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
   return (
     <motion.span
       layout
-      initial={{ opacity: 0, width: '0px', display: 'inline-block' }}
+      initial={{ opacity: 0, width: "0px", display: "inline-block" }}
       animate={controls}
     >
       <Box
@@ -301,12 +292,12 @@ const Terrifying = ({ visible }: { visible: boolean }) => {
 };
 
 const Fun = ({ strike }: { strike: boolean }) => {
-  const color = useColorModeValue('black', 'white');
+  const color = useColorModeValue("black", "white");
   const controls = useAnimation();
   React.useEffect(() => {
     if (strike) {
       controls.start({
-        width: '120%',
+        width: "120%",
         transition: { duration: 1 },
       });
     } else {
@@ -314,8 +305,8 @@ const Fun = ({ strike }: { strike: boolean }) => {
         width: 0,
         transition: {
           duration: 0.25,
-          type: 'tween',
-          ease: 'easeOut',
+          type: "tween",
+          ease: "easeOut",
           delay: 1,
         },
       });
@@ -333,12 +324,12 @@ const Fun = ({ strike }: { strike: boolean }) => {
         <motion.span
           initial={{
             width: 0,
-            borderBottom: '2px groove',
+            borderBottom: "2px groove",
             borderColor: color,
-            position: 'absolute',
-            top: '50%',
-            left: '-2px',
-            transform: 'rotate(-2deg)',
+            position: "absolute",
+            top: "50%",
+            left: "-2px",
+            transform: "rotate(-2deg)",
           }}
           animate={controls}
         />

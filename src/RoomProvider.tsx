@@ -1,11 +1,10 @@
-import * as React from 'react';
-import { useParams, Redirect } from 'react-router-dom';
-import HeartEntry from './Heart/HeartEntry';
-import InteractiveRoom from './InteractiveRoom/InteractiveRoom';
-import { roomCodes } from './roomPaths';
-import TextRoom from './TextRoom/TextRoom';
-import TrophyDarkRoom from './TrophyDark/TrophyDarkRoom';
-import TrophyGoldRoom from './TrophyGold/TrophyGoldRoom';
+import * as React from "react";
+import { useParams, Redirect } from "react-router-dom";
+import HeartEntry from "./Heart/HeartEntry";
+import InteractiveRoom from "./InteractiveRoom/InteractiveRoom";
+import { roomCodes } from "./roomPaths";
+import TextRoom from "./TextRoom/TextRoom";
+import TrophyDarkRoom from "./TrophyDark/TrophyDarkRoom";
 
 function RoomProvider() {
   const { name, type } = useParams<{ name: string; type: string }>();
@@ -19,8 +18,6 @@ function RoomProvider() {
       return <TrophyDarkRoom name={name} />;
     case roomCodes.heart:
       return <HeartEntry name={name} />;
-    case roomCodes.trophyGold:
-      return <TrophyGoldRoom name={name} />;
     default:
       return <Redirect path="*" to="/new-room?notFound=true" />;
   }
