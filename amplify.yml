@@ -25,8 +25,8 @@ test:
     preTest:
       commands:
         - yarn install
-        - yarn install wait-on
-        - yarn install mocha@5.2.0 mochawesome mochawesome-merge mochawesome-report-generator
+        - yarn add wait-on
+        - yarn add mocha@5.2.0 mochawesome mochawesome-merge mochawesome-report-generator
         - "yarn start & npx wait-on http://localhost:3000"
     test:
       commands:
