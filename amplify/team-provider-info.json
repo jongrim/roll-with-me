@@ -38,15 +38,27 @@
       "UnauthRoleName": "amplify-rollwithme-main-192344-unauthRole",
       "StackName": "amplify-rollwithme-main-192344",
       "StackId": "arn:aws:cloudformation:us-east-1:298644330995:stack/amplify-rollwithme-main-192344/ffa38410-22ea-11eb-82b4-1254a8a4acf7",
-      "AmplifyAppId": "d1y92bo115vf7n"
+      "AmplifyAppId": "d1y92bo115vf7n",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-rollwithme-main-192344-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "rollwithmea4fdec43": {}
       },
       "function": {
-        "randomRoomName": {},
-        "randomNumbers": {}
+        "randomRoomName": {
+          "deploymentBucketName": "amplify-rollwithme-main-192344-deployment",
+          "s3Key": "amplify-builds/randomRoomName-6b4a43476c4d48545347-build.zip"
+        },
+        "randomNumbers": {
+          "deploymentBucketName": "amplify-rollwithme-main-192344-deployment",
+          "s3Key": "amplify-builds/randomNumbers-4736556f41662f373448-build.zip"
+        }
+      },
+      "api": {
+        "randomNameAPI": {},
+        "rollwithmeql": {},
+        "randomNumbersAPI": {}
       }
     }
   }
