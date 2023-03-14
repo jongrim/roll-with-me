@@ -1,50 +1,36 @@
 {
-  "auth": {
-    "rollwithmea4fdec43": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  },
-  "function": {
-    "randomRoomName": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
-    "randomNumbers": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    }
-  },
   "api": {
     "randomNameAPI": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
           "category": "function",
-          "resourceName": "randomRoomName",
-          "attributes": ["Name", "Arn"]
+          "resourceName": "randomRoomName"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "randomNumbersAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "randomNumbers"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     },
     "rollwithmeql": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 90,
-              "description": "public"
-            }
-          },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AMAZON_COGNITO_USER_POOLS",
@@ -52,18 +38,92 @@
                 "userPoolId": "authrollwithmea4fdec43"
               }
             }
-          ]
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 90,
+              "description": "public"
+            },
+            "authenticationType": "API_KEY"
+          }
         }
-      }
-    },
-    "randomNumbersAPI": {
-      "service": "API Gateway",
+      },
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "rollwithmea4fdec43": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "randomNumbers": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "randomRoomName": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_randomNumbers_deploymentBucketName": {
+      "usedBy": [
         {
           "category": "function",
-          "resourceName": "randomNumbers",
-          "attributes": ["Name", "Arn"]
+          "resourceName": "randomNumbers"
+        }
+      ]
+    },
+    "AMPLIFY_function_randomNumbers_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "randomNumbers"
+        }
+      ]
+    },
+    "AMPLIFY_function_randomRoomName_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "randomRoomName"
+        }
+      ]
+    },
+    "AMPLIFY_function_randomRoomName_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "randomRoomName"
         }
       ]
     }
